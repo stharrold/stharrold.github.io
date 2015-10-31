@@ -29,14 +29,14 @@ SOCIAL = (('stharrold', 'https://github.com/stharrold'),
 
 # Theme
 # https://github.com/duilio/pelican-octopress-theme
-THEME = 'pelican-themes/pelican-octopress-theme'
+THEME = 'pelican-themes/octopress'
 SEARCH_BOX = True
 
-# Plugins
-# https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
-PLUGIN_PATH = 'pelican-plugins'
-PLUGINS = ['liquid_tags.notebook']
-NOTEBOOK_DIR = 'notebooks'
+# # Plugins
+# # https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
+# PLUGIN_PATH = 'pelican-plugins'
+# PLUGINS = ['liquid_tags.notebook']
+# NOTEBOOK_DIR = 'notebooks'
 
 # Regenerate output while developing.
 DELETE_OUTPUT_DIRECTORY = True
