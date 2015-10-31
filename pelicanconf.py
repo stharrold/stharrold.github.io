@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
 
-# From pelican-quickstart
+# Options from pelican-quickstart
 AUTHOR = 'Samuel Harrold'
 SITENAME = 'Data Science Demos'
 SITEURL = ''
 PATH = 'content'
 TIMEZONE = 'Etc/UTC'
 DEFAULT_LANG = 'en'
+DEFAULT_PAGINATION = 10
 
 # Disable feed generation for developing.
 FEED_ALL_ATOM = None
@@ -26,11 +27,9 @@ SOCIAL = (('stharrold', 'https://github.com/stharrold'),
           ('stharrold', 'https://twitter.com/stharrold'),
           ('Samuel Harrold', 'https://plus.google.com/+SamuelHarrold'),)
 
-DEFAULT_PAGINATION = 10
-
 # Theme
 # https://github.com/duilio/pelican-octopress-theme
-THEME = 'pelican-octopress-theme'
+THEME = 'pelican-themes/pelican-octopress-theme'
 SEARCH_BOX = True
 
 # Plugins
