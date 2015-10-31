@@ -1,3 +1,4 @@
-# stharrold.github.io, "Data Sciece Demos"
+# stharrold.github.io
 
-GitHub page for stharrold, "Data Science Demos".
+Generated GitHub page for stharrold, [Data Science Demos](https://stharrold.github.io).  
+See https://github.com/stharrold/stharrold.github.io_source for the source code.
