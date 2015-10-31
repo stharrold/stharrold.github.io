@@ -33,3 +33,5 @@ DEFAULT_PAGINATION = 10
 # TODO: Add plug-ins
 # Search
 #SEARCH_BOX = True
+
+DELETE_OUTPUT_DIRECTORY = True
