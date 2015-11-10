@@ -9,7 +9,7 @@ This repository contains both the source code for the GitHub page and the output
 How to build the site for development:
 ```bash
 $ git checkout src_develop
-$ pelican --settings publishconf.py
+$ pelican --settings pelicanconf.py
 $ cd output
 $ python -m http.server 8000 &
 $ # Inspect the page at localhost:8000
