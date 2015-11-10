@@ -1,4 +1,3 @@
-# stharrold.github.io_source
+# stharrold.github.io
 
-Source code for GitHub page for stharrold, [Data Science Demos](https://stharrold.github.io).  
-See https://github.com/stharrold/stharrold.github.io for the generated web page.
+GitHub page for stharrold, [Data Science Demos](https://stharrold.github.io), with source code ("_src" branches).  
