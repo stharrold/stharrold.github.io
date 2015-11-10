@@ -46,7 +46,7 @@ AUTHOR_FEED_RSS = None
 TRANSLATION_FEED_ATOM = None
 
 # Themes
-THEME = 'pelican-octopress-theme/'
+#THEME = 'pelican-octopress-theme/'
 #DISQUS_SITENAME = ''
 GITHUB_URL = 'https://github.com/stharrold/stharrold.github.io'
 #GOOGLE_ANALYTICS = 'UA-XXXX-YYYY'
