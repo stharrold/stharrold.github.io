@@ -16,7 +16,7 @@ $ # Inspect the page at localhost:8000
 ```
 
 How to build the site for deployment:
-```
+```bash
 $ git checkout master_src
 $ pelican --settings publishconf.py
 $ ghp-import output -b master -p
