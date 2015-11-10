@@ -46,13 +46,9 @@ AUTHOR_FEED_RSS = None
 TRANSLATION_FEED_ATOM = None
 
 # Themes
-# Using default theme.
-# To use a custom theme, add themes as a git submodule:
-# $ git submodule add --recursive https://github.com/getpelican/pelican-themes.git
-# https://git-scm.com/book/en/v2/Git-Tools-Submodules
-# To delete the submodule: https://gist.github.com/kyleturner/1563153
+# For themes, see 
 #DISQUS_SITENAME = ''
-GITHUB_URL = 'https://github.com/stharrold/stharrold.github.io_source'
+GITHUB_URL = 'https://github.com/stharrold/stharrold.github.io'
 #GOOGLE_ANALYTICS = 'UA-XXXX-YYYY'
 SOCIAL = (
     ('stharrold', 'https://github.com/stharrold'),
