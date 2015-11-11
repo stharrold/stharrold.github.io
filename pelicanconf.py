@@ -53,11 +53,16 @@ TRANSLATION_FEED_ATOM = None
 #DISQUS_SITENAME = ''
 GITHUB_URL = 'https://github.com/stharrold/stharrold.github.io'
 #GOOGLE_ANALYTICS = 'UA-XXXX-YYYY'
+# Note: As of 2015-11-10, categories.html does not render correctly for
+# Pelican's default theme, 'notmyidea'. The html format file is missing
+# from the theme: https://github.com/getpelican/pelican/issues/1450
 MENUITEMS = [
     ('Categories', '/categories.html'),
     ('Tags', '/tags.html'),
     ('Archives', '/archives.html'),
     ('Authors', '/authors.html')]
+LINKS = [
+    ("Search 'Data Science Demos' with Google", 'https://www.google.com/?q=site:stharrold.github.io')]
 SOCIAL = [
     ('stharrold', 'https://github.com/stharrold'),
     ('Samuel Harrold', 'https://www.linkedin.com/in/samuelharrold'),
