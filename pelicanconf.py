@@ -32,7 +32,7 @@ PATH = 'content'
 # PLUGIN_PATHS = 'pelican-plugins'
 NOTEBOOK_DIR = 'notebooks'
 SITENAME = 'Data Science Demos'
-# Define SITEURL only when publishing.
+# Define SITEURL only when publishing to test relative links.
 SITEURL = ''
 STATIC_PATHS = [NOTEBOOK_DIR]
 TIMEZONE = 'Etc/UTC'
@@ -49,7 +49,7 @@ AUTHOR_FEED_RSS = None
 TRANSLATION_FEED_ATOM = None
 
 # Themes
-# For themes, see 
+# For themes, see https://github.com/getpelican/pelican-themes
 #DISQUS_SITENAME = ''
 GITHUB_URL = 'https://github.com/stharrold/stharrold.github.io'
 #GOOGLE_ANALYTICS = 'UA-XXXX-YYYY'
