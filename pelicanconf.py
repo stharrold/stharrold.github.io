@@ -26,15 +26,14 @@ DISPLAY_CATEGORIES_ON_MENU = False
 DELETE_OUTPUT_DIRECTORY = True
 PATH = 'content'
 # From https://github.com/getpelican/pelican-plugins
-#PLUGINS = ['liquid_tags.notebook']
-#PLUGIN_PATHS = ['pelican-plugins']
-# From https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
-#NOTEBOOK_DIR = 'notebooks'
-#EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
+# and https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
+PLUGIN_PATHS = ['pelican-plugins']
+PLUGINS = ['liquid_tags.img']
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
-STATIC_PATHS = ['notebooks', 'images']
+STATIC_PATHS = ['images', 'notebooks']
+ARTICLE_EXCLUDES = STATIC_PATHS
 TIMEZONE = 'Etc/UTC'
 DIRECT_TEMPLATES = ['index', 'categories', 'tags', 'archives', 'authors']
 
