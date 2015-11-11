@@ -60,9 +60,8 @@ MENUITEMS = [
     ('Categories', '/categories.html'),
     ('Tags', '/tags.html'),
     ('Archives', '/archives.html'),
+    ('Search', 'https://www.google.com/?q=site:stharrold.github.io'),
     ('Authors', '/authors.html')]
-LINKS = [
-    ("Search 'Data Science Demos' with Google", 'https://www.google.com/?q=site:stharrold.github.io')]
 SOCIAL = [
     ('stharrold', 'https://github.com/stharrold'),
     ('Samuel Harrold', 'https://www.linkedin.com/in/samuelharrold'),
