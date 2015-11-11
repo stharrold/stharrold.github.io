@@ -25,16 +25,16 @@ DISPLAY_CATEGORIES_ON_MENU = False
 # Remove all old files and directories when building.
 DELETE_OUTPUT_DIRECTORY = True
 PATH = 'content'
-# Plugins
-# Plugin added as a submodule.
-# # https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
-# PLUGINS = ['liquid_tags.notebook']
-# PLUGIN_PATHS = 'pelican-plugins'
-NOTEBOOK_DIR = 'notebooks'
+# From https://github.com/getpelican/pelican-plugins
+#PLUGINS = ['liquid_tags.notebook']
+#PLUGIN_PATHS = ['pelican-plugins']
+# From https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
+#NOTEBOOK_DIR = 'notebooks'
+#EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
-STATIC_PATHS = [NOTEBOOK_DIR]
+STATIC_PATHS = ['notebooks', 'images']
 TIMEZONE = 'Etc/UTC'
 DIRECT_TEMPLATES = ['index', 'categories', 'tags', 'archives', 'authors']
 
