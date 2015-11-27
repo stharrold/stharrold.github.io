@@ -25,16 +25,15 @@ DISPLAY_CATEGORIES_ON_MENU = False
 # Remove all old files and directories when building.
 DELETE_OUTPUT_DIRECTORY = True
 PATH = 'content'
-# Plugins
-# Plugin added as a submodule.
-# # https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
-# PLUGINS = ['liquid_tags.notebook']
-# PLUGIN_PATHS = 'pelican-plugins'
-NOTEBOOK_DIR = 'notebooks'
+# From https://github.com/getpelican/pelican-plugins
+# and https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
+PLUGIN_PATHS = ['pelican-plugins']
+PLUGINS = ['liquid_tags.img']
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
-STATIC_PATHS = [NOTEBOOK_DIR]
+STATIC_PATHS = ['images', 'notebooks']
+ARTICLE_EXCLUDES = STATIC_PATHS
 TIMEZONE = 'Etc/UTC'
 DIRECT_TEMPLATES = ['index', 'categories', 'tags', 'archives', 'authors']
 
@@ -60,9 +59,8 @@ MENUITEMS = [
     ('Categories', '/categories.html'),
     ('Tags', '/tags.html'),
     ('Archives', '/archives.html'),
+    ('Search', 'https://www.google.com/?q=site:stharrold.github.io'),
     ('Authors', '/authors.html')]
-LINKS = [
-    ("Search 'Data Science Demos' with Google", 'https://www.google.com/?q=site:stharrold.github.io')]
 SOCIAL = [
     ('stharrold', 'https://github.com/stharrold'),
     ('Samuel Harrold', 'https://www.linkedin.com/in/samuelharrold'),
