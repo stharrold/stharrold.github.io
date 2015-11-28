@@ -17,7 +17,7 @@ References:
 # Import standard packages.
 import os
 import sys
-# Execute code in this repository:
+# Add current directory to module search path.
 sys.path.append(os.curdir)
 # Import local modules.
 from pelicanconf import *
@@ -26,8 +26,9 @@ from pelicanconf import *
 # Basic settings
 SITEURL = 'https://stharrold.github.io'
 
+
 # Feed settings
 # As of 2015-10-30, LinkedIn requires RSS: Profile > Contact Info > Websites
 FEED_DOMAIN = SITEURL
-FEED_ALL_ATOM = 'feeds/all.atom.xml'
-FEED_ALL_RSS = 'feeds/all.rss.xml'
+FEED_ATOM = 'feeds/atom.xml'
+FEED_RSS = 'feeds/rss.xml'
