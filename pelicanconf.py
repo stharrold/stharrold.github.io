@@ -28,7 +28,8 @@ PATH = 'content'
 # From https://github.com/getpelican/pelican-plugins
 # and https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['liquid_tags.img']
+PLUGINS = ['liquid_tags.img', 'liquid_tags.notebook']
+EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
