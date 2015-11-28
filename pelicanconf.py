@@ -17,6 +17,7 @@ References:
 
 # Import standard packages.
 import os
+import warnings
 
 
 # Basic settings
@@ -28,8 +29,13 @@ PATH = 'content'
 # From https://github.com/getpelican/pelican-plugins
 # and https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['liquid_tags.img', 'liquid_tags.notebook']
-EXTRA_HEADER = open('_nb_header.html').read().decode('utf-8')
+PLUGINS = ['liquid_tags.notebook']
+# Default open mode is to read text encoded as utf-8.
+if os.path.exists('_nb_header.html'):
+    EXTRA_HEADER = open('_nb_header.html').read()
+else:
+    warnings.warn(
+        "\nRun `pelican --settings [pelican,publish]conf.py` again to format the IPython notebook content within the blog posts.")
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
