@@ -39,7 +39,7 @@ else:
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
-STATIC_PATHS = ['images', 'notebooks']
+STATIC_PATHS = ['attachments']
 ARTICLE_EXCLUDES = STATIC_PATHS
 TIMEZONE = 'Etc/UTC'
 DIRECT_TEMPLATES = ['index', 'categories', 'tags', 'archives']

@@ -13,4 +13,4 @@ I'm a data scientist, and I enjoy enabling people to make data-driven decisions.
 I hope you find these examples helpful, and I welcome your feedback!
 
 Best regards,  
-Samuel Harrold
+Sam Harrold
