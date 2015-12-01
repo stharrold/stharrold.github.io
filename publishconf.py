@@ -28,7 +28,14 @@ SITEURL = 'https://stharrold.github.io'
 
 
 # Feed settings
-# As of 2015-10-30, LinkedIn requires RSS: Profile > Contact Info > Websites
 FEED_DOMAIN = SITEURL
-FEED_ATOM = 'feeds/atom.xml'
-FEED_RSS = 'feeds/rss.xml'
+
+
+# Themes
+SOCIAL = [
+    ('LinkedIn', 'https://www.linkedin.com/in/samuelharrold'),
+    ('GitHub', 'https://github.com/stharrold'),
+    ('Twitter', 'https://twitter.com/stharrold'),
+    ('Google+', 'https://plus.google.com/+SamuelHarrold'),
+    ('RSS', os.path.join(FEED_DOMAIN, FEED_ALL_RSS)),
+    ('Atom', os.path.join(FEED_DOMAIN, FEED_ALL_ATOM))]
