@@ -9,7 +9,7 @@ Authors: Samuel Harrold
 Summary: Shared data-science-related examples.
 comments: enabled
 
-<img src="/static/images/20151006_profile_picture_200x200pix.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/>
+<img src="/static/images/20151006_profile_picture_100x100pix.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/>
 
 I'm a data scientist, and I enjoy enabling people to make data-driven decisions. This site's purpose is to share the data-science-related solutions I've used.
 
