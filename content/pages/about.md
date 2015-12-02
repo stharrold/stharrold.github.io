@@ -26,8 +26,10 @@ Samuel Harrold
 <!-- From https://github.com/DandyDev/pelican-bootstrap3/blob/29156de59d923599d06976b82519b72510c68b54/templates/includes/sidebar.html#L6-L23 -->
 <!-- Use the <p> styles instead of <ul> -->
 <!-- Use the RSS icon for Atom since pelican-bootstrap3 doesn't have an Atom icon -->
-<p><i class="fa fa-linkedin-square fa-lg"></i> <a href="https://www.linkedin.com/in/samuelharrold">LinkedIn</a></p>
-<p><i class="fa fa-github-square fa-lg"></i> <a href="https://github.com/stharrold">GitHub: stharrold</a></p>
+<p>
+    <a href="https://www.linkedin.com/in/samuelharrold"><i class="fa fa-linkedin-square fa-lg"></i></a> 
+    <a href="https://github.com/stharrold"><i class="fa fa-github-square fa-lg"></a>
+</p>
 <p><i class="fa fa-twitter-square fa-lg"></i> <a href="https://twitter.com/stharrold">Twitter: stharrold</a></p>
 <p><i class="fa fa-google-plus-square fa-lg"></i> <a href="https://plus.google.com/+SamuelHarrold">Google+</a></p>
 <p><i class="fa fa-rss-square fa-lg"></i> <a href="https://stharrold.github.io/feeds/all.atom.xml">Atom</a></p>
