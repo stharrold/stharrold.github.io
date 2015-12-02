@@ -41,12 +41,13 @@ DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
 # TODO: Experiment with Google Custom Search vs tipue_search.
 # TODO: Add embed_html as pelican-plugins-dev/embed_html
 #PLUGIN_PATHS = ['pelican-plugins-dev']
-#PLUGINS = ['tipue_search', 'ga_page_view', 'embed_html']
-#DIRECT_TEMPLATES.append('search') # Required by pelican-bootstrap3
+#PLUGINS = ['ga_page_view', 'embed_html']
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['related_posts', 'tag_cloud']
+PLUGINS = ['related_posts', 'tag_cloud', 'tipue_search']#, 'liquid_tags.notebook']
 RELATED_POSTS_MAX = 5
 TAG_CLOUD_SORTING = 'alphabetically'
+DIRECT_TEMPLATES.append('search') # Required by pelican-bootstrap3
+NOTEBOOK_DIR = 'static'
 
 
 # URL settings
