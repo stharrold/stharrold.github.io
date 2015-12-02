@@ -40,14 +40,18 @@ DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
 # From https://github.com/getpelican/pelican-plugins
 # TODO: Experiment with Google Custom Search vs tipue_search.
 # TODO: Add embed_html as pelican-plugins-dev/embed_html
-#PLUGIN_PATHS = ['pelican-plugins-dev']
-#PLUGINS = ['ga_page_view', 'embed_html']
+# https://github.com/stharrold/stharrold.github.io/issues/5
+# TODO: PLUGIN_PATHS = ['pelican-plugins-dev']
+# TODO: PLUGINS = ['ga_page_view', 'embed_html']
 PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['related_posts', 'tag_cloud', 'tipue_search']#, 'liquid_tags.notebook']
+PLUGINS = ['related_posts', 'tag_cloud', 'tipue_search', 'liquid_tags.notebook']
 RELATED_POSTS_MAX = 5
 TAG_CLOUD_SORTING = 'alphabetically'
-DIRECT_TEMPLATES.append('search') # Required by pelican-bootstrap3
+# tipue_search: pelican-bootstrap3 requires 'search' in DIRECT_TEMPLATES
+DIRECT_TEMPLATES.append('search')
 NOTEBOOK_DIR = 'static'
+# liquid_tags.notebook: pelican-bootstrap3 does not require EXTRA_HEADER to include the notebook. 
+# liquid_tags.notebook: Collapse code does not function with pelican-bootstrap3, ipython v4.0.0, pelicanhtml_[3,3.1].tpl
 
 
 # URL settings
@@ -78,6 +82,7 @@ SHOW_ARTICLE_CATEGORY = True
 SHOW_DATE_MODIFIED = True
 PYGMENTS_STYLE = 'default'
 DISPLAY_BREADCRUMBS = True
+# TODO: Make a FAVICON
 DISPLAY_ARTICLE_INFO_ON_INDEX = True
 DISPLAY_TAGS_ON_SIDEBAR = True
 DISPLAY_TAGS_INLINE = True
