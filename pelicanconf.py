@@ -67,8 +67,9 @@ TRANSLATION_FEED_ATOM = None
 # Theme settings
 # From https://github.com/getpelican/pelican-themes
 THEME = 'pelican-themes/pelican-bootstrap3'
-#DISQUS_SITENAME = ''
-#GOOGLE_ANALYTICS = 'UA-XXXX-YYYY'
+DISQUS_SITENAME = 'stharroldgithubio'
+GOOGLE_ANALYTICS = 'UA-43020842-2'
+# TODO: Explore Google Universal Analytics options.
 #GOOGLE_ANALYTICS_UNIVERSAL = ''
 #GOOGLE_ANALYTICS_UNIVERSAL_PROPERTY = ''
 BOOTSTRAP_THEME = 'flatly'

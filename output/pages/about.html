@@ -72,7 +72,9 @@ Data Science Demos            </a>
         <h1 class="entry-title">About</h1>
         
         <div class="entry-content">
-            <p><img src="/static/images/20151006_profile_picture_100x100pix.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/></p>
+            <!-- comments: enabled for pelican-boostrap3 Disqus comments for pages. -->
+
+<p><img src="/static/images/20151006_profile_picture_100x100pix.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/></p>
 <p>I'm a data scientist, and I enjoy enabling people to make data-driven decisions. This site's purpose is to share the data-science-related solutions I've used.</p>
 <p>Feel free to adapt these examples to your own purposes
 (<a href="https://github.com/stharrold/stharrold.github.io">blog repository</a>;
@@ -83,21 +85,51 @@ Data Science Demos            </a>
 Samuel Harrold</p>
 <!-- From https://github.com/DandyDev/pelican-bootstrap3/blob/29156de59d923599d06976b82519b72510c68b54/templates/includes/sidebar.html#L6-L23 -->
 
-<!-- Use the <p> styles instead of <ul> -->
+<!-- Use the <p> styles instead of <ul> for formatting. -->
 
 <!-- Use the RSS icon for Atom since pelican-bootstrap3 doesn't have an Atom icon -->
 
-<p><i class="fa fa-linkedin-square fa-lg"></i> <a href="https://www.linkedin.com/in/samuelharrold">LinkedIn</a></p>
+<p>
+    <a href="https://www.linkedin.com/in/samuelharrold"><i class="fa fa-linkedin-square fa-lg"></i></a> 
+    <a href="https://github.com/stharrold"><i class="fa fa-github-square fa-lg"></i></a> 
+    <a href="https://plus.google.com/+SamuelHarrold"><i class="fa fa-google-plus-square fa-lg"></i></a> 
+    <a href="https://twitter.com/stharrold"><i class="fa fa-twitter-square fa-lg"></i></a> 
+</p>
 
-<p><i class="fa fa-github-square fa-lg"></i> <a href="https://github.com/stharrold">GitHub: stharrold</a></p>
+<p>
+    <a href="https://stharrold.github.io/feeds/all.atom.xml"><i class="fa fa-rss-square fa-lg"></i> Atom</a> 
+    <a href="https://stharrold.github.io/feeds/all.rss.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a>  
+</p>
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
 
-<p><i class="fa fa-twitter-square fa-lg"></i> <a href="https://twitter.com/stharrold">Twitter: stharrold</a></p>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
 
-<p><i class="fa fa-google-plus-square fa-lg"></i> <a href="https://plus.google.com/+SamuelHarrold">Google+</a></p>
+                    var disqus_identifier = 'page-about';
+                var disqus_url = '/pages/about.html';
 
-<p><i class="fa fa-rss-square fa-lg"></i> <a href="https://stharrold.github.io/feeds/all.atom.xml">Atom</a></p>
+            var disqus_config = function () {
+                this.language = "en";
+            };
 
-<p><i class="fa fa-rss-square fa-lg"></i> <a href="https://stharrold.github.io/feeds/all.rss.xml">RSS</a></p>
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
         </div>
     </section>
         </div>
@@ -171,6 +203,38 @@ Samuel Harrold</p>
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-43020842-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
 
 </body>
 </html>

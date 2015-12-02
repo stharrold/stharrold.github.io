@@ -1,13 +1,14 @@
 Title: About
 Status: published
 Date: 2015-10-30T19:00:00Z
-Modified: 2015-11-10T21:00:00Z
+Modified: 2015-12-02T15:55:00Z
 Tags: about
 Category: About
 Slug: about
 Authors: Samuel Harrold
 Summary: Shared data-science-related examples.
 comments: enabled
+<!-- comments: enabled for pelican-boostrap3 Disqus comments for pages. -->
 
 <img src="/static/images/20151006_profile_picture_100x100pix.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/>
 
@@ -24,13 +25,15 @@ Best regards,
 Samuel Harrold
 
 <!-- From https://github.com/DandyDev/pelican-bootstrap3/blob/29156de59d923599d06976b82519b72510c68b54/templates/includes/sidebar.html#L6-L23 -->
-<!-- Use the <p> styles instead of <ul> -->
+<!-- Use the <p> styles instead of <ul> for formatting. -->
 <!-- Use the RSS icon for Atom since pelican-bootstrap3 doesn't have an Atom icon -->
 <p>
     <a href="https://www.linkedin.com/in/samuelharrold"><i class="fa fa-linkedin-square fa-lg"></i></a> 
-    <a href="https://github.com/stharrold"><i class="fa fa-github-square fa-lg"></a>
+    <a href="https://github.com/stharrold"><i class="fa fa-github-square fa-lg"></i></a> 
+    <a href="https://plus.google.com/+SamuelHarrold"><i class="fa fa-google-plus-square fa-lg"></i></a> 
+    <a href="https://twitter.com/stharrold"><i class="fa fa-twitter-square fa-lg"></i></a> 
 </p>
-<p><i class="fa fa-twitter-square fa-lg"></i> <a href="https://twitter.com/stharrold">Twitter: stharrold</a></p>
-<p><i class="fa fa-google-plus-square fa-lg"></i> <a href="https://plus.google.com/+SamuelHarrold">Google+</a></p>
-<p><i class="fa fa-rss-square fa-lg"></i> <a href="https://stharrold.github.io/feeds/all.atom.xml">Atom</a></p>
-<p><i class="fa fa-rss-square fa-lg"></i> <a href="https://stharrold.github.io/feeds/all.rss.xml">RSS</a></p>
+<p>
+    <a href="https://stharrold.github.io/feeds/all.atom.xml"><i class="fa fa-rss-square fa-lg"></i> Atom</a> 
+    <a href="https://stharrold.github.io/feeds/all.rss.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a>  
+</p>
