@@ -33,40 +33,39 @@ SITEURL = ''
 STATIC_PATHS = ['static']
 ARTICLE_EXCLUDES = STATIC_PATHS
 TIMEZONE = 'Etc/UTC'
-DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives', 'search']
+DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
 
 
 # Plugin settings
 # From https://github.com/getpelican/pelican-plugins
-# https://github.com/getpelican/pelican-plugins/tree/master/related_posts
-# https://github.com/getpelican/pelican-plugins/tree/master/tag_cloud
+# TODO: Experiment with Google Custom Search vs tipue_search.
 # TODO: Add embed_html as pelican-plugins-dev/embed_html
 #PLUGIN_PATHS = ['pelican-plugins-dev']
-#PLUGINS = ['embed_html']
+#PLUGINS = ['ga_page_view', 'embed_html', 'tipue_search']
+#DIRECT_TEMPLATES.append('search') # Required by pelican-bootstrap3
 PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = ['related_posts', 'tag_cloud']
 RELATED_POSTS_MAX = 5
 TAG_CLOUD_SORTING = 'alphabetically'
 
 
+# URL settings
+# Required by pelican-boostrap3 to resolve "Tags" and "Categories" links.
+CATEGORIES_URL = 'categories.html'
+TAGS_URL = 'tags.html'
+
+
 # Feed settings
-# Test feed generation although SITEURL = ''.
 # All other feed settings are default to `None`.
-FEED_DOMAIN = SITEURL
-FEED_ALL_ATOM = 'feeds/all.atom.xml'
-FEED_ALL_RSS = 'feeds/all.rss.xml'
+FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
-
-
-# Translations
 TRANSLATION_FEED_ATOM = None
 
 
 # Theme settings
 # From https://github.com/getpelican/pelican-themes
-# and https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3
 THEME = 'pelican-themes/pelican-bootstrap3'
 #DISQUS_SITENAME = ''
 #GOOGLE_ANALYTICS = 'UA-XXXX-YYYY'
@@ -83,16 +82,6 @@ DISPLAY_TAGS_INLINE = True
 DISPLAY_CATEGORIES_ON_SIDEBAR = True
 DISPLAY_RECENT_POSTS_ON_SIDEBAR = True
 RECENT_POST_COUNT = 5
-DISPLAY_PAGE_VIEW_ON_SIDEBAR = True
-DISPLAY_POPULAR_POST_ON_SIDEBAR = True
-POPULAR_POST_COUNT = 5
 DISQUS_DISPLAY_COUNTS = True
 CC_LICENSE_DERIVATIVES = "yes"
 CC_LICENSE_COMMERCIAL = "yes"
-SOCIAL = [
-    ('LinkedIn', 'https://www.linkedin.com/in/samuelharrold'),
-    ('GitHub', 'https://github.com/stharrold'),
-    ('Twitter', 'https://twitter.com/stharrold'),
-    ('Google+', 'https://plus.google.com/+SamuelHarrold'),
-    ('RSS', os.path.join(FEED_DOMAIN, FEED_ALL_RSS)),
-    ('Atom', os.path.join(FEED_DOMAIN, FEED_ALL_ATOM))]

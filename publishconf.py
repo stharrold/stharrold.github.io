@@ -29,13 +29,5 @@ SITEURL = 'https://stharrold.github.io'
 
 # Feed settings
 FEED_DOMAIN = SITEURL
-
-
-# Themes
-SOCIAL = [
-    ('LinkedIn', 'https://www.linkedin.com/in/samuelharrold'),
-    ('GitHub', 'https://github.com/stharrold'),
-    ('Twitter', 'https://twitter.com/stharrold'),
-    ('Google+', 'https://plus.google.com/+SamuelHarrold'),
-    ('RSS', os.path.join(FEED_DOMAIN, FEED_ALL_RSS)),
-    ('Atom', os.path.join(FEED_DOMAIN, FEED_ALL_ATOM))]
+FEED_ALL_ATOM = 'feeds/all.atom.xml'
+FEED_ALL_RSS = 'feeds/all.rss.xml'

@@ -29,10 +29,6 @@
     <link href="/theme/css/pygments/default.css" rel="stylesheet">
     <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
 
-        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Data Science Demos ATOM Feed"/>
-        <link href="/feeds/all.rss.xml" type="application/rss+xml" rel="alternate"
-              title="Data Science Demos RSS Feed"/>
 
 </head>
 <body>
@@ -76,7 +72,8 @@ Data Science Demos            </a>
         <h1 class="entry-title">About</h1>
         
         <div class="entry-content">
-            <p>I'm a data scientist, and I enjoy enabling people to make data-driven decisions. This site's purpose is to share the data-science-related solutions I've used.</p>
+            <p><img src="/static/images/20151006_profile_picture_200x200pix.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/></p>
+<p>I'm a data scientist, and I enjoy enabling people to make data-driven decisions. This site's purpose is to share the data-science-related solutions I've used.</p>
 <p>Feel free to adapt these examples to your own purposes
 (<a href="https://github.com/stharrold/stharrold.github.io">blog repository</a>;
 <a href="https://opensource.org/licenses/MIT">MIT license</a> for software,
@@ -84,6 +81,16 @@ Data Science Demos            </a>
 <p>I hope you find these examples helpful, and I welcome your feedback.</p>
 <p>Best regards,<br />
 Samuel Harrold</p>
+<!-- From https://github.com/DandyDev/pelican-bootstrap3/blob/29156de59d923599d06976b82519b72510c68b54/templates/includes/sidebar.html#L6-L23 -->
+
+<ul class="list-group" id="social">
+    <li class="list-group-item"><i class="fa fa-linkedin-square fa-lg"></i> <a href="https://www.linkedin.com/in/samuelharrold">LinkedIn</a></li>
+    <li class="list-group-item"><i class="fa fa-github-square fa-lg"></i> <a href="https://github.com/stharrold">GitHub: stharrold</a></li>
+    <li class="list-group-item"><i class="fa fa-twitter-square fa-lg"></i> <a href="https://twitter.com/stharrold">Twitter: stharrold</a></li>
+    <li class="list-group-item"><i class="fa fa-google-plus-square fa-lg"></i> <a href="https://plus.google.com/+SamuelHarrold">Google+</a></li>
+    <li class="list-group-item"><i class="fa fa-rss-square fa-lg"></i> <a href="https://stharrold.github.io/feeds/all.atom.xml">Atom</a></li>
+    <li class="list-group-item"><i class="fa fa-rss-square fa-lg"></i> <a href="https://stharrold.github.io/feeds/all.rss.xml">RSS</a></li>
+</ul>
         </div>
     </section>
         </div>
@@ -92,16 +99,6 @@ Samuel Harrold</p>
 
 <section class="well well-sm">
     <ul class="list-group list-group-flush">
-            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
-              <ul class="list-group" id="social">
-                <li class="list-group-item"><a href="https://www.linkedin.com/in/samuelharrold"><i class="fa fa-linkedin-square fa-lg"></i> LinkedIn</a></li>
-                <li class="list-group-item"><a href="https://github.com/stharrold"><i class="fa fa-github-square fa-lg"></i> GitHub</a></li>
-                <li class="list-group-item"><a href="https://twitter.com/stharrold"><i class="fa fa-twitter-square fa-lg"></i> Twitter</a></li>
-                <li class="list-group-item"><a href="https://plus.google.com/+SamuelHarrold"><i class="fa fa-google-plus-square fa-lg"></i> Google+</a></li>
-                <li class="list-group-item"><a href="feeds/all.rss.xml"><i class="fa fa-rss-square fa-lg"></i> RSS</a></li>
-                <li class="list-group-item"><a href="feeds/all.atom.xml"><i class="fa fa-atom-square fa-lg"></i> Atom</a></li>
-              </ul>
-            </li>
 
             <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
                 <ul class="list-group" id="recentposts">
@@ -113,7 +110,7 @@ Samuel Harrold</p>
                 </ul>
             </li>
 
-            <li class="list-group-item"><a href="/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+            <li class="list-group-item"><a href="/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
                 <ul class="list-group" id="categories">
                     <li class="list-group-item">
                         <a href="/category/test.html">
@@ -123,7 +120,7 @@ Samuel Harrold</p>
                 </ul>
             </li>
 
-            <li class="list-group-item"><a href="/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+            <li class="list-group-item"><a href="/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group list-inline tagcloud" id="tags">
                     <li class="list-group-item tag-4">
                         <a href="/tag/template.html">
@@ -137,12 +134,6 @@ Samuel Harrold</p>
                     </li>
                 </ul>
             </li>
-
-    <li class="list-group-item"><h4><i class="fa fa-github fa-lg"></i><span class="icon-label">GitHub Repos</span></h4>
-        <div id="gh_repos">
-            <p class="list-group-item">Status updating...</p>
-        </div>
-    </li>
     </ul>
 </section>
             </aside>
@@ -173,27 +164,6 @@ Samuel Harrold</p>
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="/theme/js/respond.min.js"></script>
 
-    <!-- GitHub JS -->
-    <script type="text/javascript">
-        $(document).ready(function () {
-            if (!window.jXHR) {
-                var jxhr = document.createElement('script');
-                jxhr.type = 'text/javascript';
-                jxhr.src = '/theme/js/jXHR.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(jxhr, s);
-            }
-
-            github.showRepos({
-                user: 'stharrold',
-                count: 5,
-                skip_forks: false,
-                target: '#gh_repos'
-            });
-        });
-    </script>
-    <script src="/theme/js/github.js" type="text/javascript"></script>
-    <!-- End GitHub JS Code -->
 
 </body>
 </html>
