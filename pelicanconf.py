@@ -17,6 +17,7 @@ References:
 
 # Import standard packages.
 import os
+import shutil
 import warnings
 
 
@@ -41,6 +42,7 @@ DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
 # Plugin settings
 # From https://github.com/getpelican/pelican-plugins
 # TODO: Experiment with Google Custom Search vs tipue_search.
+# https://github.com/stharrold/stharrold.github.io/issues/8
 # TODO: Add embed_html as pelican-plugins-dev/embed_html
 # https://github.com/stharrold/stharrold.github.io/issues/5
 # TODO: PLUGIN_PATHS = ['pelican-plugins-dev']
@@ -51,6 +53,16 @@ RELATED_POSTS_MAX = 5
 TAG_CLOUD_SORTING = 'alphabetically'
 # tipue_search: pelican-bootstrap3 requires 'search' in DIRECT_TEMPLATES
 DIRECT_TEMPLATES.append('search')
+# tipue_search: As of 2015-12-03, pelican-bootstrap3 has not been updated to Tipue Search v5.0.
+# https://github.com/DandyDev/pelican-bootstrap3/issues/220
+# 'tipuesearch_v5'from 'http://www.tipue.com/search', 'tipuesearch.zip:Tipue Search 5.0/tipuesearch'
+# Keep original files for troubleshooting.
+path_repo = os.path.join(os.path.expanduser(r'~'), r'stharrold.github.io')
+path_src = os.path.join(path_repo, r'tipuesearch_v5')
+path_dst = os.path.join(path_repo, r'pelican-themes/pelican-bootstrap3/static/tipuesearch')
+if os.path.exists(path=path_dst):
+    shutil.rmtree(path=path_dst)
+shutil.copytree(src=path_src, dst=path_dst)
 NOTEBOOK_DIR = 'static'
 # liquid_tags.notebook: pelican-bootstrap3 does not require EXTRA_HEADER to include the notebook. 
 # liquid_tags.notebook: Collapse code does not function with pelican-bootstrap3, ipython v4.0.0, pelicanhtml_[3,3.1].tpl
