@@ -289,8 +289,9 @@ Data Science Demos            </a>
 <li><a href="#why-__">Why __?</a><ul>
 <li><a href="#ipython-notebooks">IPython Notebooks</a></li>
 <li><a href="#chromebook">Chromebook</a></li>
+<li><a href="#cloud">Cloud</a></li>
 <li><a href="#google-compute-engine">Google Compute Engine</a></li>
-<li><a href="#debian">Debian</a></li>
+<li><a href="#environment">Environment</a></li>
 <li><a href="#cloud9">Cloud9</a></li>
 <li><a href="#ssh-port-forwarding">SSH port forwarding</a></li>
 </ul>
@@ -300,19 +301,34 @@ Data Science Demos            </a>
 <h3 id="overview">Overview</h3>
 <p>In October 2015, I bought a Chromebook with the intent of moving my data-science development workflow to the cloud. This is the workflow that I've settled on so far:<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup><br />
 * TODO</p>
+<!-- TODO: format footnote -->
+
 <h3 id="step-by-step">Step-by-step</h3>
+<p>Google Compute Engine settings: f1-micro, debian, only port forward - no http, snapshots as backups, fixed external ip</p>
+<p>Cloud9 and DigitalOcean hosted VM instances were too small (Cloud9 offers up to 2.5 GB RAM, 1 core; DigitalOcean up to 8GB RAM, 4 core). I now use Cloud9 for its fancy IDE, but only as a SSH workspace. I use Google Compute Engine as my VM instance. I port forward from the VM instance to my Chromebook to run jupyter notebook using the app "Secure Shell" (screenshot attached with options). I used the VM instance to create the id_rsa key pair for my Chromebook.</p>
+<p>copy-paste tool for key-pairs</p>
 <h3 id="why-__">Why __?</h3>
 <h4 id="ipython-notebooks">IPython Notebooks</h4>
 <p><a href="http://ipython.org/notebook.html">IPython (Jupyter) Notebooks</a> enable me to
 develop quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages.</p>
 <h4 id="chromebook">Chromebook</h4>
 <p>TODO: cheap, replacable, demo from most limiting netbook</p>
+<p>I'm using an <a href="http://www.amazon.com/gp/product/B00VUV0MG0">ASUS C201 11.6-inch Chromebook with 4GB RAM</a>. Because I'm using SSH port forwarding, the Chromebook is rendering the IPython Notebook. Rendering a 5MB IPython Notebook consumes
+My first Chromebook had 2GB RAM, I returned</p>
+<p>low-profile flash drive: http://www.amazon.com/gp/product/B00LLER2CS</p>
+<p>large cheap monitor with hdmi input</p>
+<p>so far avoided needing chrome os's dev mode. using now for 2 months.</p>
+<h4 id="cloud">Cloud</h4>
+<p>It's useful to have a reproducible environment that can scale with the problem.</p>
 <h4 id="google-compute-engine">Google Compute Engine</h4>
-<p>TODO</p>
-<h4 id="debian">Debian</h4>
-<p>TODO</p>
+<p>Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its intuitive UI. SSH within the browser is amazing.</p>
+<p>I chose <a href="https://cloud.google.com/compute/">Google Compute Engine</a> over services like <a href="https://wakari.io/">Wakari</a>, <a href="https://c9.io/?redirect=0">Cloud9</a>, <a href="https://www.digitalocean.com/">Digital Ocean</a>, because I wanted to be able to scale the infrastructure to many cores.</p>
+<h4 id="environment">Environment</h4>
+<p>I use the <a href="https://www.continuum.io/downloads">Anaconda Python distribution</a> for the <code>conda</code> package manager.</p>
 <h4 id="cloud9">Cloud9</h4>
-<p>TODO</p>
+<p>TODO: cloud9, and instructions for connecting, need to provide public key</p>
+<p><a href="https://c9.io/?redirect=0">Cloud9</a> insta, digitalocean instances too small</p>
+<p>I don't use cloud9 for debugging. I use <a href="https://docs.python.org/3.5/library/pdb.html">pdb</a> for debugging and <a href="http://pytest.org/latest/">pytest</a> for testing. I use the IDE mostly for code navigation, autocomplete, and managing packages with many files</p>
 <h4 id="ssh-port-forwarding">SSH port forwarding</h4>
 <p>TODO</p>
 <div class="footnote">
@@ -326,11 +342,18 @@ develop quickly and to share my work in-progress. The notebook serves as a top-l
 </em> Chrome:<br />
     * <a href="http://jjg.svbtle.com/">Using a Chromebook as a developer</a><br />
     * <a href="https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg">Export cookies from Chrome for wget</a><br />
+    * <a href="https://chrome.google.com/webstore/detail/sftp-file-system/gbheifiifcfekkamhepkeogobihicgmn">SFTP from a Chromebook</a>
+    * <a href="chrome://system"><code>chrome://system</code> to inspect system resources</a>
+    * <a href="chrome://memory-redirect"><code>chrome://memory-redirect</code> to inspect RAM usage by Chrome</a>
+    * <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">Caret for editing</a>
 * Linux:<br />
     * <a href="http://www.linuxproblem.org/art_9.html">SSH login without password</a><br />
     * <a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html">SSH port forwarding (tunnels) explained</a><br />
     * <a href="http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal">wget download from Google Drive</a><br />
-    * <a href="https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line">wget download from Kaggle</a>  &#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+    * <a href="https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line">wget download from Kaggle</a><br />
+    * <a href="http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html">Choosing between Debian and Ubuntu</a><br />
+    * <a href="http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/"><code>disown PID</code> to keep a job running after closing the shell</a>
+    * <code>lsof -i:PORT</code> to find active processes&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
