@@ -1,4 +1,4 @@
-Title: Running an IPython Notebook on Google Compute Engine from a Chromebook
+Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: draft
 Date: 2015-12-04T23:00:00Z
 Modified: 2015-12-04T23:00:00Z
@@ -52,11 +52,13 @@ I had to upgrade from a 2GB RAM Chromebook since I typically use about 2.5GB RAM
 
 I need to test the scalability of my workflows, and for me it's most convenient to use virtual machines directly. If this isn't your use case, hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/) are worth considering.
 
+This workflow can work for any operating system running Chrome.
+
 ## Setup
 
-There are many ways to run an IPython Notebook on a virtual machine. This is just my setup:
+There are many ways to run an IPython Notebook on a virtual machine. This is just my setup and a guide to get a newcomer started:
 
-* I'm using an [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0).
+* My local machine is an [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0).
 * Create the Google Compute Engine virtual machine instance and SSH keys:
     * Make a project in the [Google Developers Console](https://console.developers.google.com).
     * Configure an instance:
@@ -83,20 +85,69 @@ There are many ways to run an IPython Notebook on a virtual machine. This is jus
     `Initial path: /home/samuel_harrold`  
     `Port: 22`  
     `Node.js binary path: /usr/bin/nodejs` (in the instance shell, run `which nodejs`)  
-    To copy the public SSH key from Cloud9 to the instance's `authorized_keys`, in the instance shell, run:  
+    To copy the public SSH key from Cloud9 to the instance's `authorized_keys`, in the instance shell:  
     `$ cat >> ~/authorized_keys/.ssh`  
     `[Ctrl+V to paste the key, then Enter]`  
     `[Ctrl+D to signal end of file]`  
 [^4]:
-    If the Cloud9 workspace fails to connect to the instance, i.e. the terminal within the workspace doesn't receive input, run the Cloud9 [installation script](https://github.com/c9/install/) (requires HTTPS traffic allowed in the instance firewall settings):  
-    `$ wget -O - https://raw.githubusercontent.com/c9/install/master/install.sh | bash`
-* Start a Jupyter (IPython) Notebook server on the instance:
+    If the Cloud9 workspace fails to connect to the instance, i.e. the terminal within the workspace doesn't receive input, run the [Cloud9 dependency installation script](https://github.com/c9/install/) then reopen the workspace. Installing the script requires HTTPS traffic allowed in the instance's firewall settings:  
+    `$ curl -L https://raw.githubusercontent.com/c9/install/master/install.sh | bash`  
+
+* Start a Jupyter Notebook server on the instance:
     * [Install Python](https://www.continuum.io/downloads) on the instance.[^5]
-    * 
+    * Start the [Jupyter Notebook](http://jupyter.org/) server:  
+    `$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &`
+    `$ disown 1234` (where`1234` is the process id)[^6]
 
-[^5]: I prefer the Continuum Analytics Anaconda Python distribution for its [Conda package manager](http://conda.pydata.org/docs/). 
+[^5]: I prefer the Continuum Analytics Anaconda Python distribution for its [Conda package manager](http://conda.pydata.org/docs/). Allow Anaconda to modify `.bashrc`.
+[^6]: Disowning a background process (the control operator `&`) from the shell allows a process to continue running in the background when the shell is closed.
 
-* To upgrade the vm instance
+* Forward the Jupyter Notebook server port from the instance to the Chromebook:
+    * Create an SSH key pair for the Chromebook[^7] and add the Chromebook's public key to the instance's `authorized_keys` as above.
+    * Install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) within the Chrome browser and connect to the instance:[^8]
+    `Username: samuel_harrold`
+    `Hostname: 123.123.123.123`
+    `Identity: id_rsa` [^9]
+    `SSH Arguments: -N -L localhost:8888:0.0.0.0:8888` [^10][^11]
+    * Navigate Chrome to `http://localhost:8888`.
+
+[^7]: To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above and move them to the Chromebook with Cloud9's drag-and-drop interface or using [an SFTP app for Chromebook](https://chrome.google.com/webstore/detail/sftp-file-system/gbheifiifcfekkamhepkeogobihicgmn).
+[^8]: Select both the private and public keys, `id_rsa` and `id_rsa.pub`, to import as a pair.
+[^9]: Omit the `-f` option to keep Chrome Secure Shell open. Pin the Chrome tab (right-click the tab > "Pin tab") to keep Chrome Secure Shell open and minimized in the browser. 
+[^10]: To paste the password for the Chromebook's SSH key, use Chrome's paste function ("Customize and control" > "Edit" > "Paste"; using Ctrl+V will input `^v` as the password). In place of `ssh-add` on my Chromebook, I use [LastPass](https://lastpass.com/) to manage passwords. 
+
+TODO: resume here
+
+* To shutdown the instance:
+    * Close the Jupyter Notebook and Chrome Secure Shell tabs.
+    * Kill the Jupyter Notebook server.[^11]
+    * Close the Cloud9 IDE tabs.
+    * "Stop" the instance in Google Developers Console.
+
+[^11]:
+    In the instance's in-browser SSH:
+    `$ lsof -i:8888` (find process IDs filtered by port)
+    `$ kill 1234`
+    To install `lsof`, `sudo apt-get install lsof`.
+
+* To backup the instance, create a snapshot from the Google Developers Console. This can be done while the instance is running.
+
+TODO: DISK, MEM management commands
+
+* To change the instance's disk size:
+    * Shutdown the instance.
+    * Create a snapshot with a larger disk size.
+    * Create a new instance with the same machine type but selecting the snapshot as the boot disk (TODO: new instance necessary?)
+
+* To change the instance's machine type:
+    * Shutdown the instance.
+    * Create a snapshot with the same disk size.
+    * Create a new instance selecting a different machine type and the newly created snapshot.
+    * TODO: When connecting to the new instance in Chrome Secure Shell, the remote host identification will have changed.[^12]
+
+[^12]:
+    An alert notice will appear when connecting. In Chrome, open the JavaScript console (Ctrl+Shift+J) and run `term_.command.removeKnownHostByIndex(idx)` where idx is the given line number, e.g. from `Offending ECDSA key in /.ssh/known_hosts:1` idx=1.
+
 ===
 
 Google Compute Engine settings: f1-micro, debian, only port forward - no http, snapshots as backups, fixed external ip
