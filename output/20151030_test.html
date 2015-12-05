@@ -302,6 +302,16 @@ Data Science Demos            </a>
 <a href="/static/20151030_test/20151030_test_full.html">20151030_test_full.html</a>  </p>
 <h3 id="body">Body</h3>
 <p>Main text<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>.</p>
+<div>
+    Short answer.
+    <div class="btn-group">
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#details">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+    <div id="details" class="collapse">Long answer.</div>
+</div>
+
 <h4 id="include-exported-files">Include exported files</h4>
 <ul>
 <li>A plot and a screenshot:</li>
@@ -1039,6 +1049,16 @@ jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.githu
 -->
 
 <p>================================================================================</p>
+<!-- JavaScript -->
+
+<script type="text/javascript">
+$('.collapse').on('shown.bs.collapse', function(){
+$(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function(){
+$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+</script>
+
 <div class="footnote">
 <hr />
 <ol>

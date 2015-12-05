@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>Running an IPython Notebook on Google Compute Engine from a Chromebook - Data Science Demos</title>
+    <title>Running an IPython Notebook on Google Compute Engine from Chrome - Data Science Demos</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -174,7 +174,7 @@ init_mathjax();
 
         <meta property="og:site_name" content="Data Science Demos" />
         <meta property="og:type" content="article"/>
-        <meta property="og:title" content="Running an IPython Notebook on Google Compute Engine from a Chromebook"/>
+        <meta property="og:title" content="Running an IPython Notebook on Google Compute Engine from Chrome"/>
         <meta property="og:url" content="/drafts/20151204_ipynb_on_gce_from_chrome.html"/>
         <meta property="og:description" content="As a data scientist, I develop from a Chromebook using IPython Notebooks, Google Compute Engine, Cloud9, and SSH port forwarding."/>
         <meta property="article:published_time" content="2015-12-04" />
@@ -237,7 +237,7 @@ Data Science Demos            </a>
         <div class="col-sm-9">
             <ol class="breadcrumb">
                 <li><a href="" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
-                <li class="active">Running an IPython Notebook on Google Compute Engine from a Chromebook</li>
+                <li class="active">Running an IPython Notebook on Google Compute Engine from Chrome</li>
             </ol>
 
     <section id="content">
@@ -246,8 +246,8 @@ Data Science Demos            </a>
                 <h1>
                     <a href="/drafts/20151204_ipynb_on_gce_from_chrome.html"
                        rel="bookmark"
-                       title="Permalink to Running an IPython Notebook on Google Compute Engine from a Chromebook">
-                        Running an IPython Notebook on Google Compute Engine from a Chromebook
+                       title="Permalink to Running an IPython Notebook on Google Compute Engine from Chrome">
+                        Running an IPython Notebook on Google Compute Engine from Chrome
                     </a>
                 </h1>
             </header>
@@ -287,7 +287,6 @@ Data Science Demos            </a>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#motivation">Motivation</a></li>
 <li><a href="#setup">Setup</a></li>
-<li><a href="#to-upgrade-the-vm-instance">* To upgrade the vm instance</a><ul>
 <li><a href="#why-__">Why __?</a><ul>
 <li><a href="#ipython-notebooks">IPython Notebooks</a></li>
 <li><a href="#chromebook">Chromebook</a></li>
@@ -297,8 +296,6 @@ Data Science Demos            </a>
 <li><a href="#cloud9">Cloud9</a></li>
 <li><a href="#ssh-port-forwarding">SSH port forwarding</a></li>
 <li><a href="#daily-usage">Daily usage</a></li>
-</ul>
-</li>
 </ul>
 </li>
 </ul>
@@ -334,33 +331,88 @@ Data Science Demos            </a>
 <p>Adds a bit of extra setup, but leverages powerful infrastructure.</p>
 <p>I had to upgrade from a 2GB RAM Chromebook since I typically use about 2.5GB RAM while working.</p>
 <p>I need to test the scalability of my workflows, and for me it's most convenient to use virtual machines directly. If this isn't your use case, hosted services like <a href="https://wakari.io/">Continuum Analytics Wakari</a>, <a href="https://c9.io/?redirect=0">Cloud9 hosted workspaces</a>, and <a href="https://www.digitalocean.com/">Digital Ocean</a> are worth considering.</p>
+<p>This workflow can work for any operating system running Chrome.</p>
 <h3 id="setup">Setup</h3>
-<p>There are many ways to run an IPython Notebook on a virtual machine. This is just my setup:</p>
+<p>There are many ways to run an IPython Notebook on a virtual machine. This is just my setup with footnotes for newcomers:</p>
 <ul>
-<li>Chromebook: I use an <a href="http://www.amazon.com/gp/product/B00VUV0MG0">ASUS C201 Chromebook with 4GB RAM</a>.</li>
+<li>I'm working on an <a href="http://www.amazon.com/gp/product/B00VUV0MG0">ASUS C201 Chromebook with 4GB RAM</a>.</li>
 <li>
-<p>Google Compute Engine: Create the virtual machine instance and credentials:</p>
+<p>Create a Google Compute Engine virtual machine instance and SSH keys:</p>
 <ul>
 <li>Make a project in the <a href="https://console.developers.google.com">Google Developers Console</a>.</li>
-<li>I start an instance with the smallest machine type and default boot disk (Debian). Leave firewall settings at default. For project access, reserve an external IP address ("Networking &gt; External IP") and leave the other settings at default. For the rest of the setup below, I'll replace my intance's external IP address with <code>123.123.123.123</code>.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>  </li>
+<li>Configure an instance:<ul>
+<li>Machine type: I start with the smallest and move to larger instances as the work load requires. TODO: memory command  </li>
+<li>Boot disk: I start with the default boot disk (Debian) and increase size as I need storage. TODO: storage command</li>
+<li>Firewall: Allow HTTP and HTTPS connections to use <code>curl</code> and <code>wget</code>.</li>
+<li>Project access: Reserve an external IP address ("Networking &gt; External IP"). Other settings can be left at default for this example. For the rest of this example, I give my intance's static external IP address as <code>123.123.123.123</code>.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>  </li>
+</ul>
+</li>
 <li>Connect to the instance, e.g. with Google's in-browser SSH.</li>
 <li><a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">Update the Debian system.</a></li>
 <li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate SSH keys</a> and might as well connect to GitHub.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup>  </li>
 </ul>
 </li>
 <li>
-<p>For Cloud9: </p>
+<p>Connect the Cloud9 IDE to the instance: </p>
 <ul>
 <li><a href="https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions">Install Node.js</a> on the instance.</li>
-<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 remote SSH workspace</a> and copy the public SSH key from Cloud9 to the instance.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup></li>
+<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 remote SSH workspace</a>, copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code>, then open the workspace.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup><sup id="fnref:4"><a class="footnote-ref" href="#fn:4" rel="footnote">4</a></sup></li>
 </ul>
 </li>
 <li>
-<p>Create a Cloud9 SSH workspace:</p>
-</li>
-<li></li>
+<p>Start a Jupyter Notebook server on the instance:</p>
+<ul>
+<li><a href="https://www.continuum.io/downloads">Install Python</a> on the instance.<sup id="fnref:5"><a class="footnote-ref" href="#fn:5" rel="footnote">5</a></sup></li>
+<li>Start the <a href="http://jupyter.org/">Jupyter Notebook</a> server:<br />
+<code>$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &amp;</code>
+<code>$ disown 1234</code> (where<code>1234</code> is the process id)<sup id="fnref:6"><a class="footnote-ref" href="#fn:6" rel="footnote">6</a></sup></li>
 </ul>
-<h2 id="to-upgrade-the-vm-instance">* To upgrade the vm instance</h2>
+</li>
+<li>
+<p>Forward the Jupyter Notebook server port from the instance to the Chromebook:</p>
+<ul>
+<li>Create an SSH key pair for the Chromebook<sup id="fnref:7"><a class="footnote-ref" href="#fn:7" rel="footnote">7</a></sup> and add the Chromebook's public key to the instance's <code>authorized_keys</code> as above.</li>
+<li>Install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> within the Chrome browser and connect to the instance:<sup id="fnref:8"><a class="footnote-ref" href="#fn:8" rel="footnote">8</a></sup>
+<code>Username: samuel_harrold</code>
+<code>Hostname: 123.123.123.123</code>
+<code>Identity: id_rsa</code> <sup id="fnref:9"><a class="footnote-ref" href="#fn:9" rel="footnote">9</a></sup>
+<code>SSH Arguments: -N -L localhost:8888:0.0.0.0:8888</code> <sup id="fnref:10"><a class="footnote-ref" href="#fn:10" rel="footnote">10</a></sup><sup id="fnref:11"><a class="footnote-ref" href="#fn:11" rel="footnote">11</a></sup></li>
+<li>Navigate Chrome to <code>http://localhost:8888</code>.</li>
+</ul>
+</li>
+<li>
+<p>To shutdown the instance:</p>
+<ul>
+<li>Close the Jupyter Notebook and the Chrome Secure Shell tab. Kill the Jupyter Notebook server.<sup id="fnref:11"><a class="footnote-ref" href="#fn:11" rel="footnote">11</a></sup></li>
+<li>Close the Cloud9 IDE tab.</li>
+<li>"Stop" the instance in Google Developers Console.</li>
+</ul>
+</li>
+<li>
+<p>To backup the instance, create a snapshot from the Google Developers Console. This can be done while the instance is running.</p>
+</li>
+</ul>
+<p>TODO: DISK, MEM management commands</p>
+<ul>
+<li>
+<p>To change the instance's disk size:</p>
+<ul>
+<li>Shutdown the instance.</li>
+<li>Create a snapshot with a larger disk size.</li>
+<li>Create a new instance with the same machine type but selecting the snapshot as the boot disk (TODO: new instance necessary?)</li>
+</ul>
+</li>
+<li>
+<p>To change the instance's machine type:</p>
+<ul>
+<li>Shutdown the instance.</li>
+<li>Create a snapshot with the same disk size.</li>
+<li>Create a new instance selecting a different machine type and the newly created snapshot.</li>
+<li>TODO: When connecting to the new instance in Chrome Secure Shell, the remote host identification will have changed.<sup id="fnref:12"><a class="footnote-ref" href="#fn:12" rel="footnote">12</a></sup></li>
+</ul>
+</li>
+</ul>
+<p>===</p>
 <p>Google Compute Engine settings: f1-micro, debian, only port forward - no http, snapshots as backups, fixed external ip</p>
 <p>Cloud9 and DigitalOcean hosted VM instances were too small (Cloud9 offers up to 2.5 GB RAM, 1 core; DigitalOcean up to 8GB RAM, 4 core). I now use Cloud9 for its fancy IDE, but only as a SSH workspace. I use Google Compute Engine as my VM instance. I port forward from the VM instance to my Chromebook to run jupyter notebook using the app "Secure Shell" (screenshot attached with options). I used the VM instance to create the id_rsa key pair for my Chromebook.</p>
 <p>copy-paste tool for key-pairs</p>
@@ -386,6 +438,7 @@ develop quickly and to share my work in-progress. The notebook serves as a top-l
 <h4 id="ssh-port-forwarding">SSH port forwarding</h4>
 <p>TODO</p>
 <h4 id="daily-usage">Daily usage</h4>
+<p>TODO Move to overview</p>
 <ol>
 <li>Start the Google Compute Engine VM instance under
 project: "stharrold-sandbox", instance: "instance-20151028t103000".
@@ -408,11 +461,96 @@ is the given line number, e.g. <code>Offending ECDSA key in /.ssh/known_hosts:1<
 <li>Open the Cloud9 workspace "sandbox".</li>
 <li>To shutdown sandbox, follow the setup steps in reverse.</li>
 </ol>
+<!-- From http://guidefaq.com/a.php?qid=5454 -->
+
+<!--
+<p><a style="cursor:pointer;" onclick="return toggleMe('para1')"><img id="para1_image" src="YOUR CLOSED IMAGE URL" style="border:0;margin-right:5px;vertical-align:middle;" />Question</a></p>
+<div id="para1" style="display:none;">
+Answer to Question
+</div>
+-->
+
+<!--
+<script type="text/javascript">
+function toggleMe(a){
+var e=document.getElementById(a);
+var i = document.getElementById(a + '_image');
+if(!e)return true;
+if(e.style.display=="none"){
+e.style.display="block"
+i.src = 'YOUR OPEN IMAGE URL';
+} else {
+e.style.display="none"
+i.src = 'YOUR CLOSED IMAGE URL';
+}
+return false;
+}
+</script>
+-->
+
+<!-- From http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions -->
+
+<!--
+<div class="btn-group">
+  <button type="button" class="btn btn-link">Short answer.</button>
+  <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#details">
+    <span class="glyphicon glyphicon-minus"></span>
+  </button>
+</div>
+<div id="details" class="collapse in">
+Long answer.
+</div>
+-->
+
+<!--
+<script type="text/javascript">
+$('.collapse').on('shown.bs.collapse', function(){
+$(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function(){
+$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+</script>
+-->
+
+<!--
+<div class="btn-group">
+  <button type="button" class="btn btn-danger"></button>
+  <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo">
+    <span class="glyphicon glyphicon-minus"></span>
+  </button>
+</div>
+<div id="demo" class="collapse in">Some dummy text in here.</div>
+-->
+
+<!--
+From
+http://www.w3schools.com/bootstrap/bootstrap_ref_js_collapse.asp
+http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions
+-->
+
+<div>
+    Short answer.
+    <div class="btn-group">
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#details">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+    <div id="details" class="collapse">Long answer.</div>
+</div>
+
+<script type="text/javascript">
+$('.collapse').on('shown.bs.collapse', function(){
+$(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function(){
+$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+</script>
+
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:1">
-<p>Reassigning the static IP address to a new instance when changing machine types is often easier than changing an ephemeral IP address in all connections to the instance, i.e. in Cloud9 and Chrome Secure Shell.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Reassigning a static external IP address to a new instance when changing machine types is often easier than changing an ephemeral IP address in all connections to the instance, i.e. in Cloud9 and Chrome Secure Shell.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
 <p>For Google's in-browser SSH, use <code>less</code> rather than <code>xclip</code> to copy the public key.&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
@@ -424,10 +562,41 @@ is the given line number, e.g. <code>Offending ECDSA key in /.ssh/known_hosts:1<
 <code>Initial path: /home/samuel_harrold</code><br />
 <code>Port: 22</code><br />
 <code>Node.js binary path: /usr/bin/nodejs</code> (in the instance shell, run <code>which nodejs</code>)<br />
-To copy the public SSH key from Cloud9 to the instance:<br />
+To copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code>, in the instance shell:<br />
 <code>$ cat &gt;&gt; ~/authorized_keys/.ssh</code><br />
-<code>[Ctrl+V to paste the key then Enter]</code><br />
+<code>[Ctrl+V to paste the key, then Enter]</code><br />
 <code>[Ctrl+D to signal end of file]</code>  &#160;<a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>If the Cloud9 workspace fails to connect to the instance, i.e. the terminal within the workspace doesn't receive input, run the <a href="https://github.com/c9/install/">Cloud9 dependency installation script</a> then reopen the workspace. Installing the script requires HTTPS traffic allowed in the instance's firewall settings:<br />
+<code>$ curl -L https://raw.githubusercontent.com/c9/install/master/install.sh | bash</code>  &#160;<a class="footnote-backref" href="#fnref:4" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>I prefer the Continuum Analytics Anaconda Python distribution for its <a href="http://conda.pydata.org/docs/">Conda package manager</a>. Allow Anaconda to modify <code>.bashrc</code>.&#160;<a class="footnote-backref" href="#fnref:5" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>Disowning a background process (the control operator <code>&amp;</code>) from the shell allows a process to continue running in the background when the shell is closed.&#160;<a class="footnote-backref" href="#fnref:6" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above and move them to the Chromebook with Cloud9's drag-and-drop interface or using <a href="https://chrome.google.com/webstore/detail/sftp-file-system/gbheifiifcfekkamhepkeogobihicgmn">an SFTP app for Chromebook</a>.&#160;<a class="footnote-backref" href="#fnref:7" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:8">
+<p>Select both the private and public keys, <code>id_rsa</code> and <code>id_rsa.pub</code>, to import as a pair.&#160;<a class="footnote-backref" href="#fnref:8" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn:9">
+<p>Omit the <code>-f</code> option to keep Chrome Secure Shell open. Pin the Chrome tab (right-click the tab &gt; "Pin tab") to keep Chrome Secure Shell open and minimized in the browser. &#160;<a class="footnote-backref" href="#fnref:9" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:10">
+<p>To paste the password for the Chromebook's SSH key, use Chrome's paste function ("Customize and control" &gt; "Edit" &gt; "Paste"; using Ctrl+V will input <code>^v</code> as the password). In place of <code>ssh-add</code> on my Chromebook, I use <a href="https://lastpass.com/">LastPass</a> to manage passwords. &#160;<a class="footnote-backref" href="#fnref:10" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:11">
+<p>In the instance's in-browser SSH:
+<code>$ lsof -i:8888</code> (list process IDs of open files filtered by port)
+<code>$ kill 1234</code> (send a termination signal to the process ID)
+To install <code>lsof</code>, <code>sudo apt-get install lsof</code>.&#160;<a class="footnote-backref" href="#fnref:11" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</li>
+<li id="fn:12">
+<p>An alert notice will appear when connecting. In Chrome, open the JavaScript console (Ctrl+Shift+J) and run <code>term_.command.removeKnownHostByIndex(idx)</code> where idx is the given line number, e.g. from <code>Offending ECDSA key in /.ssh/known_hosts:1</code> idx=1.&#160;<a class="footnote-backref" href="#fnref:12" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

@@ -56,10 +56,10 @@ This workflow can work for any operating system running Chrome.
 
 ## Setup
 
-There are many ways to run an IPython Notebook on a virtual machine. This is just my setup and a guide to get a newcomer started:
+There are many ways to run an IPython Notebook on a virtual machine. This is just my setup with footnotes for newcomers:
 
-* My local machine is an [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0).
-* Create the Google Compute Engine virtual machine instance and SSH keys:
+* I'm working on an [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0).
+* Create a Google Compute Engine virtual machine instance and SSH keys:
     * Make a project in the [Google Developers Console](https://console.developers.google.com).
     * Configure an instance:
         * Machine type: I start with the smallest and move to larger instances as the work load requires. TODO: memory command  
@@ -116,18 +116,16 @@ There are many ways to run an IPython Notebook on a virtual machine. This is jus
 [^9]: Omit the `-f` option to keep Chrome Secure Shell open. Pin the Chrome tab (right-click the tab > "Pin tab") to keep Chrome Secure Shell open and minimized in the browser. 
 [^10]: To paste the password for the Chromebook's SSH key, use Chrome's paste function ("Customize and control" > "Edit" > "Paste"; using Ctrl+V will input `^v` as the password). In place of `ssh-add` on my Chromebook, I use [LastPass](https://lastpass.com/) to manage passwords. 
 
-TODO: resume here
 
 * To shutdown the instance:
-    * Close the Jupyter Notebook and Chrome Secure Shell tabs.
-    * Kill the Jupyter Notebook server.[^11]
-    * Close the Cloud9 IDE tabs.
+    * Close the Jupyter Notebook and the Chrome Secure Shell tab. Kill the Jupyter Notebook server.[^11]
+    * Close the Cloud9 IDE tab.
     * "Stop" the instance in Google Developers Console.
 
 [^11]:
     In the instance's in-browser SSH:
-    `$ lsof -i:8888` (find process IDs filtered by port)
-    `$ kill 1234`
+    `$ lsof -i:8888` (list process IDs of open files filtered by port)
+    `$ kill 1234` (send a termination signal to the process ID)
     To install `lsof`, `sudo apt-get install lsof`.
 
 * To backup the instance, create a snapshot from the Google Developers Console. This can be done while the instance is running.
@@ -202,6 +200,8 @@ TODO
 
 ### Daily usage
 
+TODO Move to overview
+
 1. Start the Google Compute Engine VM instance under
 project: "stharrold-sandbox", instance: "instance-20151028t103000".
 Check that the IP address matches as the host for Secure Shell and Cloud9.
@@ -222,3 +222,90 @@ is the given line number, e.g. `Offending ECDSA key in /.ssh/known_hosts:1`.
 3. Open Chrome to http://localhost:8889
 4. Open the Cloud9 workspace "sandbox".
 5. To shutdown sandbox, follow the setup steps in reverse.
+
+
+
+<!-- From http://guidefaq.com/a.php?qid=5454 -->
+
+<!--
+<p><a style="cursor:pointer;" onclick="return toggleMe('para1')"><img id="para1_image" src="YOUR CLOSED IMAGE URL" style="border:0;margin-right:5px;vertical-align:middle;" />Question</a></p>
+<div id="para1" style="display:none;">
+Answer to Question
+</div>
+-->
+
+<!--
+<script type="text/javascript">
+function toggleMe(a){
+var e=document.getElementById(a);
+var i = document.getElementById(a + '_image');
+if(!e)return true;
+if(e.style.display=="none"){
+e.style.display="block"
+i.src = 'YOUR OPEN IMAGE URL';
+} else {
+e.style.display="none"
+i.src = 'YOUR CLOSED IMAGE URL';
+}
+return false;
+}
+</script>
+-->
+
+<!-- From http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions -->
+
+<!--
+<div class="btn-group">
+  <button type="button" class="btn btn-link">Short answer.</button>
+  <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#details">
+    <span class="glyphicon glyphicon-minus"></span>
+  </button>
+</div>
+<div id="details" class="collapse in">
+Long answer.
+</div>
+-->
+
+<!--
+<script type="text/javascript">
+$('.collapse').on('shown.bs.collapse', function(){
+$(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function(){
+$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+</script>
+-->
+
+<!--
+<div class="btn-group">
+  <button type="button" class="btn btn-danger"></button>
+  <button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo">
+    <span class="glyphicon glyphicon-minus"></span>
+  </button>
+</div>
+<div id="demo" class="collapse in">Some dummy text in here.</div>
+-->
+
+<!--
+From
+http://www.w3schools.com/bootstrap/bootstrap_ref_js_collapse.asp
+http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions
+-->
+
+<div>
+    Short answer.
+    <div class="btn-group">
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#details">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+    <div id="details" class="collapse">Long answer.</div>
+</div>
+
+<script type="text/javascript">
+$('.collapse').on('shown.bs.collapse', function(){
+$(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function(){
+$(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+</script>
