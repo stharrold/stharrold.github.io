@@ -285,7 +285,9 @@ Data Science Demos            </a>
                 </div>
                 <div class="toc"><span class="toctitle">Table of contents</span><ul>
 <li><a href="#overview">Overview</a></li>
-<li><a href="#step-by-step">Step-by-step</a></li>
+<li><a href="#motivation">Motivation</a></li>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#to-upgrade-the-vm-instance">* To upgrade the vm instance</a><ul>
 <li><a href="#why-__">Why __?</a><ul>
 <li><a href="#ipython-notebooks">IPython Notebooks</a></li>
 <li><a href="#chromebook">Chromebook</a></li>
@@ -294,16 +296,71 @@ Data Science Demos            </a>
 <li><a href="#environment">Environment</a></li>
 <li><a href="#cloud9">Cloud9</a></li>
 <li><a href="#ssh-port-forwarding">SSH port forwarding</a></li>
+<li><a href="#daily-usage">Daily usage</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 <h3 id="overview">Overview</h3>
-<p>In October 2015, I bought a Chromebook with the intent of moving my data-science development workflow to the cloud. This is the workflow that I've settled on so far:<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup><br />
-* TODO</p>
-<!-- TODO: format footnote -->
-
-<h3 id="step-by-step">Step-by-step</h3>
+<p>In October 2015, I bought a Chromebook with the intent of moving my data-science development workflow to the cloud. The workflow that I've settled on so far is TODO.   </p>
+<p>Some links I found helpful:<br />
+    * IPython Notebooks:<br />
+        * <a href="https://gist.github.com/iamatypeofwalrus/5183133">Running an IPython Notebook from Amazon Web Services</a><br />
+        * <a href="https://gist.github.com/samklr/07bee2868a6ed72a8ec4">Hosting a password-protected IPython Notebook from Google Compute Engine</a><br />
+    * Chrome:
+        * <a href="https://www.youtube.com/watch?v=y1dAnXkednM">Chromebook 2GB vs 4GB Demo</a>
+        * <a href="http://jjg.svbtle.com/">Using a Chromebook as a developer</a>
+        * <a href="https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg">Export cookies from Chrome for wget</a><br />
+        * <a href="https://chrome.google.com/webstore/detail/sftp-file-system/gbheifiifcfekkamhepkeogobihicgmn">SFTP from a Chromebook</a>
+        * <a href="chrome://system"><code>chrome://system</code> to inspect system resources</a>
+        * <a href="chrome://memory-redirect"><code>chrome://memory-redirect</code> to inspect RAM usage by Chrome</a>
+        * <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">Chrome Caret for editing</a>
+        * <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a>
+    * Linux:<br />
+        * <a href="http://www.linuxproblem.org/art_9.html">SSH login without password</a><br />
+        * <a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html">SSH port forwarding (tunnels) explained</a><br />
+        * <a href="http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal">wget download from Google Drive</a><br />
+        * <a href="https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line">wget download from Kaggle</a><br />
+        * <a href="http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html">Choosing between Debian and Ubuntu</a><br />
+        * <a href="http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/"><code>disown PID</code> to keep a job running after closing the shell</a>
+        * <code>lsof -i:PORT</code> to find active processes
+        * <code>free -m</code> displays the free memory (RAM) in MB.
+        * <code>df -B MB</code> displays the free disk space in MB.
+        * <a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">What <code>sudo apt-get update</code> does</a></p>
+<h3 id="motivation">Motivation</h3>
+<p>TODO: cheap, replacable, demo from most limiting netbook</p>
+<p>Adds a bit of extra setup, but leverages powerful infrastructure.</p>
+<p>I had to upgrade from a 2GB RAM Chromebook since I typically use about 2.5GB RAM while working.</p>
+<p>I need to test the scalability of my workflows, and for me it's most convenient to use virtual machines directly. If this isn't your use case, hosted services like <a href="https://wakari.io/">Continuum Analytics Wakari</a>, <a href="https://c9.io/?redirect=0">Cloud9 hosted workspaces</a>, and <a href="https://www.digitalocean.com/">Digital Ocean</a> are worth considering.</p>
+<h3 id="setup">Setup</h3>
+<p>There are many ways to run an IPython Notebook on a virtual machine. This is just my setup:</p>
+<ul>
+<li>Chromebook: I use an <a href="http://www.amazon.com/gp/product/B00VUV0MG0">ASUS C201 Chromebook with 4GB RAM</a>.</li>
+<li>
+<p>Google Compute Engine: Create the virtual machine instance and credentials:</p>
+<ul>
+<li>Make a project in the <a href="https://console.developers.google.com">Google Developers Console</a>.</li>
+<li>I start an instance with the smallest machine type and default boot disk (Debian). Leave firewall settings at default. For project access, reserve an external IP address ("Networking &gt; External IP") and leave the other settings at default. For the rest of the setup below, I'll replace my intance's external IP address with <code>123.123.123.123</code>.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>  </li>
+<li>Connect to the instance, e.g. with Google's in-browser SSH.</li>
+<li><a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">Update the Debian system.</a></li>
+<li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate SSH keys</a> and might as well connect to GitHub.<sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup>  </li>
+</ul>
+</li>
+<li>
+<p>For Cloud9: </p>
+<ul>
+<li><a href="https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions">Install Node.js</a> on the instance.</li>
+<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 remote SSH workspace</a> and copy the public SSH key from Cloud9 to the instance.<sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup></li>
+</ul>
+</li>
+<li>
+<p>Create a Cloud9 SSH workspace:</p>
+</li>
+<li></li>
+</ul>
+<h2 id="to-upgrade-the-vm-instance">* To upgrade the vm instance</h2>
 <p>Google Compute Engine settings: f1-micro, debian, only port forward - no http, snapshots as backups, fixed external ip</p>
 <p>Cloud9 and DigitalOcean hosted VM instances were too small (Cloud9 offers up to 2.5 GB RAM, 1 core; DigitalOcean up to 8GB RAM, 4 core). I now use Cloud9 for its fancy IDE, but only as a SSH workspace. I use Google Compute Engine as my VM instance. I port forward from the VM instance to my Chromebook to run jupyter notebook using the app "Secure Shell" (screenshot attached with options). I used the VM instance to create the id_rsa key pair for my Chromebook.</p>
 <p>copy-paste tool for key-pairs</p>
@@ -312,9 +369,6 @@ Data Science Demos            </a>
 <p><a href="http://ipython.org/notebook.html">IPython (Jupyter) Notebooks</a> enable me to
 develop quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages.</p>
 <h4 id="chromebook">Chromebook</h4>
-<p>TODO: cheap, replacable, demo from most limiting netbook</p>
-<p>I'm using an <a href="http://www.amazon.com/gp/product/B00VUV0MG0">ASUS C201 11.6-inch Chromebook with 4GB RAM</a>. Because I'm using SSH port forwarding, the Chromebook is rendering the IPython Notebook. Rendering a 5MB IPython Notebook consumes
-My first Chromebook had 2GB RAM, I returned</p>
 <p>low-profile flash drive: http://www.amazon.com/gp/product/B00LLER2CS</p>
 <p>large cheap monitor with hdmi input</p>
 <p>so far avoided needing chrome os's dev mode. using now for 2 months.</p>
@@ -322,7 +376,7 @@ My first Chromebook had 2GB RAM, I returned</p>
 <p>It's useful to have a reproducible environment that can scale with the problem.</p>
 <h4 id="google-compute-engine">Google Compute Engine</h4>
 <p>Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its intuitive UI. SSH within the browser is amazing.</p>
-<p>I chose <a href="https://cloud.google.com/compute/">Google Compute Engine</a> over services like <a href="https://wakari.io/">Wakari</a>, <a href="https://c9.io/?redirect=0">Cloud9</a>, <a href="https://www.digitalocean.com/">Digital Ocean</a>, because I wanted to be able to scale the infrastructure to many cores.</p>
+<p>I chose <a href="https://cloud.google.com/compute/">Google Compute Engine</a> over </p>
 <h4 id="environment">Environment</h4>
 <p>I use the <a href="https://www.continuum.io/downloads">Anaconda Python distribution</a> for the <code>conda</code> package manager.</p>
 <h4 id="cloud9">Cloud9</h4>
@@ -331,29 +385,49 @@ My first Chromebook had 2GB RAM, I returned</p>
 <p>I don't use cloud9 for debugging. I use <a href="https://docs.python.org/3.5/library/pdb.html">pdb</a> for debugging and <a href="http://pytest.org/latest/">pytest</a> for testing. I use the IDE mostly for code navigation, autocomplete, and managing packages with many files</p>
 <h4 id="ssh-port-forwarding">SSH port forwarding</h4>
 <p>TODO</p>
+<h4 id="daily-usage">Daily usage</h4>
+<ol>
+<li>Start the Google Compute Engine VM instance under
+project: "stharrold-sandbox", instance: "instance-20151028t103000".
+Check that the IP address matches as the host for Secure Shell and Cloud9.</li>
+<li>Start jupyter notebook in the Google secure shell:
+$ lsof -i:8889
+$ jupyter notebook --ip=0.0.0.0 --port=8889 --no-browser &amp;
+$ disown 800 # where 800 is the process ID (pid)</li>
+<li>Forward the port of the jupyter notebook to the Chomebook using the app "Secure Shell":
+connection: stharrold-sandbox jupyter notebook
+username: samuel_harrold
+hostname: 104.154.56.50
+port: 22
+Identity: id_rsa (both id_rsa.pub and id_rsa files were imported)
+SSH Arguments: -N -L localhost:8889:0.0.0.0:8889
+Note: If the remote host identification has changed, open the Javascript console
+(ctrl+shift+j) and execute <code>term_.command.removeKnownHostByIndex(idx)</code> where idx
+is the given line number, e.g. <code>Offending ECDSA key in /.ssh/known_hosts:1</code>.</li>
+<li>Open Chrome to http://localhost:8889</li>
+<li>Open the Cloud9 workspace "sandbox".</li>
+<li>To shutdown sandbox, follow the setup steps in reverse.</li>
+</ol>
 <div class="footnote">
 <hr />
 <ol>
 <li id="fn:1">
-<p>Some links I found helpful:<br />
-<em> IPython Notebooks:<br />
-    * <a href="https://gist.github.com/iamatypeofwalrus/5183133">Running an IPython Notebook from Amazon Web Services</a><br />
-    * <a href="https://gist.github.com/samklr/07bee2868a6ed72a8ec4">Hosting a password-protected IPython Notebook from Google Compute Engine</a><br />
-</em> Chrome:<br />
-    * <a href="http://jjg.svbtle.com/">Using a Chromebook as a developer</a><br />
-    * <a href="https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg">Export cookies from Chrome for wget</a><br />
-    * <a href="https://chrome.google.com/webstore/detail/sftp-file-system/gbheifiifcfekkamhepkeogobihicgmn">SFTP from a Chromebook</a>
-    * <a href="chrome://system"><code>chrome://system</code> to inspect system resources</a>
-    * <a href="chrome://memory-redirect"><code>chrome://memory-redirect</code> to inspect RAM usage by Chrome</a>
-    * <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">Caret for editing</a>
-* Linux:<br />
-    * <a href="http://www.linuxproblem.org/art_9.html">SSH login without password</a><br />
-    * <a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html">SSH port forwarding (tunnels) explained</a><br />
-    * <a href="http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal">wget download from Google Drive</a><br />
-    * <a href="https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line">wget download from Kaggle</a><br />
-    * <a href="http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html">Choosing between Debian and Ubuntu</a><br />
-    * <a href="http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/"><code>disown PID</code> to keep a job running after closing the shell</a>
-    * <code>lsof -i:PORT</code> to find active processes&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Reassigning the static IP address to a new instance when changing machine types is often easier than changing an ephemeral IP address in all connections to the instance, i.e. in Cloud9 and Chrome Secure Shell.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>For Google's in-browser SSH, use <code>less</code> rather than <code>xclip</code> to copy the public key.&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>My Cloud9 remote SSH settings:<br />
+<code>Username: samuel_harrold</code> (in the instance shell, run <code>whoami</code>)<br />
+<code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
+<code>Initial path: /home/samuel_harrold</code><br />
+<code>Port: 22</code><br />
+<code>Node.js binary path: /usr/bin/nodejs</code> (in the instance shell, run <code>which nodejs</code>)<br />
+To copy the public SSH key from Cloud9 to the instance:<br />
+<code>$ cat &gt;&gt; ~/authorized_keys/.ssh</code><br />
+<code>[Ctrl+V to paste the key then Enter]</code><br />
+<code>[Ctrl+D to signal end of file]</code>  &#160;<a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

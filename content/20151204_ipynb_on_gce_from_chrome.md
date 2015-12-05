@@ -37,26 +37,64 @@ Some links I found helpful:
         * `lsof -i:PORT` to find active processes
         * `free -m` displays the free memory (RAM) in MB.
         * `df -B MB` displays the free disk space in MB.
+        * [What `sudo apt-get update` does](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
         
 
 ## Motivation
 
 TODO: cheap, replacable, demo from most limiting netbook
 
+
+
 Adds a bit of extra setup, but leverages powerful infrastructure.
+
+I had to upgrade from a 2GB RAM Chromebook since I typically use about 2.5GB RAM while working.
 
 I need to test the scalability of my workflows, and for me it's most convenient to use virtual machines directly. If this isn't your use case, hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/) are worth considering.
 
 ## Setup
 
-* I have an [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0). I had to upgrade from a 2GB RAM Chromebook since I typically use about 2.5GB RAM while working.
-* Create the virtual machine instance:
+There are many ways to run an IPython Notebook on a virtual machine. This is just my setup:
+
+* I'm using an [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0).
+* Create the Google Compute Engine virtual machine instance and SSH keys:
     * Make a project in the [Google Developers Console](https://console.developers.google.com).
-    * Create a new instance. Start with the smallest machine type and default boot disk (Debian). Leave firewall settings at default. For project access, reserve an external IP address ("Networking > External IP") and leave the other settings at default. When changing machine type, it's more convenient to reassign the new instance to the static IP address rather than change the IP addresses in the connections below, i.e. in Cloud9 and Chrome Secure Shell.
-* INSTALL and setup environment:
-* Start
-* Create a Cloud9 SSH workspace:
-* 
+    * Configure an instance:
+        * Machine type: I start with the smallest and move to larger instances as the work load requires. TODO: memory command  
+        * Boot disk: I start with the default boot disk (Debian) and increase size as I need storage. TODO: storage command
+        * Firewall: Allow HTTP and HTTPS connections to use `curl` and `wget`.
+        * Project access: Reserve an external IP address ("Networking > External IP"). Other settings can be left at default for this example. For the rest of this example, I give my intance's static external IP address as `123.123.123.123`.[^1]  
+    * Connect to the instance, e.g. with Google's in-browser SSH.
+    * [Update the Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
+    * [Generate SSH keys](https://help.github.com/articles/generating-ssh-keys/) and might as well connect to GitHub.[^2]  
+
+[^1]: Reassigning a static external IP address to a new instance when changing machine types is often easier than changing an ephemeral IP address in all connections to the instance, i.e. in Cloud9 and Chrome Secure Shell.
+
+[^2]: For Google's in-browser SSH, use `less` rather than `xclip` to copy the public key.
+
+* Connect the Cloud9 IDE to the instance: 
+    * [Install Node.js](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) on the instance.
+    * Create a [Cloud9 remote SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace), copy the public SSH key from Cloud9 to the instance's `authorized_keys`, then open the workspace.[^3][^4]
+
+[^3]:
+    My Cloud9 remote SSH settings:  
+    `Username: samuel_harrold` (in the instance shell, run `whoami`)  
+    `Hostname: 123.123.123.123` (the instance's external IP address)  
+    `Initial path: /home/samuel_harrold`  
+    `Port: 22`  
+    `Node.js binary path: /usr/bin/nodejs` (in the instance shell, run `which nodejs`)  
+    To copy the public SSH key from Cloud9 to the instance's `authorized_keys`, in the instance shell, run:  
+    `$ cat >> ~/authorized_keys/.ssh`  
+    `[Ctrl+V to paste the key, then Enter]`  
+    `[Ctrl+D to signal end of file]`  
+[^4]:
+    If the Cloud9 workspace fails to connect to the instance, i.e. the terminal within the workspace doesn't receive input, run the Cloud9 [installation script](https://github.com/c9/install/) (requires HTTPS traffic allowed in the instance firewall settings):  
+    `$ wget -O - https://raw.githubusercontent.com/c9/install/master/install.sh | bash`
+* Start a Jupyter (IPython) Notebook server on the instance:
+    * [Install Python](https://www.continuum.io/downloads) on the instance.[^5]
+    * 
+
+[^5]: I prefer the Continuum Analytics Anaconda Python distribution for its [Conda package manager](http://conda.pydata.org/docs/). 
 
 * To upgrade the vm instance
 ===
@@ -114,39 +152,22 @@ TODO
 ### Daily usage
 
 1. Start the Google Compute Engine VM instance under
-project: "stharrold-github-io", instance: "instance-20151109t160000".
+project: "stharrold-sandbox", instance: "instance-20151028t103000".
 Check that the IP address matches as the host for Secure Shell and Cloud9.
-2. Open the Cloud9 workspace "stharrold-github-io".
-3. Start jupyter notebook in the Google secure shell:
-$ lsof -i:8888
-$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &
-$ disown 800 # where 800 is the process ID
-4. Forward the port of the jupyter notebook to the Chomebook using the app "Secure Shell":
-connection: stharrold-github-io jupyter notebook
+2. Start jupyter notebook in the Google secure shell:
+$ lsof -i:8889
+$ jupyter notebook --ip=0.0.0.0 --port=8889 --no-browser &
+$ disown 800 # where 800 is the process ID (pid)
+3. Forward the port of the jupyter notebook to the Chomebook using the app "Secure Shell":
+connection: stharrold-sandbox jupyter notebook
 username: samuel_harrold
-hostname: 108.59.87.157
+hostname: 104.154.56.50
 port: 22
-Identity: id_rsa (both id_rsa.pub and id_rsa were imported)
-SSH Arguments: -N -L localhost:8888:0.0.0.0:8888
+Identity: id_rsa (both id_rsa.pub and id_rsa files were imported)
+SSH Arguments: -N -L localhost:8889:0.0.0.0:8889
 Note: If the remote host identification has changed, open the Javascript console
 (ctrl+shift+j) and execute `term_.command.removeKnownHostByIndex(idx)` where idx
 is the given line number, e.g. `Offending ECDSA key in /.ssh/known_hosts:1`.
-5. Open Chrome to http://localhost:8888
-6. Start python http server in the Google secure shell:
-$ lsof -i:8000
-$ cd ~/stharrold.github.io/output
-$ python -m http.server 8000 &
-$ disown 900 # where 900 is the process ID
-7. Forward the port of the http server to the Chromebook using the app "Secure Shell":
-connection: stharrold-github-io python http.server
-username: samuel_harrold
-hostname: 108.59.87.157
-port: 22
-Identity: id_rsa (both id_rsa.pub and id_rsa were imported)
-SSH Arguments: -N -L localhost:8888:0.0.0.0:8888
-Note: If the remote host identification has changed, open the Javascript console
-(ctrl+shift+j) and execute `term_.command.removeKnownHostByIndex(idx)` where idx
-is the given line number, e.g. `Offending ECDSA key in /.ssh/known_hosts:1`.
-Pin the "Secure Shell" tab in Chrome to keep open.
-8. Open Chrome to http://localhost:8000
-9. To shutdown stharrold-github-io, close the "Secure Shell" tabs, open Google secure shell to kill the process IDs, and close the Cloud9 workspace.
+3. Open Chrome to http://localhost:8889
+4. Open the Cloud9 workspace "sandbox".
+5. To shutdown sandbox, follow the setup steps in reverse.
