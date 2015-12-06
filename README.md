@@ -12,7 +12,7 @@ $ git checkout src_develop
 $ pelican --settings pelicanconf.py
 $ cd output
 $ python -m http.server 8000 &
-$ # Inspect the page at localhost:8000
+$ # Inspect the page at http://localhost:8000
 ```
 
 How to build the site for deployment:
