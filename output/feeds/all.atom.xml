@@ -1,29 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2015-12-02T21:40:00+00:00</updated><entry><title>Test page and template</title><link href="https://stharrold.github.io/20151030_test.html" rel="alternate"></link><updated>2015-12-02T21:40:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2015-10-30:20151030_test.html</id><summary type="html">&lt;h1&gt;Heading1&lt;/h1&gt;
-&lt;h2&gt;Heading2&lt;/h2&gt;
-&lt;h3&gt;Heading3&lt;/h3&gt;
-&lt;h4&gt;Heading4&lt;/h4&gt;
-&lt;h5&gt;Heading5&lt;/h5&gt;
-&lt;h6&gt;Heading6&lt;/h6&gt;
-&lt;h2&gt;Overview&lt;/h2&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2015-12-02T21:40:00+00:00</updated><entry><title>Test page and template</title><link href="https://stharrold.github.io/20151030_test.html" rel="alternate"></link><updated>2015-12-02T21:40:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2015-10-30:20151030_test.html</id><summary type="html">&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Table of contents&lt;/span&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#heading2"&gt;Heading2&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#heading3"&gt;Heading3&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#heading4"&gt;Heading4&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#heading5"&gt;Heading5&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#heading6"&gt;Heading6&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#body"&gt;Body&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#include-exported-files"&gt;Include exported files&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href="#footnotes"&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h3 id="heading2"&gt;Heading2&lt;/h3&gt;
+&lt;h4 id="heading3"&gt;Heading3&lt;/h4&gt;
+&lt;h5 id="heading4"&gt;Heading4&lt;/h5&gt;
+&lt;h6 id="heading5"&gt;Heading5&lt;/h6&gt;
+&lt;h6 id="heading6"&gt;Heading6&lt;/h6&gt;
+&lt;h3 id="overview"&gt;Overview&lt;/h3&gt;
 &lt;p&gt;Test page and template.&lt;/p&gt;
 &lt;p&gt;Source IPython notebook:&lt;br /&gt;
 &lt;a href="https://stharrold.github.io/static/20151030_test/20151030_test.ipynb"&gt;20151030_test.ipynb&lt;/a&gt;&lt;br /&gt;
 &lt;a href="https://stharrold.github.io/static/20151030_test/20151030_test_full.html"&gt;20151030_test_full.html&lt;/a&gt;  &lt;/p&gt;
-&lt;h2&gt;Body&lt;/h2&gt;
-&lt;p&gt;Main text.&lt;/p&gt;
-&lt;h3&gt;Include exported files&lt;/h3&gt;
+&lt;h3 id="body"&gt;Body&lt;/h3&gt;
+&lt;p&gt;Main text&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+&lt;div&gt;
+    Short answer.
+    &lt;div class="btn-group"&gt;
+        &lt;button type="button" class="btn btn-link" data-toggle="collapse" data-target="#details"&gt;
+            &lt;span class="glyphicon glyphicon-plus"&gt;&lt;/span&gt;
+        &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div id="details" class="collapse"&gt;Long answer.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h4 id="include-exported-files"&gt;Include exported files&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;A plot and a screenshot:&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img alt="plot.jpg" src="https://stharrold.github.io/static/20151030_test/plot.jpg" /&gt;&lt;br /&gt;
-&lt;a href="https://stharrold.github.io/static/20151030_test/plot.jpg"&gt;plot.jpg&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img alt="screenshot.png" src="https://stharrold.github.io/static/20151030_test/screenshot.png" /&gt;
-&lt;a href="https://stharrold.github.io/static/20151030_test/screenshot.png"&gt;screenshot.png&lt;/a&gt;&lt;/p&gt;
+&lt;a href="https://stharrold.github.io/static/20151030_test/plot.jpg"&gt;plot.jpg&lt;/a&gt;  &lt;/p&gt;
+&lt;!--
+TODO: Format images below with HTML
+https://github.com/stharrold/stharrold.github.io/issues/16
+--&gt;
+
+&lt;!--
+&lt;a href="/static/20151030_test/plot.jpg" type="image/jpeg"&gt;
+  &lt;img src="/static/20151030_test/plot.jpg" alt="plot" align="left" width="200"/&gt;
+&lt;/a&gt;
+&lt;a href="/static/20151030_test/plot.jpg" type="image/jpeg"&gt;plot.jpg&lt;/a&gt;
+--&gt;
+
+&lt;p&gt;&lt;img alt="screenshot_432x323pix.png" src="https://stharrold.github.io/static/20151030_test/screenshot_432x323pix.png" /&gt;&lt;br /&gt;
+&lt;a href="https://stharrold.github.io/static/20151030_test/screenshot_432x323pix.png"&gt;screenshot_432x323pix.png&lt;/a&gt;  &lt;/p&gt;
+&lt;!--
+&lt;a href="/static/20151030_test/screenshot_432x323pix.png" type="image/png"&gt;
+  &lt;img src="/static/20151030_test/screenshot_432x323pix.png" alt="screenshot" align="left" width="200"/&gt;
+&lt;/a&gt;
+&lt;a href="/static/20151030_test/screenshot_432x323pix.png" type="image/png"&gt;screenshot_432x323pix.png&lt;/a&gt;
+--&gt;
+
 &lt;ul&gt;
 &lt;li&gt;A table:&lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- TODO: Add table by embedding html rather than copy-paste. --&gt;
+&lt;!--
+TODO: Add table by embedding html rather than copy-paste.
+https://github.com/stharrold/stharrold.github.io/issues/5
+--&gt;
 
 &lt;table border="1" class="dataframe"&gt;
   &lt;thead&gt;
@@ -57,6 +108,16 @@
 &lt;/table&gt;
 
 &lt;p&gt;&lt;a href="https://stharrold.github.io/static/20151030_test/table.html"&gt;table.html&lt;/a&gt;&lt;/p&gt;
+&lt;!-- TODO: Fix event handling for JavaScript. --&gt;
+
+&lt;div id="includedContent"&gt;&lt;/div&gt;
+
+&lt;script type="text/javascript"&gt; 
+  $(document).onload(function() {
+    $("#includedContent").load("/static/20151030_test/table.html");
+  });
+&lt;/script&gt;
+
 &lt;ul&gt;
 &lt;li&gt;A code snippet:&lt;/li&gt;
 &lt;/ul&gt;
@@ -76,23 +137,26 @@
 
 
 &lt;ul&gt;
-&lt;li&gt;A code snippet from GitHub:&lt;br /&gt;
+&lt;li&gt;A GitHub link:&lt;br /&gt;
 &lt;a href="https://github.com/stharrold/demo/blob/5ececb3b400ea8d51bcb396933e6b9c2a7b29963/demo/utils.py#L27-L62"&gt;GitHub link&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;!-- TODO: Include a D3 document in an ipynb and as embedded html. --&gt;
+&lt;!--
+TODO: Include a D3 document in an ipynb and as embedded html.
+https://github.com/stharrold/stharrold.github.io/issues/14
+--&gt;
 
 &lt;ul&gt;
 &lt;li&gt;An IPython notebook:  &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;================================================================================&lt;/p&gt;
-&lt;p&gt;From &lt;code&gt;liquid_tags.notebook&lt;/code&gt; (last 2 cells omitted):&lt;/p&gt;
+&lt;p&gt;From &lt;code&gt;liquid_tags.notebook&lt;/code&gt; &lt;a href="https://stharrold.github.io/static/20151030_test/20151030_test.ipynb"&gt;20151030_test.ipynb&lt;/a&gt; (first cell and last 2 cells omitted):&lt;/p&gt;
 &lt;p&gt;
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
 &lt;div class="prompt input_prompt"&gt;
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h1 id="20151030_test"&gt;20151030_test&lt;a class="anchor-link" href="#20151030_test"&gt;&amp;#182;&lt;/a&gt;&lt;/h1&gt;&lt;h1 id="Heading1"&gt;Heading1&lt;a class="anchor-link" href="#Heading1"&gt;&amp;#182;&lt;/a&gt;&lt;/h1&gt;&lt;h2 id="Heading2"&gt;Heading2&lt;a class="anchor-link" href="#Heading2"&gt;&amp;#182;&lt;/a&gt;&lt;/h2&gt;&lt;h3 id="Heading3"&gt;Heading3&lt;a class="anchor-link" href="#Heading3"&gt;&amp;#182;&lt;/a&gt;&lt;/h3&gt;&lt;h4 id="Heading4"&gt;Heading4&lt;a class="anchor-link" href="#Heading4"&gt;&amp;#182;&lt;/a&gt;&lt;/h4&gt;&lt;h5 id="Heading5"&gt;Heading5&lt;a class="anchor-link" href="#Heading5"&gt;&amp;#182;&lt;/a&gt;&lt;/h5&gt;&lt;h6 id="Heading6"&gt;Heading6&lt;a class="anchor-link" href="#Heading6"&gt;&amp;#182;&lt;/a&gt;&lt;/h6&gt;&lt;p&gt;Description.&lt;/p&gt;
+&lt;h2 id="Heading2"&gt;Heading2&lt;a class="anchor-link" href="#Heading2"&gt;&amp;#182;&lt;/a&gt;&lt;/h2&gt;&lt;h3 id="Heading3"&gt;Heading3&lt;a class="anchor-link" href="#Heading3"&gt;&amp;#182;&lt;/a&gt;&lt;/h3&gt;&lt;h4 id="Heading4"&gt;Heading4&lt;a class="anchor-link" href="#Heading4"&gt;&amp;#182;&lt;/a&gt;&lt;/h4&gt;&lt;h5 id="Heading5"&gt;Heading5&lt;a class="anchor-link" href="#Heading5"&gt;&amp;#182;&lt;/a&gt;&lt;/h5&gt;&lt;h6 id="Heading6"&gt;Heading6&lt;a class="anchor-link" href="#Heading6"&gt;&amp;#182;&lt;/a&gt;&lt;/h6&gt;&lt;p&gt;Description.&lt;/p&gt;
 &lt;h2 id="Initialization"&gt;Initialization&lt;a class="anchor-link" href="#Initialization"&gt;&amp;#182;&lt;/a&gt;&lt;/h2&gt;&lt;h3 id="Imports"&gt;Imports&lt;a class="anchor-link" href="#Imports"&gt;&amp;#182;&lt;/a&gt;&lt;/h3&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -140,10 +204,25 @@
 &lt;span class="c"&gt;# %load_ext autoreload&lt;/span&gt;
 &lt;span class="c"&gt;# %autoreload 2&lt;/span&gt;
 &lt;span class="c"&gt;# IPython magic.&lt;/span&gt;
-&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
+&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; notebook
 &lt;/pre&gt;&lt;/div&gt;
 
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stderr output_text"&gt;
+&lt;pre&gt;/home/samuel_harrold/anaconda3/lib/python3.5/site-packages/IPython/kernel/__init__.py:13: ShimWarning: The &amp;#96;IPython.kernel&amp;#96; package has been deprecated. You should import from ipykernel or jupyter_client instead.
+  &amp;quot;You should import from ipykernel or jupyter_client instead.&amp;quot;, ShimWarning)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -373,11 +452,12 @@ gg==
 &lt;p&gt;================================================================================&lt;/p&gt;
 &lt;p&gt;Copy-pasted from &lt;a href="https://stharrold.github.io/static/20151030_test/20151030_test_basic.html"&gt;20151030_test_basic.html&lt;/a&gt; (all cells included):&lt;br /&gt;
 Commented out as of 2015-12-02. See &lt;a href="https://github.com/stharrold/stharrold.github.io/issues/5"&gt;issue 5&lt;/a&gt;.&lt;/p&gt;
-&lt;!-- Note: Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly. --&gt;
-
-&lt;!-- Note: block-level &lt;div&gt; are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html --&gt;
-
-&lt;!-- Note: Remove liquid_tags.notebook before testing below --&gt;
+&lt;!--
+Note:
+Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly.
+Note: block-level &lt;div&gt; are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html
+Note: Remove liquid_tags.notebook before testing below
+--&gt;
 
 &lt;!--
 &lt;div class="cell border-box-sizing text_cell rendered"&gt;
@@ -707,4 +787,28 @@ jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.githu
 &lt;/div&gt;
 --&gt;
 
-&lt;p&gt;================================================================================&lt;/p&gt;</summary><category term="test"></category><category term="template"></category></entry></feed>
+&lt;p&gt;================================================================================&lt;/p&gt;
+&lt;h3 id="footnotes"&gt;Footnotes&lt;/h3&gt;
+&lt;div class="footnote"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn:1"&gt;
+&lt;p&gt;A footnote.&amp;#160;&lt;a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;!-- JavaScript --&gt;
+
+&lt;!--
+Collapsable text
+http://www.w3schools.com/bootstrap/bootstrap_ref_js_collapse.asp
+http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions
+--&gt;
+
+&lt;script type="text/javascript"&gt;
+$('.collapse').on('shown.bs.collapse', function() {
+  $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function() {
+  $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+&lt;/script&gt;</summary><category term="test"></category><category term="template"></category></entry></feed>

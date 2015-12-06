@@ -275,31 +275,82 @@ Data Science Demos            </a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
-                <h1>Heading1</h1>
-<h2>Heading2</h2>
-<h3>Heading3</h3>
-<h4>Heading4</h4>
-<h5>Heading5</h5>
-<h6>Heading6</h6>
-<h2>Overview</h2>
+                <div class="toc"><span class="toctitle">Table of contents</span><ul>
+<li><a href="#heading2">Heading2</a><ul>
+<li><a href="#heading3">Heading3</a><ul>
+<li><a href="#heading4">Heading4</a><ul>
+<li><a href="#heading5">Heading5</a></li>
+<li><a href="#heading6">Heading6</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#body">Body</a><ul>
+<li><a href="#include-exported-files">Include exported files</a></li>
+</ul>
+</li>
+<li><a href="#footnotes">Footnotes</a></li>
+</ul>
+</div>
+<h3 id="heading2">Heading2</h3>
+<h4 id="heading3">Heading3</h4>
+<h5 id="heading4">Heading4</h5>
+<h6 id="heading5">Heading5</h6>
+<h6 id="heading6">Heading6</h6>
+<h3 id="overview">Overview</h3>
 <p>Test page and template.</p>
 <p>Source IPython notebook:<br />
 <a href="https://stharrold.github.io/static/20151030_test/20151030_test.ipynb">20151030_test.ipynb</a><br />
 <a href="https://stharrold.github.io/static/20151030_test/20151030_test_full.html">20151030_test_full.html</a>  </p>
-<h2>Body</h2>
-<p>Main text.</p>
-<h3>Include exported files</h3>
+<h3 id="body">Body</h3>
+<p>Main text<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>.</p>
+<div>
+    Short answer.
+    <div class="btn-group">
+        <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#details">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+    <div id="details" class="collapse">Long answer.</div>
+</div>
+
+<h4 id="include-exported-files">Include exported files</h4>
 <ul>
 <li>A plot and a screenshot:</li>
 </ul>
 <p><img alt="plot.jpg" src="https://stharrold.github.io/static/20151030_test/plot.jpg" /><br />
-<a href="https://stharrold.github.io/static/20151030_test/plot.jpg">plot.jpg</a></p>
-<p><img alt="screenshot.png" src="https://stharrold.github.io/static/20151030_test/screenshot.png" />
-<a href="https://stharrold.github.io/static/20151030_test/screenshot.png">screenshot.png</a></p>
+<a href="https://stharrold.github.io/static/20151030_test/plot.jpg">plot.jpg</a>  </p>
+<!--
+TODO: Format images below with HTML
+https://github.com/stharrold/stharrold.github.io/issues/16
+-->
+
+<!--
+<a href="/static/20151030_test/plot.jpg" type="image/jpeg">
+  <img src="/static/20151030_test/plot.jpg" alt="plot" align="left" width="200"/>
+</a>
+<a href="/static/20151030_test/plot.jpg" type="image/jpeg">plot.jpg</a>
+-->
+
+<p><img alt="screenshot_432x323pix.png" src="https://stharrold.github.io/static/20151030_test/screenshot_432x323pix.png" /><br />
+<a href="https://stharrold.github.io/static/20151030_test/screenshot_432x323pix.png">screenshot_432x323pix.png</a>  </p>
+<!--
+<a href="/static/20151030_test/screenshot_432x323pix.png" type="image/png">
+  <img src="/static/20151030_test/screenshot_432x323pix.png" alt="screenshot" align="left" width="200"/>
+</a>
+<a href="/static/20151030_test/screenshot_432x323pix.png" type="image/png">screenshot_432x323pix.png</a>
+-->
+
 <ul>
 <li>A table:</li>
 </ul>
-<!-- TODO: Add table by embedding html rather than copy-paste. -->
+<!--
+TODO: Add table by embedding html rather than copy-paste.
+https://github.com/stharrold/stharrold.github.io/issues/5
+-->
 
 <table border="1" class="dataframe">
   <thead>
@@ -333,6 +384,16 @@ Data Science Demos            </a>
 </table>
 
 <p><a href="https://stharrold.github.io/static/20151030_test/table.html">table.html</a></p>
+<!-- TODO: Fix event handling for JavaScript. -->
+
+<div id="includedContent"></div>
+
+<script type="text/javascript"> 
+  $(document).onload(function() {
+    $("#includedContent").load("/static/20151030_test/table.html");
+  });
+</script>
+
 <ul>
 <li>A code snippet:</li>
 </ul>
@@ -352,23 +413,26 @@ Data Science Demos            </a>
 
 
 <ul>
-<li>A code snippet from GitHub:<br />
+<li>A GitHub link:<br />
 <a href="https://github.com/stharrold/demo/blob/5ececb3b400ea8d51bcb396933e6b9c2a7b29963/demo/utils.py#L27-L62">GitHub link</a></li>
 </ul>
-<!-- TODO: Include a D3 document in an ipynb and as embedded html. -->
+<!--
+TODO: Include a D3 document in an ipynb and as embedded html.
+https://github.com/stharrold/stharrold.github.io/issues/14
+-->
 
 <ul>
 <li>An IPython notebook:  </li>
 </ul>
 <p>================================================================================</p>
-<p>From <code>liquid_tags.notebook</code> (last 2 cells omitted):</p>
+<p>From <code>liquid_tags.notebook</code> <a href="https://stharrold.github.io/static/20151030_test/20151030_test.ipynb">20151030_test.ipynb</a> (first cell and last 2 cells omitted):</p>
 <p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="20151030_test">20151030_test<a class="anchor-link" href="#20151030_test">&#182;</a></h1><h1 id="Heading1">Heading1<a class="anchor-link" href="#Heading1">&#182;</a></h1><h2 id="Heading2">Heading2<a class="anchor-link" href="#Heading2">&#182;</a></h2><h3 id="Heading3">Heading3<a class="anchor-link" href="#Heading3">&#182;</a></h3><h4 id="Heading4">Heading4<a class="anchor-link" href="#Heading4">&#182;</a></h4><h5 id="Heading5">Heading5<a class="anchor-link" href="#Heading5">&#182;</a></h5><h6 id="Heading6">Heading6<a class="anchor-link" href="#Heading6">&#182;</a></h6><p>Description.</p>
+<h2 id="Heading2">Heading2<a class="anchor-link" href="#Heading2">&#182;</a></h2><h3 id="Heading3">Heading3<a class="anchor-link" href="#Heading3">&#182;</a></h3><h4 id="Heading4">Heading4<a class="anchor-link" href="#Heading4">&#182;</a></h4><h5 id="Heading5">Heading5<a class="anchor-link" href="#Heading5">&#182;</a></h5><h6 id="Heading6">Heading6<a class="anchor-link" href="#Heading6">&#182;</a></h6><p>Description.</p>
 <h2 id="Initialization">Initialization<a class="anchor-link" href="#Initialization">&#182;</a></h2><h3 id="Imports">Imports<a class="anchor-link" href="#Imports">&#182;</a></h3>
 </div>
 </div>
@@ -416,10 +480,25 @@ Data Science Demos            </a>
 <span class="c"># %load_ext autoreload</span>
 <span class="c"># %autoreload 2</span>
 <span class="c"># IPython magic.</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="o">%</span><span class="k">matplotlib</span> notebook
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/samuel_harrold/anaconda3/lib/python3.5/site-packages/IPython/kernel/__init__.py:13: ShimWarning: The &#96;IPython.kernel&#96; package has been deprecated. You should import from ipykernel or jupyter_client instead.
+  &quot;You should import from ipykernel or jupyter_client instead.&quot;, ShimWarning)
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -649,11 +728,12 @@ gg==
 <p>================================================================================</p>
 <p>Copy-pasted from <a href="https://stharrold.github.io/static/20151030_test/20151030_test_basic.html">20151030_test_basic.html</a> (all cells included):<br />
 Commented out as of 2015-12-02. See <a href="https://github.com/stharrold/stharrold.github.io/issues/5">issue 5</a>.</p>
-<!-- Note: Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly. -->
-
-<!-- Note: block-level <div> are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html -->
-
-<!-- Note: Remove liquid_tags.notebook before testing below -->
+<!--
+Note:
+Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly.
+Note: block-level <div> are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html
+Note: Remove liquid_tags.notebook before testing below
+-->
 
 <!--
 <div class="cell border-box-sizing text_cell rendered">
@@ -984,6 +1064,30 @@ jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.githu
 -->
 
 <p>================================================================================</p>
+<h3 id="footnotes">Footnotes</h3>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>A footnote.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+<!-- JavaScript -->
+
+<!--
+Collapsable text
+http://www.w3schools.com/bootstrap/bootstrap_ref_js_collapse.asp
+http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions
+-->
+
+<script type="text/javascript">
+$('.collapse').on('shown.bs.collapse', function() {
+  $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+}).on('hidden.bs.collapse', function() {
+  $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+});
+</script>
             </div>
             <!-- /.entry-content -->
     <hr/>
