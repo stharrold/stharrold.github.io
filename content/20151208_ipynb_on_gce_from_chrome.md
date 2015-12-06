@@ -32,7 +32,7 @@ For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell
 
 ## Motivations
 
-**Why did I to the cloud?**
+**Why did I move to the cloud?**
 
 * I wanted to save money.
     * With a cloud-based platform, I only need a laptop as a web browser. I spent $170 on my [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0).
@@ -45,7 +45,7 @@ For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell
 
 Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its intuitive UI. [SSH within the browser](https://cloud.google.com/compute/docs/ssh-in-browser) is very convenient.
 
-**Why do I IPython Notebooks?**
+**Why do I use IPython Notebooks?**
 
 [IPython (Jupyter) Notebooks](http://ipython.org/notebook.html) are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages.
 
@@ -134,7 +134,7 @@ Some links I found helpful for this blog post:
 ///Footnotes Go Here///
 
 [^gce_prices]:
-    As of December 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about \$4.50 per month. Running a 32-core virtual CPU instance with 120GB RAM costs about \$1.12 per hour.
+    As of December 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about <span>$4.50</span> per month. Running a 32-core virtual CPU instance with 120GB RAM costs about <span>$1.12</span> per hour.
 [^alts]:
     There are also hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/).
 [^c9_debug]:
