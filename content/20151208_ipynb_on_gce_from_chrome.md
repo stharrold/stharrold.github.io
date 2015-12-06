@@ -12,7 +12,7 @@ Summary: As a data scientist, I develop from a Chromebook using IPython Notebook
 
 ## Overview
 
-In October 2015, I bought a Chromebook with the intent of learning how to move my data-science development environment to the cloud. In exchange for an extra 5&nbsp;minutes of setup, I now have a flexible infrastructure that can scale with the task. This setup is also cross-platform can be used on any laptop with Chrome, not just a Chromebook.
+In October 2015, I bought a Chromebook with the intent of learning how to move my data-science development environment to the cloud. In exchange for an extra 5&nbsp;minutes of setup, I now have a flexible infrastructure that can scale with the task. This setup is cross-platform in that it can be used on any laptop with Chrome, not just a Chromebook.
 
 Brief setup routine:
 
@@ -108,7 +108,10 @@ Some links I found helpful for this blog post:
     * [Chromebook 2GB vs 4GB Demo.](https://www.youtube.com/watch?v=y1dAnXkednM) I had to upgrade from a 2GB RAM Chromebook to a model with 4GB RAM since I typically use about 2.5GB RAM while working.
     * [Using a Chromebook as a developer.](http://jjg.svbtle.com/chromebook-for-developers-part-3) I've had my Chromebook for 2&nbsp;months and haven't yet needed developer mode.
     * [Low-profile flash drive](http://www.amazon.com/gp/product/B00LLER2CS) to expand Chromebook storage.
-    * [Export cookies from Chrome for wget.](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg)
+    * [Chrome Secure Shell.](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo)
+    * [Chromebook app SFTP.](https://chrome.google.com/webstore/detail/sftp-file-system/gbheifiifcfekkamhepkeogobihicgmn)
+    * [Chomebook app Caret text editor](https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml)
+    * [Chrome app cookies.txt.](https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg) Exports cookies from Chrome for `wget`.
     * [`chrome://system` to inspect system resources.](chrome://system)
     * [`chrome://memory-redirect` to inspect RAM usage by Chrome.](chrome://memory-redirect)
 * Linux:
@@ -163,9 +166,9 @@ Some links I found helpful for this blog post:
     (requires HTTPS traffic allowed in the instance's firewall settings)
 [^lsof_kill]:
     In the instance's in-browser SSH:  
-    `$ lsof -i:8888` (list process IDs of open files filtered by port)  
+    `$ lsof -i:8888` (list process IDs filtered by port)  
     `$ kill 1234` (send a termination signal to the process ID)  
-    (To install `lsof`, `sudo apt-get install lsof`.)
+    (Install `lsof` with: `sudo apt-get install lsof`)
 [^networking]:
     In the Google Developers Console, manage IP addresses under "Products & services" > "Networking".
 [^host_id]:
