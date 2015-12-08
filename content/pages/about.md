@@ -11,7 +11,7 @@ comments: enabled
 <!-- comments: enabled for pelican-boostrap3 Disqus comments for pages. -->
 
 <!-- Used http://picresize.com/ for photo editing. -->
-<img src="/static/images/20151006_profile_100x100pix_rounded_white.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/>
+<img src="/static/images/20151006-profile-100x100pix-rounded-white.jpg" alt="Samuel Harrold" align="right" width="100" height="100"/>
 
 I'm a data scientist, and I enjoy enabling people to make data-driven decisions. This site's purpose is to share the data-science-related solutions I've used.
 

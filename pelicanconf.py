@@ -41,14 +41,14 @@ DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
 
 # Plugin settings
 # From https://github.com/getpelican/pelican-plugins
+# https://github.com/Nitron/pelican-alias
 # TODO: Experiment with Google Custom Search vs tipue_search.
 # https://github.com/stharrold/stharrold.github.io/issues/8
-# TODO: Add embed_html as pelican-plugins-dev/embed_html
+# TODO: Add embed_html as plugin
 # https://github.com/stharrold/stharrold.github.io/issues/5
-# TODO: PLUGIN_PATHS = ['pelican-plugins-dev']
 # TODO: PLUGINS = ['ga_page_view', 'embed_html']
-PLUGIN_PATHS = ['pelican-plugins']
-PLUGINS = ['related_posts', 'tag_cloud', 'tipue_search', 'liquid_tags.notebook']
+PLUGIN_PATHS = ['pelican-plugins', 'pelican-alias']
+PLUGINS = ['related_posts', 'tag_cloud', 'tipue_search', 'liquid_tags.notebook', 'pelican_alias']
 RELATED_POSTS_MAX = 5
 TAG_CLOUD_SORTING = 'alphabetically'
 # tipue_search: pelican-bootstrap3 requires 'search' in DIRECT_TEMPLATES
