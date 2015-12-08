@@ -132,9 +132,10 @@ Some links I found helpful for this blog post:
 
 ## Acknowledgements
 
-Thanks to John for his early review.
+Thanks to John and Julie for their early reviews.
 
 * John Jardel: [http://thewannabedatascientist.blogspot.com](http://thewannabedatascientist.blogspot.com)
+* Julie Hollek: [https://github.com/jkru](https://github.com/jkru)
 
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
