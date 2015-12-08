@@ -1,8 +1,8 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2015-12-08T03:20:00Z
-Tags: devops, how_to, ipynb, gce, chrome, cloud9, ssh
+Modified: 2015-12-08T17:45:00Z
+Tags: devops, how-to, python, gce, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208_ipynb_on_gce_from_chrome
 Authors: Samuel Harrold
@@ -77,7 +77,7 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
     * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot above):  
     `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
     `Hostname: 123.123.123.123` (the instance's external IP address)  
-    `Port: 22`
+    `Port: 22`  
     `Identity: id_rsa` [^import]  
     `SSH Arguments: -N -L localhost:8888:0.0.0.0:8888` [^no_f] [^paste]
     * View the server at `http://localhost:8888`.
