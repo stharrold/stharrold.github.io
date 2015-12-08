@@ -327,7 +327,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <p><strong>Why do I use Google Cloud?</strong></p>
 <p>Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its intuitive UI. <a href="https://cloud.google.com/compute/docs/ssh-in-browser">SSH within the browser</a> is very convenient.</p>
 <p><strong>Why do I use IPython Notebooks?</strong></p>
-<p><a href="http://ipython.org/notebook.html">IPython (Jupyter) Notebooks</a> are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages.</p>
+<p><a href="http://ipython.org/notebook.html">IPython (Jupyter) Notebooks</a> are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages. I prefer the <a href="https://www.continuum.io/">Continuum Analytics Anaconda Python distribution</a> for its <a href="http://conda.pydata.org/docs/">Conda package manager</a>. I'm using Python 3.5.</p>
 <p><strong>Why do I use Cloud9?</strong></p>
 <p>I saw that <a href="http://stackshare.io/stackups/cloud9-ide-vs-nitrous-io-vs-koding">Cloud9 is popular</a> and has good <a href="https://docs.c9.io/docs/">documentation</a>.<sup id="fnref:c9_debug"><a class="footnote-ref" href="#fn:c9_debug" rel="footnote">3</a></sup> I wanted a cloud-based IDE since I didn't want to spend resources on my Chromebook or on my instances to run the IDE.</p>
 <h3 id="first-time-setup">First-time setup</h3>
@@ -348,25 +348,25 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>Start a Jupyter Notebook server on the instance from the in-browser SSH:<ul>
-<li><a href="https://www.continuum.io/downloads">Install Python</a> on the instance.<sup id="fnref:anaconda"><a class="footnote-ref" href="#fn:anaconda" rel="footnote">8</a></sup></li>
+<li><a href="https://www.continuum.io/downloads">Install Python</a> on the instance.</li>
 <li>Start a <a href="http://jupyter.org/">Jupyter Notebook</a> server:<br />
 <code>$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &amp;</code><br />
-<code>$ disown 1234</code> (where <code>1234</code> is the process ID)<sup id="fnref:disown"><a class="footnote-ref" href="#fn:disown" rel="footnote">9</a></sup></li>
+<code>$ disown 1234</code> (where <code>1234</code> is the process ID)<sup id="fnref:disown"><a class="footnote-ref" href="#fn:disown" rel="footnote">8</a></sup></li>
 </ul>
 </li>
 <li>Create an SSH tunnel to forward a local port to the server's port on the instance:<ul>
-<li>Generate an SSH key pair for the Chromebook as above<sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">10</a></sup> and add the Chromebook's public key to the instance's <code>authorized_keys</code>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">11</a></sup></li>
+<li>Generate an SSH key pair for the Chromebook as above<sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">9</a></sup> and add the Chromebook's public key to the instance's <code>authorized_keys</code>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">10</a></sup></li>
 <li>Within Chrome, install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> and forward a port (see screenshot above):<br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
-<code>Identity: id_rsa</code> <sup id="fnref:import"><a class="footnote-ref" href="#fn:import" rel="footnote">12</a></sup><br />
-<code>SSH Arguments: -N -L localhost:8888:0.0.0.0:8888</code> <sup id="fnref:no_f"><a class="footnote-ref" href="#fn:no_f" rel="footnote">13</a></sup> <sup id="fnref:paste"><a class="footnote-ref" href="#fn:paste" rel="footnote">14</a></sup></li>
+<code>Identity: id_rsa</code> <sup id="fnref:import"><a class="footnote-ref" href="#fn:import" rel="footnote">11</a></sup><br />
+<code>SSH Arguments: -N -L localhost:8888:0.0.0.0:8888</code> <sup id="fnref:no_f"><a class="footnote-ref" href="#fn:no_f" rel="footnote">12</a></sup> <sup id="fnref:paste"><a class="footnote-ref" href="#fn:paste" rel="footnote">13</a></sup></li>
 <li>View the server at <code>http://localhost:8888</code>.</li>
 </ul>
 </li>
 <li>For an IDE, connect a Cloud9 remote SSH workspace to the instance:<ul>
 <li><a href="https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions">Install Node.js</a> on the instance.</li>
-<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>, copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code> as above, then open the workspace:<sup id="fnref:install_deps"><a class="footnote-ref" href="#fn:install_deps" rel="footnote">15</a></sup><br />
+<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>, copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code> as above, then open the workspace:<sup id="fnref:install_deps"><a class="footnote-ref" href="#fn:install_deps" rel="footnote">14</a></sup><br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
 <code>Initial path: /home/samuel_harrold</code><br />
@@ -375,7 +375,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>To shutdown the instance:<ul>
-<li>Close the Jupyter Notebook and the Chrome Secure Shell tabs. Kill the Jupyter Notebook server.<sup id="fnref:lsof_kill"><a class="footnote-ref" href="#fn:lsof_kill" rel="footnote">16</a></sup></li>
+<li>Close the Jupyter Notebook and the Chrome Secure Shell tabs. Kill the Jupyter Notebook server.<sup id="fnref:lsof_kill"><a class="footnote-ref" href="#fn:lsof_kill" rel="footnote">15</a></sup></li>
 <li>Close the Cloud9 workspace tab.</li>
 <li>"Stop" the instance in the Developers Console.</li>
 </ul>
@@ -389,8 +389,8 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <li>...if changing the disk size, set the new disk size.</li>
 </ul>
 </li>
-<li>Reassign the external IP address to the new instance.<sup id="fnref:networking"><a class="footnote-ref" href="#fn:networking" rel="footnote">17</a></sup></li>
-<li>Start the Jupyter Notebook server on the instance and create an SSH tunnel as above.<sup id="fnref:host_id"><a class="footnote-ref" href="#fn:host_id" rel="footnote">18</a></sup></li>
+<li>Reassign the external IP address to the new instance.<sup id="fnref:networking"><a class="footnote-ref" href="#fn:networking" rel="footnote">16</a></sup></li>
+<li>Start the Jupyter Notebook server on the instance and create an SSH tunnel as above.<sup id="fnref:host_id"><a class="footnote-ref" href="#fn:host_id" rel="footnote">17</a></sup></li>
 <li>Open the Cloud9 workspace.</li>
 </ul>
 </li>
@@ -453,46 +453,43 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <li id="fn:use_less">
 <p>For Google's in-browser SSH, <code>xclip</code> does not function. Copy the public key from <code>less</code>.&#160;<a class="footnote-backref" href="#fnref:use_less" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
-<li id="fn:anaconda">
-<p>I prefer the Continuum Analytics Anaconda Python distribution for its <a href="http://conda.pydata.org/docs/">Conda package manager</a>. I use Python 3.5.&#160;<a class="footnote-backref" href="#fnref:anaconda" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
-</li>
 <li id="fn:disown">
-<p>Disowning a background process (the control operator <code>&amp;</code>) from the shell allows a process to continue running in the background when the shell is closed.&#160;<a class="footnote-backref" href="#fnref:disown" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+<p>Disowning a background process (the control operator <code>&amp;</code>) from the shell allows a process to continue running in the background when the shell is closed.&#160;<a class="footnote-backref" href="#fnref:disown" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:keys">
-<p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above then move them to the Chromebook. I save mine under <code>Downloads/ssh</code> (no dot-file access without developer mode). Transfer the keys by copy-paste using <code>less</code> from instance's in-browser SSH and <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">a text editor app for Chromebook</a> or download them from a connected <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>: right-click the file &gt; "Download".&#160;<a class="footnote-backref" href="#fnref:keys" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+<p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above then move them to the Chromebook. I save mine under <code>Downloads/ssh</code> (no dot-file access without developer mode). Transfer the keys by copy-paste using <code>less</code> from instance's in-browser SSH and <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">a text editor app for Chromebook</a> or download them from a connected <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>: right-click the file &gt; "Download".&#160;<a class="footnote-backref" href="#fnref:keys" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:cat">
 <p>To copy a local public SSH key, e.g. <code>id_rsa.pub</code>, to a remote machine's <code>authorized_keys</code>, in the instance's in-browser shell:<br />
 <code>$ cat &gt;&gt; ~/.ssh/authorized_keys</code><br />
 <code>[Ctrl+V to paste the local public key, then Enter]</code><br />
-<code>[Ctrl+D to signal end of file]</code>  &#160;<a class="footnote-backref" href="#fnref:cat" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+<code>[Ctrl+D to signal end of file]</code>  &#160;<a class="footnote-backref" href="#fnref:cat" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
 <li id="fn:import">
-<p>Select both of the Chromebook's private and public keys, <code>id_rsa</code> and <code>id_rsa.pub</code>, to import as a pair.&#160;<a class="footnote-backref" href="#fnref:import" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+<p>Select both of the Chromebook's private and public keys, <code>id_rsa</code> and <code>id_rsa.pub</code>, to import as a pair.&#160;<a class="footnote-backref" href="#fnref:import" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
 </li>
 <li id="fn:no_f">
-<p>Omit the <code>-f</code> option to keep Chrome Secure Shell's tunnel open. Pin the tab in Chrome (right-click the tab &gt; "Pin tab") to keep Chrome Secure Shell open and minimized in the browser.&#160;<a class="footnote-backref" href="#fnref:no_f" rev="footnote" title="Jump back to footnote 13 in the text">&#8617;</a></p>
+<p>Omit the <code>-f</code> option to keep Chrome Secure Shell's tunnel open. Pin the tab in Chrome (right-click the tab &gt; "Pin tab") to keep Chrome Secure Shell open and minimized in the browser.&#160;<a class="footnote-backref" href="#fnref:no_f" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
 </li>
 <li id="fn:paste">
-<p>To paste the password for the Chromebook's SSH key, use Chrome's paste function ("Customize and control" &gt; "Edit" &gt; "Paste"; using Ctrl+V will input <code>^v</code> as the password). In place of <code>ssh-add</code> on my Chromebook, I use <a href="https://lastpass.com/">LastPass</a> to manage passwords.&#160;<a class="footnote-backref" href="#fnref:paste" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
+<p>To paste the password for the Chromebook's SSH key, use Chrome's paste function ("Customize and control" &gt; "Edit" &gt; "Paste"; using Ctrl+V will input <code>^v</code> as the password). In place of <code>ssh-add</code> on my Chromebook, I use <a href="https://lastpass.com/">LastPass</a> to manage passwords.&#160;<a class="footnote-backref" href="#fnref:paste" rev="footnote" title="Jump back to footnote 13 in the text">&#8617;</a></p>
 </li>
 <li id="fn:install_deps">
 <p>If the Cloud9 workspace fails to connect to the instance, e.g. the terminal within the workspace doesn't receive input, run the <a href="https://github.com/c9/install/">Cloud9 dependency installation script</a> then reopen the workspace:<br />
 <code>curl -L https://raw.githubusercontent.com/c9/install/master/install.sh | bash</code><br />
-(requires HTTPS traffic allowed in the instance's firewall settings)&#160;<a class="footnote-backref" href="#fnref:install_deps" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
+(requires HTTPS traffic allowed in the instance's firewall settings)&#160;<a class="footnote-backref" href="#fnref:install_deps" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
 </li>
 <li id="fn:lsof_kill">
 <p>In the instance's in-browser SSH:<br />
 <code>$ lsof -i:8888</code> (list process IDs filtered by port)<br />
 <code>$ kill 1234</code> (send a termination signal to the process ID)<br />
-(install <code>lsof</code> with <code>sudo apt-get install lsof</code>)&#160;<a class="footnote-backref" href="#fnref:lsof_kill" rev="footnote" title="Jump back to footnote 16 in the text">&#8617;</a></p>
+(install <code>lsof</code> with <code>sudo apt-get install lsof</code>)&#160;<a class="footnote-backref" href="#fnref:lsof_kill" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
 </li>
 <li id="fn:networking">
-<p>In the Developers Console, manage IP addresses under "Products &amp; services" &gt; "Networking".&#160;<a class="footnote-backref" href="#fnref:networking" rev="footnote" title="Jump back to footnote 17 in the text">&#8617;</a></p>
+<p>In the Developers Console, manage IP addresses under "Products &amp; services" &gt; "Networking".&#160;<a class="footnote-backref" href="#fnref:networking" rev="footnote" title="Jump back to footnote 16 in the text">&#8617;</a></p>
 </li>
 <li id="fn:host_id">
-<p>Because the external IP address was reassigned to a new instance, a warning will appear that the remote host identification has changed. To remove the offending ECDSA key from <code>known_hosts</code>, in Chrome, open the JavaScript console (Ctrl+Shift+J) and run <code>term_.command.removeKnownHostByIndex(idx)</code> where idx is the given line number in <code>known_hosts</code>, e.g. from the warning line <code>Offending ECDSA key in /.ssh/known_hosts:1</code>, idx=1.&#160;<a class="footnote-backref" href="#fnref:host_id" rev="footnote" title="Jump back to footnote 18 in the text">&#8617;</a></p>
+<p>Because the external IP address was reassigned to a new instance, a warning will appear that the remote host identification has changed. To remove the offending ECDSA key from <code>known_hosts</code>, in Chrome, open the JavaScript console (Ctrl+Shift+J) and run <code>term_.command.removeKnownHostByIndex(idx)</code> where idx is the given line number in <code>known_hosts</code>, e.g. from the warning line <code>Offending ECDSA key in /.ssh/known_hosts:1</code>, idx=1.&#160;<a class="footnote-backref" href="#fnref:host_id" rev="footnote" title="Jump back to footnote 17 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

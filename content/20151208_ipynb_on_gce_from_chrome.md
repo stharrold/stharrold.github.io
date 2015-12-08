@@ -47,7 +47,7 @@ Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its in
 
 **Why do I use IPython Notebooks?**
 
-[IPython (Jupyter) Notebooks](http://ipython.org/notebook.html) are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages.
+[IPython (Jupyter) Notebooks](http://ipython.org/notebook.html) are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages. I prefer the [Continuum Analytics Anaconda Python distribution](https://www.continuum.io/) for its [Conda package manager](http://conda.pydata.org/docs/). I'm using Python 3.5.
 
 **Why do I use Cloud9?**
 
@@ -68,7 +68,7 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
     * [Update the Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
     * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) and might as well connect to GitHub.[^use_less]
 * Start a Jupyter Notebook server on the instance from the in-browser SSH:
-    * [Install Python](https://www.continuum.io/downloads) on the instance.[^anaconda]
+    * [Install Python](https://www.continuum.io/downloads) on the instance.
     * Start a [Jupyter Notebook](http://jupyter.org/) server:  
       `$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &`  
       `$ disown 1234` (where `1234` is the process ID)[^disown]
@@ -147,8 +147,6 @@ Some links I found helpful for this blog post:
     Reassigning a static external IP address to a new instance when changing instances is often more convenient than changing an ephemeral IP address in all connections to the instance, e.g. in Chrome Secure Shell and Cloud9.
 [^use_less]:
     For Google's in-browser SSH, `xclip` does not function. Copy the public key from `less`.
-[^anaconda]:
-    I prefer the Continuum Analytics Anaconda Python distribution for its [Conda package manager](http://conda.pydata.org/docs/). I use Python 3.5.
 [^disown]:
     Disowning a background process (the control operator `&`) from the shell allows a process to continue running in the background when the shell is closed.
 [^keys]:
