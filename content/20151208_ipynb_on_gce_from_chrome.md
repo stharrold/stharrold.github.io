@@ -17,7 +17,7 @@ In October 2015, I bought a Chromebook with the intent of learning how to move m
 Brief setup routine:
 
 <a href="/static/20151208_ipynb_on_gce_from_chrome/20151208_chrome_secure_shell_settings_821x451pix.png" type="image/jpeg">
-    <img src="/static/20151208_ipynb_on_gce_from_chrome/20151208_chrome_secure_shell_settings_821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="400" />
+    <img src="/static/20151208_ipynb_on_gce_from_chrome/20151208_chrome_secure_shell_settings_821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="320" />
 </a>
 
 * Start a [Google Compute Engine](https://cloud.google.com/compute/) virtual machine instance.
@@ -26,7 +26,7 @@ Brief setup routine:
 `$ disown 1234` (where `1234` is the process ID)
 * Create an [SSH tunnel](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html) to forward a local port to the server's port on the instance:  
 `$ ssh -f -N -L localhost:8888:0.0.0.0:8888 samuel_harrold@123.123.123.123`  
-For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo), omit `-f` to keep the tunnel open (see screenshot at right).
+For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo), omit `-f` to keep the tunnel open (see screenshot).
 * View the server at `http://localhost:8888`
 * I use the [Cloud9 IDE](https://c9.io/?redirect=0) and connect the instance as an [SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace).
 
