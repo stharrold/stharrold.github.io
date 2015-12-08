@@ -298,8 +298,8 @@ Data Science Demos            </a>
 <h3 id="overview">Overview</h3>
 <p>In October 2015, I bought a Chromebook with the intent of learning how to move my data-science development environment to the cloud. In exchange for an extra 5&nbsp;minutes of setup, I now have a flexible infrastructure that can scale with the task. This setup is cross-platform in that it can be used on any laptop with Chrome, not just a Chromebook.</p>
 <p>Brief setup routine:</p>
-<p><a href="/static/20151208_ipynb_on_gce_from_chrome/chrome_secure_shell_settings_795x487pix.png" type="image/jpeg">
-    <img src="/static/20151208_ipynb_on_gce_from_chrome/chrome_secure_shell_settings_795x487pix.png" alt="Chrome Secure Shell settings" align="right" width="400" />
+<p><a href="/static/20151208_ipynb_on_gce_from_chrome/20151208_chrome_secure_shell_settings_821x451pix.png" type="image/jpeg">
+    <img src="/static/20151208_ipynb_on_gce_from_chrome/20151208_chrome_secure_shell_settings_821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="400" />
 </a></p>
 <ul>
 <li>Start a <a href="https://cloud.google.com/compute/">Google Compute Engine</a> virtual machine instance.</li>
@@ -359,6 +359,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <li>Within Chrome, install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> and forward a port (see screenshot above):<br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
+<code>Port: 22</code>
 <code>Identity: id_rsa</code> <sup id="fnref:import"><a class="footnote-ref" href="#fn:import" rel="footnote">11</a></sup><br />
 <code>SSH Arguments: -N -L localhost:8888:0.0.0.0:8888</code> <sup id="fnref:no_f"><a class="footnote-ref" href="#fn:no_f" rel="footnote">12</a></sup> <sup id="fnref:paste"><a class="footnote-ref" href="#fn:paste" rel="footnote">13</a></sup></li>
 <li>View the server at <code>http://localhost:8888</code>.</li>

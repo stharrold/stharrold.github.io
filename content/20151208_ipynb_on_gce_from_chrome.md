@@ -16,8 +16,8 @@ In October 2015, I bought a Chromebook with the intent of learning how to move m
 
 Brief setup routine:
 
-<a href="/static/20151208_ipynb_on_gce_from_chrome/chrome_secure_shell_settings_795x487pix.png" type="image/jpeg">
-    <img src="/static/20151208_ipynb_on_gce_from_chrome/chrome_secure_shell_settings_795x487pix.png" alt="Chrome Secure Shell settings" align="right" width="400" />
+<a href="/static/20151208_ipynb_on_gce_from_chrome/20151208_chrome_secure_shell_settings_821x451pix.png" type="image/jpeg">
+    <img src="/static/20151208_ipynb_on_gce_from_chrome/20151208_chrome_secure_shell_settings_821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="400" />
 </a>
 
 * Start a [Google Compute Engine](https://cloud.google.com/compute/) virtual machine instance.
@@ -77,6 +77,7 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
     * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot above):  
     `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
     `Hostname: 123.123.123.123` (the instance's external IP address)  
+    `Port: 22`
     `Identity: id_rsa` [^import]  
     `SSH Arguments: -N -L localhost:8888:0.0.0.0:8888` [^no_f] [^paste]
     * View the server at `http://localhost:8888`.
