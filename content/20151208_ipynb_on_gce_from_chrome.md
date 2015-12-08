@@ -130,6 +130,12 @@ Some links I found helpful for this blog post:
     * [Running an IPython Notebook from Amazon Web Services.](https://gist.github.com/iamatypeofwalrus/5183133)
     * [Hosting a password-protected IPython Notebook on Google Compute Engine.](https://gist.github.com/samklr/07bee2868a6ed72a8ec4)
 
+## Acknowledgements
+
+Thanks to John for his early review.
+
+* John Jardel: [http://thewannabedatascientist.blogspot.com](http://thewannabedatascientist.blogspot.com)
+
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
 ///Footnotes Go Here///
