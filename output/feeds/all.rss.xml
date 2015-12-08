@@ -4,6 +4,7 @@
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#first-time-setup"&gt;First-time setup&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#helpful-links"&gt;Helpful links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#acknowledgements"&gt;Acknowledgements&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#footnotes"&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -140,6 +141,11 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;li&gt;&lt;a href="https://gist.github.com/samklr/07bee2868a6ed72a8ec4"&gt;Hosting a password-protected IPython Notebook on Google Compute Engine.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="acknowledgements"&gt;Acknowledgements&lt;/h3&gt;
+&lt;p&gt;Thanks to John for his early review.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;John Jardel: &lt;a href="http://thewannabedatascientist.blogspot.com"&gt;http://thewannabedatascientist.blogspot.com&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3 id="footnotes"&gt;Footnotes&lt;/h3&gt;
 &lt;div class="footnote"&gt;
