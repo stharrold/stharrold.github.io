@@ -1,8 +1,8 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2015-12-08T17:45:00Z
-Tags: devops, how-to, python, gce, chrome, cloud9, ssh
+Modified: 2015-12-20T16:20:00Z
+Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
 Alias: 20151208_ipynb_on_gce_from_chrome.html
@@ -38,7 +38,7 @@ For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell
 * I wanted to save money.
     * With a cloud-based platform, I only need a laptop as a web browser. I spent $170 on my [ASUS C201 Chromebook with 4GB RAM](http://www.amazon.com/gp/product/B00VUV0MG0).
     * I spend about $20 per month on [Google Cloud](https://cloud.google.com/) services.[^gce-prices]
-    * I spend $10 per month on a [Cloud9 micro plan](https://c9.io/pricing/public) for the SSH workspaces.
+    * I spend $10 per month on a [Cloud9 micro plan](https://c9.io/pricing/public) for SSH workspaces.
 * I wanted a reproducible environment. Snapshots can serve as simple backups of instances. For more complex platform managment, there's the [Google Cloud Shell](https://cloud.google.com/cloud-shell/docs/).
 * I wanted to test the scalability of a pipeline. On a cloud platform, I can mount disks with large data sets and change the instance size to test how efficiently algorithms use CPUs and memory. Connecting other cloud services expands the possibilities.[^alts]
 
@@ -124,6 +124,7 @@ Some links I found helpful for this blog post:
     * [Choosing between Debian and Ubuntu.](http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html)
     * [SSH login without password.](http://www.linuxproblem.org/art_9.html)
     * [SSH port forwarding (tunnels) explained.](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html)
+    * [Google's recommended best practices for securing communications with Compute Engine instances.](https://cloud.google.com/solutions/connecting-securely)
     * [Download from Google Drive with `wget`](http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal)
     * [Download from Kaggle with `wget`](https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line)
     * [`disown` examples.](http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/)
@@ -145,7 +146,7 @@ Thanks to John and Julie for their early reviews.
 [^gce-prices]:
     As of December 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about <span>$4.50</span> per month. Running a 32-core virtual CPU instance with 120GB RAM costs about <span>$1.12</span> per hour.
 [^alts]:
-    There are also hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/).
+    There are also hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Google Cloud Datalab](https://cloud.google.com/datalab/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/).
 [^c9-debug]:
     As of December 2015, Cloud9 doesn't support debugging in Python. However, this hasn't been a problem for me since I use [pdb](https://docs.python.org/3.5/library/pdb.html) for debugging and [pytest](http://pytest.org/latest/) for testing. I use the IDE mostly for code navigation, autocomplete, and managing packages with many files.
 [^mem-cpu]:
