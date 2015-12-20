@@ -28,7 +28,7 @@ DISPLAY_CATEGORIES_ON_MENU = False
 # Remove all old files and directories when building.
 DELETE_OUTPUT_DIRECTORY = True
 # Markdown extensions from http://pythonhosted.org/Markdown/extensions/index.html
-MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'toc(title=Table of contents, baselevel=2)']
+MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'toc(title=Contents, baselevel=2)']
 PATH = 'content'
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.

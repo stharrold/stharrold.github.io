@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Data Science Demos</title><link>https://stharrold.github.io/</link><description></description><atom:link href="https://stharrold.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 08 Dec 2015 17:45:00 +0000</lastBuildDate><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Table of contents&lt;/span&gt;&lt;ul&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Data Science Demos</title><link>https://stharrold.github.io/</link><description></description><atom:link href="https://stharrold.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 20 Dec 2015 16:20:00 +0000</lastBuildDate><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#first-time-setup"&gt;First-time setup&lt;/a&gt;&lt;/li&gt;
@@ -31,7 +31,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;li&gt;I wanted to save money.&lt;ul&gt;
 &lt;li&gt;With a cloud-based platform, I only need a laptop as a web browser. I spent $170 on my &lt;a href="http://www.amazon.com/gp/product/B00VUV0MG0"&gt;ASUS C201 Chromebook with 4GB RAM&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;I spend about $20 per month on &lt;a href="https://cloud.google.com/"&gt;Google Cloud&lt;/a&gt; services.&lt;sup id="fnref:gce-prices"&gt;&lt;a class="footnote-ref" href="#fn:gce-prices" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
-&lt;li&gt;I spend $10 per month on a &lt;a href="https://c9.io/pricing/public"&gt;Cloud9 micro plan&lt;/a&gt; for the SSH workspaces.&lt;/li&gt;
+&lt;li&gt;I spend $10 per month on a &lt;a href="https://c9.io/pricing/public"&gt;Cloud9 micro plan&lt;/a&gt; for SSH workspaces.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;I wanted a reproducible environment. Snapshots can serve as simple backups of instances. For more complex platform managment, there's the &lt;a href="https://cloud.google.com/cloud-shell/docs/"&gt;Google Cloud Shell&lt;/a&gt;.&lt;/li&gt;
@@ -131,6 +131,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;li&gt;&lt;a href="http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html"&gt;Choosing between Debian and Ubuntu.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.linuxproblem.org/art_9.html"&gt;SSH login without password.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html"&gt;SSH port forwarding (tunnels) explained.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://cloud.google.com/solutions/connecting-securely"&gt;Google's recommended best practices for securing communications with Compute Engine instances.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal"&gt;Download from Google Drive with &lt;code&gt;wget&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line"&gt;Download from Kaggle with &lt;code&gt;wget&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/"&gt;&lt;code&gt;disown&lt;/code&gt; examples.&lt;/a&gt;&lt;/li&gt;
@@ -156,7 +157,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;p&gt;As of December 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about &lt;span&gt;$4.50&lt;/span&gt; per month. Running a 32-core virtual CPU instance with 120GB RAM costs about &lt;span&gt;$1.12&lt;/span&gt; per hour.&amp;#160;&lt;a class="footnote-backref" href="#fnref:gce-prices" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:alts"&gt;
-&lt;p&gt;There are also hosted services like &lt;a href="https://wakari.io/"&gt;Continuum Analytics Wakari&lt;/a&gt;, &lt;a href="https://c9.io/?redirect=0"&gt;Cloud9 hosted workspaces&lt;/a&gt;, and &lt;a href="https://www.digitalocean.com/"&gt;Digital Ocean&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:alts" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;There are also hosted services like &lt;a href="https://wakari.io/"&gt;Continuum Analytics Wakari&lt;/a&gt;, &lt;a href="https://cloud.google.com/datalab/"&gt;Google Cloud Datalab&lt;/a&gt;, &lt;a href="https://c9.io/?redirect=0"&gt;Cloud9 hosted workspaces&lt;/a&gt;, and &lt;a href="https://www.digitalocean.com/"&gt;Digital Ocean&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:alts" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:c9-debug"&gt;
 &lt;p&gt;As of December 2015, Cloud9 doesn't support debugging in Python. However, this hasn't been a problem for me since I use &lt;a href="https://docs.python.org/3.5/library/pdb.html"&gt;pdb&lt;/a&gt; for debugging and &lt;a href="http://pytest.org/latest/"&gt;pytest&lt;/a&gt; for testing. I use the IDE mostly for code navigation, autocomplete, and managing packages with many files.&amp;#160;&lt;a class="footnote-backref" href="#fnref:c9-debug" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
@@ -212,7 +213,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;p&gt;Because the external IP address was reassigned to a new instance, a warning will appear that the remote host identification has changed. To remove the offending ECDSA key from &lt;code&gt;known_hosts&lt;/code&gt;, in Chrome, open the JavaScript console (Ctrl+Shift+J) and run &lt;code&gt;term_.command.removeKnownHostByIndex(idx)&lt;/code&gt; where idx is the given line number in &lt;code&gt;known_hosts&lt;/code&gt;, e.g. from the warning line &lt;code&gt;Offending ECDSA key in /.ssh/known_hosts:1&lt;/code&gt;, idx=1.&amp;#160;&lt;a class="footnote-backref" href="#fnref:host-id" rev="footnote" title="Jump back to footnote 17 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Tue, 08 Dec 2015 17:45:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-12-08:20151208-ipynb-on-gce-from-chrome.html</guid><category>devops</category><category>how-to</category><category>python</category><category>gce</category><category>chrome</category><category>cloud9</category><category>ssh</category></item><item><title>Test page and template</title><link>https://stharrold.github.io/20151030-test.html</link><description>&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Table of contents&lt;/span&gt;&lt;ul&gt;
+&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Sun, 20 Dec 2015 16:20:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-12-08:20151208-ipynb-on-gce-from-chrome.html</guid><category>devops</category><category>how-to</category><category>python</category><category>cloud-computing</category><category>chrome</category><category>cloud9</category><category>ssh</category></item><item><title>Test page and template</title><link>https://stharrold.github.io/20151030-test.html</link><description>&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#heading2"&gt;Heading2&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#heading3"&gt;Heading3&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#heading4"&gt;Heading4&lt;/a&gt;&lt;ul&gt;
@@ -244,9 +245,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test-full.html"&gt;20151030-test-full.html&lt;/a&gt;  &lt;/p&gt;
 &lt;h3 id="body"&gt;Body&lt;/h3&gt;
 &lt;p&gt;Main text&lt;sup id="fnref:1"&gt;&lt;a class="footnote-ref" href="#fn:1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Collapsable text:&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;Collapsible text:&lt;br /&gt;
 &lt;div&gt;
     Short answer.
     &lt;div class="btn-group"&gt;
@@ -255,8 +254,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
         &lt;/button&gt;
     &lt;/div&gt;
     &lt;div id="details" class="collapse"&gt;Long answer.&lt;/div&gt;
-&lt;/div&gt;
-
+&lt;/div&gt;&lt;/p&gt;
 &lt;h4 id="include-exported-files"&gt;Include exported files&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;A plot and a screenshot:&lt;/li&gt;
@@ -688,4 +686,4 @@ $('.collapse').on('shown.bs.collapse', function() {
 }).on('hidden.bs.collapse', function() {
   $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
 });
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Tue, 08 Dec 2015 17:45:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-10-30:20151030-test.html</guid><category>test</category><category>how-to</category><category>template</category></item></channel></rss>
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Sun, 20 Dec 2015 16:20:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-10-30:20151030-test.html</guid><category>test</category><category>how-to</category><category>template</category></item></channel></rss>
