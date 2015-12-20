@@ -1,8 +1,8 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2015-12-08T17:45:00Z
-Tags: devops, how-to, python, gce, chrome, cloud9, ssh
+Modified: 2015-12-20T16:20:00Z
+Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
 Alias: 20151208_ipynb_on_gce_from_chrome.html
