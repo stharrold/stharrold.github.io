@@ -2,11 +2,11 @@ Title: Predicting household income from census data
 Status: draft
 Date: 2015-12-30T12:00:00Z
 Modified: 2014-12-30T12:00:00Z
-Tags: predictive-analytics, how-to, python, regression, random-forest
-Category: Predictive Analytics
+Tags: machine-learning, predictive-analytics, how-to, python, regression
+Category: Machine Learning
 Slug: 20151230-predict-income-from-census
 Authors: Samuel Harrold
-Summary: I use Census Bureau data to predict a household's income.
+Summary: I predict a household's income using data from the Census Bureau.
 
 [TOC]
 
@@ -35,8 +35,10 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 
 * TODO:
     * Purpose
-    * Data source
-    * 
+    * ETL: docs, data dict, zip file, check validation files
+    * Feature extraction: map cat cols to heir cols, incremental PCA, clustering, informative priors
+    * Data mining: feature corrs, household corrs, pairplots, dim-red vis
+    * Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, make partial dependence plots
 
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->

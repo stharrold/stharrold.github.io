@@ -169,7 +169,7 @@ init_mathjax();
 <link rel="canonical" href="/drafts/20151230-predict-income-from-census.html">
 
         <meta name="author" content="Samuel Harrold" />
-        <meta name="keywords" content="predictive-analytics,how-to,python,regression,random-forest" />
+        <meta name="keywords" content="machine-learning,predictive-analytics,how-to,python,regression" />
         <meta name="description" content="I use Census Bureau data to predict a household&#39;s income." />
 
         <meta property="og:site_name" content="Data Science Demos" />
@@ -178,12 +178,12 @@ init_mathjax();
         <meta property="og:url" content="/drafts/20151230-predict-income-from-census.html"/>
         <meta property="og:description" content="I use Census Bureau data to predict a household&#39;s income."/>
         <meta property="article:published_time" content="2015-12-30" />
-            <meta property="article:section" content="Predictive Analytics" />
+            <meta property="article:section" content="Machine Learning" />
+            <meta property="article:tag" content="machine-learning" />
             <meta property="article:tag" content="predictive-analytics" />
             <meta property="article:tag" content="how-to" />
             <meta property="article:tag" content="python" />
             <meta property="article:tag" content="regression" />
-            <meta property="article:tag" content="random-forest" />
             <meta property="article:author" content="Samuel Harrold" />
 
 
@@ -264,10 +264,12 @@ Data Science Demos            </a>
             </span>
 
         <span class="label label-default">Category</span>
-        <a href="/category/predictive-analytics.html">Predictive Analytics</a>
+        <a href="/category/machine-learning.html">Machine Learning</a>
 
 
 <span class="label label-default">Tags</span>
+	<a href="/tag/machine-learning.html">machine-learning</a>
+        /
 	<a href="/tag/predictive-analytics.html">predictive-analytics</a>
         /
 	<a href="/tag/how-to.html">how-to</a>
@@ -275,8 +277,6 @@ Data Science Demos            </a>
 	<a href="/tag/python.html">python</a>
         /
 	<a href="/tag/regression.html">regression</a>
-        /
-	<a href="/tag/random-forest.html">random-forest</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -297,7 +297,7 @@ Data Science Demos            </a>
 <p><strong>Why am I using the ACS household-level data?</strong></p>
 <ul>
 <li>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">1</a></sup> and consumers often spend on behalf of their household<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">2</a></sup>.</li>
-<li>Connecting ACS household-level data with the personal-level data is the next step for this project.</li>
+<li>Connecting ACS household-level data with the personal-level data is a future step for this project.</li>
 </ul>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
 <ul>
@@ -311,8 +311,10 @@ Data Science Demos            </a>
 <ul>
 <li>TODO:<ul>
 <li>Purpose</li>
-<li>Data source</li>
-<li></li>
+<li>ETL: docs, data dict, zip file, check validation files</li>
+<li>Feature extraction: map cat cols to heir cols, incremental PCA, clustering, informative priors</li>
+<li>Data mining: feature corrs, household corrs, pairplots, dim-red vis</li>
+<li>Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, make partial dependence plots</li>
 </ul>
 </li>
 </ul>
