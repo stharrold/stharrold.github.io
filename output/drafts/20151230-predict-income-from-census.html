@@ -170,13 +170,13 @@ init_mathjax();
 
         <meta name="author" content="Samuel Harrold" />
         <meta name="keywords" content="machine-learning,predictive-analytics,how-to,python,regression" />
-        <meta name="description" content="I use Census Bureau data to predict a household&#39;s income." />
+        <meta name="description" content="I predict a household&#39;s income using data from the Census Bureau." />
 
         <meta property="og:site_name" content="Data Science Demos" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Predicting household income from census data"/>
         <meta property="og:url" content="/drafts/20151230-predict-income-from-census.html"/>
-        <meta property="og:description" content="I use Census Bureau data to predict a household&#39;s income."/>
+        <meta property="og:description" content="I predict a household&#39;s income using data from the Census Bureau."/>
         <meta property="article:published_time" content="2015-12-30" />
             <meta property="article:section" content="Machine Learning" />
             <meta property="article:tag" content="machine-learning" />
@@ -284,21 +284,26 @@ Data Science Demos            </a>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#motivations">Motivations</a></li>
 <li><a href="#predicting-household-income">Predicting household income</a></li>
+<li><a href="#helpful-links">Helpful links</a></li>
 <li><a href="#footnotes">Footnotes</a></li>
 </ul>
 </div>
 <h3 id="overview">Overview</h3>
 <p>The <a href="https://www.census.gov/about/what.html">Census Bureau</a> collects data from people in the United States throughout the year. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public. In this post I predict a household's total annual income using the Census Bureau's <a href="http://www.census.gov/programs-surveys/acs/about.html">American Community Survey (ACS)</a>.</p>
 <h3 id="motivations">Motivations</h3>
-<p><strong>Why am I using the American Community Survey?</strong></p>
+<p><strong>Why am I using Python instead of R?</strong></p>
 <ul>
-<li>TODO: notes from google keep.</li>
+<li>TODO</li>
+</ul>
+<p><strong>Why am I using the American Community Survey (ACS)?</strong></p>
+<ul>
+<li>The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.</li>
+<li>The ACS is a cultivated, thorough dataset.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">1</a></sup> The ACS has many quality controls to ensure that it is representative, and it samples about 3 million addresses per year with a response rate often over 95%.</li>
+<li>The ACS is a timeseries dataset. The ACS samples continuously and releases data once per year. As a timeseries, the data can be used to predict current and future quantities, which is future step for this project.</li>
+<li>With the above points in mind, I recognize that using ACS data can be problematic. Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">2</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">3</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
 </ul>
 <p><strong>Why am I using the ACS household-level data?</strong></p>
-<ul>
-<li>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">1</a></sup> and consumers often spend on behalf of their household<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">2</a></sup>.</li>
-<li>Connecting ACS household-level data with the personal-level data is a future step for this project.</li>
-</ul>
+<p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">4</a></sup> and consumers often spend on behalf of their household<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">5</a></sup>. Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
 <ul>
 <li>TODO:<ul>
@@ -311,10 +316,18 @@ Data Science Demos            </a>
 <ul>
 <li>TODO:<ul>
 <li>Purpose</li>
-<li>ETL: docs, data dict, zip file, check validation files</li>
-<li>Feature extraction: map cat cols to heir cols, incremental PCA, clustering, informative priors</li>
+<li>ETL: docs, data dict, zip file, check validation files, imputation (knn?)</li>
+<li>Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?</li>
 <li>Data mining: feature corrs, household corrs, pairplots, dim-red vis</li>
-<li>Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, make partial dependence plots</li>
+<li>Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors</li>
+</ul>
+</li>
+</ul>
+<h3 id="helpful-links">Helpful links</h3>
+<p>Some links I found helpful for this blog post:</p>
+<ul>
+<li>ACS:<ul>
+<li>TODO</li>
 </ul>
 </li>
 </ul>
@@ -322,14 +335,31 @@ Data Science Demos            </a>
 <div class="footnote">
 <hr />
 <ol>
+<li id="fn:acs-method">
+<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a>) includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:data-harm">
+<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:prob-race">
+<p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">ACS refers to "race" and "ethnicity" separately</a>. The <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">American Anthropological Association recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
+<a href="http://www.census.gov/topics/population/race/about.html">Census Bureau's statement about "race"</a><br />
+<a href="http://wonder.cdc.gov/wonder/help/populations/bridged-race/directive15.html">Office of Management and Budget, Directive 15, "Race and Ethnic Standards for Federal Statistics and Administrative Reporting"</a><br />
+<a href="http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583">American Anthropological Association, "Statement on Race"</a><br />
+<a href="https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census">Wikipedia article "Race and ethnicity in the United States Census"</a>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
 <li id="fn:cr-dbs">
-<p><a href="http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm">Examples of consumer databases</a> from Consumer Reports and how they're used.&#160;<a class="footnote-backref" href="#fnref:cr-dbs" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>See <a href="http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm">examples of consumer databases</a> from Consumer Reports and how they're used.&#160;<a class="footnote-backref" href="#fnref:cr-dbs" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:bea-pce">
-<p><a href="http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm">Personal consumption expenditures</a> from the Bureau of Econonic Analysis are measured on a per-household basis.&#160;<a class="footnote-backref" href="#fnref:bea-pce" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>The Bureau of Economic Analysis measures <a href="http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm">personal consumption expenditures</a> on a per-household basis.
+<!-- ## Predicting household income -->&#160;<a class="footnote-backref" href="#fnref:bea-pce" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
+<!-- ## Overview -->
+
+<!-- ## Motivations -->
             </div>
             <!-- /.entry-content -->
     <hr/>
