@@ -35,10 +35,11 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 
 * TODO:
     * Purpose
-    * ETL: docs, data dict, zip file, check validation files
-    * Feature extraction: map cat cols to heir cols, incremental PCA, clustering, informative priors
+    * ETL: docs, data dict, zip file, check validation files, imputation (knn?)
+    * Feature extraction: map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?
     * Data mining: feature corrs, household corrs, pairplots, dim-red vis
-    * Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, make partial dependence plots
+    * Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors
+
 
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
