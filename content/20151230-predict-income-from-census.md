@@ -65,9 +65,11 @@ Some links I found helpful for this blog post:
     Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the [ACLU's FAQ section about census data](https://www.aclu.org/frequently-asked-questions-national-census) and the [Wikipedia article "Internment of Japanese Americans"](https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans).
 [^prob-race]:
     "Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the [ACS refers to "race" and "ethnicity" separately](http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf). The [American Anthropological Association recommended in 1997](http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf) that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:  
-    [Census Bureau's statement about "race"](http://www.census.gov/topics/population/race/about.html)  
-    [Office of Management and Budget, Directive 15, "Race and Ethnic Standards for Federal Statistics and Administrative Reporting"](http://wonder.cdc.gov/wonder/help/populations/bridged-race/directive15.html)  
-    [American Anthropological Association, "Statement on Race"](http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583)  
+    [Census Bureau's statement about "race" (2013)](http://www.census.gov/topics/population/race/about.html)  
+    [Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&nbsp;15 (1977)](https://www.whitehouse.gov/omb/fedreg_notice_15/)  
+    [Office of Management and Budget, "Review of the Racial and Ethnic Standards to the OMB Concerning Changes" (Jul&nbsp;1997)](https://www.whitehouse.gov/omb/fedreg_directive_15)  
+    [Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&nbsp;1997)](https://www.whitehouse.gov/omb/fedreg_1997standards)  
+    [American Anthropological Association, "Statement on Race" (1998)](http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583)  
     [Wikipedia article "Race and ethnicity in the United States Census"](https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census)
 [^cr-dbs]:
     See [examples of consumer databases](http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm) from Consumer Reports and how they're used.
