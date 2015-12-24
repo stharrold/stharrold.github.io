@@ -23,7 +23,7 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 **Why am I using the American Community Survey (ACS)?**
 
 * The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
-* The ACS is a cultivated, thorough dataset.[^acs-method] The ACS has many quality controls to ensure that it is representative, and it samples about 3 million addresses per year with a response rate often over 95%.
+* The ACS is a cultivated, thorough dataset.[^acs-method] The ACS has many quality controls to ensure that it is representative, and it samples about 3&nbsp;million addresses per year with a response rate often over 95%.
 * The ACS is a timeseries dataset. The ACS samples continuously and releases data once per year. As a timeseries, the data can be used to predict current and future quantities, which is future step for this project.
 * However, I recognize that using ACS data can be problematic. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
 
@@ -33,15 +33,14 @@ Companies collect information on their consumers[^cr-dbs] and consumers often sp
 
 **Why am I using the ACS 5-year estimate?**
 
-* TODO:
-    * Highest granularity
-    * Forecasting the 5-year estimate to be windowed on the current and next years is a future step for this project.
+As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.[^acs-ests] Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision with the finest granularity for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.
 
 ## Predicting household income
 
 * TODO:
     * Purpose
     * ETL: docs, data dict, zip file, check validation files, imputation (knn?)
+        * Download the data from FTP (TODO).[^no-api]
     * Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?
     * Data mining: feature corrs, household corrs, pairplots, dim-red vis
     * Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors
@@ -75,4 +74,8 @@ Some links I found helpful for this blog post:
     See [examples of consumer databases](http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm) from Consumer Reports and how they're used.
 [^bea-pce]:
     The Bureau of Economic Analysis measures [personal consumption expenditures](http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm) on a per-household basis.
+[^acs-ests]:
+    The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing and using a dataset, see [Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
 <!-- ## Predicting household income -->
+[^no-api]:
+    I'm not using the [Census Bureau's API](http://www.census.gov/developers/) because this project does not require dynamic access to a subset of the data.
