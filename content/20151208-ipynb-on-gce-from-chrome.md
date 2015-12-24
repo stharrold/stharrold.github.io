@@ -67,14 +67,14 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
         * Project access: Reserve an external IP address ("Networking" > "External IP"). Other settings can be left at default.[^ext-ip] For this example, I give `123.123.123.123` as my instance's static external IP address.
     * Connect to the instance, e.g. with Google's [in-browser SSH](https://cloud.google.com/compute/docs/ssh-in-browser).
     * [Update the Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
-    * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) and might as well connect to GitHub.[^use-less]
+    * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) <span class="post-ref" id="ssh-keygen"></span> and might as well connect to GitHub.[^use-less]
 * Start a Jupyter Notebook server on the instance from the in-browser SSH:
     * [Install Python](https://www.continuum.io/downloads) on the instance.
     * Start a [Jupyter Notebook](http://jupyter.org/) server:  
       `$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &`  
       `$ disown 1234` (where `1234` is the process ID)[^disown]
 * Create an SSH tunnel to forward a local port to the server's port on the instance:
-    * Generate an SSH key pair for the Chromebook as above[^keys] and add the Chromebook's public key to the instance's `authorized_keys`.[^cat]
+    * Generate an SSH key pair for the Chromebook as <a class="post-backref" href="#ssh-keygen">above</a>[^keys] and add the Chromebook's public key to the instance's `authorized_keys`.[^cat]
     * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot above):  
     `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
     `Hostname: 123.123.123.123` (the instance's external IP address)  
