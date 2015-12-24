@@ -25,7 +25,7 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 * The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
 * The ACS is a cultivated, thorough dataset.[^acs-method] The ACS has many quality controls to ensure that it is representative, and it samples about 3 million addresses per year with a response rate often over 95%.
 * The ACS is a timeseries dataset. The ACS samples continuously and releases data once per year. As a timeseries, the data can be used to predict current and future quantities, which is future step for this project.
-* With the above points in mind, I recognize that using ACS data can be problematic. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
+* However, I recognize that using ACS data can be problematic. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
 
 **Why am I using the ACS household-level data?**
 

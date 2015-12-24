@@ -350,7 +350,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate an SSH key pair for the instance</a> <span id="ssh-keygen"></span> and might as well connect to GitHub.<sup id="fnref:use-less"><a class="footnote-ref" href="#fn:use-less" rel="footnote">7</a></sup></li>
 </ul>
 </li>
-<li>Start a Jupyter Notebook server on the instance from the in-browser SSH:<ul>
+<li><span id="ipynb-server">Start a Jupyter Notebook server</span> on the instance from the in-browser SSH:<ul>
 <li><a href="https://www.continuum.io/downloads">Install Python</a> on the instance.</li>
 <li>Start a <a href="http://jupyter.org/">Jupyter Notebook</a> server:<br />
 <code>$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &amp;</code><br />
@@ -358,7 +358,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>Create an SSH tunnel to forward a local port to the server's port on the instance:<ul>
-<li>Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a><sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">9</a></sup> and add the Chromebook's public key to the instance's <code>authorized_keys</code>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">10</a></sup></li>
+<li>Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a><sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">9</a></sup> and <span id="ssh-keyadd">add the Chromebook's public key to the instance's <code>authorized_keys</code></span>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">10</a></sup></li>
 <li>Within Chrome, install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> and forward a port (see screenshot <a href="#screenshot">above</a>):<br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
@@ -370,7 +370,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </li>
 <li>For an IDE, connect a Cloud9 remote SSH workspace to the instance:<ul>
 <li><a href="https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions">Install Node.js</a> on the instance.</li>
-<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>, copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code> as above, then open the workspace:<sup id="fnref:install-deps"><a class="footnote-ref" href="#fn:install-deps" rel="footnote">14</a></sup><br />
+<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>, copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code> as <a href="#ssh-keyadd">above</a>, then open the workspace:<sup id="fnref:install-deps"><a class="footnote-ref" href="#fn:install-deps" rel="footnote">14</a></sup><br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
 <code>Initial path: /home/samuel_harrold</code><br />
@@ -378,7 +378,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <code>Node.js binary path: /usr/bin/nodejs</code> (in the instance's shell, run <code>which nodejs</code>)</li>
 </ul>
 </li>
-<li>To shutdown the instance:<ul>
+<li><span id="shutdown">To shutdown the instance</span>:<ul>
 <li>Close the Jupyter Notebook and the Chrome Secure Shell tabs. Kill the Jupyter Notebook server.<sup id="fnref:lsof-kill"><a class="footnote-ref" href="#fn:lsof-kill" rel="footnote">15</a></sup></li>
 <li>Close the Cloud9 workspace tab.</li>
 <li>"Stop" the instance in the Developers Console.</li>
@@ -386,7 +386,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </li>
 <li>For a simple backup of the instance, create a snapshot from the Developers Console. This can be done while the instance is running.</li>
 <li>To change the instance's machine type or disk size:<ul>
-<li>Shutdown the instance as above.</li>
+<li>Shutdown the instance as <a href="#shutdown">above</a>.</li>
 <li>Create a snapshot of the instance.</li>
 <li>Clone the instance but set the new boot disk to the new snapshot and...<ul>
 <li>...if changing the machine type, set the new machine type.</li>
@@ -394,7 +394,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>Reassign the external IP address to the new instance.<sup id="fnref:networking"><a class="footnote-ref" href="#fn:networking" rel="footnote">16</a></sup></li>
-<li>Start the Jupyter Notebook server on the instance and create an SSH tunnel as above.<sup id="fnref:host-id"><a class="footnote-ref" href="#fn:host-id" rel="footnote">17</a></sup></li>
+<li>Start the Jupyter Notebook server on the instance and create an SSH tunnel as <a href="#ipynb-server">above</a>.<sup id="fnref:host-id"><a class="footnote-ref" href="#fn:host-id" rel="footnote">17</a></sup></li>
 <li>Open the Cloud9 workspace.</li>
 </ul>
 </li>
@@ -468,7 +468,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <p>Disowning a background process (the control operator <code>&amp;</code>) from the shell allows a process to continue running in the background when the shell is closed.&#160;<a class="footnote-backref" href="#fnref:disown" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:keys">
-<p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above then move them to the Chromebook. I save mine under <code>Downloads/ssh</code> (no dot-file access without developer mode). Transfer the keys by copy-paste using <code>less</code> from instance's in-browser SSH and <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">a text editor app for Chromebook</a> or download them from a connected <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>: right-click the file &gt; "Download".&#160;<a class="footnote-backref" href="#fnref:keys" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+<p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as <a href="#ssh-keygen">above</a> then move them to the Chromebook. I save mine under <code>Downloads/ssh</code> (no dot-file access without developer mode). Transfer the keys by copy-paste using <code>less</code> from instance's in-browser SSH and <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">a text editor app for Chromebook</a> or download them from a connected <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>: right-click the file &gt; "Download".&#160;<a class="footnote-backref" href="#fnref:keys" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:cat">
 <p>To copy a local public SSH key, e.g. <code>id_rsa.pub</code>, to a remote machine's <code>authorized_keys</code>, in the instance's in-browser shell:<br />

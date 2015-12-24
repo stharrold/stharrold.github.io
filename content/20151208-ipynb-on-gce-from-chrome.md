@@ -70,13 +70,13 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
     * Connect to the instance, e.g. with Google's [in-browser SSH](https://cloud.google.com/compute/docs/ssh-in-browser).
     * [Update the Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
     * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) <span id="ssh-keygen"></span> and might as well connect to GitHub.[^use-less]
-* Start a Jupyter Notebook server on the instance from the in-browser SSH:
+* <span id="ipynb-server">Start a Jupyter Notebook server</span> on the instance from the in-browser SSH:
     * [Install Python](https://www.continuum.io/downloads) on the instance.
     * Start a [Jupyter Notebook](http://jupyter.org/) server:  
       `$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &`  
       `$ disown 1234` (where `1234` is the process ID)[^disown]
 * Create an SSH tunnel to forward a local port to the server's port on the instance:
-    * Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a>[^keys] and add the Chromebook's public key to the instance's `authorized_keys`.[^cat]
+    * Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a>[^keys] and <span id="ssh-keyadd">add the Chromebook's public key to the instance's `authorized_keys`</span>.[^cat]
     * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot <a href="#screenshot">above</a>):  
     `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
     `Hostname: 123.123.123.123` (the instance's external IP address)  
@@ -86,25 +86,25 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
     * View the server at `http://localhost:8888`.
 * For an IDE, connect a Cloud9 remote SSH workspace to the instance:
     * [Install Node.js](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) on the instance.
-    * Create a [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace), copy the public SSH key from Cloud9 to the instance's `authorized_keys` as above, then open the workspace:[^install-deps]  
+    * Create a [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace), copy the public SSH key from Cloud9 to the instance's `authorized_keys` as <a href="#ssh-keyadd">above</a>, then open the workspace:[^install-deps]  
       `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
       `Hostname: 123.123.123.123` (the instance's external IP address)  
       `Initial path: /home/samuel_harrold`  
       `Port: 22`  
       `Node.js binary path: /usr/bin/nodejs` (in the instance's shell, run `which nodejs`)
-* To shutdown the instance:
+* <span id="shutdown">To shutdown the instance</span>:
     * Close the Jupyter Notebook and the Chrome Secure Shell tabs. Kill the Jupyter Notebook server.[^lsof-kill]
     * Close the Cloud9 workspace tab.
     * "Stop" the instance in the Developers Console.
 * For a simple backup of the instance, create a snapshot from the Developers Console. This can be done while the instance is running.
 * To change the instance's machine type or disk size:
-    * Shutdown the instance as above.
+    * Shutdown the instance as <a href="#shutdown">above</a>.
     * Create a snapshot of the instance.
     * Clone the instance but set the new boot disk to the new snapshot and...
         * ...if changing the machine type, set the new machine type.
         * ...if changing the disk size, set the new disk size.
     * Reassign the external IP address to the new instance.[^networking]
-    * Start the Jupyter Notebook server on the instance and create an SSH tunnel as above.[^host-id]
+    * Start the Jupyter Notebook server on the instance and create an SSH tunnel as <a href="#ipynb-server">above</a>.[^host-id]
     * Open the Cloud9 workspace.
 
 ## Helpful links
@@ -162,7 +162,7 @@ Thanks to John and Julie for their early reviews.
 [^disown]:
     Disowning a background process (the control operator `&`) from the shell allows a process to continue running in the background when the shell is closed.
 [^keys]:
-    To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above then move them to the Chromebook. I save mine under `Downloads/ssh` (no dot-file access without developer mode). Transfer the keys by copy-paste using `less` from instance's in-browser SSH and [a text editor app for Chromebook](https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml) or download them from a connected [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace): right-click the file > "Download".
+    To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as <a href="#ssh-keygen">above</a> then move them to the Chromebook. I save mine under `Downloads/ssh` (no dot-file access without developer mode). Transfer the keys by copy-paste using `less` from instance's in-browser SSH and [a text editor app for Chromebook](https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml) or download them from a connected [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace): right-click the file > "Download".
 [^cat]:
     To copy a local public SSH key, e.g. `id_rsa.pub`, to a remote machine's `authorized_keys`, in the instance's in-browser shell:  
     `$ cat >> ~/.ssh/authorized_keys`  
