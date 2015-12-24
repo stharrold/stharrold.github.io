@@ -258,7 +258,7 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2015-12-24T05:15:00+00:00"> Thu 24 December 2015</time>
+                <i class="fa fa-calendar"></i><time datetime="2015-12-24T06:50:00+00:00"> Thu 24 December 2015</time>
             </span>
 
         <span class="label label-default">Category</span>
@@ -308,12 +308,18 @@ Data Science Demos            </a>
 <p>Text with a footnote<sup id="fnref:fn"><a class="footnote-ref" href="#fn:fn" rel="footnote">1</a></sup>.</p>
 <p>Text with always-rendered dollar signs, <span>$1.12</span>.</p>
 <p>Text with a non-breaking&nbsp;space.</p>
-<!-- Note: -->
-
-<!-- Use <span> tag for referencing inline elements (e.g. text) and <div> tag for referencing block-level elements (e.g. images). -->
+<!--
+Note:
+Use <span> tag for referencing inline elements (e.g. text) and <div> tag for referencing block-level elements (e.g. images).
+-->
 
 <p>Text with a <span id="ref">referenced portion</span>.</p>
 <p>Text referencing <a href="/20151030-test.html#ref">above</a>.</p>
+<!--
+TODO: Fix JavaScript event handling. Icon doesn't change.
+https://github.com/stharrold/stharrold.github.io/issues/34
+-->
+
 <p>Collapsible text:<br />
 <div>
     Short answer.
@@ -326,36 +332,26 @@ Data Science Demos            </a>
 </div></p>
 <h4 id="include-exported-files">Include exported files</h4>
 <ul>
-<li>A plot and a screenshot:</li>
+<li>A plot included via Markdown:</li>
 </ul>
 <p><img alt="plot.jpg" src="/static/20151030-test/plot.jpg" /><br />
 <a href="/static/20151030-test/plot.jpg">plot.jpg</a>  </p>
+<ul>
+<li>A screenshot included via HTML:</li>
+</ul>
 <!--
-TODO: Format images below with HTML
-https://github.com/stharrold/stharrold.github.io/issues/16
+Note:
+Use align="left" attribute to wrap image rather than have in-line.
 -->
 
-<!--
-<a href="/static/20151030-test/plot.jpg" type="image/jpeg">
-  <img src="/static/20151030-test/plot.jpg" alt="plot" align="left" width="200"/>
-</a>
-<a href="/static/20151030-test/plot.jpg" type="image/jpeg">plot.jpg</a>
--->
-
-<p><img alt="screenshot-432x323pix.png" src="/static/20151030-test/screenshot-432x323pix.png" /><br />
-<a href="/static/20151030-test/screenshot-432x323pix.png">screenshot-432x323pix.png</a>  </p>
-<!--
-<a href="/static/20151030-test/screenshot-432x323pix.png" type="image/png">
-  <img src="/static/20151030-test/screenshot-432x323pix.png" alt="screenshot" align="left" width="200"/>
-</a>
-<a href="/static/20151030-test/screenshot-432x323pix.png" type="image/png">screenshot-432x323pix.png</a>
--->
-
+<p><a href="/static/20151030-test/screenshot-432x323pix.png" type="image/png">
+    <img src="/static/20151030-test/screenshot-432x323pix.png" alt="Chrome Secure Shell settings" width="320" />
+</a></p>
 <ul>
 <li>A table:</li>
 </ul>
 <!--
-TODO: Add table by embedding html rather than copy-paste.
+TODO: Add table by embedding HTML rather than copy-paste.
 https://github.com/stharrold/stharrold.github.io/issues/5
 -->
 
@@ -391,7 +387,10 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 </table>
 
 <p><a href="/static/20151030-test/table.html">table.html</a></p>
-<!-- TODO: Fix event handling for JavaScript. -->
+<!--
+TODO: Fix event handling for JavaScript. Included content isn't included. 
+https://github.com/stharrold/stharrold.github.io/issues/14
+-->
 
 <div id="includedContent"></div>
 
@@ -722,9 +721,9 @@ gg==
 Commented out as of 2015-12-02. See <a href="https://github.com/stharrold/stharrold.github.io/issues/5">issue 5</a>.</p>
 <!--
 Note:
-Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly.
-Note: block-level <div> are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html
-Note: Remove liquid_tags.notebook before testing below
+* Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly.
+* Block-level <div> are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html
+* Remove liquid_tags.notebook before inserting HTML file below.
 -->
 
 <!--
@@ -744,7 +743,7 @@ TODO: Insert html file here.
 <!-- JavaScript -->
 
 <!--
-Collapsable text
+Collapsible text
 http://www.w3schools.com/bootstrap/bootstrap_ref_js_collapse.asp
 http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions
 -->

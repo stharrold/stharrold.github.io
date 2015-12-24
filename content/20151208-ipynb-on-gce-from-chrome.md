@@ -18,7 +18,7 @@ In October 2015, I bought a Chromebook with the intent of learning how to move m
 Brief setup routine:
 
 <div id="screenshot">
-<a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/jpeg">
+<a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/png">
     <img src="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="320" />
 </a>
 </div>
