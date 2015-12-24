@@ -308,10 +308,12 @@ Data Science Demos            </a>
 <p>Text with a footnote<sup id="fnref:fn"><a class="footnote-ref" href="#fn:fn" rel="footnote">1</a></sup>.</p>
 <p>Text with always-rendered dollar signs, <span>$1.12</span>.</p>
 <p>Text with a non-breaking&nbsp;space.</p>
-<!-- For inter-post references, class="post-ref", "post-backref" are custom so that links can be check and cross-checked. -->
+<!-- Note: -->
 
-<p>Text with a <span class="post-ref" id="ref">referenced portion</span>.</p>
-<p>Text referencing <a class="post-backref" href="/20151030-test.html#ref">above</a>.</p>
+<!-- Use <span> tag for referencing inline elements (e.g. text) and <div> tag for referencing block-level elements (e.g. images). -->
+
+<p>Text with a <span id="ref">referenced portion</span>.</p>
+<p>Text referencing <a href="/20151030-test.html#ref">above</a>.</p>
 <p>Collapsible text:<br />
 <div>
     Short answer.

@@ -262,7 +262,7 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2015-12-20T16:20:00+00:00"> Sun 20 December 2015</time>
+                <i class="fa fa-calendar"></i><time datetime="2015-12-24T05:50:00+00:00"> Thu 24 December 2015</time>
             </span>
 
         <span class="label label-default">Category</span>
@@ -298,9 +298,12 @@ Data Science Demos            </a>
 <h3 id="overview">Overview</h3>
 <p>In October 2015, I bought a Chromebook with the intent of learning how to move my data-science development environment to the cloud. In exchange for an extra 5&nbsp;minutes of setup, I now have a flexible infrastructure that can scale with the task. This setup is cross-platform in that it can be used on any laptop with Chrome, not just a Chromebook.</p>
 <p>Brief setup routine:</p>
-<p><a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/jpeg">
+<div id="screenshot">
+<a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/jpeg">
     <img src="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="320" />
-</a></p>
+</a>
+</div>
+
 <ul>
 <li>Start a <a href="https://cloud.google.com/compute/">Google Compute Engine</a> virtual machine instance.</li>
 <li>Start a <a href="http://jupyter.org/">Jupyter Notebook</a> server on the instance:<br />
@@ -308,7 +311,7 @@ Data Science Demos            </a>
 <code>$ disown 1234</code> (where <code>1234</code> is the process ID)</li>
 <li>Create an <a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html">SSH tunnel</a> to forward a local port to the server's port on the instance:<br />
 <code>$ ssh -f -N -L localhost:8888:0.0.0.0:8888 samuel_harrold@123.123.123.123</code><br />
-For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a>, omit <code>-f</code> to keep the tunnel open (see screenshot).</li>
+For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a>, omit <code>-f</code> to keep the tunnel open (see <a href="#screenshot">screenshot</a>).</li>
 <li>View the server at <code>http://localhost:8888</code></li>
 <li>I use the <a href="https://c9.io/?redirect=0">Cloud9 IDE</a> and connect the instance as an <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">SSH workspace</a>.</li>
 </ul>
@@ -344,7 +347,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </li>
 <li>Connect to the instance, e.g. with Google's <a href="https://cloud.google.com/compute/docs/ssh-in-browser">in-browser SSH</a>.</li>
 <li><a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">Update the Debian system.</a></li>
-<li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate an SSH key pair for the instance</a> <span class="post-ref" id="ssh-keygen"></span> and might as well connect to GitHub.<sup id="fnref:use-less"><a class="footnote-ref" href="#fn:use-less" rel="footnote">7</a></sup></li>
+<li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate an SSH key pair for the instance</a> <span id="ssh-keygen"></span> and might as well connect to GitHub.<sup id="fnref:use-less"><a class="footnote-ref" href="#fn:use-less" rel="footnote">7</a></sup></li>
 </ul>
 </li>
 <li>Start a Jupyter Notebook server on the instance from the in-browser SSH:<ul>
@@ -355,8 +358,8 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>Create an SSH tunnel to forward a local port to the server's port on the instance:<ul>
-<li>Generate an SSH key pair for the Chromebook as <a class="post-backref" href="#ssh-keygen">above</a><sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">9</a></sup> and add the Chromebook's public key to the instance's <code>authorized_keys</code>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">10</a></sup></li>
-<li>Within Chrome, install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> and forward a port (see screenshot above):<br />
+<li>Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a><sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">9</a></sup> and add the Chromebook's public key to the instance's <code>authorized_keys</code>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">10</a></sup></li>
+<li>Within Chrome, install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> and forward a port (see screenshot <a href="#screenshot">above</a>):<br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
 <code>Port: 22</code><br />

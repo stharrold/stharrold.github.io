@@ -1,7 +1,7 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2015-12-20T16:20:00Z
+Modified: 2015-12-24T05:50:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
@@ -17,9 +17,11 @@ In October 2015, I bought a Chromebook with the intent of learning how to move m
 
 Brief setup routine:
 
+<div id="screenshot">
 <a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/jpeg">
     <img src="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="320" />
 </a>
+</div>
 
 * Start a [Google Compute Engine](https://cloud.google.com/compute/) virtual machine instance.
 * Start a [Jupyter Notebook](http://jupyter.org/) server on the instance:  
@@ -27,7 +29,7 @@ Brief setup routine:
 `$ disown 1234` (where `1234` is the process ID)
 * Create an [SSH tunnel](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html) to forward a local port to the server's port on the instance:  
 `$ ssh -f -N -L localhost:8888:0.0.0.0:8888 samuel_harrold@123.123.123.123`  
-For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo), omit `-f` to keep the tunnel open (see screenshot).
+For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo), omit `-f` to keep the tunnel open (see <a href="#screenshot">screenshot</a>).
 * View the server at `http://localhost:8888`
 * I use the [Cloud9 IDE](https://c9.io/?redirect=0) and connect the instance as an [SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace).
 
@@ -67,15 +69,15 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
         * Project access: Reserve an external IP address ("Networking" > "External IP"). Other settings can be left at default.[^ext-ip] For this example, I give `123.123.123.123` as my instance's static external IP address.
     * Connect to the instance, e.g. with Google's [in-browser SSH](https://cloud.google.com/compute/docs/ssh-in-browser).
     * [Update the Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
-    * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) <span class="post-ref" id="ssh-keygen"></span> and might as well connect to GitHub.[^use-less]
+    * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) <span id="ssh-keygen"></span> and might as well connect to GitHub.[^use-less]
 * Start a Jupyter Notebook server on the instance from the in-browser SSH:
     * [Install Python](https://www.continuum.io/downloads) on the instance.
     * Start a [Jupyter Notebook](http://jupyter.org/) server:  
       `$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &`  
       `$ disown 1234` (where `1234` is the process ID)[^disown]
 * Create an SSH tunnel to forward a local port to the server's port on the instance:
-    * Generate an SSH key pair for the Chromebook as <a class="post-backref" href="#ssh-keygen">above</a>[^keys] and add the Chromebook's public key to the instance's `authorized_keys`.[^cat]
-    * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot above):  
+    * Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a>[^keys] and add the Chromebook's public key to the instance's `authorized_keys`.[^cat]
+    * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot <a href="#screenshot">above</a>):  
     `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
     `Hostname: 123.123.123.123` (the instance's external IP address)  
     `Port: 22`  
