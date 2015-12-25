@@ -18,11 +18,11 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 
 **Why am I using Python instead of R?**
 
-* TODO
+This project can be done using R, Python, and/or other languages.[^se-rvpy] I'm using Python, especially [scikit-learn](http://scikit-learn.org/), to optimize computational performance and to make an extensible, maintainable pipeline.
 
 **Why am I using the American Community Survey (ACS)?**
 
-* The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
+* The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).[^kaggle]
 * The ACS is a cultivated, thorough dataset.[^acs-method] The ACS has many quality controls to ensure that it is representative, and it samples about 3&nbsp;million addresses per year with a response rate often over 95%.
 * The ACS is a timeseries dataset. The ACS samples continuously and releases data once per year. As a timeseries, the data can be used to predict current and future quantities, which is future step for this project.
 * However, I recognize that using ACS data can be problematic. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
@@ -40,7 +40,7 @@ As of Dec 2015, the ACS offers two windowing options for their data releases, 1-
 * TODO:
     * Purpose
     * ETL: docs, data dict, zip file, check validation files, imputation (knn?)
-        * Download the data from FTP (TODO).[^no-api]
+        * Download the ACS data via FTP.[^acs-ftp] [^no-api]
     * Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?
     * Data mining: feature corrs, household corrs, pairplots, dim-red vis
     * Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors
@@ -58,6 +58,10 @@ Some links I found helpful for this blog post:
 
 <!-- ## Overview -->
 <!-- ## Motivations -->
+[^se-rvpy]:
+    See the popular discussion ["R vs Python for data analysis"](http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis) on StackExchange Programmers.
+[^kaggle]:
+    See the recent [ACS Kaggle competition](https://www.kaggle.com/census/2013-american-community-survey) for example analysis scripts.
 [^acs-method]:
     [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html)) includes design details, sample sizes, coverage estimates, and past questionnaires.
 [^data-harm]:
@@ -75,7 +79,9 @@ Some links I found helpful for this blog post:
 [^bea-pce]:
     The Bureau of Economic Analysis measures [personal consumption expenditures](http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm) on a per-household basis.
 [^acs-ests]:
-    The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing and using a dataset, see [Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
+    The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a dataset, see [Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
 <!-- ## Predicting household income -->
+[^acs-ftp]:
+    Data on the Census Bureau's FTP server is often mirrored to multiple locations. See ACS [Data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html) for how to navigate to ACS data.
 [^no-api]:
-    I'm not using the [Census Bureau's API](http://www.census.gov/developers/) because this project does not require dynamic access to a subset of the data.
+    I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
