@@ -292,24 +292,24 @@ Data Science Demos            </a>
 <p>The <a href="https://www.census.gov/about/what.html">Census Bureau</a> collects data from people in the United States throughout the year. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public. In this post I predict a household's total annual income using the Census Bureau's <a href="http://www.census.gov/programs-surveys/acs/about.html">American Community Survey (ACS)</a>.</p>
 <h3 id="motivations">Motivations</h3>
 <p><strong>Why am I using Python instead of R?</strong></p>
-<p>This project can be done using R, Python, and/or other languages.<sup id="fnref:se-rvpy"><a class="footnote-ref" href="#fn:se-rvpy" rel="footnote">1</a></sup> I'm using Python, especially <a href="http://scikit-learn.org/">scikit-learn</a>, to optimize computational performance and to make an extensible, maintainable pipeline.</p>
+<p>This project can be done using R, Python, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">1</a></sup> I'm using Python, especially <a href="http://scikit-learn.org/">scikit-learn</a>, to optimize computational performance and to make an extensible, maintainable pipeline.</p>
 <p><strong>Why am I using the American Community Survey (ACS)?</strong></p>
 <ul>
-<li>The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.<sup id="fnref:kaggle"><a class="footnote-ref" href="#fn:kaggle" rel="footnote">2</a></sup></li>
-<li>The ACS is a cultivated, thorough dataset.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">3</a></sup> The ACS has many quality controls to ensure that it is representative, and it samples about 3&nbsp;million addresses per year with a response rate often over 95%.</li>
+<li>The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.</li>
+<li>The ACS is a cultivated, thorough dataset.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">2</a></sup> The ACS has many quality controls to ensure that it is representative, and it samples about 3&nbsp;million addresses per year with a response rate often over 95%.</li>
 <li>The ACS is a timeseries dataset. The ACS samples continuously and releases data once per year. As a timeseries, the data can be used to predict current and future quantities, which is future step for this project.</li>
-<li>However, I recognize that using ACS data can be problematic. Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">4</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">5</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
+<li><span id="problematic">However, I recognize that using ACS data can be problematic.</span> Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">3</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">4</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
 </ul>
 <p><strong>Why am I using the ACS household-level data?</strong></p>
-<p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">6</a></sup> and consumers often spend on behalf of their household<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">7</a></sup>. Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
+<p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">5</a></sup> and consumers often spend on behalf of their household.<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">6</a></sup> Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
-<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">8</a></sup> Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision with the finest granularity for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.</p>
+<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">7</a></sup> Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision with the finest granularity for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.</p>
 <h3 id="predicting-household-income">Predicting household income</h3>
 <ul>
 <li>TODO:<ul>
 <li>Purpose</li>
 <li>ETL: docs, data dict, zip file, check validation files, imputation (knn?)<ul>
-<li>Download the ACS data via FTP.<sup id="fnref:acs-ftp"><a class="footnote-ref" href="#fn:acs-ftp" rel="footnote">9</a></sup> <sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">10</a></sup></li>
+<li>Download the ACS data via FTP.<sup id="fnref:acs-ftp"><a class="footnote-ref" href="#fn:acs-ftp" rel="footnote">8</a></sup> <sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">9</a></sup></li>
 </ul>
 </li>
 <li>Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?</li>
@@ -321,8 +321,13 @@ Data Science Demos            </a>
 <h3 id="helpful-links">Helpful links</h3>
 <p>Some links I found helpful for this blog post:</p>
 <ul>
-<li>ACS:<ul>
-<li>TODO</li>
+<li>Examples using ACS and census data:  <ul>
+<li>Kaggle competition: <a href="https://www.kaggle.com/census/2013-american-community-survey">2013 American Community Survey</a><br />
+<a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)" type="text/html">UCI Census-Income (KDD) Data Set</a>, see "Papers That Cite * This Data Set"<br />
+<a href="https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)" type="text/html">UCI US Census Data (1990) Data Set</a>, see "Papers That Cite This Data Set"  </li>
+<li><a href="http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r">Predicting Income Level, An Analytics Casestudy in R</a>  </li>
+<li>RPubs: <a href="https://rpubs.com/Jovin/census_data_income">Predict Income Range</a><br />
+Mathematica for prediction algorithms: <a href="https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/">Classification and association rules for census income data</a></li>
 </ul>
 </li>
 </ul>
@@ -330,42 +335,41 @@ Data Science Demos            </a>
 <div class="footnote">
 <hr />
 <ol>
-<li id="fn:se-rvpy">
-<p>See the popular discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:se-rvpy" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
-<li id="fn:kaggle">
-<p>See the recent <a href="https://www.kaggle.com/census/2013-american-community-survey">ACS Kaggle competition</a> for example analysis scripts.&#160;<a class="footnote-backref" href="#fnref:kaggle" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<li id="fn:rvpy">
+<p>See the popular discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-method">
-<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a>) includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a>) includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:data-harm">
-<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 <li id="fn:prob-race">
-<p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">ACS refers to "race" and "ethnicity" separately</a>. The <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">American Anthropological Association recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
-<a href="http://www.census.gov/topics/population/race/about.html">Census Bureau's statement about "race" (2013)</a><br />
-<a href="https://www.whitehouse.gov/omb/fedreg_notice_15/">Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&nbsp;15 (1977)</a><br />
-<a href="https://www.whitehouse.gov/omb/fedreg_directive_15">Office of Management and Budget, "Review of the Racial and Ethnic Standards to the OMB Concerning Changes" (Jul&nbsp;1997)</a><br />
-<a href="https://www.whitehouse.gov/omb/fedreg_1997standards">Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&nbsp;1997)</a><br />
-<a href="http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583">American Anthropological Association, "Statement on Race" (1998)</a><br />
-<a href="https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census">Wikipedia article "Race and ethnicity in the United States Census"</a>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">ACS refers to "race" and "ethnicity" separately</a>. The American Anthropological Association <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
+<ul>
+<li><a href="http://www.census.gov/topics/population/race/about.html">Census Bureau's statement about "race" (2013)</a></li>
+<li><a href="https://www.whitehouse.gov/omb/fedreg_notice_15/">Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&nbsp;15 (1977)</a></li>
+<li><a href="https://www.whitehouse.gov/omb/fedreg_directive_15">Office of Management and Budget, "Review of the Racial and Ethnic Standards to the OMB Concerning Changes" (Jul&nbsp;1997)</a></li>
+<li><a href="https://www.whitehouse.gov/omb/fedreg_1997standards">Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&nbsp;1997)</a></li>
+<li><a href="http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583">American Anthropological Association, "Statement on Race" (1998)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census">Wikipedia article "Race and ethnicity in the United States Census"</a></li>
+</ul>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:cr-dbs">
-<p>See <a href="http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm">examples of consumer databases</a> from Consumer Reports and how they're used.&#160;<a class="footnote-backref" href="#fnref:cr-dbs" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+<p>See <a href="http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm">examples of consumer databases</a> from Consumer Reports and how they're used.&#160;<a class="footnote-backref" href="#fnref:cr-dbs" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:bea-pce">
-<p>The Bureau of Economic Analysis measures <a href="http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm">personal consumption expenditures</a> on a per-household basis.&#160;<a class="footnote-backref" href="#fnref:bea-pce" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+<p>The Bureau of Economic Analysis measures <a href="http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm">personal consumption expenditures</a> on a per-household basis.&#160;<a class="footnote-backref" href="#fnref:bea-pce" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-ests">
 <p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a dataset, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">Guidance for Data Users</a>.
-<!-- ## Predicting household income -->&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+<!-- ## Predicting household income -->&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-ftp">
-<p>Data on the Census Bureau's FTP server is often mirrored to multiple locations. See ACS <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">Data via FTP</a> for how to navigate to ACS data.&#160;<a class="footnote-backref" href="#fnref:acs-ftp" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+<p>Data on the Census Bureau's FTP server is often mirrored to multiple locations. See ACS <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">Data via FTP</a> for how to navigate to ACS data.&#160;<a class="footnote-backref" href="#fnref:acs-ftp" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:no-api">
-<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
