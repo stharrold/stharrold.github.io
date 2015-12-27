@@ -303,13 +303,14 @@ Data Science Demos            </a>
 <p><strong>Why am I using the ACS household-level data?</strong></p>
 <p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">5</a></sup> and consumers often spend on behalf of their household.<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">6</a></sup> Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
-<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">7</a></sup> Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision with the finest granularity for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.</p>
+<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">7</a></sup> Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.</p>
 <h3 id="predicting-household-income">Predicting household income</h3>
 <ul>
 <li>TODO:<ul>
 <li>Purpose</li>
-<li>ETL: docs, data dict, zip file, check validation files, imputation (knn?)<ul>
-<li>Download the ACS data via FTP.<sup id="fnref:acs-ftp"><a class="footnote-ref" href="#fn:acs-ftp" rel="footnote">8</a></sup> <sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">9</a></sup></li>
+<li>ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)<ul>
+<li>Download the ACS data via FTP.<sup id="fnref:acs-ftp"><a class="footnote-ref" href="#fn:acs-ftp" rel="footnote">8</a></sup> <sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">9</a></sup> <sup id="fnref:services"><a class="footnote-ref" href="#fn:services" rel="footnote">10</a></sup></li>
+<li>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums" rel="footnote">11</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</li>
 </ul>
 </li>
 <li>Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?</li>
@@ -321,13 +322,22 @@ Data Science Demos            </a>
 <h3 id="helpful-links">Helpful links</h3>
 <p>Some links I found helpful for this blog post:</p>
 <ul>
-<li>Examples using ACS and census data:  <ul>
-<li>Kaggle competition: <a href="https://www.kaggle.com/census/2013-american-community-survey">2013 American Community Survey</a><br />
-<a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)" type="text/html">UCI Census-Income (KDD) Data Set</a>, see "Papers That Cite * This Data Set"<br />
-<a href="https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)" type="text/html">UCI US Census Data (1990) Data Set</a>, see "Papers That Cite This Data Set"  </li>
-<li><a href="http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r">Predicting Income Level, An Analytics Casestudy in R</a>  </li>
-<li>RPubs: <a href="https://rpubs.com/Jovin/census_data_income">Predict Income Range</a><br />
-Mathematica for prediction algorithms: <a href="https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/">Classification and association rules for census income data</a></li>
+<li>ACS and census data:<ul>
+<li><a href="https://www.census.gov/programs-surveys/acs/guidance.html">ACS Guidance for Data Users</a> describes how to get started with ACS data.</li>
+<li><a href="https://www.census.gov/programs-surveys/acs/library.All.html">ACS Library</a> includes example reports and infographics using ACS data.</li>
+<li><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.</li>
+<li>Kaggle competition, <a href="https://www.kaggle.com/census/2013-american-community-survey">2013 American Community Survey</a>.</li>
+<li><a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)" type="text/html">UCI Census-Income (KDD) Data Set</a>, see "Papers That Cite This Data Set".</li>
+<li><a href="https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)" type="text/html">UCI US Census Data (1990) Data Set</a>, see "Papers That Cite This Data Set".</li>
+<li><a href="http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r">Predicting Income Level, An Analytics Casestudy in R</a>.</li>
+<li>RPubs, <a href="https://rpubs.com/Jovin/census_data_income">Predict Income Range</a>.</li>
+<li>Mathematica for prediction algorithms, <a href="https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/">Classification and association rules for census income data</a>.</li>
+<li><a href="http://www-rohan.sdsu.edu/~gawron/python_for_ss/course_core/book_draft/data/PUMS_data.html">Using PUMS Census data</a> from a social science perspective.</li>
+</ul>
+</li>
+<li>Analysis:<ul>
+<li><a href="https://speakerdeck.com/jakevdp/statistics-for-hackers">"Statistics for Hackers", Jake VanderPlas</a>: Evaluating statistical significance by sampling, cross-validation, etc.</li>
+<li><a href="http://scikit-learn.org/stable/user_guide.html">Scikit-learn user guide</a>: Copious examples of machine learning tasks.</li>
 </ul>
 </li>
 </ul>
@@ -339,7 +349,7 @@ Mathematica for prediction algorithms: <a href="https://mathematicaforprediction
 <p>See the popular discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-method">
-<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a>) includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:data-harm">
 <p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
@@ -370,6 +380,12 @@ Mathematica for prediction algorithms: <a href="https://mathematicaforprediction
 </li>
 <li id="fn:no-api">
 <p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:services">
+<p>This project mounts a disk for storage and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:pums">
+<p>See the ACS guidebook <a href="https://www.census.gov/library/publications/2009/acs/pums.html">"What Public Use Microdata Sample Users Need to Know" (2009)</a>.&#160;<a class="footnote-backref" href="#fnref:pums" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

@@ -33,14 +33,15 @@ Companies collect information on their consumers[^cr-dbs] and consumers often sp
 
 **Why am I using the ACS 5-year estimate?**
 
-As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.[^acs-ests] Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision with the finest granularity for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.
+As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.[^acs-ests] Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.
 
 ## Predicting household income
 
 * TODO:
     * Purpose
-    * ETL: docs, data dict, zip file, check validation files, imputation (knn?)
-        * Download the ACS data via FTP.[^acs-ftp] [^no-api]
+    * ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)
+        * Download the ACS data via FTP.[^acs-ftp] [^no-api] [^services]
+        * The Public Use Microdata Sample (PUMS)[^pums] has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.
     * Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?
     * Data mining: feature corrs, household corrs, pairplots, dim-red vis
     * Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors
@@ -49,13 +50,20 @@ As of Dec 2015, the ACS offers two windowing options for their data releases, 1-
 
 Some links I found helpful for this blog post:
 
-* Examples using ACS and census data:  
-    * Kaggle competition: [2013 American Community Survey](https://www.kaggle.com/census/2013-american-community-survey)  
-    <a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)" type="text/html">UCI Census-Income (KDD) Data Set</a>, see "Papers That Cite * This Data Set"  
-    <a href="https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)" type="text/html">UCI US Census Data (1990) Data Set</a>, see "Papers That Cite This Data Set"  
-    * [Predicting Income Level, An Analytics Casestudy in R](http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r)  
-    * RPubs: [Predict Income Range](https://rpubs.com/Jovin/census_data_income)  
-    Mathematica for prediction algorithms: [Classification and association rules for census income data](https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/)
+* ACS and census data:
+    * [ACS Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html) describes how to get started with ACS data.
+    * [ACS Library](https://www.census.gov/programs-surveys/acs/library.All.html) includes example reports and infographics using ACS data.
+    * [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
+    * Kaggle competition, [2013 American Community Survey](https://www.kaggle.com/census/2013-american-community-survey).
+    * <a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)" type="text/html">UCI Census-Income (KDD) Data Set</a>, see "Papers That Cite This Data Set".
+    * <a href="https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)" type="text/html">UCI US Census Data (1990) Data Set</a>, see "Papers That Cite This Data Set".
+    * [Predicting Income Level, An Analytics Casestudy in R](http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r).
+    * RPubs, [Predict Income Range](https://rpubs.com/Jovin/census_data_income).
+    * Mathematica for prediction algorithms, [Classification and association rules for census income data](https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/).
+    * [Using PUMS Census data](http://www-rohan.sdsu.edu/~gawron/python_for_ss/course_core/book_draft/data/PUMS_data.html) from a social science perspective.
+* Analysis:
+    * ["Statistics for Hackers", Jake VanderPlas](https://speakerdeck.com/jakevdp/statistics-for-hackers): Evaluating statistical significance by sampling, cross-validation, etc.
+    * [Scikit-learn user guide](http://scikit-learn.org/stable/user_guide.html): Copious examples of machine learning tasks.
 
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
@@ -66,7 +74,7 @@ Some links I found helpful for this blog post:
 [^rvpy]:
     See the popular discussion ["R vs Python for data analysis"](http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis) on StackExchange Programmers.
 [^acs-method]:
-    [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html)) includes design details, sample sizes, coverage estimates, and past questionnaires.
+    [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
 [^data-harm]:
     Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the [ACLU's FAQ section about census data](https://www.aclu.org/frequently-asked-questions-national-census) and the [Wikipedia article "Internment of Japanese Americans"](https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans).
 [^prob-race]:
@@ -90,3 +98,7 @@ Some links I found helpful for this blog post:
     Data on the Census Bureau's FTP server is often mirrored to multiple locations. See ACS [Data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html) for how to navigate to ACS data.
 [^no-api]:
     I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
+[^services]:
+    This project mounts a disk for storage and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).
+[^pums]:
+    See the ACS guidebook ["What Public Use Microdata Sample Users Need to Know" (2009)](https://www.census.gov/library/publications/2009/acs/pums.html).
