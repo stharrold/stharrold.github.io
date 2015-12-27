@@ -5,6 +5,7 @@ Modified: 2014-12-30T12:00:00Z
 Tags: machine-learning, predictive-analytics, how-to, python, regression
 Category: Machine Learning
 Slug: 20151230-predict-income-from-census
+Related_posts: 20151208-ipynb-on-gce-from-chrome
 Authors: Samuel Harrold
 Summary: I predict a household's income using data from the Census Bureau.
 
@@ -40,7 +41,9 @@ As of Dec 2015, the ACS offers two windowing options for their data releases, 1-
 * TODO:
     * Purpose
     * ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)
-        * Download the ACS data via FTP.[^acs-ftp] [^no-api] [^services]
+        * I start with a running Google Cloud VM instance and Jupyter Notebook server following a previous post, ["Running an Ipython Notebook on Google Compute Engine from Chrome"](/20151208-ipynb-on-gce-from-chrome.html).
+        * [Create and mount a disk](https://cloud.google.com/compute/docs/disks/persistent-disks) to the instance for storage.[^services]
+        * Download the ACS data via FTP:[^acs-ftp] [^no-api]
         * The Public Use Microdata Sample (PUMS)[^pums] has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.
     * Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?
     * Data mining: feature corrs, household corrs, pairplots, dim-red vis
@@ -94,11 +97,11 @@ Some links I found helpful for this blog post:
 [^acs-ests]:
     The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a dataset, see [Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
 <!-- ## Predicting household income -->
+[^services]:
+    This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).
 [^acs-ftp]:
     Data on the Census Bureau's FTP server is often mirrored to multiple locations. See ACS [Data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html) for how to navigate to ACS data.
 [^no-api]:
     I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
-[^services]:
-    This project mounts a disk for storage and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).
 [^pums]:
     See the ACS guidebook ["What Public Use Microdata Sample Users Need to Know" (2009)](https://www.census.gov/library/publications/2009/acs/pums.html).
