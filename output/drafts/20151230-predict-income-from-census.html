@@ -307,12 +307,15 @@ Data Science Demos            </a>
 <h3 id="predicting-household-income">Predicting household income</h3>
 <ul>
 <li>TODO:<ul>
-<li>Purpose</li>
+<li>Purpose: Predict total annual household income.</li>
 <li>ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)<ul>
 <li>I start with a running Google Cloud VM instance and Jupyter Notebook server following a previous post, <a href="/20151208-ipynb-on-gce-from-chrome.html">"Running an Ipython Notebook on Google Compute Engine from Chrome"</a>.</li>
 <li><a href="https://cloud.google.com/compute/docs/disks/persistent-disks">Create and mount a disk</a> to the instance for storage.<sup id="fnref:services"><a class="footnote-ref" href="#fn:services" rel="footnote">8</a></sup></li>
-<li>Download the ACS data via FTP:<sup id="fnref:acs-ftp"><a class="footnote-ref" href="#fn:acs-ftp" rel="footnote">9</a></sup> <sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">10</a></sup></li>
-<li>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums" rel="footnote">11</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</li>
+<li>Download the <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">ACS data via FTP</a>:<sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">9</a></sup><br />
+<code>$ sudo curl --remote-name &lt;url&gt;</code> where the downloaded URLs were<br />
+<code>http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict13.txt</code><br />
+<code>http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hus.zip</code></li>
+<li>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums" rel="footnote">10</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</li>
 </ul>
 </li>
 <li>Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?</li>
@@ -380,14 +383,11 @@ Data Science Demos            </a>
 <li id="fn:services">
 <p>This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
-<li id="fn:acs-ftp">
-<p>Data on the Census Bureau's FTP server is often mirrored to multiple locations. See ACS <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">Data via FTP</a> for how to navigate to ACS data.&#160;<a class="footnote-backref" href="#fnref:acs-ftp" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
-</li>
 <li id="fn:no-api">
-<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pums">
-<p>See the ACS guidebook <a href="https://www.census.gov/library/publications/2009/acs/pums.html">"What Public Use Microdata Sample Users Need to Know" (2009)</a>.&#160;<a class="footnote-backref" href="#fnref:pums" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+<p>See the ACS guidebook <a href="https://www.census.gov/library/publications/2009/acs/pums.html">"What Public Use Microdata Sample Users Need to Know" (2009)</a>.&#160;<a class="footnote-backref" href="#fnref:pums" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -399,39 +399,39 @@ Data Science Demos            </a>
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7f323fff77d8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f323fff2ea0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f323fff7768></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f3240032378></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f323fff7768></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f323fff77d8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f323fff2ea0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d5e0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32400ae420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324006c420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f3240001148></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32400c1458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f3240127f80></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f3240072a78></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32400c1458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f3240072a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32400c38f0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324013e298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32400ed730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f3240072a78></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32401381b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324011d458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f324007ac00></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32400ed730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f3240072a78></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32401381b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f32400c38f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6aa27d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6a9dea0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6aa2768></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6add378></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6aa2768></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6aa27d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6a9dea0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc85e0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc85a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b59420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b17420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6aac148></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b6c458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bd2f80></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc85a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b1da78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b6c458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc85a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b1da40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc8458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b6e8f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc85a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6be9298></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b98730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b1da78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6be31b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc85a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6bc8458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b25c00></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b98730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b1da78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6be31b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f63f6b6e8f0></a></li>
     </ul>
 </section>
     <hr/>

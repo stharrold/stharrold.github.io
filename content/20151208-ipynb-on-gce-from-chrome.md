@@ -1,7 +1,7 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2015-12-24T05:50:00Z
+Modified: 2015-12-27T22:00:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
@@ -127,6 +127,7 @@ Some links I found helpful for this blog post:
     * [SSH login without password.](http://www.linuxproblem.org/art_9.html)
     * [SSH port forwarding (tunnels) explained.](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html)
     * [Google's recommended best practices for securing communications with Compute Engine instances.](https://cloud.google.com/solutions/connecting-securely)
+    * [`wget` vs `curl` with examples](http://www.thegeekstuff.com/2012/07/wget-curl/)
     * [Download from Google Drive with `wget`](http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal)
     * [Download from Kaggle with `wget`](https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line)
     * [`disown` examples.](http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/)
