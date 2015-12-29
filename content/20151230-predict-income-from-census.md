@@ -40,9 +40,10 @@ As of Dec 2015, the ACS offers two windowing options for their data releases, 1-
 
 * TODO:
     * Purpose: Predict total annual household income.
-    * ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)
+    * DevOps:
         * I start with a running Google Cloud VM instance and Jupyter Notebook server following a previous post, ["Running an Ipython Notebook on Google Compute Engine from Chrome"](/20151208-ipynb-on-gce-from-chrome.html).
         * [Create and mount a disk](https://cloud.google.com/compute/docs/disks/persistent-disks) to the instance for storage.[^services]
+    * ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)
         * Download the [ACS data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html):[^no-api]  
         `$ sudo curl --remote-name <url>` where the downloaded URLs were  
         `http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict13.txt`  
