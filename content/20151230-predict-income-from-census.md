@@ -49,6 +49,12 @@ As of Dec 2015, the ACS offers two windowing options for their data releases, 1-
         `http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict13.txt`  
         `http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hus.zip`
         * The Public Use Microdata Sample (PUMS)[^pums] has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.
+        * TODO: Merge personal and housing files.
+        * TODO:
+            * dask vs spark: http://dask.readthedocs.org/en/latest/spark.html
+            * dask with scikit-learn requires partial_fit (out-of-core; different from n_jobs): http://blaze.pydata.org/blog/2015/10/19/dask-learn/, http://scikit-learn.org/stable/modules/scaling_strategies.html
+            * Data size (including memoized operations on data) fit in RAM (1 machine); fit on disk (1 machine); fit in RAM (2+ machines); fit on disk (2+machines) // Job duration short enough for single CPU (1 core, 1 machine); for multiple CPUs (2+ cores, 1 machine); for multiple CPUs (2+ cores, 2+ machines)
+            * use dask to select random subset (100MB) for pandas: http://dask.pydata.org/en/latest/dataframe-api.html (also use python to get file size)
     * Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?
     * Data mining: feature corrs, household corrs, pairplots, dim-red vis
     * Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors
