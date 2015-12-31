@@ -1,10 +1,10 @@
 Title: Predicting household income from census data
 Status: draft
 Date: 2015-12-30T12:00:00Z
-Modified: 2014-12-30T12:00:00Z
+Modified: 2015-12-30T12:00:00Z
 Tags: machine-learning, predictive-analytics, how-to, python, regression
 Category: Machine Learning
-Slug: 20151230-predict-income-from-census
+Slug: 20151230-predict-household-income-from-census
 Related_posts: 20151208-ipynb-on-gce-from-chrome
 Authors: Samuel Harrold
 Summary: I predict a household's income using data from the Census Bureau.
