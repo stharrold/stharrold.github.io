@@ -52,6 +52,7 @@ As of Dec 2015, the ACS offers two windowing options for their data releases, 1-
         * TODO: Merge personal and housing files.
         * TODO:
             * dask vs spark: http://dask.readthedocs.org/en/latest/spark.html
+            * dask tutorial: http://nbviewer.ipython.org/github/jcrist/Dask_PyData_NYC/blob/master/Dask_DataFrame_Airline.ipynb
             * dask with scikit-learn requires partial_fit (out-of-core; different from n_jobs): http://blaze.pydata.org/blog/2015/10/19/dask-learn/, http://scikit-learn.org/stable/modules/scaling_strategies.html
             * Data size (including memoized operations on data) fit in RAM (1 machine); fit on disk (1 machine); fit in RAM (2+ machines); fit on disk (2+machines) // Job duration short enough for single CPU (1 core, 1 machine); for multiple CPUs (2+ cores, 1 machine); for multiple CPUs (2+ cores, 2+ machines)
             * use dask to select random subset (100MB) for pandas: http://dask.pydata.org/en/latest/dataframe-api.html (also use python to get file size)
