@@ -27,7 +27,7 @@ def check_arguments(antns, lcls) -> None:
     Notes:
         * Example usage:
             ```
-            def myfunc(arg0: int, arg1: str) -> float:
+            def myfunc(arg0:int, arg1:str) -> float:
                check_arguments(antns=myfunc.__annotations__, lcls=locals())
             ```
     

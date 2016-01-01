@@ -6,27 +6,27 @@ r"""Pytests for dsdemos/census.py
 
 
 # Import standard packages.
+import collections
 import os
 import sys
 # Import installed packages.
+import pytest
 # Import local packages.
 sys.path.insert(0, os.path.curdir)
 import dsdemos.census as census
 
 
-# TODO: def test_parse_pumsddict13
-# def test_check_arguments() -> None:
-#     r"""Pytest for check_arguments.
+def test_parse_pumsdatadict13(
+    path:str='test_census/test_parse_pumsdatadict13.txt',
+    ref_path:str='test_census/test_parse_pumsdatadict13.json') -> None
+    r"""Pytest for parse_pumsdatadict13.
     
-#     """
-#     def myfunc(arg0: int, arg1: str) -> float:
-#         utils.check_arguments(
-#             antns=myfunc.__annotations__,
-#             lcls=locals())
-#         return 1.0
-#     # Nothing should be raised.
-#     myfunc(arg0=1, arg1='mystring')
-#     # Raise ValueError.
-#     with pytest.raises(ValueError):
-#         myfunc(arg0=1.0, arg1='mystring')
-#     return None
+    """
+    # TODO:
+    # * select a few choice examples from datadict as the test
+    # * read ref_path into ref_ddict
+    # * assert ref_ddict == test_ddict
+    # Raise FileNotFoundError.
+    with pytest.raises(FileNotFoundError):
+        census.parse_pumsdatadict13(path='does/not/exist.txt')
+    return None

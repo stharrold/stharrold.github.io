@@ -13,3 +13,4 @@ References:
 # Import local packages.
 from . import main
 from . import utils
+from . import census
