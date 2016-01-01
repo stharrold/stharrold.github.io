@@ -17,63 +17,72 @@ sys.path.insert(0, os.path.curdir)
 import dsdemos.census as census
 
 
-def test_parse_pumsdatadict2013(
+def test_parse_pumsdatadict(
     path:str=os.path.join(
         os.path.curdir,
-        'tests/test_census/test_parse_pumsdatadict2013.txt'),
+        'tests/test_census_data/test_parse_pumsdatadict.txt'),
     ref_path:str=os.path.join(
         os.path.curdir,
-        'tests/test_census/test_parse_pumsdatadict2013.json')) -> None:
-    r"""Pytest for parse_pumsdatadict2013.
+        'tests/test_census_data/test_parse_pumsdatadict.json')) -> None:
+    r"""Pytest for parse_pumsdatadict.
     
     Notes:
-        * Create 'test_parse_pumsdatadict2013.txt' from the source document.[^url]
-        * Create 'test_parse_pumsdatadict2013.json' by
+        * Only some data dictionaries have been tested.[^urls]
+        * Create 'test_parse_pumsdatadict.txt' from the source documents.[^urls]
+        * Create 'test_parse_pumsdatadict.json' by
             ```
-            with open(path, 'w') as fobj:
-                json.dump(test, fobj, indent=4)
+            import os
+            import json
+            import dsdemos as dsd
+            path_txt = 'tests/test_census_data/test_parse_pumsdatadict.txt'
+            path_json = os.path.splitext(path_txt)[0]+'.json'
+            ddict = dsd.census.parse_pumsdatadict(path=path_txt)
+            with open(path_json, 'w') as fobj:
+                json.dump(ddict, fobj, indent=4)
             ```
-        
+
     References:
-        [^url]: http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict2013.txt
-        
+        [^urls]: http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/
+            PUMSDataDict2013.txt
+            PUMS_Data_Dictionary_2009-2013.txt
+
     """
     with open(ref_path) as fobj:
         ref_ddict = json.load(fobj)
-    test_ddict = census.parse_pumsdatadict2013(path=path)
+    test_ddict = census.parse_pumsdatadict(path=path)
     assert ref_ddict == test_ddict
     # Raise FileNotFoundError.
     with pytest.raises(FileNotFoundError):
-        census.parse_pumsdatadict2013(path='does/not/exist.txt')
+        census.parse_pumsdatadict(path='does/not/exist.txt')
     return None
 
-
-def test_parse_pumsdatadict20092013(
-    path:str=os.path.join(
-        os.path.curdir,
-        'tests/test_census/test_parse_pumsdatadict20092013.txt'),
-    ref_path:str=os.path.join(
-        os.path.curdir,
-        'tests/test_census/test_parse_pumsdatadict20092013.json')) -> None:
-    r"""Pytest for parse_pumsdatadict20092013.
+# # TODO: remove
+# def test_parse_pumsdatadict20092013(
+#     path:str=os.path.join(
+#         os.path.curdir,
+#         'tests/test_census_data/test_parse_pumsdatadict20092013.txt'),
+#     ref_path:str=os.path.join(
+#         os.path.curdir,
+#         'tests/test_census_data/test_parse_pumsdatadict20092013.json')) -> None:
+#     r"""Pytest for parse_pumsdatadict20092013.
     
-    Notes:
-        * Create 'test_parse_pumsdatadict20092013.txt' from the source document.[^url]
-        * Create 'test_parse_pumsdatadict20092013.json' by
-            ```
-            with open(path, 'w') as fobj:
-                json.dump(test, fobj, indent=4)
-            ```
+#     Notes:
+#         * Create 'test_parse_pumsdatadict20092013.txt' from the source document.[^url]
+#         * Create 'test_parse_pumsdatadict20092013.json' by
+#             ```
+#             with open(path, 'w') as fobj:
+#                 json.dump(test, fobj, indent=4)
+#             ```
         
-    References:
-        [^url]: http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict2013.txt
+#     References:
+#         [^url]: http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict2013.txt
         
-    """
-    with open(ref_path) as fobj:
-        ref_ddict = json.load(fobj)
-    test_ddict = census.parse_pumsdatadict20092013(path=path)
-    assert ref_ddict == test_ddict
-    # Raise FileNotFoundError.
-    with pytest.raises(FileNotFoundError):
-        census.parse_pumsdatadict20092013(path='does/not/exist.txt')
-    return None
+#     """
+#     with open(ref_path) as fobj:
+#         ref_ddict = json.load(fobj)
+#     test_ddict = census.parse_pumsdatadict20092013(path=path)
+#     assert ref_ddict == test_ddict
+#     # Raise FileNotFoundError.
+#     with pytest.raises(FileNotFoundError):
+#         census.parse_pumsdatadict20092013(path='does/not/exist.txt')
+#     return None
