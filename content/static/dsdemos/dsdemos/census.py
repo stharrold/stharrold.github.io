@@ -58,6 +58,7 @@ def parse_pumsdatadict2013(path:str) -> collections.OrderedDict:
         [^url]: http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict13.txt
     
     """
+    # TODO: Redo with patterns from parse_pumsdatadict20092013
     # Check arguments.
     utils.check_arguments(
         antns=parse_pumsdatadict2013.__annotations__,
@@ -318,7 +319,10 @@ def parse_pumsdatadict20092013(path:str) -> collections.OrderedDict:
         var_name = None
         var_name_last = 'PWGTP80' # Necessary since end-of-file notes are unformatted.
         for line in fobj:
-            line = line.rstrip()
+            # # TEST
+            # if 'AGS' in line:
+            #     pdb.set_trace()
+            line = line.replace('\t', ' '*4).rstrip()
             # Record type is section header 'HOUSING RECORD' or 'PERSON RECORD'.
             if (line.strip() == 'HOUSING RECORD'
                 or line.strip() == 'PERSON RECORD'):
@@ -385,31 +389,11 @@ def parse_pumsdatadict20092013(path:str) -> collections.OrderedDict:
                         ddict['record_types'][record_type][var_name]['notes'].append(var_notes[0])
                     catch_var_name = False
                     catch_var_desc = True
-            # Variable description is 1 line with 4 space indent.
+                    var_desc_indent = None
+            # Variable description is 1+ lines with 1+ whitespace indent.
             # Variable description is followed by variable code(s).
-            # Catch explicit instances of inconsistently formatted data.
-            elif catch_var_desc:
-                is_valid_desc = None
-                # Example: "    Record Type	"
-                if line.startswith(' '*4):
-                    is_valid_desc = True
-                # TODO: REMOVE
-                # # Example inconsistent format case:
-                # # ADJHSG     7      
-                # # Adjustment factor for housing dollar amounts (6 implied decimal places)
-                # elif 'ADJ' in var_name and 'Adjustment factor' in line:
-                #     is_valid_desc = True
-                else:
-                    is_valid_desc = False
-                if is_valid_desc:
-                    var_desc = line.strip()
-                    ddict['record_types'][record_type][var_name]['description'] = var_desc
-                    catch_var_desc = False
-                    catch_var_code = True
-                if is_valid_desc is None:
-                    raise AssertionError(
-                        "Program error. `is_valid_desc` must be set within if-elif-else.")
-            # Variable code(s) is 1+ line with 5+ space indent. Example:"""
+            # Variable code(s) is 1+ line with larger whitespace indent
+            # than variable description. Example:"""
             # NP         2      
             #     Number of person records following this housing record
             #                00 .Vacant unit
@@ -420,83 +404,50 @@ def parse_pumsdatadict20092013(path:str) -> collections.OrderedDict:
             # """
             # The last variable code is followed by a newline.
             # Catch explicit instances of inconsistently formatted data.
-            elif catch_var_code:
-                is_valid_code = None
-                if line.startswith(' '*8):
-                    # Example case: ".any person in group quarters)"
-                    if line.strip().startswith('.'):
-                        var_code_desc = line.strip().lstrip('.')
-                        ddict['record_types'][record_type][var_name]['var_codes'][var_code] += ' '+var_code_desc
-                        is_valid_code = False
-                    # # TODO: REMOVE
-                    # # Example inconsistent format case:
-                    # # DEAR<tab>   1
-                    # #     Hearing difficulty
-                    # #            1. Yes
-                    # #            2. No
-                    # elif 'DEAR' in var_name and ('1. Yes' in line or '2. No' in line):
-                    #     (var_code, var_code_desc) = line.strip().split(sep='. ', maxsplit=1)
-                    #     is_valid_code = True
-                    # # TODO: REMOVE
-                    # # Example inconsistent format case:
-                    # # MARHYP     4
-                    # #     Year last married
-                    # #            bbbb. N/A (age less than 15 years; never married)
-                    # #            1932 .1932 or earlier (Bottom-coded)
-                    # #            1933 .1933
-                    # elif 'MARHYP' in var_name and 'bbbb. N/A' in line:
-                    #     (var_code, var_code_desc) = line.strip().split(sep='. ', maxsplit=1)
-                    #     is_valid_code = True
-                    # Example case: "01 .One person record (one person in household or"
-                    else:
-                        (var_code, var_code_desc) = line.strip().split(sep=' .', maxsplit=1)
-                        is_valid_code = True
-                # Example inconsistent format case:"""
-                # RWAT       1      
-                #     Hot and cold running water
-                #            b .N/A (GQ)
-                #            1 .Yes
-                #            2 .No
-                # <tab>   9 .Case is from Puerto Rico in 2013 or later, RWAT not applicable
-                # """
-                elif 'RWAT' in var_name:
-                    (var_code, var_code_desc) = line.strip().split(sep=' .', maxsplit=1)
-                    is_valid_code = True
-                # TODO: remove
-                # # Example inconsistent format case:
-                # # RWAT       1      
-                # #     Hot and cold running water
-                # #            b .N/A (GQ)
-                # #            1 .Yes
-                # #            2 .No
-                # # <tab>   9. Case is from Puerto Rico, RWAT not applicable
-                # elif 'RWAT' in var_name and '9. Case is from' in line:
-                #     (var_code, var_code_desc) = line.strip().split(sep='. ', maxsplit=1)
-                #     is_valid_code = True
-                # Example inconsistent format:"""
-                # SMP        5      
-                #     Total payment on all second and junior mortgages and home equity loans (monthly 
-                #     amount)
-                #                   bbbbb .N/A (GQ/vacant/not owned or being bought/
-                #                         .no second or junior mortgages or home equity loans)
-                #            00001..99999 .$1 to $99999 (Rounded and top-coded)
-                # """
-                elif 'SMP' in var_name and 'amount)' in line:
+            elif (catch_var_desc or catch_var_code) and line.startswith(' '):
+                indent = len(line) - len(line.lstrip())
+                if var_desc_indent is None:
+                    var_desc_indent = indent
+                    var_desc = line.strip()
+                    ddict['record_types'][record_type][var_name]['description'] = var_desc
+                elif indent <= var_desc_indent:
                     var_desc = line.strip()
                     ddict['record_types'][record_type][var_name]['description'] += ' '+var_desc
-                    is_valid_code = False
                 else:
-                    is_valid_code = False
-                if is_valid_code:
-                    if 'var_codes' not in ddict['record_types'][record_type][var_name]:
-                        ddict['record_types'][record_type][var_name]['var_codes'] = collections.OrderedDict()
-                    ddict['record_types'][record_type][var_name]['var_codes'][var_code] = var_code_desc
-                if is_valid_code is None:
-                    raise AssertionError(
-                        "Program error. `is_valid_code` must be set within if-elif-else.")
-            # Notes for entire data dictionary are at the end and are unformatted.
+                    catch_var_desc = False
+                    catch_var_code = True
+                    # Example case: "01 .One person record (one person in household or"
+                    if not line.strip().startswith('.'):
+                        (var_code, var_code_desc) = line.strip().split(sep=' .', maxsplit=1)
+                        if 'var_codes' not in ddict['record_types'][record_type][var_name]:
+                            ddict['record_types'][record_type][var_name]['var_codes'] = collections.OrderedDict()
+                        ddict['record_types'][record_type][var_name]['var_codes'][var_code] = var_code_desc
+                    # Example case: ".any person in group quarters)"
+                    else:
+                        var_code_desc = line.strip().lstrip('.')
+                        ddict['record_types'][record_type][var_name]['var_codes'][var_code] += ' '+var_code_desc
+            # Example inconsistent format case:"""
+            # WGTP10     5
+            #     Housing Weight replicate 10
+            #           -9999..09999 .Integer weight of housing unit
+            # WGTP11     5
+            #     Housing Weight replicate 11
+            #           -9999..09999 .Integer weight of housing unit
+            # """
+            elif ((var_name == 'WGTP10' and 'WGTP11' in line)
+                or (var_name == 'YOEP12' and 'ANC' in line)):
+                (var_name, var_len, *var_notes) = line.strip().split(maxsplit=2) # type(var_notes) == list
+                ddict['record_types'][record_type][var_name] = collections.OrderedDict()
+                ddict['record_types'][record_type][var_name]['length'] = var_len
+                if len(var_notes) > 0:
+                    if 'notes' not in ddict['record_types'][record_type][var_name]:
+                        ddict['record_types'][record_type][var_name]['notes'] = list()
+                    ddict['record_types'][record_type][var_name]['notes'].append(var_notes[0])
+                catch_var_name = False
+                catch_var_desc = True
+                var_desc_indent = None
+            # Notes for entire data dictionary are at the end of the file and are unformatted.
             else:
-                # TEST
                 if (catch_var_name, catch_var_desc,
                     catch_var_code, catch_var_note) != (False, )*4:
                     raise AssertionError(
