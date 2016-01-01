@@ -41,7 +41,7 @@ def parse_pumsdatadict13(path:str) -> collections.OrderedDict:
         * Values are all strings. No data types are inferred from the
             original file.
         * Example structure of returned `ddict`:
-            ddict['name'] = '2013 ACS PUMS DATA DICTIONARY'
+            ddict['title'] = '2013 ACS PUMS DATA DICTIONARY'
             ddict['date'] = 'August 7, 2015'
             ddict['record_types']['HOUSING RECORD']['RT']\
                 ['length'] = '1'
@@ -75,7 +75,7 @@ def parse_pumsdatadict13(path:str) -> collections.OrderedDict:
     ddict = collections.OrderedDict()
     with open(path, encoding='utf-8', errors='replace') as fobj:
         # Data dictionary name is line 1.
-        ddict['name'] = fobj.readline().strip()
+        ddict['title'] = fobj.readline().strip()
         # Data dictionary date is line 2.
         ddict['date'] = fobj.readline().strip()    
         # Initialize flags to catch lines.
@@ -163,7 +163,7 @@ def parse_pumsdatadict13(path:str) -> collections.OrderedDict:
                 if is_valid_desc is None:
                     raise AssertionError(
                         "Program error. `is_valid_desc` must be set within if-elif-else.")
-            # Variable code(s) is 1+ line with 8+ space indent. Example:"""
+            # Variable code(s) is 1+ line with 5+ space indent. Example:"""
             # NP         2      
             #     Number of person records following this housing record
             #                00 .Vacant unit
@@ -203,6 +203,16 @@ def parse_pumsdatadict13(path:str) -> collections.OrderedDict:
                     else:
                         (var_code, var_code_desc) = line.strip().split(sep=' .', maxsplit=1)
                         is_valid_code = True
+                # Example inconsistent format case:
+                # MARHYP     4
+                #     Year last married
+                # ...
+                #            2010 .2010
+                # <tab>   2011 .2011
+                #           2012 .2012
+                elif 'MARHYP' in var_name:
+                    (var_code, var_code_desc) = line.strip().split(sep=' .', maxsplit=1)
+                    is_valid_code = True
                 # Example inconsistent format case:
                 # RWAT       1      
                 #     Hot and cold running water
