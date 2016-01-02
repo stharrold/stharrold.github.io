@@ -30,6 +30,12 @@ ADJHSG     7
    	   1014531 .2012 factor
            1000000 .2013 factor
 
+ADJINC     7      
+Adjustment factor for income and earnings dollar amounts (6 implied decimal places)
+           1007549 .2013 factor (1.007549)
+
+Note: The value of ADJINC inflation-adjusts reported income to 2013 dollars.  ADJINC applies to variables FINCP and HINCP in the housing record, and variables INTP, OIP, PAP, PERNP, PINCP, RETP, SEMP, SSIP, SSP, and WAGP in the person record. 
+
 
 NP         2      
     Number of person records following this housing record

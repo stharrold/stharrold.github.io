@@ -34,7 +34,9 @@ def test_parse_pumsdatadict(
             import os
             import json
             import dsdemos as dsd
-            path_txt = 'tests/test_census_data/test_parse_pumsdatadict.txt'
+            path_txt = os.path.join(
+                os.path.curdir,
+                'tests/test_census_data/test_parse_pumsdatadict.json')
             path_json = os.path.splitext(path_txt)[0]+'.json'
             ddict = dsd.census.parse_pumsdatadict(path=path_txt)
             with open(path_json, 'w') as fobj:

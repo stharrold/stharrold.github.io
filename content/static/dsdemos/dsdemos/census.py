@@ -42,7 +42,7 @@ def parse_pumsdatadict(path:str) -> collections.OrderedDict:
         * Values are all strings. No data types are inferred from the
             original file.
         * Example structure of returned `ddict`:
-            ddict['title'] = 'TEST ACS PUMS DATA DICTIONARY'
+            ddict['title'] = '2013 ACS PUMS DATA DICTIONARY'
             ddict['date'] = 'August 7, 2015'
             ddict['record_types']['HOUSING RECORD']['RT']\
                 ['length'] = '1'
@@ -56,7 +56,6 @@ def parse_pumsdatadict(path:str) -> collections.OrderedDict:
                  ...]
     
     References:
-        [^urls]:
         [^urls]: http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/
             PUMSDataDict2013.txt
             PUMS_Data_Dictionary_2009-2013.txt
@@ -89,8 +88,8 @@ def parse_pumsdatadict(path:str) -> collections.OrderedDict:
         var_name = None
         var_name_last = 'PWGTP80' # Necessary for unformatted end-of-file notes.
         for line in fobj:
-            # # TEST:
-            # if 'Note: Public Use Microdata Areas' in line:
+            # TEST:
+            # if 'ADJ' in line:
             #     pdb.set_trace()
             # Replace tabs with 4 spaces
             line = line.replace('\t', ' '*4).rstrip()
@@ -175,13 +174,16 @@ def parse_pumsdatadict(path:str) -> collections.OrderedDict:
             # The last variable code is followed by a newline.
             elif (catch_var_desc or catch_var_code) and line.startswith(' '):
                 indent = len(line) - len(line.lstrip())
-                if var_desc_indent is None:
+                # For line 1 of variable description.
+                if catch_var_desc and var_desc_indent is None:
                     var_desc_indent = indent
                     var_desc = line.strip()
                     ddict['record_types'][record_type][var_name]['description'] = var_desc
-                elif indent <= var_desc_indent:
+                # For lines 2+ of variable description.
+                elif catch_var_desc and indent <= var_desc_indent:
                     var_desc = line.strip()
                     ddict['record_types'][record_type][var_name]['description'] += ' '+var_desc
+                # For lines 1+ of variable codes.
                 else:
                     catch_var_desc = False
                     catch_var_code = True
@@ -215,8 +217,8 @@ def parse_pumsdatadict(path:str) -> collections.OrderedDict:
             # ADJHSG     7      
             # Adjustment factor for housing dollar amounts (6 implied decimal places)
             # """
-            elif (catch_var_desc and 'ADJ' in var_name
-                and 'Adjustment factor' in line):
+            elif (catch_var_desc and
+                'description' not in ddict['record_types'][record_type][var_name]):
                 var_desc = line.strip()
                 ddict['record_types'][record_type][var_name]['description'] = var_desc
                 catch_var_desc = False
