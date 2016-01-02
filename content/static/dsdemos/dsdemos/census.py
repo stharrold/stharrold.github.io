@@ -28,7 +28,7 @@ def parse_pumsdatadict(path:str) -> collections.OrderedDict:
     r"""Parse ACS PUMS Data Dictionaries.
     
     Args:
-        path (str): Path to downloaded data dictionary.[^url]
+        path (str): Path to downloaded data dictionary.
         
     Returns:
         ddict (collections.OrderedDict): Parsed data dictionary with original
@@ -88,9 +88,6 @@ def parse_pumsdatadict(path:str) -> collections.OrderedDict:
         var_name = None
         var_name_last = 'PWGTP80' # Necessary for unformatted end-of-file notes.
         for line in fobj:
-            # TEST:
-            # if 'ADJ' in line:
-            #     pdb.set_trace()
             # Replace tabs with 4 spaces
             line = line.replace('\t', ' '*4).rstrip()
             # Record type is section header 'HOUSING RECORD' or 'PERSON RECORD'.
