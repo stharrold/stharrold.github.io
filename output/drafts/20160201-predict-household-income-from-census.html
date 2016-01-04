@@ -294,17 +294,20 @@ Data Science Demos            </a>
 <p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">1</a></sup> and consumers often spend on behalf of their household.<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">2</a></sup> Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
 <h3 id="predicting-household-income">Predicting household income</h3>
 <ul>
-<li>
-<p>TODO:</p>
-<ul>
+<li>TODO:<ul>
+<li>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums" rel="footnote">3</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</li>
+<li>Join personal and housing files.</li>
+<li>imputation (knn?)</li>
 <li>Purpose: Predict total annual household income.</li>
 <li>Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?</li>
 <li>Data mining: feature corrs, household corrs, pairplots, dim-red vis</li>
-<li>
-<p>Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors</p>
-</li>
-<li>
-<p>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums" rel="footnote">3</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</p>
+<li>Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors</li>
+<li>dask vs spark: http://dask.readthedocs.org/en/latest/spark.html<ul>
+<li>dask tutorial: http://nbviewer.ipython.org/github/jcrist/Dask_PyData_NYC/blob/master/Dask_DataFrame_Airline.ipynb</li>
+<li>dask with scikit-learn requires partial_fit (out-of-core; different from n_jobs): http://blaze.pydata.org/blog/2015/10/19/dask-learn/, http://scikit-learn.org/stable/modules/scaling_strategies.html</li>
+<li>Data size (including memoized operations on data) fit in RAM (1 machine); fit on disk (1 machine); fit in RAM (2+ machines); fit on disk (2+machines) // Job duration short enough for single CPU (1 core, 1 machine); for multiple CPUs (2+ cores, 1 machine); for multiple CPUs (2+ cores, 2+ machines)</li>
+<li>use dask to select random subset (100MB) for pandas: http://dask.pydata.org/en/latest/dataframe-api.html (also use python to get file size)</li>
+</ul>
 </li>
 </ul>
 </li>
@@ -336,37 +339,37 @@ Data Science Demos            </a>
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c85839d0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c85830d8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8583960></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8583ce0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c85830d8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8583960></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8583960></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c85830d8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86508f0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86a1810></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8650a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86508f0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c864e458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8650928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86a17a0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8650928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8650880></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c863b420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86a1810></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8607c00></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c85f9420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c858d340></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c86a1810></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c8607c00></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c85ffa78></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7fa2c864e458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823409d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823400d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d82340960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d82340ce0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823400d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d82340960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d82340960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823400d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240d8f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8245e810></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240da40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d82467458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240d8f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240b458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240d928></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8245e7a0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240d928></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240d880></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823f8420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8245e810></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823c4c00></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823b6420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8234a340></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8245e810></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823c4c00></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d823bca78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f5d8240b458></a></li>
     </ul>
 </section>
     <hr/>
