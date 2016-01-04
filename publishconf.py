@@ -6,11 +6,11 @@ See Also:
     pelicanconf.py
 
 Notes:
-    * Settings are defined in order from [1]_.
+    * Settings are defined in order from pelican docs.[^pel]
     * Minimal settings from `pelicanconf.py` are changed.
 
 References:
-    .. [1] http://docs.getpelican.com/en/3.6.3/settings.html
+    [^pel]: http://docs.getpelican.com/en/3.6.3/settings.html
 
 """
 

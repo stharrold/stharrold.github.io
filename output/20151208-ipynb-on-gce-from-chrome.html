@@ -10,162 +10,6 @@
 
 
 
-
-<style type="text/css">
-
-/*some stuff for output/input prompts*/
-div.cell{border:1px solid transparent;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;display:flex;flex-direction:column;align-items:stretch}div.cell.selected{border-radius:4px;border:thin #ababab solid}
-div.cell.edit_mode{border-radius:4px;border:thin #008000 solid}
-div.cell{width:100%;padding:5px 5px 5px 0;margin:0;outline:none}
-div.prompt{min-width:11ex;padding:.4em;margin:0;font-family:monospace;text-align:right;line-height:1.21429em}
-@media (max-width:480px){div.prompt{text-align:left}}div.inner_cell{display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;display:flex;flex-direction:column;align-items:stretch;-webkit-box-flex:1;-moz-box-flex:1;box-flex:1;flex:1}
-div.input_area{border:1px solid #cfcfcf;border-radius:4px;background:#f7f7f7;line-height:1.21429em}
-div.prompt:empty{padding-top:0;padding-bottom:0}
-div.input{page-break-inside:avoid;display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:horizontal;-moz-box-align:stretch;display:box;box-orient:horizontal;box-align:stretch;}
-div.inner_cell{width:90%;}
-div.input_area{border:1px solid #cfcfcf;border-radius:4px;background:#f7f7f7;}
-div.input_prompt{color:navy;border-top:1px solid transparent;}
-div.output_wrapper{margin-top:5px;position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;width:100%;}
-div.output_scroll{height:24em;width:100%;overflow:auto;border-radius:4px;-webkit-box-shadow:inset 0 2px 8px rgba(0, 0, 0, 0.8);-moz-box-shadow:inset 0 2px 8px rgba(0, 0, 0, 0.8);box-shadow:inset 0 2px 8px rgba(0, 0, 0, 0.8);}
-div.output_collapsed{margin:0px;padding:0px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;width:100%;}
-div.out_prompt_overlay{height:100%;padding:0px 0.4em;position:absolute;border-radius:4px;}
-div.out_prompt_overlay:hover{-webkit-box-shadow:inset 0 0 1px #000000;-moz-box-shadow:inset 0 0 1px #000000;box-shadow:inset 0 0 1px #000000;background:rgba(240, 240, 240, 0.5);}
-div.output_prompt{color:darkred;}
-
-a.anchor-link:link{text-decoration:none;padding:0px 20px;visibility:hidden;}
-h1:hover .anchor-link,h2:hover .anchor-link,h3:hover .anchor-link,h4:hover .anchor-link,h5:hover .anchor-link,h6:hover .anchor-link{visibility:visible;}
-/* end stuff for output/input prompts*/
-
-
-.highlight-ipynb .hll { background-color: #ffffcc }
-.highlight-ipynb  { background: #f8f8f8; }
-.highlight-ipynb .c { color: #408080; font-style: italic } /* Comment */
-.highlight-ipynb .err { border: 1px solid #FF0000 } /* Error */
-.highlight-ipynb .k { color: #008000; font-weight: bold } /* Keyword */
-.highlight-ipynb .o { color: #666666 } /* Operator */
-.highlight-ipynb .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight-ipynb .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight-ipynb .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight-ipynb .cs { color: #408080; font-style: italic } /* Comment.Special */
-.highlight-ipynb .gd { color: #A00000 } /* Generic.Deleted */
-.highlight-ipynb .ge { font-style: italic } /* Generic.Emph */
-.highlight-ipynb .gr { color: #FF0000 } /* Generic.Error */
-.highlight-ipynb .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight-ipynb .gi { color: #00A000 } /* Generic.Inserted */
-.highlight-ipynb .go { color: #888888 } /* Generic.Output */
-.highlight-ipynb .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
-.highlight-ipynb .gs { font-weight: bold } /* Generic.Strong */
-.highlight-ipynb .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-.highlight-ipynb .gt { color: #0044DD } /* Generic.Traceback */
-.highlight-ipynb .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
-.highlight-ipynb .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
-.highlight-ipynb .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
-.highlight-ipynb .kp { color: #008000 } /* Keyword.Pseudo */
-.highlight-ipynb .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
-.highlight-ipynb .kt { color: #B00040 } /* Keyword.Type */
-.highlight-ipynb .m { color: #666666 } /* Literal.Number */
-.highlight-ipynb .s { color: #BA2121 } /* Literal.String */
-.highlight-ipynb .na { color: #7D9029 } /* Name.Attribute */
-.highlight-ipynb .nb { color: #008000 } /* Name.Builtin */
-.highlight-ipynb .nc { color: #0000FF; font-weight: bold } /* Name.Class */
-.highlight-ipynb .no { color: #880000 } /* Name.Constant */
-.highlight-ipynb .nd { color: #AA22FF } /* Name.Decorator */
-.highlight-ipynb .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight-ipynb .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
-.highlight-ipynb .nf { color: #0000FF } /* Name.Function */
-.highlight-ipynb .nl { color: #A0A000 } /* Name.Label */
-.highlight-ipynb .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
-.highlight-ipynb .nt { color: #008000; font-weight: bold } /* Name.Tag */
-.highlight-ipynb .nv { color: #19177C } /* Name.Variable */
-.highlight-ipynb .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
-.highlight-ipynb .w { color: #bbbbbb } /* Text.Whitespace */
-.highlight-ipynb .mf { color: #666666 } /* Literal.Number.Float */
-.highlight-ipynb .mh { color: #666666 } /* Literal.Number.Hex */
-.highlight-ipynb .mi { color: #666666 } /* Literal.Number.Integer */
-.highlight-ipynb .mo { color: #666666 } /* Literal.Number.Oct */
-.highlight-ipynb .sb { color: #BA2121 } /* Literal.String.Backtick */
-.highlight-ipynb .sc { color: #BA2121 } /* Literal.String.Char */
-.highlight-ipynb .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
-.highlight-ipynb .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight-ipynb .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
-.highlight-ipynb .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight-ipynb .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
-.highlight-ipynb .sx { color: #008000 } /* Literal.String.Other */
-.highlight-ipynb .sr { color: #BB6688 } /* Literal.String.Regex */
-.highlight-ipynb .s1 { color: #BA2121 } /* Literal.String.Single */
-.highlight-ipynb .ss { color: #19177C } /* Literal.String.Symbol */
-.highlight-ipynb .bp { color: #008000 } /* Name.Builtin.Pseudo */
-.highlight-ipynb .vc { color: #19177C } /* Name.Variable.Class */
-.highlight-ipynb .vg { color: #19177C } /* Name.Variable.Global */
-.highlight-ipynb .vi { color: #19177C } /* Name.Variable.Instance */
-.highlight-ipynb .il { color: #666666 } /* Literal.Number.Integer.Long */
-</style>
-
-<style type="text/css">
-/* Overrides of notebook CSS for static HTML export */
-div.entry-content {
-  overflow: visible;
-  padding: 8px;
-}
-.input_area {
-  padding: 0.2em;
-}
-
-a.heading-anchor {
- white-space: normal;
-}
-
-.rendered_html
-code {
- font-size: .8em;
-}
-
-pre.ipynb {
-  color: black;
-  background: #f7f7f7;
-  border: none;
-  box-shadow: none;
-  margin-bottom: 0;
-  padding: 0;
-  margin: 0px;
-  font-size: 13px;
-}
-
-/* remove the prompt div from text cells */
-div.text_cell .prompt {
-    display: none;
-}
-
-/* remove horizontal padding from text cells, */
-/* so it aligns with outer body text */
-div.text_cell_render {
-    padding: 0.5em 0em;
-}
-
-img.anim_icon{padding:0; border:0; vertical-align:middle; -webkit-box-shadow:none; -box-shadow:none}
-</style>
-
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
-<script type="text/javascript">
-init_mathjax = function() {
-    if (window.MathJax) {
-        // MathJax loaded
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
-            },
-            displayAlign: 'left', // Change this to 'center' to center equations.
-            "HTML-CSS": {
-                styles: {'.MathJax_Display': {"margin": 0}}
-            }
-        });
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-    }
-}
-init_mathjax();
-</script>
-
 <link rel="canonical" href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">
 
         <meta name="author" content="Samuel Harrold" />
@@ -266,7 +110,7 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2015-12-20T16:20:00+00:00"> Sun 20 December 2015</time>
+                <i class="fa fa-calendar"></i><time datetime="2016-01-04T21:30:00+00:00"> Mon 04 January 2016</time>
             </span>
 
         <span class="label label-default">Category</span>
@@ -302,9 +146,12 @@ Data Science Demos            </a>
 <h3 id="overview">Overview</h3>
 <p>In October 2015, I bought a Chromebook with the intent of learning how to move my data-science development environment to the cloud. In exchange for an extra 5&nbsp;minutes of setup, I now have a flexible infrastructure that can scale with the task. This setup is cross-platform in that it can be used on any laptop with Chrome, not just a Chromebook.</p>
 <p>Brief setup routine:</p>
-<p><a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/jpeg">
+<div id="screenshot">
+<a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/png">
     <img src="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="320" />
-</a></p>
+</a>
+</div>
+
 <ul>
 <li>Start a <a href="https://cloud.google.com/compute/">Google Compute Engine</a> virtual machine instance.</li>
 <li>Start a <a href="http://jupyter.org/">Jupyter Notebook</a> server on the instance:<br />
@@ -312,7 +159,7 @@ Data Science Demos            </a>
 <code>$ disown 1234</code> (where <code>1234</code> is the process ID)</li>
 <li>Create an <a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html">SSH tunnel</a> to forward a local port to the server's port on the instance:<br />
 <code>$ ssh -f -N -L localhost:8888:0.0.0.0:8888 samuel_harrold@123.123.123.123</code><br />
-For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a>, omit <code>-f</code> to keep the tunnel open (see screenshot).</li>
+For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a>, omit <code>-f</code> to keep the tunnel open (see <a href="#screenshot">screenshot</a>).</li>
 <li>View the server at <code>http://localhost:8888</code></li>
 <li>I use the <a href="https://c9.io/?redirect=0">Cloud9 IDE</a> and connect the instance as an <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">SSH workspace</a>.</li>
 </ul>
@@ -348,10 +195,10 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </li>
 <li>Connect to the instance, e.g. with Google's <a href="https://cloud.google.com/compute/docs/ssh-in-browser">in-browser SSH</a>.</li>
 <li><a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">Update the Debian system.</a></li>
-<li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate an SSH key pair for the instance</a> and might as well connect to GitHub.<sup id="fnref:use-less"><a class="footnote-ref" href="#fn:use-less" rel="footnote">7</a></sup></li>
+<li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate an SSH key pair for the instance</a> <span id="ssh-keygen"></span> and might as well connect to GitHub.<sup id="fnref:use-less"><a class="footnote-ref" href="#fn:use-less" rel="footnote">7</a></sup></li>
 </ul>
 </li>
-<li>Start a Jupyter Notebook server on the instance from the in-browser SSH:<ul>
+<li><span id="ipynb-server">Start a Jupyter Notebook server</span> on the instance from the in-browser SSH:<ul>
 <li><a href="https://www.continuum.io/downloads">Install Python</a> on the instance.</li>
 <li>Start a <a href="http://jupyter.org/">Jupyter Notebook</a> server:<br />
 <code>$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &amp;</code><br />
@@ -359,8 +206,8 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>Create an SSH tunnel to forward a local port to the server's port on the instance:<ul>
-<li>Generate an SSH key pair for the Chromebook as above<sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">9</a></sup> and add the Chromebook's public key to the instance's <code>authorized_keys</code>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">10</a></sup></li>
-<li>Within Chrome, install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> and forward a port (see screenshot above):<br />
+<li>Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a><sup id="fnref:keys"><a class="footnote-ref" href="#fn:keys" rel="footnote">9</a></sup> and <span id="ssh-keyadd">add the Chromebook's public key to the instance's <code>authorized_keys</code></span>.<sup id="fnref:cat"><a class="footnote-ref" href="#fn:cat" rel="footnote">10</a></sup></li>
+<li>Within Chrome, install <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo">Chrome Secure Shell</a> and forward a port (see screenshot <a href="#screenshot">above</a>):<br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
 <code>Port: 22</code><br />
@@ -371,7 +218,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </li>
 <li>For an IDE, connect a Cloud9 remote SSH workspace to the instance:<ul>
 <li><a href="https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions">Install Node.js</a> on the instance.</li>
-<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>, copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code> as above, then open the workspace:<sup id="fnref:install-deps"><a class="footnote-ref" href="#fn:install-deps" rel="footnote">14</a></sup><br />
+<li>Create a <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>, copy the public SSH key from Cloud9 to the instance's <code>authorized_keys</code> as <a href="#ssh-keyadd">above</a>, then open the workspace:<sup id="fnref:install-deps"><a class="footnote-ref" href="#fn:install-deps" rel="footnote">14</a></sup><br />
 <code>Username: samuel_harrold</code> (in the instance's shell, run <code>whoami</code>)<br />
 <code>Hostname: 123.123.123.123</code> (the instance's external IP address)<br />
 <code>Initial path: /home/samuel_harrold</code><br />
@@ -379,7 +226,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <code>Node.js binary path: /usr/bin/nodejs</code> (in the instance's shell, run <code>which nodejs</code>)</li>
 </ul>
 </li>
-<li>To shutdown the instance:<ul>
+<li><span id="shutdown">To shutdown the instance</span>:<ul>
 <li>Close the Jupyter Notebook and the Chrome Secure Shell tabs. Kill the Jupyter Notebook server.<sup id="fnref:lsof-kill"><a class="footnote-ref" href="#fn:lsof-kill" rel="footnote">15</a></sup></li>
 <li>Close the Cloud9 workspace tab.</li>
 <li>"Stop" the instance in the Developers Console.</li>
@@ -387,7 +234,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </li>
 <li>For a simple backup of the instance, create a snapshot from the Developers Console. This can be done while the instance is running.</li>
 <li>To change the instance's machine type or disk size:<ul>
-<li>Shutdown the instance as above.</li>
+<li>Shutdown the instance as <a href="#shutdown">above</a>.</li>
 <li>Create a snapshot of the instance.</li>
 <li>Clone the instance but set the new boot disk to the new snapshot and...<ul>
 <li>...if changing the machine type, set the new machine type.</li>
@@ -395,7 +242,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>Reassign the external IP address to the new instance.<sup id="fnref:networking"><a class="footnote-ref" href="#fn:networking" rel="footnote">16</a></sup></li>
-<li>Start the Jupyter Notebook server on the instance and create an SSH tunnel as above.<sup id="fnref:host-id"><a class="footnote-ref" href="#fn:host-id" rel="footnote">17</a></sup></li>
+<li>Start the Jupyter Notebook server on the instance and create an SSH tunnel as <a href="#ipynb-server">above</a>.<sup id="fnref:host-id"><a class="footnote-ref" href="#fn:host-id" rel="footnote">17</a></sup></li>
 <li>Open the Cloud9 workspace.</li>
 </ul>
 </li>
@@ -423,6 +270,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <li><a href="http://www.linuxproblem.org/art_9.html">SSH login without password.</a></li>
 <li><a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html">SSH port forwarding (tunnels) explained.</a></li>
 <li><a href="https://cloud.google.com/solutions/connecting-securely">Google's recommended best practices for securing communications with Compute Engine instances.</a></li>
+<li><a href="http://www.thegeekstuff.com/2012/07/wget-curl/"><code>wget</code> vs <code>curl</code> with examples</a></li>
 <li><a href="http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal">Download from Google Drive with <code>wget</code></a></li>
 <li><a href="https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line">Download from Kaggle with <code>wget</code></a></li>
 <li><a href="http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/"><code>disown</code> examples.</a></li>
@@ -445,7 +293,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <hr />
 <ol>
 <li id="fn:gce-prices">
-<p>As of December 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about <span>$4.50</span> per month. Running a 32-core virtual CPU instance with 120GB RAM costs about <span>$1.12</span> per hour.&#160;<a class="footnote-backref" href="#fnref:gce-prices" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>As of Dec 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about &#36;4.50 per month. Running a 32-core virtual CPU instance with 120GB RAM costs about &#36;1.12 per hour.&#160;<a class="footnote-backref" href="#fnref:gce-prices" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:alts">
 <p>There are also hosted services like <a href="https://wakari.io/">Continuum Analytics Wakari</a>, <a href="https://cloud.google.com/datalab/">Google Cloud Datalab</a>, <a href="https://c9.io/?redirect=0">Cloud9 hosted workspaces</a>, and <a href="https://www.digitalocean.com/">Digital Ocean</a>.&#160;<a class="footnote-backref" href="#fnref:alts" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
@@ -469,7 +317,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <p>Disowning a background process (the control operator <code>&amp;</code>) from the shell allows a process to continue running in the background when the shell is closed.&#160;<a class="footnote-backref" href="#fnref:disown" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:keys">
-<p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above then move them to the Chromebook. I save mine under <code>Downloads/ssh</code> (no dot-file access without developer mode). Transfer the keys by copy-paste using <code>less</code> from instance's in-browser SSH and <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">a text editor app for Chromebook</a> or download them from a connected <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>: right-click the file &gt; "Download".&#160;<a class="footnote-backref" href="#fnref:keys" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+<p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as <a href="#ssh-keygen">above</a> then move them to the Chromebook. I save mine under <code>Downloads/ssh</code> (no dot-file access without developer mode). Transfer the keys by copy-paste using <code>less</code> from instance's in-browser SSH and <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">a text editor app for Chromebook</a> or download them from a connected <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>: right-click the file &gt; "Download".&#160;<a class="footnote-backref" href="#fnref:keys" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:cat">
 <p>To copy a local public SSH key, e.g. <code>id_rsa.pub</code>, to a remote machine's <code>authorized_keys</code>, in the instance's in-browser shell:<br />

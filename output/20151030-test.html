@@ -10,162 +10,6 @@
 
 
 
-
-<style type="text/css">
-
-/*some stuff for output/input prompts*/
-div.cell{border:1px solid transparent;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;display:flex;flex-direction:column;align-items:stretch}div.cell.selected{border-radius:4px;border:thin #ababab solid}
-div.cell.edit_mode{border-radius:4px;border:thin #008000 solid}
-div.cell{width:100%;padding:5px 5px 5px 0;margin:0;outline:none}
-div.prompt{min-width:11ex;padding:.4em;margin:0;font-family:monospace;text-align:right;line-height:1.21429em}
-@media (max-width:480px){div.prompt{text-align:left}}div.inner_cell{display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;display:flex;flex-direction:column;align-items:stretch;-webkit-box-flex:1;-moz-box-flex:1;box-flex:1;flex:1}
-div.input_area{border:1px solid #cfcfcf;border-radius:4px;background:#f7f7f7;line-height:1.21429em}
-div.prompt:empty{padding-top:0;padding-bottom:0}
-div.input{page-break-inside:avoid;display:-webkit-box;-webkit-box-orient:horizontal;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:horizontal;-moz-box-align:stretch;display:box;box-orient:horizontal;box-align:stretch;}
-div.inner_cell{width:90%;}
-div.input_area{border:1px solid #cfcfcf;border-radius:4px;background:#f7f7f7;}
-div.input_prompt{color:navy;border-top:1px solid transparent;}
-div.output_wrapper{margin-top:5px;position:relative;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;width:100%;}
-div.output_scroll{height:24em;width:100%;overflow:auto;border-radius:4px;-webkit-box-shadow:inset 0 2px 8px rgba(0, 0, 0, 0.8);-moz-box-shadow:inset 0 2px 8px rgba(0, 0, 0, 0.8);box-shadow:inset 0 2px 8px rgba(0, 0, 0, 0.8);}
-div.output_collapsed{margin:0px;padding:0px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-box-align:stretch;display:-moz-box;-moz-box-orient:vertical;-moz-box-align:stretch;display:box;box-orient:vertical;box-align:stretch;width:100%;}
-div.out_prompt_overlay{height:100%;padding:0px 0.4em;position:absolute;border-radius:4px;}
-div.out_prompt_overlay:hover{-webkit-box-shadow:inset 0 0 1px #000000;-moz-box-shadow:inset 0 0 1px #000000;box-shadow:inset 0 0 1px #000000;background:rgba(240, 240, 240, 0.5);}
-div.output_prompt{color:darkred;}
-
-a.anchor-link:link{text-decoration:none;padding:0px 20px;visibility:hidden;}
-h1:hover .anchor-link,h2:hover .anchor-link,h3:hover .anchor-link,h4:hover .anchor-link,h5:hover .anchor-link,h6:hover .anchor-link{visibility:visible;}
-/* end stuff for output/input prompts*/
-
-
-.highlight-ipynb .hll { background-color: #ffffcc }
-.highlight-ipynb  { background: #f8f8f8; }
-.highlight-ipynb .c { color: #408080; font-style: italic } /* Comment */
-.highlight-ipynb .err { border: 1px solid #FF0000 } /* Error */
-.highlight-ipynb .k { color: #008000; font-weight: bold } /* Keyword */
-.highlight-ipynb .o { color: #666666 } /* Operator */
-.highlight-ipynb .cm { color: #408080; font-style: italic } /* Comment.Multiline */
-.highlight-ipynb .cp { color: #BC7A00 } /* Comment.Preproc */
-.highlight-ipynb .c1 { color: #408080; font-style: italic } /* Comment.Single */
-.highlight-ipynb .cs { color: #408080; font-style: italic } /* Comment.Special */
-.highlight-ipynb .gd { color: #A00000 } /* Generic.Deleted */
-.highlight-ipynb .ge { font-style: italic } /* Generic.Emph */
-.highlight-ipynb .gr { color: #FF0000 } /* Generic.Error */
-.highlight-ipynb .gh { color: #000080; font-weight: bold } /* Generic.Heading */
-.highlight-ipynb .gi { color: #00A000 } /* Generic.Inserted */
-.highlight-ipynb .go { color: #888888 } /* Generic.Output */
-.highlight-ipynb .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
-.highlight-ipynb .gs { font-weight: bold } /* Generic.Strong */
-.highlight-ipynb .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
-.highlight-ipynb .gt { color: #0044DD } /* Generic.Traceback */
-.highlight-ipynb .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
-.highlight-ipynb .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
-.highlight-ipynb .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
-.highlight-ipynb .kp { color: #008000 } /* Keyword.Pseudo */
-.highlight-ipynb .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
-.highlight-ipynb .kt { color: #B00040 } /* Keyword.Type */
-.highlight-ipynb .m { color: #666666 } /* Literal.Number */
-.highlight-ipynb .s { color: #BA2121 } /* Literal.String */
-.highlight-ipynb .na { color: #7D9029 } /* Name.Attribute */
-.highlight-ipynb .nb { color: #008000 } /* Name.Builtin */
-.highlight-ipynb .nc { color: #0000FF; font-weight: bold } /* Name.Class */
-.highlight-ipynb .no { color: #880000 } /* Name.Constant */
-.highlight-ipynb .nd { color: #AA22FF } /* Name.Decorator */
-.highlight-ipynb .ni { color: #999999; font-weight: bold } /* Name.Entity */
-.highlight-ipynb .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
-.highlight-ipynb .nf { color: #0000FF } /* Name.Function */
-.highlight-ipynb .nl { color: #A0A000 } /* Name.Label */
-.highlight-ipynb .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
-.highlight-ipynb .nt { color: #008000; font-weight: bold } /* Name.Tag */
-.highlight-ipynb .nv { color: #19177C } /* Name.Variable */
-.highlight-ipynb .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
-.highlight-ipynb .w { color: #bbbbbb } /* Text.Whitespace */
-.highlight-ipynb .mf { color: #666666 } /* Literal.Number.Float */
-.highlight-ipynb .mh { color: #666666 } /* Literal.Number.Hex */
-.highlight-ipynb .mi { color: #666666 } /* Literal.Number.Integer */
-.highlight-ipynb .mo { color: #666666 } /* Literal.Number.Oct */
-.highlight-ipynb .sb { color: #BA2121 } /* Literal.String.Backtick */
-.highlight-ipynb .sc { color: #BA2121 } /* Literal.String.Char */
-.highlight-ipynb .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
-.highlight-ipynb .s2 { color: #BA2121 } /* Literal.String.Double */
-.highlight-ipynb .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
-.highlight-ipynb .sh { color: #BA2121 } /* Literal.String.Heredoc */
-.highlight-ipynb .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
-.highlight-ipynb .sx { color: #008000 } /* Literal.String.Other */
-.highlight-ipynb .sr { color: #BB6688 } /* Literal.String.Regex */
-.highlight-ipynb .s1 { color: #BA2121 } /* Literal.String.Single */
-.highlight-ipynb .ss { color: #19177C } /* Literal.String.Symbol */
-.highlight-ipynb .bp { color: #008000 } /* Name.Builtin.Pseudo */
-.highlight-ipynb .vc { color: #19177C } /* Name.Variable.Class */
-.highlight-ipynb .vg { color: #19177C } /* Name.Variable.Global */
-.highlight-ipynb .vi { color: #19177C } /* Name.Variable.Instance */
-.highlight-ipynb .il { color: #666666 } /* Literal.Number.Integer.Long */
-</style>
-
-<style type="text/css">
-/* Overrides of notebook CSS for static HTML export */
-div.entry-content {
-  overflow: visible;
-  padding: 8px;
-}
-.input_area {
-  padding: 0.2em;
-}
-
-a.heading-anchor {
- white-space: normal;
-}
-
-.rendered_html
-code {
- font-size: .8em;
-}
-
-pre.ipynb {
-  color: black;
-  background: #f7f7f7;
-  border: none;
-  box-shadow: none;
-  margin-bottom: 0;
-  padding: 0;
-  margin: 0px;
-  font-size: 13px;
-}
-
-/* remove the prompt div from text cells */
-div.text_cell .prompt {
-    display: none;
-}
-
-/* remove horizontal padding from text cells, */
-/* so it aligns with outer body text */
-div.text_cell_render {
-    padding: 0.5em 0em;
-}
-
-img.anim_icon{padding:0; border:0; vertical-align:middle; -webkit-box-shadow:none; -box-shadow:none}
-</style>
-
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
-<script type="text/javascript">
-init_mathjax = function() {
-    if (window.MathJax) {
-        // MathJax loaded
-        MathJax.Hub.Config({
-            tex2jax: {
-                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
-            },
-            displayAlign: 'left', // Change this to 'center' to center equations.
-            "HTML-CSS": {
-                styles: {'.MathJax_Display': {"margin": 0}}
-            }
-        });
-        MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-    }
-}
-init_mathjax();
-</script>
-
 <link rel="canonical" href="https://stharrold.github.io/20151030-test.html">
 
         <meta name="author" content="Samuel Harrold" />
@@ -262,7 +106,7 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2015-12-20T16:20:00+00:00"> Sun 20 December 2015</time>
+                <i class="fa fa-calendar"></i><time datetime="2016-01-04T21:30:00+00:00"> Mon 04 January 2016</time>
             </span>
 
         <span class="label label-default">Category</span>
@@ -309,8 +153,28 @@ Data Science Demos            </a>
 <a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb">20151030-test.ipynb</a><br />
 <a href="https://stharrold.github.io/static/20151030-test/20151030-test-full.html">20151030-test-full.html</a>  </p>
 <h3 id="body">Body</h3>
-<p>Main text<sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup>.</p>
-<p>Collapsible text:<br />
+<p>Text with a footnote.<sup id="fnref:fn"><a class="footnote-ref" href="#fn:fn" rel="footnote">1</a></sup></p>
+<p>Text with always-rendered dollar signs &#36;1.12.</p>
+<p>Text with a non-breaking&nbsp;space.</p>
+<!--
+Note:
+Use <span> tag for referencing inline elements (e.g. text) and <div> tag for referencing block-level elements (e.g. images).
+-->
+
+<p>Text with a <span id="ref">referenced portion</span>.</p>
+<p>Text referencing <a href="/20151030-test.html#ref">above</a>.</p>
+<p>Text with an equation <span class="math">\(\mathrm{SE}(X) = \sqrt{(\sum_{i=1}^{n}(X_i-X)^2)/n}\)</span> inline.</p>
+<p>Text with an equation<br />
+</p>
+<div class="math">$$\mathrm{SE}(X) = \sqrt{\frac{\sum_{i=1}^{n}(X_i-X)^2}{n}}$$</div>
+<p><br />
+as a paragraph.</p>
+<!--
+TODO: Fix JavaScript event handling. Icon doesn't change.
+https://github.com/stharrold/stharrold.github.io/issues/34
+-->
+
+<p>Text that is collapsible:<br />
 <div>
     Short answer.
     <div class="btn-group">
@@ -322,39 +186,24 @@ Data Science Demos            </a>
 </div></p>
 <h4 id="include-exported-files">Include exported files</h4>
 <ul>
-<li>A plot and a screenshot:</li>
+<li>A plot included via Markdown:</li>
 </ul>
 <p><img alt="plot.jpg" src="https://stharrold.github.io/static/20151030-test/plot.jpg" /><br />
 <a href="https://stharrold.github.io/static/20151030-test/plot.jpg">plot.jpg</a>  </p>
+<ul>
+<li>A screenshot included via HTML:</li>
+</ul>
 <!--
-TODO: Format images below with HTML
-https://github.com/stharrold/stharrold.github.io/issues/16
+Note:
+Use align="left" attribute to wrap image rather than have in-line.
 -->
 
-<!--
-<a href="/static/20151030-test/plot.jpg" type="image/jpeg">
-  <img src="/static/20151030-test/plot.jpg" alt="plot" align="left" width="200"/>
-</a>
-<a href="/static/20151030-test/plot.jpg" type="image/jpeg">plot.jpg</a>
--->
-
-<p><img alt="screenshot-432x323pix.png" src="https://stharrold.github.io/static/20151030-test/screenshot-432x323pix.png" /><br />
-<a href="https://stharrold.github.io/static/20151030-test/screenshot-432x323pix.png">screenshot-432x323pix.png</a>  </p>
-<!--
-<a href="/static/20151030-test/screenshot-432x323pix.png" type="image/png">
-  <img src="/static/20151030-test/screenshot-432x323pix.png" alt="screenshot" align="left" width="200"/>
-</a>
-<a href="/static/20151030-test/screenshot-432x323pix.png" type="image/png">screenshot-432x323pix.png</a>
--->
-
+<p><a href="/static/20151030-test/screenshot-432x323pix.png" type="image/png">
+    <img src="/static/20151030-test/screenshot-432x323pix.png" alt="Chrome Secure Shell settings" width="320" />
+</a></p>
 <ul>
 <li>A table:</li>
 </ul>
-<!--
-TODO: Add table by embedding html rather than copy-paste.
-https://github.com/stharrold/stharrold.github.io/issues/5
--->
-
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -387,7 +236,15 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 </table>
 
 <p><a href="https://stharrold.github.io/static/20151030-test/table.html">table.html</a></p>
-<!-- TODO: Fix event handling for JavaScript. -->
+<!--
+TODO: Add table by embedding HTML rather than copy-paste.
+https://github.com/stharrold/stharrold.github.io/issues/5
+-->
+
+<!--
+TODO: Fix event handling for JavaScript. Included content isn't included. 
+https://github.com/stharrold/stharrold.github.io/issues/14
+-->
 
 <div id="includedContent"></div>
 
@@ -425,11 +282,29 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 -->
 
 <ul>
-<li>An IPython notebook:  </li>
+<li>A Jupyter Notebook:</li>
 </ul>
-<p>================================================================================</p>
-<p>From <code>liquid_tags.notebook</code> <a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb">20151030-test.ipynb</a> (first cell and last 2 cells omitted):</p>
-<p>
+<p>TODO: Add exported notebook by embedding HTML rather than copy-paste (<a href="https://github.com/stharrold/stharrold.github.io/issues/5">issue 5</a>).</p>
+<p>Copy-pasted from <a href="https://stharrold.github.io/static/20151030-test/20151030-test-basic.html">20151030-test-basic.html</a> (all cells included):</p>
+<!--
+Note:
+* Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly.
+* Block-level <div> are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html
+* Disable liquid_tags.notebook plugin  before inserting HTML file below.
+* liquid_tags.notebook has been disabled since it does not render cleanly with pelican-bootstrap3.
+-->
+
+<hr />
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="20151030-test">20151030-test<a class="anchor-link" href="#20151030-test">&#182;</a></h1>
+</div>
+</div>
+</div>
+
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -440,6 +315,7 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 </div>
 </div>
 </div>
+
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
@@ -449,12 +325,11 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 </pre></div>
 
 </div>
-</div>
-</div>
 
+<p></div>
+</div></p>
 <div class="output_wrapper">
 <div class="output">
-
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -464,33 +339,70 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 </div>
 
 </div>
-</div>
 
 </div>
+
+<p></div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Import standard packages.</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pdb</span> <span class="c"># Debug with pdb.</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
 <span class="c"># Import installed packages.</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c"># Import local packages.</span>
-<span class="c"># TODO: remove autoreload after testing.</span>
-<span class="c"># %load_ext autoreload</span>
-<span class="c"># %autoreload 2</span>
-<span class="c"># IPython magic.</span>
+<span class="c"># Append current directory to module search path.</span>
+<span class="c"># Autoreload local packages after editing.</span>
+<span class="c"># <code>dsdemos</code> version: https://github.com/stharrold/dsdemos (master branch)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">r&#39;dsdemos&#39;</span><span class="p">))</span>
+<span class="o">%</span><span class="k">reload_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+<span class="kn">import</span> <span class="nn">dsdemos</span> <span class="k">as</span> <span class="nn">dsd</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<p></div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;Datestamp:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">r&#39;%Y-%m-%dT%H:%M:%S%Z&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python version:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Datestamp:
+2016-01-04T16:42:07GMT
+
+Python version:
+sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
+</pre>
+</div>
 
 </div>
-</div>
-</div>
 
-</div>
+<p></div>
+</div></p>
+<p></div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -502,26 +414,25 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="c"># File paths</span>
+<span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
 <span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20151030-test&#39;</span>
-</pre></div>
-
+<span class="n">filename</span> <span class="o">=</span> <span class="n">basename</span>
+</pre></div></p>
+<p></div>
 </div>
-</div>
-</div>
-
-</div>
+</div></p>
+<p></div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Section-1">Section 1<a class="anchor-link" href="#Section-1">&#182;</a></h2><p>Description of section 1.</p>
-
-</div>
+<h2 id="Section-1">Section 1<a class="anchor-link" href="#Section-1">&#182;</a></h2><p>Description of section 1.</p></p>
+<p></div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
@@ -534,15 +445,12 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 <span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">buf</span><span class="o">=</span><span class="n">path_html</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">path_html</span><span class="p">)</span>
 <span class="n">df</span>
-</pre></div>
-
+</pre></div></p>
+<p></div>
 </div>
-</div>
-</div>
-
+</div></p>
 <div class="output_wrapper">
 <div class="output">
-
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -590,10 +498,9 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 
 </div>
 
-</div>
-</div>
-
-</div>
+<p></div>
+</div></p>
+<p></div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
@@ -603,15 +510,12 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 <span class="n">path_jpg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="s">r&#39;plot.jpg&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path_jpg</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">path_jpg</span><span class="p">)</span>
-</pre></div>
-
+</pre></div></p>
+<p></div>
 </div>
-</div>
-</div>
-
+</div></p>
 <div class="output_wrapper">
 <div class="output">
-
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -624,123 +528,148 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-gg==
+<img src="data:image/png;base64,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
+zrPeNS9jS77SB7Pk1XHWuyYx05KXVA3rXYvg366RZsxXzmiRLHlphqx3LZolL82A9a66sOSlilnv
+qhNLXqqI9a46suSlCljvqitLXpqC9a66s+SlCVnvagJLXlon611NYslL62C9q2kseakE611NZclL
+Y1jvajJLXlqF9a42sOSlFVjvagtLXiqw3tU2lrw0ZL2rjSx5dZ71rjaz5NVp1rvazpJXJ1nv6gpL
+Xp1jvatLLHl1hvWuLrLk1QnWu7rKklerWe/qOkterWW9S5a8Wsh6l86z5NUq1rt0IUterWC9Syuz
+5NV41ru0OktejWW9S+NZ8mok610qx5JXo1jv0vpY8moM611aP0tetWe9S5Oz5FVr1rs0HUtetWS9
+S9UoVfIRsQQ8wOCXwp7MvH+VcR8CngJuy8z/qmyW6hTrXarO2JKPiA3AQ8AtwHuAOyLiulXGfQX4
+XtWTVDdY71L1ypT89cDxzDwBEBH7gW3AsZFxnwG+BXyo0hmqE6x3aTbK7MlvAl4uHJ8cfu6ciHgH
+8LHM/BoQ1U1PbWe9S7NV1atrHgB2FY5d6DWW9S7NXplF/hRwVeH4yuHnij4I7I+IAC4HtkbEmcw8
+OHqy5eXlcx/3ej16vd46p6ymy4QDB2DnTti+Hfbtg40bFz0rqT76/T79fr+Sc0Vmrj0g4i3AC8DN
+wG+BHwN3ZObRVcbvBf57pVfXRESOezy1W7He9+613qUyIoLMnGiHZOyefGaeBe4FHgd+AezPzKMR
+sSMiPr3SXSaZiNrNvXdpMcaWfKUPZsl3kvUuTWemJS9NynqXFs+/XaOZ8JUzUj1Y8qqU9S7ViyWv
+yljvUv1Y8pqa9S7VlyWvqVjvUr1Z8pqI9S41gyWvdbPepeaw5FWa9S41jyWvUqx3qZksea3Jepea
+zZLXqqx3qfkseb2J9S61hyWvC1jvUrtY8gKsd6mtLHlZ71KLWfIdZr1L7WfJd5T1LnWDJd8x1rvU
+LZZ8h1jvUvdY8h1gvUvdZcm3nPUudZsl31LWuySw5FvJepf0Bku+Rax3SaMs+Zaw3iWtxJJvOOtd
+0los+Qaz3iWNY8k3kPUuqSxLvmGsd0nrYck3hPUuaRKWfANY75ImZcnXmPUuaVqWfE1Z75KqYMnX
+jPUuqUqWfI1Y75KqVqrkI2IpIo5FxIsRsWuFr98ZEc8Nb09GxHurn2p7We+SZmVsyUfEBuAh4Gbg
+FeBwRDyWmccKw34F/GNm/ikiloD/AG6YxYTbxnqXNEtlSv564HhmnsjMM8B+YFtxQGYeysw/DQ8P
+AZuqnWb7WO+S5qHMnvwm4OXC8UkGC/9qPgV8d5pJtZ31LmleKn3iNSI+AtwN3LjamOXl5XMf93o9
+er1elVOotUw4cAB27oTt22HfPti4cdGzklQ3/X6ffr9fybkiM9ceEHEDsJyZS8PjzwGZmfePjNsC
+PAosZeYvVzlXjnu8tirW+9691ruk8iKCzIxJ7ltmT/4wsDkiro6Ii4HbgYMjE7iKwQJ/12oLfFe5
+9y5pkcZu12Tm2Yi4F3icwS+FPZl5NCJ2DL6cu4EvAJcBX42IAM5k5lr79p3g3rukRRu7XVPpg3Vk
+u2Z073152b13SZObZrvGd7xWzHqXVCf+7ZqKuPcuqY4s+QpY75LqypKfgvUuqe4s+QlZ75KawJJf
+J+tdUpNY8utgvUtqGku+BOtdUlNZ8mNY75KazJJfhfUuqQ0s+RVY75LawpIvsN4ltY0lP2S9S2qj
+zpe89S6pzTpd8ta7pLbrZMlb75K6onMlb71L6pLOlLz1LqmLOlHy1rukrmp1yVvvkrqutSVvvUtS
+C0veepek81pV8ta7JF2oFSVvvUvSyhpf8ta7JK2usSVvvUvSeI0seetdksppVMlb75K0Po0peetd
+ktav9iVvvUvS5Gpd8ta7JE2nliVvvUtSNWpX8ta7JFWnNiVvvUtS9WpR8ta7JM1GqZKPiKWIOBYR
+L0bErlXGPBgRxyPi2Yh4f5nzWu+SNFtjF/mI2AA8BNwCvAe4IyKuGxmzFbgmM98F7AAeHnfeV1+F
+W2+FL35xUO9f+Qps3DjRf0Mj9fv9RU+hNrwW53ktzvNaVKNMyV8PHM/ME5l5BtgPbBsZsw34BkBm
+Pg1cGhFXrHQy633Ab+DzvBbneS3O81pUo8ye/Cbg5cLxSQYL/1pjTg0/d3r0ZLfe6t67JM3L3J94
+3bwZ9u3r1taMJC1KZObaAyJuAJYzc2l4/DkgM/P+wpiHgScy85Hh8THgnzLz9Mi51n4wSdKKMjMm
+uV+Zkj8MbI6Iq4HfArcDd4yMOQj8K/DI8JfCH0cX+GkmKUmazNhFPjPPRsS9wOMMnqjdk5lHI2LH
+4Mu5OzO/ExH/EhEvAf8H3D3baUuSyhi7XSNJaq6Z/FmDWb15qonGXYuIuDMinhvenoyI9y5invNQ
+5vtiOO5DEXEmIj4+z/nNU8mfkV5EPBMRP4+IJ+Y9x3kp8TPy9og4OFwrfhYR2xcwzZmLiD0RcToi
+jqwxZv3rZmZWemPwi+Ml4GrgrcCzwHUjY7YC/zP8+MPAoarnUYdbyWtxA3Dp8OOlLl+LwrgfAN8G
+Pr7oeS/w++JS4BfApuHx5Yue9wKvxeeBL79xHYDfARcteu4zuBY3Au8Hjqzy9YnWzVmUfKVvnmq4
+sdciMw9l5p+Gh4cYvL+gjcp8XwB8BvgW8Oo8JzdnZa7FncCjmXkKIDNfm/Mc56XMtUjgkuHHlwC/
+y8y/zHGOc5GZTwJ/WGPIROvmLBb5ld48NbpwrfbmqbYpcy2KPgV8d6YzWpyx1yIi3gF8LDO/BrT5
+lVhlvi+uBS6LiCci4nBE3DW32c1XmWvxEPAPEfEK8Bywc05zq5uJ1s1a/BVKQUR8hMGrkm5c9FwW
+6AGguCfb5oV+nIuADwA3AX8D/CgifpSZLy12WgtxC/BMZt4UEdcA34+ILZn550VPrAlmscifAq4q
+HF85/NzomHeOGdMGZa4FEbEF2A0sZeZa/1xrsjLX4oPA/ogIBnuvWyPiTGYenNMc56XMtTgJvJaZ
+rwOvR8QPgfcx2L9ukzLX4m7gywCZ+cuI+DVwHfCTucywPiZaN2exXXPuzVMRcTGDN0+N/pAeBD4J
+595Ru+Kbp1pg7LWIiKuAR4G7MvOXC5jjvIy9Fpn598Pb3zHYl7+nhQs8lPsZeQy4MSLeEhF/zeCJ
+tqNznuc8lLkWJ4CPAgz3oK8FfjXXWc5PsPq/YCdaNysv+fTNU+eUuRbAF4DLgK8OC/ZMZo7+AbjG
+K3ktLrjL3Cc5JyV/Ro5FxPeAI8BZYHdmPr/Aac9Eye+LLwFfL7y08LOZ+fsFTXlmIuKbQA/424j4
+DXAfcDFTrpu+GUqSWqw2/49XSVL1XOQlqcVc5CWpxVzkJanFXOQlqcVc5CWpxVzkJanFXOQlqcX+
+H5gI1cNra0F7AAAAAElFTkSuQmCC
 "
 >
 </div>
 
 </div>
 
-</div>
-</div>
-
+<p></div>
 </div></p>
-<p>================================================================================</p>
-<p>Copy-pasted from <a href="https://stharrold.github.io/static/20151030-test/20151030-test-basic.html">20151030-test-basic.html</a> (all cells included):<br />
-Commented out as of 2015-12-02. See <a href="https://github.com/stharrold/stharrold.github.io/issues/5">issue 5</a>.</p>
-<!--
-Note:
-Do not prettify (e.g. with JS Beautify) the "basic" HTML export, otherwise it will not render correctly.
-Note: block-level <div> are supported with blank lines before and after http://daringfireball.net/projects/markdown/syntax#html
-Note: Remove liquid_tags.notebook before testing below
--->
+<p></div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Export-ipynb-to-html">Export ipynb to html<a class="anchor-link" href="#Export-ipynb-to-html">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">basename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
+    <span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path_ipynb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s">&#39;--to&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;--template&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">path_ipynb</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span> <span class="n">path_html</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<div class="output_wrapper">
+<div class="output">
 
-<!--
-TODO: Insert html file here.
--->
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>jupyter nbconvert --to html --template basic /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test-basic.html
+jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test-full.html
+</pre>
+</div>
+</div>
 
-<p>================================================================================</p>
+</div>
+
+</div>
+
+</div>
+
+<hr />
 <h3 id="footnotes">Footnotes</h3>
 <div class="footnote">
 <hr />
 <ol>
-<li id="fn:1">
-<p>A footnote.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<li id="fn:fn">
+<p>Text as a footnote.&#160;<a class="footnote-backref" href="#fnref:fn" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
 <!-- JavaScript -->
 
 <!--
-Collapsable text
+Collapsible text
 http://www.w3schools.com/bootstrap/bootstrap_ref_js_collapse.asp
 http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions
 -->
@@ -751,6 +680,64 @@ $('.collapse').on('shown.bs.collapse', function() {
 }).on('hidden.bs.collapse', function() {
   $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
 });
+</script>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
 </script>
             </div>
             <!-- /.entry-content -->

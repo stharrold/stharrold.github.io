@@ -1,7 +1,7 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2015-12-20T16:20:00Z
+Modified: 2016-01-04T21:30:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
@@ -17,9 +17,11 @@ In October 2015, I bought a Chromebook with the intent of learning how to move m
 
 Brief setup routine:
 
-<a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/jpeg">
+<div id="screenshot">
+<a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/png">
     <img src="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" alt="Chrome Secure Shell settings" align="right" width="320" />
 </a>
+</div>
 
 * Start a [Google Compute Engine](https://cloud.google.com/compute/) virtual machine instance.
 * Start a [Jupyter Notebook](http://jupyter.org/) server on the instance:  
@@ -27,7 +29,7 @@ Brief setup routine:
 `$ disown 1234` (where `1234` is the process ID)
 * Create an [SSH tunnel](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html) to forward a local port to the server's port on the instance:  
 `$ ssh -f -N -L localhost:8888:0.0.0.0:8888 samuel_harrold@123.123.123.123`  
-For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo), omit `-f` to keep the tunnel open (see screenshot).
+For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo), omit `-f` to keep the tunnel open (see <a href="#screenshot">screenshot</a>).
 * View the server at `http://localhost:8888`
 * I use the [Cloud9 IDE](https://c9.io/?redirect=0) and connect the instance as an [SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace).
 
@@ -67,15 +69,15 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
         * Project access: Reserve an external IP address ("Networking" > "External IP"). Other settings can be left at default.[^ext-ip] For this example, I give `123.123.123.123` as my instance's static external IP address.
     * Connect to the instance, e.g. with Google's [in-browser SSH](https://cloud.google.com/compute/docs/ssh-in-browser).
     * [Update the Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
-    * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) and might as well connect to GitHub.[^use-less]
-* Start a Jupyter Notebook server on the instance from the in-browser SSH:
+    * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) <span id="ssh-keygen"></span> and might as well connect to GitHub.[^use-less]
+* <span id="ipynb-server">Start a Jupyter Notebook server</span> on the instance from the in-browser SSH:
     * [Install Python](https://www.continuum.io/downloads) on the instance.
     * Start a [Jupyter Notebook](http://jupyter.org/) server:  
       `$ jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &`  
       `$ disown 1234` (where `1234` is the process ID)[^disown]
 * Create an SSH tunnel to forward a local port to the server's port on the instance:
-    * Generate an SSH key pair for the Chromebook as above[^keys] and add the Chromebook's public key to the instance's `authorized_keys`.[^cat]
-    * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot above):  
+    * Generate an SSH key pair for the Chromebook as <a href="#ssh-keygen">above</a>[^keys] and <span id="ssh-keyadd">add the Chromebook's public key to the instance's `authorized_keys`</span>.[^cat]
+    * Within Chrome, install [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo) and forward a port (see screenshot <a href="#screenshot">above</a>):  
     `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
     `Hostname: 123.123.123.123` (the instance's external IP address)  
     `Port: 22`  
@@ -84,25 +86,25 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
     * View the server at `http://localhost:8888`.
 * For an IDE, connect a Cloud9 remote SSH workspace to the instance:
     * [Install Node.js](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) on the instance.
-    * Create a [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace), copy the public SSH key from Cloud9 to the instance's `authorized_keys` as above, then open the workspace:[^install-deps]  
+    * Create a [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace), copy the public SSH key from Cloud9 to the instance's `authorized_keys` as <a href="#ssh-keyadd">above</a>, then open the workspace:[^install-deps]  
       `Username: samuel_harrold` (in the instance's shell, run `whoami`)  
       `Hostname: 123.123.123.123` (the instance's external IP address)  
       `Initial path: /home/samuel_harrold`  
       `Port: 22`  
       `Node.js binary path: /usr/bin/nodejs` (in the instance's shell, run `which nodejs`)
-* To shutdown the instance:
+* <span id="shutdown">To shutdown the instance</span>:
     * Close the Jupyter Notebook and the Chrome Secure Shell tabs. Kill the Jupyter Notebook server.[^lsof-kill]
     * Close the Cloud9 workspace tab.
     * "Stop" the instance in the Developers Console.
 * For a simple backup of the instance, create a snapshot from the Developers Console. This can be done while the instance is running.
 * To change the instance's machine type or disk size:
-    * Shutdown the instance as above.
+    * Shutdown the instance as <a href="#shutdown">above</a>.
     * Create a snapshot of the instance.
     * Clone the instance but set the new boot disk to the new snapshot and...
         * ...if changing the machine type, set the new machine type.
         * ...if changing the disk size, set the new disk size.
     * Reassign the external IP address to the new instance.[^networking]
-    * Start the Jupyter Notebook server on the instance and create an SSH tunnel as above.[^host-id]
+    * Start the Jupyter Notebook server on the instance and create an SSH tunnel as <a href="#ipynb-server">above</a>.[^host-id]
     * Open the Cloud9 workspace.
 
 ## Helpful links
@@ -125,6 +127,7 @@ Some links I found helpful for this blog post:
     * [SSH login without password.](http://www.linuxproblem.org/art_9.html)
     * [SSH port forwarding (tunnels) explained.](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html)
     * [Google's recommended best practices for securing communications with Compute Engine instances.](https://cloud.google.com/solutions/connecting-securely)
+    * [`wget` vs `curl` with examples](http://www.thegeekstuff.com/2012/07/wget-curl/)
     * [Download from Google Drive with `wget`](http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal)
     * [Download from Kaggle with `wget`](https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line)
     * [`disown` examples.](http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/)
@@ -144,7 +147,7 @@ Thanks to John and Julie for their early reviews.
 ///Footnotes Go Here///
 
 [^gce-prices]:
-    As of December 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about <span>$4.50</span> per month. Running a 32-core virtual CPU instance with 120GB RAM costs about <span>$1.12</span> per hour.
+    As of Dec 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about &#36;4.50 per month. Running a 32-core virtual CPU instance with 120GB RAM costs about &#36;1.12 per hour.
 [^alts]:
     There are also hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Google Cloud Datalab](https://cloud.google.com/datalab/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/).
 [^c9-debug]:
@@ -160,7 +163,7 @@ Thanks to John and Julie for their early reviews.
 [^disown]:
     Disowning a background process (the control operator `&`) from the shell allows a process to continue running in the background when the shell is closed.
 [^keys]:
-    To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as above then move them to the Chromebook. I save mine under `Downloads/ssh` (no dot-file access without developer mode). Transfer the keys by copy-paste using `less` from instance's in-browser SSH and [a text editor app for Chromebook](https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml) or download them from a connected [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace): right-click the file > "Download".
+    To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as <a href="#ssh-keygen">above</a> then move them to the Chromebook. I save mine under `Downloads/ssh` (no dot-file access without developer mode). Transfer the keys by copy-paste using `less` from instance's in-browser SSH and [a text editor app for Chromebook](https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml) or download them from a connected [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace): right-click the file > "Download".
 [^cat]:
     To copy a local public SSH key, e.g. `id_rsa.pub`, to a remote machine's `authorized_keys`, in the instance's in-browser shell:  
     `$ cat >> ~/.ssh/authorized_keys`  
