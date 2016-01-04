@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-<title>20151030-test</title>
+<title>example</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -169,25 +169,6 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="20151030-test">20151030-test<a class="anchor-link" href="#20151030-test">&#182;</a></h1>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Heading2">Heading2<a class="anchor-link" href="#Heading2">&#182;</a></h2><h3 id="Heading3">Heading3<a class="anchor-link" href="#Heading3">&#182;</a></h3><h4 id="Heading4">Heading4<a class="anchor-link" href="#Heading4">&#182;</a></h4><h5 id="Heading5">Heading5<a class="anchor-link" href="#Heading5">&#182;</a></h5><h6 id="Heading6">Heading6<a class="anchor-link" href="#Heading6">&#182;</a></h6><p>Description.</p>
-<h2 id="Initialization">Initialization<a class="anchor-link" href="#Initialization">&#182;</a></h2><h3 id="Imports">Imports<a class="anchor-link" href="#Imports">&#182;</a></h3>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
@@ -217,27 +198,21 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Import standard packages.</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pdb</span> <span class="c"># Debug with pdb.</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="c"># Import installed packages.</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c"># Import local packages.</span>
 <span class="c"># Append current directory to module search path.</span>
-<span class="c"># Autoreload local packages after editing.</span>
-<span class="c"># `dsdemos` version: https://github.com/stharrold/dsdemos (master branch)</span>
+<span class="c"># `dsdemos` version: https://github.com/stharrold/dsdemos/releases/tag/20160104T063000Z</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">r&#39;dsdemos&#39;</span><span class="p">))</span>
-<span class="o">%</span><span class="k">reload_ext</span> autoreload
-<span class="o">%</span><span class="k">autoreload</span> 2
 <span class="kn">import</span> <span class="nn">dsdemos</span> <span class="k">as</span> <span class="nn">dsd</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
 </div>
@@ -247,84 +222,44 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;Datestamp:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">r&#39;%Y-%m-%dT%H:%M:%S%Z&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()))</span>
-<span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python version:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Datestamp:
-2016-01-04T16:42:07GMT
-
-Python version:
-sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Globals">Globals<a class="anchor-link" href="#Globals">&#182;</a></h2>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># File paths</span>
 <span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
-<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20151030-test&#39;</span>
-<span class="n">filename</span> <span class="o">=</span> <span class="n">basename</span>
+<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20160110-etl-census-with-python&#39;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s">r&#39;example&#39;</span>
+<span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">filename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
+<span class="n">path_acs</span> <span class="o">=</span> <span class="s">r&#39;/mnt/disk-20151227t211000z/www2-census-gov/programs-surveys/acs/&#39;</span>
+<span class="c"># 2013 5-year PUMS data dictionary</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt</span>
+<span class="n">path_dtxt</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt&#39;</span><span class="p">)</span>
+<span class="c"># 2013 5-year PUMS housing records for Washington DC (extracted from csv_pdc.zip)</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip</span>
+<span class="n">path_hcsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;data/pums/2013/5-Year/ss13hdc.csv&#39;</span><span class="p">)</span>
+<span class="c"># 2013 5-year PUMS user verification estimates</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv</span>
+<span class="n">path_ecsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;tech_docs/pums/estimates/pums_estimates_9_13.csv&#39;</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Section-1">Section 1<a class="anchor-link" href="#Section-1">&#182;</a></h2><p>Description of section 1.</p>
-
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([[</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;A&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;C&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">]],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;c0&#39;</span><span class="p">,</span> <span class="s">&#39;c1&#39;</span><span class="p">,</span> <span class="s">&#39;c2&#39;</span><span class="p">])</span>
-<span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="s">r&#39;table.html&#39;</span><span class="p">)</span>
-<span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">buf</span><span class="o">=</span><span class="n">path_html</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">path_html</span><span class="p">)</span>
-<span class="n">df</span>
+<div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the data dictionary.</span>
+<span class="n">ddict</span> <span class="o">=</span> <span class="n">dsd</span><span class="o">.</span><span class="n">census</span><span class="o">.</span><span class="n">parse_pumsdatadict</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path_dtxt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;`ddict`, `dfd`: Convert the nested `dict` into a hierarchical dataframe.&quot;</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span> <span class="c"># `tmp` is a throwaway variable</span>
+<span class="k">for</span> <span class="n">record_type</span> <span class="ow">in</span> <span class="n">ddict</span><span class="p">[</span><span class="s">&#39;record_types&#39;</span><span class="p">]:</span>
+    <span class="n">tmp</span><span class="p">[</span><span class="n">record_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ddict</span><span class="p">[</span><span class="s">&#39;record_types&#39;</span><span class="p">][</span><span class="n">record_type</span><span class="p">],</span> <span class="n">orient</span><span class="o">=</span><span class="s">&#39;index&#39;</span><span class="p">)</span>
+<span class="n">dfd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;record_type&#39;</span><span class="p">,</span> <span class="s">&#39;var_name&#39;</span><span class="p">])</span>
+<span class="n">dfd</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -337,7 +272,7 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>/home/samuel_harrold/stharrold.github.io/content/static/20151030-test/table.html
+<pre>&#96;ddict&#96;, &#96;dfd&#96;: Convert the nested &#96;dict&#96; into a hierarchical dataframe.
 </pre>
 </div>
 </div>
@@ -350,29 +285,57 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>c0</th>
-      <th>c1</th>
-      <th>c2</th>
+      <th></th>
+      <th>length</th>
+      <th>description</th>
+      <th>var_codes</th>
+      <th>notes</th>
+    </tr>
+    <tr>
+      <th>record_type</th>
+      <th>var_name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>a</td>
-      <td>A</td>
-      <td>10</td>
+      <th rowspan="5" valign="top">HOUSING RECORD</th>
+      <th>ACR</th>
+      <td>1</td>
+      <td>Lot size</td>
+      <td>{'b': 'N/A (GQ/not a one-family house or mobil...</td>
+      <td>NaN</td>
     </tr>
     <tr>
-      <th>1</th>
-      <td>b</td>
-      <td>B</td>
-      <td>11</td>
+      <th>ADJHSG</th>
+      <td>7</td>
+      <td>Adjustment factor for housing dollar amounts (...</td>
+      <td>{'1086032': '2009 factor', '1068395': '2010 fa...</td>
+      <td>[Note: The values of ADJHSG inflation-adjusts ...</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>c</td>
-      <td>C</td>
-      <td>12</td>
+      <th>ADJINC</th>
+      <td>7</td>
+      <td>Adjustment factor for income and earnings doll...</td>
+      <td>{'1085467': '2009 factor (0.999480 * 1.0860317...</td>
+      <td>[Note: The values of ADJINC inflation-adjusts ...</td>
+    </tr>
+    <tr>
+      <th>AGS</th>
+      <td>1</td>
+      <td>Sales of Agriculture Products (Yearly sales)</td>
+      <td>{'b': 'N/A (GQ/vacant/not a one-family house o...</td>
+      <td>[Note: No adjustment factor is applied to AGS.]</td>
+    </tr>
+    <tr>
+      <th>BATH</th>
+      <td>1</td>
+      <td>Bathtub or shower</td>
+      <td>{'b': 'N/A (GQ)', '1': 'Yes', '2': 'No'}</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
@@ -390,10 +353,10 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">path_jpg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="s">r&#39;plot.jpg&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path_jpg</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">path_jpg</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the housing records.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfh`: First 5 housing records and first 10 columns.&quot;</span><span class="p">)</span>
+<span class="n">dfh</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_hcsv</span><span class="p">)</span>
+<span class="n">dfh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -406,123 +369,121 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>/home/samuel_harrold/stharrold.github.io/content/static/20151030-test/plot.jpg
+<pre>&#96;dfh&#96;: First 5 housing records and first 10 columns.
 </pre>
 </div>
 </div>
 
-<div class="output_area"><div class="prompt"></div>
+<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
 
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>insp</th>
+      <th>RT</th>
+      <th>SERIALNO</th>
+      <th>DIVISION</th>
+      <th>PUMA00</th>
+      <th>PUMA10</th>
+      <th>REGION</th>
+      <th>ST</th>
+      <th>ADJHSG</th>
+      <th>ADJINC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>600</td>
+      <td>H</td>
+      <td>2009000000403</td>
+      <td>5</td>
+      <td>102</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaN</td>
+      <td>H</td>
+      <td>2009000001113</td>
+      <td>5</td>
+      <td>103</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>480</td>
+      <td>H</td>
+      <td>2009000001978</td>
+      <td>5</td>
+      <td>103</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>H</td>
+      <td>2009000002250</td>
+      <td>5</td>
+      <td>105</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2500</td>
+      <td>H</td>
+      <td>2009000002985</td>
+      <td>5</td>
+      <td>101</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
 
-<div class="output_png output_subarea ">
-<img src="data:image/png;base64,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
-zrPeNS9jS77SB7Pk1XHWuyYx05KXVA3rXYvg366RZsxXzmiRLHlphqx3LZolL82A9a66sOSlilnv
-qhNLXqqI9a46suSlCljvqitLXpqC9a66s+SlCVnvagJLXlon611NYslL62C9q2kseakE611NZclL
-Y1jvajJLXlqF9a42sOSlFVjvagtLXiqw3tU2lrw0ZL2rjSx5dZ71rjaz5NVp1rvazpJXJ1nv6gpL
-Xp1jvatLLHl1hvWuLrLk1QnWu7rKklerWe/qOkterWW9S5a8Wsh6l86z5NUq1rt0IUterWC9Syuz
-5NV41ru0OktejWW9S+NZ8mok610qx5JXo1jv0vpY8moM611aP0tetWe9S5Oz5FVr1rs0HUtetWS9
-S9UoVfIRsQQ8wOCXwp7MvH+VcR8CngJuy8z/qmyW6hTrXarO2JKPiA3AQ8AtwHuAOyLiulXGfQX4
-XtWTVDdY71L1ypT89cDxzDwBEBH7gW3AsZFxnwG+BXyo0hmqE6x3aTbK7MlvAl4uHJ8cfu6ciHgH
-8LHM/BoQ1U1PbWe9S7NV1atrHgB2FY5d6DWW9S7NXplF/hRwVeH4yuHnij4I7I+IAC4HtkbEmcw8
-OHqy5eXlcx/3ej16vd46p6ymy4QDB2DnTti+Hfbtg40bFz0rqT76/T79fr+Sc0Vmrj0g4i3AC8DN
-wG+BHwN3ZObRVcbvBf57pVfXRESOezy1W7He9+613qUyIoLMnGiHZOyefGaeBe4FHgd+AezPzKMR
-sSMiPr3SXSaZiNrNvXdpMcaWfKUPZsl3kvUuTWemJS9NynqXFs+/XaOZ8JUzUj1Y8qqU9S7ViyWv
-yljvUv1Y8pqa9S7VlyWvqVjvUr1Z8pqI9S41gyWvdbPepeaw5FWa9S41jyWvUqx3qZksea3Jepea
-zZLXqqx3qfkseb2J9S61hyWvC1jvUrtY8gKsd6mtLHlZ71KLWfIdZr1L7WfJd5T1LnWDJd8x1rvU
-LZZ8h1jvUvdY8h1gvUvdZcm3nPUudZsl31LWuySw5FvJepf0Bku+Rax3SaMs+Zaw3iWtxJJvOOtd
-0los+Qaz3iWNY8k3kPUuqSxLvmGsd0nrYck3hPUuaRKWfANY75ImZcnXmPUuaVqWfE1Z75KqYMnX
-jPUuqUqWfI1Y75KqVqrkI2IpIo5FxIsRsWuFr98ZEc8Nb09GxHurn2p7We+SZmVsyUfEBuAh4Gbg
-FeBwRDyWmccKw34F/GNm/ikiloD/AG6YxYTbxnqXNEtlSv564HhmnsjMM8B+YFtxQGYeysw/DQ8P
-AZuqnWb7WO+S5qHMnvwm4OXC8UkGC/9qPgV8d5pJtZ31LmleKn3iNSI+AtwN3LjamOXl5XMf93o9
-er1elVOotUw4cAB27oTt22HfPti4cdGzklQ3/X6ffr9fybkiM9ceEHEDsJyZS8PjzwGZmfePjNsC
-PAosZeYvVzlXjnu8tirW+9691ruk8iKCzIxJ7ltmT/4wsDkiro6Ii4HbgYMjE7iKwQJ/12oLfFe5
-9y5pkcZu12Tm2Yi4F3icwS+FPZl5NCJ2DL6cu4EvAJcBX42IAM5k5lr79p3g3rukRRu7XVPpg3Vk
-u2Z073152b13SZObZrvGd7xWzHqXVCf+7ZqKuPcuqY4s+QpY75LqypKfgvUuqe4s+QlZ75KawJJf
-J+tdUpNY8utgvUtqGku+BOtdUlNZ8mNY75KazJJfhfUuqQ0s+RVY75LawpIvsN4ltY0lP2S9S2qj
-zpe89S6pzTpd8ta7pLbrZMlb75K6onMlb71L6pLOlLz1LqmLOlHy1rukrmp1yVvvkrqutSVvvUtS
-C0veepek81pV8ta7JF2oFSVvvUvSyhpf8ta7JK2usSVvvUvSeI0seetdksppVMlb75K0Po0peetd
-ktav9iVvvUvS5Gpd8ta7JE2nliVvvUtSNWpX8ta7JFWnNiVvvUtS9WpR8ta7JM1GqZKPiKWIOBYR
-L0bErlXGPBgRxyPi2Yh4f5nzWu+SNFtjF/mI2AA8BNwCvAe4IyKuGxmzFbgmM98F7AAeHnfeV1+F
-W2+FL35xUO9f+Qps3DjRf0Mj9fv9RU+hNrwW53ktzvNaVKNMyV8PHM/ME5l5BtgPbBsZsw34BkBm
-Pg1cGhFXrHQy633Ab+DzvBbneS3O81pUo8ye/Cbg5cLxSQYL/1pjTg0/d3r0ZLfe6t67JM3L3J94
-3bwZ9u3r1taMJC1KZObaAyJuAJYzc2l4/DkgM/P+wpiHgScy85Hh8THgnzLz9Mi51n4wSdKKMjMm
-uV+Zkj8MbI6Iq4HfArcDd4yMOQj8K/DI8JfCH0cX+GkmKUmazNhFPjPPRsS9wOMMnqjdk5lHI2LH
-4Mu5OzO/ExH/EhEvAf8H3D3baUuSyhi7XSNJaq6Z/FmDWb15qonGXYuIuDMinhvenoyI9y5invNQ
-5vtiOO5DEXEmIj4+z/nNU8mfkV5EPBMRP4+IJ+Y9x3kp8TPy9og4OFwrfhYR2xcwzZmLiD0RcToi
-jqwxZv3rZmZWemPwi+Ml4GrgrcCzwHUjY7YC/zP8+MPAoarnUYdbyWtxA3Dp8OOlLl+LwrgfAN8G
-Pr7oeS/w++JS4BfApuHx5Yue9wKvxeeBL79xHYDfARcteu4zuBY3Au8Hjqzy9YnWzVmUfKVvnmq4
-sdciMw9l5p+Gh4cYvL+gjcp8XwB8BvgW8Oo8JzdnZa7FncCjmXkKIDNfm/Mc56XMtUjgkuHHlwC/
-y8y/zHGOc5GZTwJ/WGPIROvmLBb5ld48NbpwrfbmqbYpcy2KPgV8d6YzWpyx1yIi3gF8LDO/BrT5
-lVhlvi+uBS6LiCci4nBE3DW32c1XmWvxEPAPEfEK8Bywc05zq5uJ1s1a/BVKQUR8hMGrkm5c9FwW
-6AGguCfb5oV+nIuADwA3AX8D/CgifpSZLy12WgtxC/BMZt4UEdcA34+ILZn550VPrAlmscifAq4q
-HF85/NzomHeOGdMGZa4FEbEF2A0sZeZa/1xrsjLX4oPA/ogIBnuvWyPiTGYenNMc56XMtTgJvJaZ
-rwOvR8QPgfcx2L9ukzLX4m7gywCZ+cuI+DVwHfCTucywPiZaN2exXXPuzVMRcTGDN0+N/pAeBD4J
-595Ru+Kbp1pg7LWIiKuAR4G7MvOXC5jjvIy9Fpn598Pb3zHYl7+nhQs8lPsZeQy4MSLeEhF/zeCJ
-tqNznuc8lLkWJ4CPAgz3oK8FfjXXWc5PsPq/YCdaNysv+fTNU+eUuRbAF4DLgK8OC/ZMZo7+AbjG
-K3ktLrjL3Cc5JyV/Ro5FxPeAI8BZYHdmPr/Aac9Eye+LLwFfL7y08LOZ+fsFTXlmIuKbQA/424j4
-DXAfcDFTrpu+GUqSWqw2/49XSVL1XOQlqcVc5CWpxVzkJanFXOQlqcVc5CWpxVzkJanFXOQlqcX+
-H5gI1cNra0F7AAAAAElFTkSuQmCC
-"
->
-</div>
-
 </div>
 
 </div>
 </div>
 
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Export-ipynb-to-html">Export ipynb to html<a class="anchor-link" href="#Export-ipynb-to-html">&#182;</a></h2>
-</div>
-</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">basename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
-    <span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path_ipynb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span>
-    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s">&#39;--to&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;--template&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">path_ipynb</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span> <span class="n">path_html</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
-    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the verification estimates.</span>
+<span class="c"># Select the estimates for Washington DC then for the</span>
+<span class="c"># characteristic &#39;Owner occupied units (TEN in 1,2)&#39;.</span>
+<span class="n">dfe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_ecsv</span><span class="p">)</span>
+<span class="n">tfmask_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;District of Columbia&#39;</span>
+<span class="n">dfe_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_dc</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfe_dc`: This example verifies these quantities.&quot;</span><span class="p">)</span>
+<span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">310</span><span class="p">]]</span>
 </pre></div>
 
 </div>
@@ -535,8 +496,142 @@ H5gI1cNra0F7AAAAAElFTkSuQmCC
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>jupyter nbconvert --to html --template basic /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test-basic.html
-jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20151030-test/20151030-test-full.html
+<pre>&#96;dfe_dc&#96;: This example verifies these quantities.
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>st</th>
+      <th>state</th>
+      <th>characteristic</th>
+      <th>pums_est_09_to_13</th>
+      <th>pums_se_09_to_13</th>
+      <th>pums_moe_09_to_13</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>310</th>
+      <td>11</td>
+      <td>District of Columbia</td>
+      <td>Owner occupied units (TEN in 1,2)</td>
+      <td>110,362</td>
+      <td>1363</td>
+      <td>2242</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Verify the estimates following</span>
+<span class="c"># https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
+<span class="c"># Define the column names for the housing weights.</span>
+<span class="n">hwt</span> <span class="o">=</span> <span class="s">&#39;WGTP&#39;</span>
+<span class="n">hwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">hwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span> <span class="c"># [&#39;WGTP1&#39;, ..., &#39;WGTP80&#39;]</span>
+<span class="c"># Select the reference verification data for the characteristic.</span>
+<span class="n">char</span> <span class="o">=</span> <span class="s">&#39;Owner occupied units (TEN in 1,2)&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;&#39;{char}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">char</span><span class="o">=</span><span class="n">char</span><span class="p">))</span>
+<span class="n">tfmask_ref</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="p">[</span><span class="s">&#39;characteristic&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span>
+<span class="c"># Select the records for the characteristic.</span>
+<span class="n">tfmask_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic.</span>
+<span class="c"># The estimate is sum with weights &#39;WGTP&#39;.</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_est_09_to_13&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+<span class="n">test_est</span> <span class="o">=</span> <span class="n">dfh</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">hwt</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">)))</span>
+<span class="c"># Calculate the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
+<span class="c"># The direct standard error is a modified root-mean-square deviation</span>
+<span class="c"># using &quot;replicate weights&quot; &#39;WGTP[1-80]&#39;.</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_se_09_to_13&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39; :&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_se</span> <span class="o">=</span> <span class="p">((</span><span class="mi">4</span><span class="o">/</span><span class="mi">80</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">dfh</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">hwts</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">test_est</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">**</span><span class="mf">0.5</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">)))</span>
+<span class="c"># Calculate the margin of error (&#39;moe&#39;) at the 90% confidence level</span>
+<span class="c"># (+/- 1.645 standard errors)</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_moe_09_to_13&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">ref_moe</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_moe</span> <span class="o">=</span> <span class="mf">1.645</span><span class="o">*</span><span class="n">test_se</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_moe</span><span class="p">,</span> <span class="n">test_moe</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_moe</span><span class="p">,</span> <span class="n">test_moe</span><span class="p">)))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&apos;Owner occupied units (TEN in 1,2)&apos;
+    &apos;pums_est_09_to_13&apos;: (ref, test) = (110362, 110362)
+    &apos;pums_se_09_to_13&apos; : (ref, test) = (1363, 1363.1910174293257)
+    &apos;pums_moe_09_to_13&apos;: (ref, test) = (2242, 2242.449223671241)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Export ipynb to html</span>
+<span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
+    <span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path_ipynb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s">&#39;--to&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;--template&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">path_ipynb</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span> <span class="n">path_html</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>jupyter nbconvert --to html --template basic /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example-basic.html
+
+jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example-full.html
+
 </pre>
 </div>
 </div>
