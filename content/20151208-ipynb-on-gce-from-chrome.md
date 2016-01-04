@@ -1,7 +1,7 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2015-12-27T22:00:00Z
+Modified: 2016-01-04T21:30:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
@@ -147,7 +147,7 @@ Thanks to John and Julie for their early reviews.
 ///Footnotes Go Here///
 
 [^gce-prices]:
-    As of December 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about <span>$4.50</span> per month. Running a 32-core virtual CPU instance with 120GB RAM costs about <span>$1.12</span> per hour.
+    As of Dec 2015 on Google Compute Engine, running a 1-core shared virtual CPU instance with 0.6GB RAM costs about &#36;4.50 per month. Running a 32-core virtual CPU instance with 120GB RAM costs about &#36;1.12 per hour.
 [^alts]:
     There are also hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Google Cloud Datalab](https://cloud.google.com/datalab/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/).
 [^c9-debug]:
