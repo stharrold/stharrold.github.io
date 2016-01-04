@@ -203,6 +203,7 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Import standard packages.</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="c"># Import installed packages.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -225,6 +226,10 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># File paths</span>
+<span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
+<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20160110-etl-census-with-python&#39;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s">r&#39;example&#39;</span>
+<span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">filename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
 <span class="n">path_acs</span> <span class="o">=</span> <span class="s">r&#39;/mnt/disk-20151227t211000z/www2-census-gov/programs-surveys/acs/&#39;</span>
 <span class="c"># 2013 5-year PUMS data dictionary</span>
 <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt</span>
@@ -349,9 +354,9 @@ div#notebook {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the housing records.</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfh`: First 5 housing records.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfh`: First 5 housing records and first 10 columns.&quot;</span><span class="p">)</span>
 <span class="n">dfh</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_hcsv</span><span class="p">)</span>
-<span class="n">dfh</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">dfh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -364,7 +369,7 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>&#96;dfh&#96;: First 5 housing records.
+<pre>&#96;dfh&#96;: First 5 housing records and first 10 columns.
 </pre>
 </div>
 </div>
@@ -387,17 +392,6 @@ div#notebook {
       <th>ST</th>
       <th>ADJHSG</th>
       <th>ADJINC</th>
-      <th>...</th>
-      <th>WGTP71</th>
-      <th>WGTP72</th>
-      <th>WGTP73</th>
-      <th>WGTP74</th>
-      <th>WGTP75</th>
-      <th>WGTP76</th>
-      <th>WGTP77</th>
-      <th>WGTP78</th>
-      <th>WGTP79</th>
-      <th>WGTP80</th>
     </tr>
   </thead>
   <tbody>
@@ -413,17 +407,6 @@ div#notebook {
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>6</td>
-      <td>25</td>
-      <td>30</td>
-      <td>32</td>
-      <td>26</td>
-      <td>6</td>
-      <td>36</td>
-      <td>6</td>
-      <td>18</td>
-      <td>19</td>
     </tr>
     <tr>
       <th>1</th>
@@ -437,17 +420,6 @@ div#notebook {
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>14</td>
-      <td>29</td>
-      <td>12</td>
-      <td>12</td>
-      <td>4</td>
-      <td>4</td>
-      <td>18</td>
-      <td>23</td>
-      <td>4</td>
-      <td>22</td>
     </tr>
     <tr>
       <th>2</th>
@@ -461,17 +433,6 @@ div#notebook {
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>65</td>
-      <td>12</td>
-      <td>14</td>
-      <td>37</td>
-      <td>36</td>
-      <td>41</td>
-      <td>57</td>
-      <td>36</td>
-      <td>11</td>
-      <td>34</td>
     </tr>
     <tr>
       <th>3</th>
@@ -485,17 +446,6 @@ div#notebook {
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>4</td>
-      <td>4</td>
-      <td>4</td>
-      <td>4</td>
-      <td>23</td>
-      <td>14</td>
-      <td>11</td>
-      <td>4</td>
-      <td>20</td>
-      <td>21</td>
     </tr>
     <tr>
       <th>4</th>
@@ -509,21 +459,9 @@ div#notebook {
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>66</td>
-      <td>45</td>
-      <td>10</td>
-      <td>35</td>
-      <td>34</td>
-      <td>10</td>
-      <td>34</td>
-      <td>55</td>
-      <td>50</td>
-      <td>10</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 205 columns</p>
 </div>
 </div>
 
@@ -540,7 +478,7 @@ div#notebook {
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the verification estimates.</span>
 <span class="c"># Select the estimates for Washington DC then for the</span>
-<span class="c"># &quot;characteristic&quot; &#39;Owner occupied units (TEN in 1,2)&#39;.</span>
+<span class="c"># characteristic &#39;Owner occupied units (TEN in 1,2)&#39;.</span>
 <span class="n">dfe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_ecsv</span><span class="p">)</span>
 <span class="n">tfmask_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;District of Columbia&#39;</span>
 <span class="n">dfe_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_dc</span><span class="p">]</span>
@@ -610,15 +548,15 @@ div#notebook {
 <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
 <span class="c"># Define the column names for the housing weights.</span>
 <span class="n">hwt</span> <span class="o">=</span> <span class="s">&#39;WGTP&#39;</span>
-<span class="n">hwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">hwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span> <span class="c"># [&#39;PWGTP1&#39;, ..., &#39;PWGTP80&#39;]</span>
+<span class="n">hwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">hwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span> <span class="c"># [&#39;WGTP1&#39;, ..., &#39;WGTP80&#39;]</span>
 <span class="c"># Select the reference verification data for the characteristic.</span>
 <span class="n">char</span> <span class="o">=</span> <span class="s">&#39;Owner occupied units (TEN in 1,2)&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;&#39;{char}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">char</span><span class="o">=</span><span class="n">char</span><span class="p">))</span>
 <span class="n">tfmask_ref</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="p">[</span><span class="s">&#39;characteristic&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span>
-<span class="c"># Select the person records for the characteristic.</span>
+<span class="c"># Select the records for the characteristic.</span>
 <span class="n">tfmask_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 <span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic.</span>
-<span class="c"># The estimate is sum with weights &#39;PWGTP&#39;.</span>
+<span class="c"># The estimate is sum with weights &#39;WGTP&#39;.</span>
 <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_est_09_to_13&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
 <span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
@@ -627,7 +565,7 @@ div#notebook {
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">)))</span>
 <span class="c"># Calculate the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
 <span class="c"># The direct standard error is a modified root-mean-square deviation</span>
-<span class="c"># using &quot;replicate weights&quot; &#39;PWGTP[1-80]&#39;.</span>
+<span class="c"># using &quot;replicate weights&quot; &#39;WGTP[1-80]&#39;.</span>
 <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_se_09_to_13&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39; :&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
 <span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -668,14 +606,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Export ipynb to html</span>
-<span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
-<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20160110-etl-census-with-python&#39;</span>
-<span class="n">filename</span> <span class="o">=</span> <span class="s">r&#39;example&#39;</span>
-<span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">basename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
     <span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path_ipynb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s">&#39;--to&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;--template&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">path_ipynb</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span> <span class="n">path_html</span><span class="p">]</span>
@@ -685,6 +619,23 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>jupyter nbconvert --to html --template basic /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example-basic.html
+
+jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example-full.html
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 

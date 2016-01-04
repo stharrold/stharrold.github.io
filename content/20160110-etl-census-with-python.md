@@ -1,4 +1,4 @@
-Title: Extract transform load census data with Python
+Title: Extract, transform, and load census data with Python
 Status: draft
 Date: 2016-01-10T12:00:00Z
 Modified: 2016-01-10T12:00:00Z
@@ -13,12 +13,12 @@ Summary: I parse, load, and validate data from the Census Bureau's American Comm
 
 ## Overview
 
-The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States throughout the year. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.[^use-cases] In this post I parse, load, and validate data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
+The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.[^use-cases] In this post I parse, load, and validate data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
 
 Brief process:
 
-* Start with a running Google Cloud VM instance and Jupyter Notebook server following ["Running an Ipython Notebook on Google Compute Engine from Chrome"](/20151208-ipynb-on-gce-from-chrome.html).
-    * For additional storage, [create and mount a disk](https://cloud.google.com/compute/docs/disks/persistent-disks) to the instance.
+* Start with ["Running an IPython Notebook on Google Compute Engine from Chrome"](/20151208-ipynb-on-gce-from-chrome.html).
+    * For additional storage, [create and mount a disk](https://cloud.google.com/compute/docs/disks/persistent-disks) to the instance.[^services]
 * Download (and decompress):[^ftp] [^no-api]
     * 2013 5-year PUMS data dictionary: [PUMS_Data_Dictionary_2009-2013.txt](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt) (<1&nbsp;MB)
     * 2013 5-year PUMS person and housing records for Washington DC:
@@ -27,16 +27,15 @@ Brief process:
     * 2013 5-year PUMS estimates for user verification: [pums_estimates_9_13.csv](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv) (<1&nbsp;MB)
 * Load the files:
     * Data dictionary TXT: `dsdemos.census.parse_pumsdatadict` (see `dsdemos` package <a href="/20160110-etl-census-with-python.html#source">below</a>)  
-    This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.
-    * Person/housing and verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
-* Verify calculations of estimates (example <a href="/20160110-etl-census-with-python.html#example">below</a>):[^pums-acc]
-    * To select columns by condition in `pandas`, I prefer creating a pandas series with booleans as true-false mask (e.g. `tfmask = np.logical_and(25 <= df['AGEP'], dfp['AGEP'] <= 34)`) then filtering using the true-false mask as an index (e.g. `df_new = df.loc[tfmask, ['AGEP', 'WGTP']]`).[^pd-loc]
-    * To calculate an estimate $X$ (also called a "characteristic"), sum the column `'[P]WGTP'` of the filtered data.
+    This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.[^so-post]
+    * Person/housing verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
+* Verify calculations of estimates (see example <a href="/20160110-etl-census-with-python.html#example">below</a>):[^pums-acc]
+    * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter]
     * To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:  
-    $ \mathrm{SE}(X) = \sqrt{ \frac{4}{80} \sum_{r=1}^{80}(X_r-X)^2 } $  
+    $$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$  
     where each $X_r$ is the sum of the column `'[P]WGTPr'` of the filtered data.
-    * To calculate the estimate's "margin of error" (defined by ACS at the 90% confidence level):  
-    $ \mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X) $
+    * To calculate the estimate's margin of error (defined by ACS at the 90% confidence level):  
+    $$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$
 
 <span id="source">Source code:</span>
 
@@ -50,9 +49,9 @@ Brief process:
 **Why am I using the American Community Survey (ACS)?**
 
 * The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
-* The ACS is a cultivated, thorough data set.[^acs-method] The ACS has many quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate often over 95%.
-* The ACS is a timeseries data set. The survey sends questionnaires throughout the year and releases data once per year. As a timeseries, the data can be used for forecasting analytics, which is future step.
-* <span id="problematic">I recognize that using ACS data can be problematic.</span> Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
+* The ACS is a reliable data set.[^acs-method] The ACS has quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate of about 95%.
+* The ACS is a timeseries data set. The survey sends questionnaires throughout the year and releases data once per year. A future step is to use the timeseries to forecast an individual's household income.
+* I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
 
 **Why am I using the ACS 5-year estimate?**
 
@@ -60,22 +59,26 @@ As of Dec 2015, the ACS offers two windowing options for their data releases, 1-
 
 **Why am I using Python?**
 
-This project can be done using Python, R, and/or other languages.[^rvpy] I'm using Python since a future step is to make an extensible, optimized pipeline, which is a popular application for [scikit-learn](http://scikit-learn.org/).
+This project can be done using Python, R, SQL, and/or other languages.[^rvpy] I'm using Python since a future step is to make a machine learning pipeline, which is a popular application of [scikit-learn](http://scikit-learn.org/).
 
 **What about "big data"?**
 
-I'm staring with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] Within these packages, operations are often parallelized across the processor cores within the machine. For operations that exceed the available RAM on the machine (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to large enough data that requre a cluster is a future step.
+I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the processor cores within the machine. For operations that exceed the available RAM on the machine (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to large enough data that requre a cluster is a future step.
 
 ## <span id="example">Example</span>
 
-This is an abbreviated example of my procedure in the Jupyter Notebook (see links to source code <a href="/20160110-etl-census-with-python.html#source">above</a>).
+This is an abbreviated example of my ETL procedure in the Jupyter Notebook (see links to source code <a href="/20160110-etl-census-with-python.html#source">above</a>).
 
-<!--
-TODO: Add table by embedding HTML rather than copy-paste.
-https://github.com/stharrold/stharrold.github.io/issues/5
+<!-- 
+Copy-pasted from
+    /static/20160110-etl-census-with-python/example-basic.html
+TODO: Add exported notebook by embedding HTML rather than copy-paste.
+    https://github.com/stharrold/stharrold.github.io/issues/5
 -->
 
-<!--BEGIN /static/20160110-etl-census-with-python/example-basic.html-->
+<!--
+BEGIN IPYNB
+-->
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -111,6 +114,7 @@ https://github.com/stharrold/stharrold.github.io/issues/5
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Import standard packages.</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="c"># Import installed packages.</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -133,6 +137,10 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># File paths</span>
+<span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
+<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20160110-etl-census-with-python&#39;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s">r&#39;example&#39;</span>
+<span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">filename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
 <span class="n">path_acs</span> <span class="o">=</span> <span class="s">r&#39;/mnt/disk-20151227t211000z/www2-census-gov/programs-surveys/acs/&#39;</span>
 <span class="c"># 2013 5-year PUMS data dictionary</span>
 <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt</span>
@@ -257,9 +265,9 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the housing records.</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfh`: First 5 housing records.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfh`: First 5 housing records and first 10 columns.&quot;</span><span class="p">)</span>
 <span class="n">dfh</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_hcsv</span><span class="p">)</span>
-<span class="n">dfh</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">dfh</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
 </div>
@@ -272,7 +280,7 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>&#96;dfh&#96;: First 5 housing records.
+<pre>&#96;dfh&#96;: First 5 housing records and first 10 columns.
 </pre>
 </div>
 </div>
@@ -295,17 +303,6 @@ https://github.com/stharrold/stharrold.github.io/issues/5
       <th>ST</th>
       <th>ADJHSG</th>
       <th>ADJINC</th>
-      <th>...</th>
-      <th>WGTP71</th>
-      <th>WGTP72</th>
-      <th>WGTP73</th>
-      <th>WGTP74</th>
-      <th>WGTP75</th>
-      <th>WGTP76</th>
-      <th>WGTP77</th>
-      <th>WGTP78</th>
-      <th>WGTP79</th>
-      <th>WGTP80</th>
     </tr>
   </thead>
   <tbody>
@@ -321,17 +318,6 @@ https://github.com/stharrold/stharrold.github.io/issues/5
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>6</td>
-      <td>25</td>
-      <td>30</td>
-      <td>32</td>
-      <td>26</td>
-      <td>6</td>
-      <td>36</td>
-      <td>6</td>
-      <td>18</td>
-      <td>19</td>
     </tr>
     <tr>
       <th>1</th>
@@ -345,17 +331,6 @@ https://github.com/stharrold/stharrold.github.io/issues/5
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>14</td>
-      <td>29</td>
-      <td>12</td>
-      <td>12</td>
-      <td>4</td>
-      <td>4</td>
-      <td>18</td>
-      <td>23</td>
-      <td>4</td>
-      <td>22</td>
     </tr>
     <tr>
       <th>2</th>
@@ -369,17 +344,6 @@ https://github.com/stharrold/stharrold.github.io/issues/5
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>65</td>
-      <td>12</td>
-      <td>14</td>
-      <td>37</td>
-      <td>36</td>
-      <td>41</td>
-      <td>57</td>
-      <td>36</td>
-      <td>11</td>
-      <td>34</td>
     </tr>
     <tr>
       <th>3</th>
@@ -393,17 +357,6 @@ https://github.com/stharrold/stharrold.github.io/issues/5
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>4</td>
-      <td>4</td>
-      <td>4</td>
-      <td>4</td>
-      <td>23</td>
-      <td>14</td>
-      <td>11</td>
-      <td>4</td>
-      <td>20</td>
-      <td>21</td>
     </tr>
     <tr>
       <th>4</th>
@@ -417,21 +370,9 @@ https://github.com/stharrold/stharrold.github.io/issues/5
       <td>11</td>
       <td>1086032</td>
       <td>1085467</td>
-      <td>...</td>
-      <td>66</td>
-      <td>45</td>
-      <td>10</td>
-      <td>35</td>
-      <td>34</td>
-      <td>10</td>
-      <td>34</td>
-      <td>55</td>
-      <td>50</td>
-      <td>10</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 205 columns</p>
 </div>
 </div>
 
@@ -448,7 +389,7 @@ https://github.com/stharrold/stharrold.github.io/issues/5
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the verification estimates.</span>
 <span class="c"># Select the estimates for Washington DC then for the</span>
-<span class="c"># &quot;characteristic&quot; &#39;Owner occupied units (TEN in 1,2)&#39;.</span>
+<span class="c"># characteristic &#39;Owner occupied units (TEN in 1,2)&#39;.</span>
 <span class="n">dfe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_ecsv</span><span class="p">)</span>
 <span class="n">tfmask_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;District of Columbia&#39;</span>
 <span class="n">dfe_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_dc</span><span class="p">]</span>
@@ -518,15 +459,15 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
 <span class="c"># Define the column names for the housing weights.</span>
 <span class="n">hwt</span> <span class="o">=</span> <span class="s">&#39;WGTP&#39;</span>
-<span class="n">hwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">hwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span> <span class="c"># [&#39;PWGTP1&#39;, ..., &#39;PWGTP80&#39;]</span>
+<span class="n">hwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">hwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span> <span class="c"># [&#39;WGTP1&#39;, ..., &#39;WGTP80&#39;]</span>
 <span class="c"># Select the reference verification data for the characteristic.</span>
 <span class="n">char</span> <span class="o">=</span> <span class="s">&#39;Owner occupied units (TEN in 1,2)&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;&#39;{char}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">char</span><span class="o">=</span><span class="n">char</span><span class="p">))</span>
 <span class="n">tfmask_ref</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="p">[</span><span class="s">&#39;characteristic&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span>
-<span class="c"># Select the person records for the characteristic.</span>
+<span class="c"># Select the records for the characteristic.</span>
 <span class="n">tfmask_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 <span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic.</span>
-<span class="c"># The estimate is sum with weights &#39;PWGTP&#39;.</span>
+<span class="c"># The estimate is sum with weights &#39;WGTP&#39;.</span>
 <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_est_09_to_13&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
 <span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
@@ -535,7 +476,7 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">)))</span>
 <span class="c"># Calculate the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
 <span class="c"># The direct standard error is a modified root-mean-square deviation</span>
-<span class="c"># using &quot;replicate weights&quot; &#39;PWGTP[1-80]&#39;.</span>
+<span class="c"># using &quot;replicate weights&quot; &#39;WGTP[1-80]&#39;.</span>
 <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_se_09_to_13&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39; :&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
 <span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -574,9 +515,46 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Export ipynb to html</span>
+<span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
+    <span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path_ipynb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s">&#39;--to&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;--template&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">path_ipynb</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span> <span class="n">path_html</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
 
 
-<!--END /static/20160110-etl-census-with-python/example-basic.html-->
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>jupyter nbconvert --to html --template basic /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example-basic.html
+
+jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example.ipynb --output /home/samuel_harrold/stharrold.github.io/content/static/20160110-etl-census-with-python/example-full.html
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!--
+END IPYNB
+-->
 
 ## Helpful links
 
@@ -584,8 +562,8 @@ Some links I found helpful for this blog post:
 
 * [ACS Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html) describes how to get started with ACS data.
 * [ACS Technical Documentation](https://www.census.gov/programs-surveys/acs/technical-documentation.html) links to resources for learning how to work with ACS data.
-* [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes survey design details, sample sizes, coverage estimates, and past questionnaires.
-* [ACS Library](https://www.census.gov/programs-surveys/acs/library.All.html) includes example reports and infographics using ACS data.
+* [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
+* [ACS Library](https://www.census.gov/programs-surveys/acs/library.All.html) has a collection of reports and infographics using ACS data.
 
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
@@ -594,36 +572,40 @@ Some links I found helpful for this blog post:
 <!-- ## Overview -->
 [^use-cases]:
     Some use cases for the Census Bureau's American Community Survey with data access recommendations: [ACS Which Data Tool](https://www.census.gov/acs/www/guidance/which-data-tool/)
+[^services]:
+    This project mounts a single disk for storage to a single instance and loads the data in RAM. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).
 [^ftp]:
     For how to download [ACS data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html):  
     `$ sudo curl --remote-name <url>`  
     Decompress the `.zip` files with `unzip`.
 [^no-api]:
     I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
+[^so-post]:
+    [Related StackOverflow post.](http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141)
 [^pd-csv]:
     [Docs for `pandas.read_csv`](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html)
 [^pd-py35]:
-    Pandas 0.17.1 has a compatibility issue with Python 3.5. See [GitHub pandas issue 11915](https://github.com/pydata/pandas/issues/11915) for a temporary fix. The issue should be resolved for pandas 0.18+.
+    Pandas 0.17.1 has a compatibility issue with Python 3.5. See [GitHub pandas issue 11915](https://github.com/pydata/pandas/issues/11915) for a temporary fix. The issue should be resolved in pandas 0.18.
 [^pums-acc]:
-    For the formulas to caluclate the estimates, the direct standard error, and the margin of error, see [2013 5-year PUMS Accuracy](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf), section 7, "Measuring Sampling Error".
-[^pd-loc]:
-    [Docs for `pandas.DataFrame.loc`](http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html)
+    For the formulas to calculate the estimates, the direct standard error, and the margin of error, see [2013 5-year PUMS Accuracy](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf), section 7, "Measuring Sampling Error".
+[^filter]:
+    There are [several ways](http://pandas.pydata.org/pandas-docs/stable/indexing.html) to select rows by filtering on conditions within `pandas`. I prefer creating a `pandas.Series` with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the [docs for `pandas.DataFrame.loc`](http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html).  
+    Example query: Select `'AGEP'` and `'WGTP'` where `'AGEP'` is between 25 and 34.  
+    `tfmask = np.logical_and(25 <= df['AGEP'], df['AGEP'] <= 34)`  
+    `df_subset = df.loc[tfmask, ['AGEP', 'WGTP']]`
 [^branch]:
-    To download for following the <a href="/20160110-etl-census-with-python.html#example">example</a>:
+    To download `dsdemos` and checkout the version for following the example <a href="/20160110-etl-census-with-python.html#example">above</a>:  
     `$ cd ~`  
     `$ git clone https://github.com/stharrold/dsdemos.git`  
     `$ cd dsdemos`  
-    `$ git checkout tags/20160104T063000Z -b 20160104T063000Z`  
-    For packages that aren't installed (i.e. not managed with a package manager), it's useful to check out a branch from the version tag so that updating/downgrading versions only requires switching branches ([StackOverflow discussion](http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git)).
+    `$ git checkout tags/20160104T063000Z`
 <!-- ## Motivations -->
-[^rvpy]:
-    See the popular discussion ["R vs Python for data analysis"](http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis) on StackExchange Programmers.
 [^acs-method]:
-    The [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design factors, sample sizes, coverage estimates, and past questionnaires.
+    The [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
 [^data-harm]:
     Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the [ACLU's FAQ section about census data](https://www.aclu.org/frequently-asked-questions-national-census) and the [Wikipedia article "Internment of Japanese Americans"](https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans).
 [^prob-race]:
-    "Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the [ACS refers to "race" and "ethnicity" separately](http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf). The American Anthropological Association [recommended in 1997](http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf) that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:  
+    "Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the [ACS questionnaire refers to "race" and "ethnicity" separately](http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf). The American Anthropological Association [recommended in 1997](http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf) that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:  
     <ul>
     <li>[Census Bureau's statement about "race" (2013)](http://www.census.gov/topics/population/race/about.html)</li>
     <li>[Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&nbsp;15 (1977)](https://www.whitehouse.gov/omb/fedreg_notice_15/)</li>
@@ -633,9 +615,8 @@ Some links I found helpful for this blog post:
     <li>[Wikipedia article "Race and ethnicity in the United States Census"](https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census)</li>
     </ul>
 [^acs-ests]:
-    The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see [Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
+    The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see [ACS Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
+[^rvpy]:
+    See the discussion ["R vs Python for data analysis"](http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis) on StackExchange Programmers.
 [^pydata]:
     See the [PyData stack](http://pydata.org/downloads/) for a collection of performant Python packages.
-<!-- ## ETL process -->
-[^services]:
-    This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).

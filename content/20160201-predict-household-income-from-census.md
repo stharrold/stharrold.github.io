@@ -40,6 +40,18 @@ Companies collect information on their consumers[^cr-dbs] and consumers often sp
 
 Some links I found helpful for this blog post: TODO
 
+    * Kaggle competition, [2013 American Community Survey](https://www.kaggle.com/census/2013-american-community-survey).
+    * <a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)" type="text/html">UCI Census-Income (KDD) Data Set</a>, see "Papers That Cite This Data Set".
+    * <a href="https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)" type="text/html">UCI US Census Data (1990) Data Set</a>, see "Papers That Cite This Data Set".
+    * [Predicting Income Level, An Analytics Casestudy in R](http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r).
+    * RPubs, [Predict Income Range](https://rpubs.com/Jovin/census_data_income).
+    * Mathematica for prediction algorithms, [Classification and association rules for census income data](https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/).
+    * [Using PUMS Census data](http://www-rohan.sdsu.edu/~gawron/python_for_ss/course_core/book_draft/data/PUMS_data.html) from a social science perspective.
+
+* Analysis:
+    * ["Statistics for Hackers", Jake VanderPlas](https://speakerdeck.com/jakevdp/statistics-for-hackers): Evaluating statistical significance by sampling, cross-validation, etc.
+    * [Scikit-learn user guide](http://scikit-learn.org/stable/user_guide.html): Copious examples of machine learning tasks.
+
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
 ///Footnotes Go Here///
