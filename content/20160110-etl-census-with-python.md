@@ -28,12 +28,12 @@ Brief process:
 * Load the files:
     * Data dictionary TXT: `dsdemos.census.parse_pumsdatadict` (see `dsdemos` package <a href="/20160110-etl-census-with-python.html#source">below</a>)  
     This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.[^so-post]
-    * Person/housing verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
+    * Person/housing records and user verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
 * Verify calculations of estimates (see example <a href="/20160110-etl-census-with-python.html#example">below</a>):[^pums-acc]
-    * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter]
+    * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter] `'[P]WGTP'` are the sample weights.
     * To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:  
     $$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$  
-    where each $X_r$ is the sum of the column `'[P]WGTPr'` of the filtered data.
+    where each $X_r$ is the sum of the column `'[P]WGTPr'` of the filtered data. `'[P]WGTP[1-80]'` are the "replicate weights".
     * To calculate the estimate's margin of error (defined by ACS at the 90% confidence level):  
     $$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$
 
@@ -587,7 +587,12 @@ Some links I found helpful for this blog post:
 [^pd-py35]:
     Pandas 0.17.1 has a compatibility issue with Python 3.5. See [GitHub pandas issue 11915](https://github.com/pydata/pandas/issues/11915) for a temporary fix. The issue should be resolved in pandas 0.18.
 [^pums-acc]:
-    For the formulas to calculate the estimates, the direct standard error, and the margin of error, see [2013 5-year PUMS Accuracy](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf), section 7, "Measuring Sampling Error".
+    For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see [2013 5-year PUMS Accuracy](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf), section 7, "Measuring Sampling Error". The sample weights `'[P]WGTP'` mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (uncertainty) associated with an estimate of a characteristic:  
+    <ol>
+    <li>Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns `'[P]WGTP[1-80]'` and requires looking up a design factor for the specific characteristic (e.g "Population by Tenure"). See the accuracy PDF for the design factors.</li>
+    <li>Calculate the "direct standard error" of the estimate using the "replicate weights", which are the columns `'[P]WGTP[1-80]'`. This method is extensible to many kinds of characteristics (e.g. population by tenure by age).
+    </ol>  
+    Note: Controlled estimates of characteristics like "total population" have 0 direct standard error from replicate weights. Use the generalized standard error for these estimates.
 [^filter]:
     There are [several ways](http://pandas.pydata.org/pandas-docs/stable/indexing.html) to select rows by filtering on conditions within `pandas`. I prefer creating a `pandas.Series` with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the [docs for `pandas.DataFrame.loc`](http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html).  
     Example query: Select `'AGEP'` and `'WGTP'` where `'AGEP'` is between 25 and 34.  

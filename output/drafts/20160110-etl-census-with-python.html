@@ -150,15 +150,15 @@ Data Science Demos            </a>
 <li>Load the files:<ul>
 <li>Data dictionary TXT: <code>dsdemos.census.parse_pumsdatadict</code> (see <code>dsdemos</code> package <a href="/20160110-etl-census-with-python.html#source">below</a>)<br />
 This is a customized parser I wrote for <code>PUMS_Data_Dictionary_2009-2013.txt</code>. The data dictionary is inconsistently formatted, which complicates parsing.<sup id="fnref:so-post"><a class="footnote-ref" href="#fn:so-post" rel="footnote">5</a></sup></li>
-<li>Person/housing verification CSVs: <code>pandas.read_csv</code> <sup id="fnref:pd-csv"><a class="footnote-ref" href="#fn:pd-csv" rel="footnote">6</a></sup> <sup id="fnref:pd-py35"><a class="footnote-ref" href="#fn:pd-py35" rel="footnote">7</a></sup></li>
+<li>Person/housing records and user verification CSVs: <code>pandas.read_csv</code> <sup id="fnref:pd-csv"><a class="footnote-ref" href="#fn:pd-csv" rel="footnote">6</a></sup> <sup id="fnref:pd-py35"><a class="footnote-ref" href="#fn:pd-py35" rel="footnote">7</a></sup></li>
 </ul>
 </li>
 <li>Verify calculations of estimates (see example <a href="/20160110-etl-census-with-python.html#example">below</a>):<sup id="fnref:pums-acc"><a class="footnote-ref" href="#fn:pums-acc" rel="footnote">8</a></sup><ul>
-<li>To calculate an estimate <span class="math">\(X\)</span> for a specific "characteristic" (e.g. "Age 25-34"), sum the column <code>'[P]WGTP'</code> of the filtered data (<code>'PWGTP'</code> for person records, <code>'WGTP'</code> for housing records).<sup id="fnref:filter"><a class="footnote-ref" href="#fn:filter" rel="footnote">9</a></sup></li>
+<li>To calculate an estimate <span class="math">\(X\)</span> for a specific "characteristic" (e.g. "Age 25-34"), sum the column <code>'[P]WGTP'</code> of the filtered data (<code>'PWGTP'</code> for person records, <code>'WGTP'</code> for housing records).<sup id="fnref:filter"><a class="footnote-ref" href="#fn:filter" rel="footnote">9</a></sup> <code>'[P]WGTP'</code> are the sample weights.</li>
 <li>To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:<br />
 <div class="math">$$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$</div>
 <br />
-where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]WGTPr'</code> of the filtered data.</li>
+where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]WGTPr'</code> of the filtered data. <code>'[P]WGTP[1-80]'</code> are the "replicate weights".</li>
 <li>To calculate the estimate's margin of error (defined by ACS at the 90% confidence level):<br />
 <div class="math">$$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$</div>
 </li>
@@ -690,7 +690,12 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <p>Pandas 0.17.1 has a compatibility issue with Python 3.5. See <a href="https://github.com/pydata/pandas/issues/11915">GitHub pandas issue 11915</a> for a temporary fix. The issue should be resolved in pandas 0.18.&#160;<a class="footnote-backref" href="#fnref:pd-py35" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pums-acc">
-<p>For the formulas to calculate the estimates, the direct standard error, and the margin of error, see <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf">2013 5-year PUMS Accuracy</a>, section 7, "Measuring Sampling Error".&#160;<a class="footnote-backref" href="#fnref:pums-acc" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+<p>For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf">2013 5-year PUMS Accuracy</a>, section 7, "Measuring Sampling Error". The sample weights <code>'[P]WGTP'</code> mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (uncertainty) associated with an estimate of a characteristic:<br />
+<ol>
+<li>Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns <code>'[P]WGTP[1-80]'</code> and requires looking up a design factor for the specific characteristic (e.g "Population by Tenure"). See the accuracy PDF for the design factors.</li>
+<li>Calculate the "direct standard error" of the estimate using the "replicate weights", which are the columns <code>'[P]WGTP[1-80]'</code>. This method is extensible to many kinds of characteristics (e.g. population by tenure by age).
+</ol><br />
+Note: Controlled estimates of characteristics like "total population" have 0 direct standard error from replicate weights. Use the generalized standard error for these estimates.&#160;<a class="footnote-backref" href="#fnref:pums-acc" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:filter">
 <p>There are <a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html">several ways</a> to select rows by filtering on conditions within <code>pandas</code>. I prefer creating a <code>pandas.Series</code> with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the <a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html">docs for <code>pandas.DataFrame.loc</code></a>.<br />
@@ -798,39 +803,39 @@ Example query: Select <code>'AGEP'</code> and <code>'WGTP'</code> where <code>'A
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f04998></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f040a0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f04928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f40340></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f04928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f04998></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f040a0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80fbc3e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f7a3e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f0e308></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80fcf420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d81035f48></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f80a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80fcf420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f80a08></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80fd18b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8104c298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80ffb730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f80a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d810461b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d8102b420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f88bc8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80ffb730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80f80a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d810461b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8d80fd18b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3855b998></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3855b0a0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3855b928></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38597340></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3855b928></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3855b998></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3855b0a0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab386825a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38682570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab386133e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab385d13e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38565308></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38626420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3868cf48></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38682570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab385d7a40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38626420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38682570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab385d7a08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38682420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab386288b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38682570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab386a3298></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38652730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab385d7a40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3869d1b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38682570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38682420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab385dfbc8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab38652730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab385d7a40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab3869d1b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fab386288b8></a></li>
     </ul>
 </section>
     <hr/>
