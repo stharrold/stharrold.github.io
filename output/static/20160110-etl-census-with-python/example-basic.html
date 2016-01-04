@@ -1,81 +1,3 @@
-Title: Extract transform load census data with Python
-Status: draft
-Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-10T12:00:00Z
-Tags: etl, how-to, python, pandas
-Category: ETL
-Slug: 20160110-etl-census-with-python
-Related_posts: 20151208-ipynb-on-gce-from-chrome
-Authors: Samuel Harrold
-Summary: I parse, load, and validate data from the Census Bureau's American Community Survey using Python.
-
-[TOC]
-
-## Overview
-
-The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States throughout the year. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.[^use-cases] In this post I parse, load, and validate data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
-
-Brief process:
-
-* Start with a running Google Cloud VM instance and Jupyter Notebook server following ["Running an Ipython Notebook on Google Compute Engine from Chrome"](/20151208-ipynb-on-gce-from-chrome.html).
-    * For additional storage, [create and mount a disk](https://cloud.google.com/compute/docs/disks/persistent-disks) to the instance.
-* Download (and decompress):[^ftp] [^no-api]
-    * 2013 5-year PUMS data dictionary: [PUMS_Data_Dictionary_2009-2013.txt](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt) (<1&nbsp;MB)
-    * 2013 5-year PUMS person and housing records for Washington DC:
-        * Person records: [csv_pdc.zip](http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip) (5&nbsp;MB compressed, 30&nbsp;MB decompressed)
-        * Housing records: [csv_hdc.zip](http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hdc.zip) (2&nbsp;MB compressed, 13&nbsp;MB decompressed)
-    * 2013 5-year PUMS estimates for user verification: [pums_estimates_9_13.csv](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv) (<1&nbsp;MB)
-* Load the files:
-    * Data dictionary TXT: `dsdemos.census.parse_pumsdatadict` (see `dsdemos` package <a href="/20160110-etl-census-with-python.html#source">below</a>)  
-    This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.
-    * Person/housing and verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
-* Verify calculations of estimates (example <a href="/20160110-etl-census-with-python.html#example">below</a>):[^pums-acc]
-    * To select columns by condition in `pandas`, I prefer creating a pandas series with booleans as true-false mask (e.g. `tfmask = np.logical_and(25 <= df['AGEP'], dfp['AGEP'] <= 34)`) then filtering using the true-false mask as an index (e.g. `df_new = df.loc[tfmask, ['AGEP', 'WGTP']]`).[^pd-loc]
-    * To calculate an estimate $X$ (also called a "characteristic"), sum the column `'[P]WGTP'` of the filtered data.
-    * To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:  
-    $ \mathrm{SE}(X) = \sqrt{ \frac{4}{80} \sum_{r=1}^{80}(X_r-X)^2 } $  
-    where each $X_r$ is the sum of the column `'[P]WGTPr'` of the filtered data.
-    * To calculate the estimate's "margin of error" (defined by ACS at the 90% confidence level):  
-    $ \mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X) $
-
-<span id="source">Source code:</span>
-
-* For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):  
-[20160110-etl-census-with-python.ipynb]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb)  
-[20160110-etl-census-with-python-full.html]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html)
-* The version of the `dsdemos` package used for this post is [20160104T063000Z](https://github.com/stharrold/dsdemos/releases/tag/20160104T063000Z).[^branch]
-
-## Motivations
-
-**Why am I using the American Community Survey (ACS)?**
-
-* The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
-* The ACS is a cultivated, thorough data set.[^acs-method] The ACS has many quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate often over 95%.
-* The ACS is a timeseries data set. The survey sends questionnaires throughout the year and releases data once per year. As a timeseries, the data can be used for forecasting analytics, which is future step.
-* <span id="problematic">I recognize that using ACS data can be problematic.</span> Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
-
-**Why am I using the ACS 5-year estimate?**
-
-As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.[^acs-ests] Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.
-
-**Why am I using Python?**
-
-This project can be done using Python, R, and/or other languages.[^rvpy] I'm using Python since a future step is to make an extensible, optimized pipeline, which is a popular application for [scikit-learn](http://scikit-learn.org/).
-
-**What about "big data"?**
-
-I'm staring with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] Within these packages, operations are often parallelized across the processor cores within the machine. For operations that exceed the available RAM on the machine (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to large enough data that requre a cluster is a future step.
-
-## <span id="example">Example</span>
-
-This is an abbreviated example of my procedure in the Jupyter Notebook (see links to source code <a href="/20160110-etl-census-with-python.html#source">above</a>).
-
-<!--
-TODO: Add table by embedding HTML rather than copy-paste.
-https://github.com/stharrold/stharrold.github.io/issues/5
--->
-
-<!--BEGIN /static/20160110-etl-census-with-python/example-basic.html-->
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -574,68 +496,26 @@ https://github.com/stharrold/stharrold.github.io/issues/5
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Export ipynb to html</span>
+<span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
+<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20160110-etl-census-with-python&#39;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s">r&#39;example&#39;</span>
+<span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">basename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
+    <span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path_ipynb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s">&#39;--to&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;--template&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">path_ipynb</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span> <span class="n">path_html</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
 
+</div>
+</div>
+</div>
 
-<!--END /static/20160110-etl-census-with-python/example-basic.html-->
-
-## Helpful links
-
-Some links I found helpful for this blog post:
-
-* [ACS Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html) describes how to get started with ACS data.
-* [ACS Technical Documentation](https://www.census.gov/programs-surveys/acs/technical-documentation.html) links to resources for learning how to work with ACS data.
-* [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes survey design details, sample sizes, coverage estimates, and past questionnaires.
-* [ACS Library](https://www.census.gov/programs-surveys/acs/library.All.html) includes example reports and infographics using ACS data.
-
-## Footnotes
-<!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
-///Footnotes Go Here///
-
-<!-- ## Overview -->
-[^use-cases]:
-    Some use cases for the Census Bureau's American Community Survey with data access recommendations: [ACS Which Data Tool](https://www.census.gov/acs/www/guidance/which-data-tool/)
-[^ftp]:
-    For how to download [ACS data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html):  
-    `$ sudo curl --remote-name <url>`  
-    Decompress the `.zip` files with `unzip`.
-[^no-api]:
-    I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
-[^pd-csv]:
-    [Docs for `pandas.read_csv`](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html)
-[^pd-py35]:
-    Pandas 0.17.1 has a compatibility issue with Python 3.5. See [GitHub pandas issue 11915](https://github.com/pydata/pandas/issues/11915) for a temporary fix. The issue should be resolved for pandas 0.18+.
-[^pums-acc]:
-    For the formulas to caluclate the estimates, the direct standard error, and the margin of error, see [2013 5-year PUMS Accuracy](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf), section 7, "Measuring Sampling Error".
-[^pd-loc]:
-    [Docs for `pandas.DataFrame.loc`](http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html)
-[^branch]:
-    To download for following the <a href="/20160110-etl-census-with-python.html#example">example</a>:
-    `$ cd ~`  
-    `$ git clone https://github.com/stharrold/dsdemos.git`  
-    `$ cd dsdemos`  
-    `$ git checkout tags/20160104T063000Z -b 20160104T063000Z`  
-    For packages that aren't installed (i.e. not managed with a package manager), it's useful to check out a branch from the version tag so that updating/downgrading versions only requires switching branches ([StackOverflow discussion](http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git)).
-<!-- ## Motivations -->
-[^rvpy]:
-    See the popular discussion ["R vs Python for data analysis"](http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis) on StackExchange Programmers.
-[^acs-method]:
-    The [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design factors, sample sizes, coverage estimates, and past questionnaires.
-[^data-harm]:
-    Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the [ACLU's FAQ section about census data](https://www.aclu.org/frequently-asked-questions-national-census) and the [Wikipedia article "Internment of Japanese Americans"](https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans).
-[^prob-race]:
-    "Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the [ACS refers to "race" and "ethnicity" separately](http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf). The American Anthropological Association [recommended in 1997](http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf) that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:  
-    <ul>
-    <li>[Census Bureau's statement about "race" (2013)](http://www.census.gov/topics/population/race/about.html)</li>
-    <li>[Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&nbsp;15 (1977)](https://www.whitehouse.gov/omb/fedreg_notice_15/)</li>
-    <li>[Office of Management and Budget, "Review of the Racial and Ethnic Standards to the OMB Concerning Changes" (Jul&nbsp;1997)](https://www.whitehouse.gov/omb/fedreg_directive_15)</li>
-    <li>[Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&nbsp;1997)](https://www.whitehouse.gov/omb/fedreg_1997standards)</li>
-    <li>[American Anthropological Association, "Statement on Race" (1998)](http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583)</li>
-    <li>[Wikipedia article "Race and ethnicity in the United States Census"](https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census)</li>
-    </ul>
-[^acs-ests]:
-    The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see [Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
-[^pydata]:
-    See the [PyData stack](http://pydata.org/downloads/) for a collection of performant Python packages.
-<!-- ## ETL process -->
-[^services]:
-    This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).
+</div>

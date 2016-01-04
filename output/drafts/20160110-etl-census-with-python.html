@@ -280,7 +280,7 @@ Data Science Demos            </a>
                 <div class="toc"><span class="toctitle">Contents</span><ul>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#motivations">Motivations</a></li>
-<li><a href="#example-verification"><span id="verify">Example verification</span></a></li>
+<li><a href="#example"><span id="example">Example</span></a></li>
 <li><a href="#helpful-links">Helpful links</a></li>
 <li><a href="#footnotes">Footnotes</a></li>
 </ul>
@@ -300,16 +300,16 @@ Data Science Demos            </a>
 <li>Housing records: <a href="http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hdc.zip">csv_hdc.zip</a> (2&nbsp;MB compressed, 13&nbsp;MB decompressed)</li>
 </ul>
 </li>
-<li>2015 5-year PUMS estimates for user verification: <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv">pums_estimates_9_13.csv</a> (&lt;1&nbsp;MB)</li>
+<li>2013 5-year PUMS estimates for user verification: <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv">pums_estimates_9_13.csv</a> (&lt;1&nbsp;MB)</li>
 </ul>
 </li>
 <li>Load the files:<ul>
-<li>Data dictionary TXT: <code>dsdemos.census.parse_pumsdatadict</code> (see <code>dsdemos</code> package <a href="/20160110-etl-census-with-python.md#src">below</a>)<br />
+<li>Data dictionary TXT: <code>dsdemos.census.parse_pumsdatadict</code> (see <code>dsdemos</code> package <a href="/20160110-etl-census-with-python.html#source">below</a>)<br />
 This is a customized parser I wrote for <code>PUMS_Data_Dictionary_2009-2013.txt</code>. The data dictionary is inconsistently formatted, which complicates parsing.</li>
 <li>Person/housing and verification CSVs: <code>pandas.read_csv</code> <sup id="fnref:pd-csv"><a class="footnote-ref" href="#fn:pd-csv" rel="footnote">4</a></sup> <sup id="fnref:pd-py35"><a class="footnote-ref" href="#fn:pd-py35" rel="footnote">5</a></sup></li>
 </ul>
 </li>
-<li>Verify calculations of estimates (example <a href="/20160110-etl-census-with-python.html#verify">below</a>):<sup id="fnref:pums-acc"><a class="footnote-ref" href="#fn:pums-acc" rel="footnote">6</a></sup><ul>
+<li>Verify calculations of estimates (example <a href="/20160110-etl-census-with-python.html#example">below</a>):<sup id="fnref:pums-acc"><a class="footnote-ref" href="#fn:pums-acc" rel="footnote">6</a></sup><ul>
 <li>To select columns by condition in <code>pandas</code>, I prefer creating a pandas series with booleans as true-false mask (e.g. <code>tfmask = np.logical_and(25 &lt;= df['AGEP'], dfp['AGEP'] &lt;= 34)</code>) then filtering using the true-false mask as an index (e.g. <code>df_new = df.loc[tfmask, ['AGEP', 'WGTP']]</code>).<sup id="fnref:pd-loc"><a class="footnote-ref" href="#fn:pd-loc" rel="footnote">7</a></sup></li>
 <li>To calculate an estimate $X$ (also called a "characteristic"), sum the column <code>'[P]WGTP'</code> of the filtered data.</li>
 <li>To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:<br />
@@ -325,103 +325,520 @@ $ \mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X) $</li>
 <li>For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):<br />
 <a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
 <a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
-<li>For the <code>dsdemos</code> package, see TODO: versioned links.</li>
+<li>The version of the <code>dsdemos</code> package used for this post is <a href="https://github.com/stharrold/dsdemos/releases/tag/20160104T063000Z">20160104T063000Z</a>.<sup id="fnref:branch"><a class="footnote-ref" href="#fn:branch" rel="footnote">8</a></sup></li>
 </ul>
 <h3 id="motivations">Motivations</h3>
 <p><strong>Why am I using the American Community Survey (ACS)?</strong></p>
 <ul>
 <li>The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.</li>
-<li>The ACS is a cultivated, thorough data set.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">9</a></sup> The ACS has many quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate often over 95%.</li>
+<li>The ACS is a cultivated, thorough data set.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">10</a></sup> The ACS has many quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate often over 95%.</li>
 <li>The ACS is a timeseries data set. The survey sends questionnaires throughout the year and releases data once per year. As a timeseries, the data can be used for forecasting analytics, which is future step.</li>
-<li><span id="problematic">I recognize that using ACS data can be problematic.</span> Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">10</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">11</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
+<li><span id="problematic">I recognize that using ACS data can be problematic.</span> Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">11</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">12</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
 </ul>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
-<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">12</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.</p>
+<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">13</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.</p>
 <p><strong>Why am I using Python?</strong></p>
-<p>This project can be done using Python, R, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">8</a></sup> I'm using Python since a future step is to make an extensible, optimized pipeline, which is a popular application for <a href="http://scikit-learn.org/">scikit-learn</a>.</p>
+<p>This project can be done using Python, R, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">9</a></sup> I'm using Python since a future step is to make an extensible, optimized pipeline, which is a popular application for <a href="http://scikit-learn.org/">scikit-learn</a>.</p>
 <p><strong>What about "big data"?</strong></p>
-<p>I'm staring with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.<sup id="fnref:pydata"><a class="footnote-ref" href="#fn:pydata" rel="footnote">13</a></sup> Within these packages, operations are often parallelized across the processor cores within the machine. For operations that exceed the available RAM on the machine (i.e. out-of-core computations), there's <a href="http://dask.pydata.org/en/latest/">Dask</a> for Python, and for operations that require a cluster of machines, there's <a href="http://spark.apache.org/">Spark</a> for Java, Scala, Python, and R. Scaling a pipeline to large enough data that requres a cluster is a future step.</p>
-<h3 id="example-verification"><span id="verify">Example verification</span></h3>
-<p>This is an example of how to replicate the calculations from a PUMS user verification file, <code>pums_estimates_9_13.csv</code>. The Jupyter Notebook <a href="/20160110-etl-census-with-python.md#src">above</a> has my full procedure.</p>
-<p>A row from <code>pums_estimates_9_13.csv</code>:</p>
+<p>I'm staring with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.<sup id="fnref:pydata"><a class="footnote-ref" href="#fn:pydata" rel="footnote">14</a></sup> Within these packages, operations are often parallelized across the processor cores within the machine. For operations that exceed the available RAM on the machine (i.e. out-of-core computations), there's <a href="http://dask.pydata.org/en/latest/">Dask</a> for Python, and for operations that require a cluster of machines, there's <a href="http://spark.apache.org/">Spark</a> for Java, Scala, Python, and R. Scaling a pipeline to large enough data that requre a cluster is a future step.</p>
+<h3 id="example"><span id="example">Example</span></h3>
+<p>This is an abbreviated example of my procedure in the Jupyter Notebook (see links to source code <a href="/20160110-etl-census-with-python.html#source">above</a>).</p>
+<!--
+TODO: Add table by embedding HTML rather than copy-paste.
+https://github.com/stharrold/stharrold.github.io/issues/5
+-->
+
+<!--BEGIN /static/20160110-etl-census-with-python/example-basic.html-->
+
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">cd</span> <span class="o">~</span>
+</pre></div>
+
+</div>
+
+<p></div>
+</div></p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/home/samuel_harrold
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<p></div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Import standard packages.</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c"># Import installed packages.</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c"># Import local packages.</span>
+<span class="c"># Append current directory to module search path.</span>
+<span class="c"># <code>dsdemos</code> version: https://github.com/stharrold/dsdemos/releases/tag/20160104T063000Z</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">r&#39;dsdemos&#39;</span><span class="p">))</span>
+<span class="kn">import</span> <span class="nn">dsdemos</span> <span class="k">as</span> <span class="nn">dsd</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<p></div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># File paths</span>
+<span class="n">path_acs</span> <span class="o">=</span> <span class="s">r&#39;/mnt/disk-20151227t211000z/www2-census-gov/programs-surveys/acs/&#39;</span>
+<span class="c"># 2013 5-year PUMS data dictionary</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt</span>
+<span class="n">path_dtxt</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt&#39;</span><span class="p">)</span>
+<span class="c"># 2013 5-year PUMS housing records for Washington DC (extracted from csv_pdc.zip)</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip</span>
+<span class="n">path_hcsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;data/pums/2013/5-Year/ss13hdc.csv&#39;</span><span class="p">)</span>
+<span class="c"># 2013 5-year PUMS user verification estimates</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv</span>
+<span class="n">path_ecsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;tech_docs/pums/estimates/pums_estimates_9_13.csv&#39;</span><span class="p">)</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<p></div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the data dictionary.</span>
+<span class="n">ddict</span> <span class="o">=</span> <span class="n">dsd</span><span class="o">.</span><span class="n">census</span><span class="o">.</span><span class="n">parse_pumsdatadict</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path_dtxt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;<code>ddict</code>, <code>dfd</code>: Convert the nested <code>dict</code> into a hierarchical dataframe.&quot;</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span> <span class="c"># <code>tmp</code> is a throwaway variable</span>
+<span class="k">for</span> <span class="n">record_type</span> <span class="ow">in</span> <span class="n">ddict</span><span class="p">[</span><span class="s">&#39;record_types&#39;</span><span class="p">]:</span>
+    <span class="n">tmp</span><span class="p">[</span><span class="n">record_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ddict</span><span class="p">[</span><span class="s">&#39;record_types&#39;</span><span class="p">][</span><span class="n">record_type</span><span class="p">],</span> <span class="n">orient</span><span class="o">=</span><span class="s">&#39;index&#39;</span><span class="p">)</span>
+<span class="n">dfd</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;record_type&#39;</span><span class="p">,</span> <span class="s">&#39;var_name&#39;</span><span class="p">])</span>
+<span class="n">dfd</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&#96;ddict&#96;, &#96;dfd&#96;: Convert the nested &#96;dict&#96; into a hierarchical dataframe.
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
-      <th>&nbsp;</th>
-      <th>st&nbsp;</th>
-      <th>state&nbsp;</th>
-      <th>characteristic&nbsp;</th>
-      <th>pums_est_09_to_13&nbsp;</th>
-      <th>pums_se_09_to_13&nbsp;</th>
-      <th>pums_moe_09_to_13&nbsp;</th>
+      <th></th>
+      <th></th>
+      <th>length</th>
+      <th>description</th>
+      <th>var_codes</th>
+      <th>notes</th>
+    </tr>
+    <tr>
+      <th>record_type</th>
+      <th>var_name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>300&nbsp;</th>
-      <td>11&nbsp;</td>
-      <td>District of Columbia&nbsp;</td>
-      <td>Age 25-34&nbsp;</td>
-      <td>134,025&nbsp;</td>
-      <td>526&nbsp;</td>
-      <td>865&nbsp;</td>
+      <th rowspan="5" valign="top">HOUSING RECORD</th>
+      <th>ACR</th>
+      <td>1</td>
+      <td>Lot size</td>
+      <td>{'b': 'N/A (GQ/not a one-family house or mobil...</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>ADJHSG</th>
+      <td>7</td>
+      <td>Adjustment factor for housing dollar amounts (...</td>
+      <td>{'1086032': '2009 factor', '1068395': '2010 fa...</td>
+      <td>[Note: The values of ADJHSG inflation-adjusts ...</td>
+    </tr>
+    <tr>
+      <th>ADJINC</th>
+      <td>7</td>
+      <td>Adjustment factor for income and earnings doll...</td>
+      <td>{'1085467': '2009 factor (0.999480 * 1.0860317...</td>
+      <td>[Note: The values of ADJINC inflation-adjusts ...</td>
+    </tr>
+    <tr>
+      <th>AGS</th>
+      <td>1</td>
+      <td>Sales of Agriculture Products (Yearly sales)</td>
+      <td>{'b': 'N/A (GQ/vacant/not a one-family house o...</td>
+      <td>[Note: No adjustment factor is applied to AGS.]</td>
+    </tr>
+    <tr>
+      <th>BATH</th>
+      <td>1</td>
+      <td>Bathtub or shower</td>
+      <td>{'b': 'N/A (GQ)', '1': 'Yes', '2': 'No'}</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
+</div>
+</div>
 
-<p>With <code>pums_estimates_9_13.csv</code> loaded as <code>dfe</code>, <code>ss13pdc.csv</code> person records file loaded as <code>dfp</code> (extracted from <code>csv_pdc.zip</code>), and <code>import numpy as np</code>:  </p>
-<div class="highlight"><pre><span class="c"># Imports</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
-<span class="c"># Load</span>
-<span class="c"># Select the verification estimates for Washington DC</span>
-<span class="c"># then for the &quot;characteristic&quot; &#39;Age 25-34&#39;.</span>
+</div>
+
+<p></div>
+</div></p>
+<p></div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the housing records.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;<code>dfh</code>: First 5 housing records.&quot;</span><span class="p">)</span>
+<span class="n">dfh</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_hcsv</span><span class="p">)</span>
+<span class="n">dfh</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&#96;dfh&#96;: First 5 housing records.
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>insp</th>
+      <th>RT</th>
+      <th>SERIALNO</th>
+      <th>DIVISION</th>
+      <th>PUMA00</th>
+      <th>PUMA10</th>
+      <th>REGION</th>
+      <th>ST</th>
+      <th>ADJHSG</th>
+      <th>ADJINC</th>
+      <th>...</th>
+      <th>WGTP71</th>
+      <th>WGTP72</th>
+      <th>WGTP73</th>
+      <th>WGTP74</th>
+      <th>WGTP75</th>
+      <th>WGTP76</th>
+      <th>WGTP77</th>
+      <th>WGTP78</th>
+      <th>WGTP79</th>
+      <th>WGTP80</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>600</td>
+      <td>H</td>
+      <td>2009000000403</td>
+      <td>5</td>
+      <td>102</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+      <td>...</td>
+      <td>6</td>
+      <td>25</td>
+      <td>30</td>
+      <td>32</td>
+      <td>26</td>
+      <td>6</td>
+      <td>36</td>
+      <td>6</td>
+      <td>18</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>NaN</td>
+      <td>H</td>
+      <td>2009000001113</td>
+      <td>5</td>
+      <td>103</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+      <td>...</td>
+      <td>14</td>
+      <td>29</td>
+      <td>12</td>
+      <td>12</td>
+      <td>4</td>
+      <td>4</td>
+      <td>18</td>
+      <td>23</td>
+      <td>4</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>480</td>
+      <td>H</td>
+      <td>2009000001978</td>
+      <td>5</td>
+      <td>103</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+      <td>...</td>
+      <td>65</td>
+      <td>12</td>
+      <td>14</td>
+      <td>37</td>
+      <td>36</td>
+      <td>41</td>
+      <td>57</td>
+      <td>36</td>
+      <td>11</td>
+      <td>34</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>NaN</td>
+      <td>H</td>
+      <td>2009000002250</td>
+      <td>5</td>
+      <td>105</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+      <td>...</td>
+      <td>4</td>
+      <td>4</td>
+      <td>4</td>
+      <td>4</td>
+      <td>23</td>
+      <td>14</td>
+      <td>11</td>
+      <td>4</td>
+      <td>20</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2500</td>
+      <td>H</td>
+      <td>2009000002985</td>
+      <td>5</td>
+      <td>101</td>
+      <td>-9</td>
+      <td>3</td>
+      <td>11</td>
+      <td>1086032</td>
+      <td>1085467</td>
+      <td>...</td>
+      <td>66</td>
+      <td>45</td>
+      <td>10</td>
+      <td>35</td>
+      <td>34</td>
+      <td>10</td>
+      <td>34</td>
+      <td>55</td>
+      <td>50</td>
+      <td>10</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 205 columns</p>
+</div>
+</div>
+
+</div>
+
+<p></div>
+</div></p>
+<p></div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the verification estimates.</span>
+<span class="c"># Select the estimates for Washington DC then for the</span>
+<span class="c"># &quot;characteristic&quot; &#39;Owner occupied units (TEN in 1,2)&#39;.</span>
+<span class="n">dfe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_ecsv</span><span class="p">)</span>
 <span class="n">tfmask_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;District of Columbia&#39;</span>
 <span class="n">dfe_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_dc</span><span class="p">]</span>
-<span class="n">char</span> <span class="o">=</span> <span class="s">&#39;Age 25-34&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;<code>dfe_dc</code>: This example verifies these quantities.&quot;</span><span class="p">)</span>
+<span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">310</span><span class="p">]]</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&#96;dfe_dc&#96;: This example verifies these quantities.
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>st</th>
+      <th>state</th>
+      <th>characteristic</th>
+      <th>pums_est_09_to_13</th>
+      <th>pums_se_09_to_13</th>
+      <th>pums_moe_09_to_13</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>310</th>
+      <td>11</td>
+      <td>District of Columbia</td>
+      <td>Owner occupied units (TEN in 1,2)</td>
+      <td>110,362</td>
+      <td>1363</td>
+      <td>2242</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+<p></div>
+</div></p>
+<p></div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="c"># Verify the estimates following</span>
+<span class="c"># https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
+<span class="c"># Define the column names for the housing weights.</span>
+<span class="n">hwt</span> <span class="o">=</span> <span class="s">&#39;WGTP&#39;</span>
+<span class="n">hwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">hwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span> <span class="c"># [&#39;PWGTP1&#39;, ..., &#39;PWGTP80&#39;]</span>
+<span class="c"># Select the reference verification data for the characteristic.</span>
+<span class="n">char</span> <span class="o">=</span> <span class="s">&#39;Owner occupied units (TEN in 1,2)&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;&#39;{char}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">char</span><span class="o">=</span><span class="n">char</span><span class="p">))</span>
 <span class="n">tfmask_ref</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="p">[</span><span class="s">&#39;characteristic&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span>
 <span class="c"># Select the person records for the characteristic.</span>
-<span class="n">tfmask_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="mi">25</span> <span class="o">&lt;=</span> <span class="n">dfp</span><span class="p">[</span><span class="s">&#39;AGEP&#39;</span><span class="p">],</span> <span class="n">dfp</span><span class="p">[</span><span class="s">&#39;AGEP&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">34</span><span class="p">)</span>
-<span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic,</span>
-<span class="c"># which is a weighted sum, using sample weights &#39;PWGTP&#39;.</span>
-<span class="n">pwt</span> <span class="o">=</span> <span class="s">&#39;PWGTP&#39;</span>
-<span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="s">&#39;pums_est_09_to_13&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
-<span class="n">test_est</span> <span class="o">=</span> <span class="n">dfp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">pwt</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">tfmask_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+<span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic.</span>
+<span class="c"># The estimate is sum with weights &#39;PWGTP&#39;.</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_est_09_to_13&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+<span class="n">test_est</span> <span class="o">=</span> <span class="n">dfh</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">hwt</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c"># Calculate the direct standard error (&#39;se&#39;) of the estimate</span>
-<span class="c"># using replicate weights &#39;PWGTP[1-80]&#39;.</span>
-<span class="n">pwts</span> <span class="o">=</span> <span class="n">pwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">pwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span>
-<span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="s">&#39;pums_se_09_to_13&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">test_se</span> <span class="o">=</span> <span class="p">((</span><span class="mi">4</span><span class="o">/</span><span class="mi">80</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">dfp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">wts</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">test_est</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">**</span><span class="mf">0.5</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">)))</span>
+<span class="c"># Calculate the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
+<span class="c"># The direct standard error is a modified root-mean-square deviation</span>
+<span class="c"># using &quot;replicate weights&quot; &#39;PWGTP[1-80]&#39;.</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_se_09_to_13&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39; :&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_se</span> <span class="o">=</span> <span class="p">((</span><span class="mi">4</span><span class="o">/</span><span class="mi">80</span><span class="p">)</span><span class="o"><em></span><span class="p">((</span><span class="n">dfh</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">hwts</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">test_est</span><span class="p">)</span><span class="o"><strong></span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o"></strong></span><span class="mf">0.5</span>
 <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="c"># Calculate the margin of error (&#39;moe&#39;) at the 90% confidence level (+/- 1.645 standard errors)</span>
-<span class="n">ref_moe</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="s">&#39;pums_moe_09_to_13&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">test_moe</span> <span class="o">=</span> <span class="mf">1.645</span><span class="o">*</span><span class="n">test_se</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">)))</span>
+<span class="c"># Calculate the margin of error (&#39;moe&#39;) at the 90% confidence level</span>
+<span class="c"># (+/- 1.645 standard errors)</span>
+<span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_moe_09_to_13&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">ref_moe</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_moe</span> <span class="o">=</span> <span class="mf">1.645</span><span class="o"></em></span><span class="n">test_se</span>
 <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_moe</span><span class="p">,</span> <span class="n">test_moe</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_moe</span><span class="p">,</span> <span class="n">test_moe</span><span class="p">)))</span>
+</pre></div></p>
+<p></div>
+</div>
+</div></p>
+<div class="output_wrapper">
+<div class="output">
 
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&apos;Owner occupied units (TEN in 1,2)&apos;
+    &apos;pums_est_09_to_13&apos;: (ref, test) = (110362, 110362)
+    &apos;pums_se_09_to_13&apos; : (ref, test) = (1363, 1363.1910174293257)
+    &apos;pums_moe_09_to_13&apos;: (ref, test) = (2242, 2242.449223671241)
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!--END /static/20160110-etl-census-with-python/example-basic.html-->
 
 <h3 id="helpful-links">Helpful links</h3>
 <p>Some links I found helpful for this blog post:</p>
 <ul>
-<li>ACS and census data:<ul>
 <li><a href="https://www.census.gov/programs-surveys/acs/guidance.html">ACS Guidance for Data Users</a> describes how to get started with ACS data.</li>
+<li><a href="https://www.census.gov/programs-surveys/acs/technical-documentation.html">ACS Technical Documentation</a> links to resources for learning how to work with ACS data.</li>
+<li><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS Methodology</a> includes survey design details, sample sizes, coverage estimates, and past questionnaires.</li>
 <li><a href="https://www.census.gov/programs-surveys/acs/library.All.html">ACS Library</a> includes example reports and infographics using ACS data.</li>
-<li><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.</li>
-<li>Kaggle competition, <a href="https://www.kaggle.com/census/2013-american-community-survey">2013 American Community Survey</a>.</li>
-<li><a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)" type="text/html">UCI Census-Income (KDD) Data Set</a>, see "Papers That Cite This Data Set".</li>
-<li><a href="https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)" type="text/html">UCI US Census Data (1990) Data Set</a>, see "Papers That Cite This Data Set".</li>
-<li><a href="http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r">Predicting Income Level, An Analytics Casestudy in R</a>.</li>
-<li>RPubs, <a href="https://rpubs.com/Jovin/census_data_income">Predict Income Range</a>.</li>
-<li>Mathematica for prediction algorithms, <a href="https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/">Classification and association rules for census income data</a>.</li>
-<li><a href="http://www-rohan.sdsu.edu/~gawron/python_for_ss/course_core/book_draft/data/PUMS_data.html">Using PUMS Census data</a> from a social science perspective.</li>
-</ul>
-</li>
-<li>Analysis:<ul>
-<li><a href="https://speakerdeck.com/jakevdp/statistics-for-hackers">"Statistics for Hackers", Jake VanderPlas</a>: Evaluating statistical significance by sampling, cross-validation, etc.</li>
-<li><a href="http://scikit-learn.org/stable/user_guide.html">Scikit-learn user guide</a>: Copious examples of machine learning tasks.</li>
-</ul>
-</li>
 </ul>
 <h3 id="footnotes">Footnotes</h3>
 <div class="footnote">
@@ -448,17 +865,25 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <p>For the formulas to caluclate the estimates, the direct standard error, and the margin of error, see <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf">2013 5-year PUMS Accuracy</a>, section 7, "Measuring Sampling Error".&#160;<a class="footnote-backref" href="#fnref:pums-acc" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pd-loc">
-<p><a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html">Docs for <code>pandas.DataFrame.loc</code></a>
-<!-- ## Motivations -->&#160;<a class="footnote-backref" href="#fnref:pd-loc" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+<p><a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html">Docs for <code>pandas.DataFrame.loc</code></a>&#160;<a class="footnote-backref" href="#fnref:pd-loc" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:branch">
+<p>To download for following the <a href="/20160110-etl-census-with-python.html#example">example</a>:
+<code>$ cd ~</code><br />
+<code>$ git clone https://github.com/stharrold/dsdemos.git</code><br />
+<code>$ cd dsdemos</code><br />
+<code>$ git checkout tags/20160104T063000Z -b 20160104T063000Z</code><br />
+For packages that aren't installed (i.e. not managed with a package manager), it's useful to check out a branch from the version tag so that updating/downgrading versions only requires switching branches (<a href="http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git">StackOverflow discussion</a>).
+<!-- ## Motivations -->&#160;<a class="footnote-backref" href="#fnref:branch" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:rvpy">
-<p>See the popular discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+<p>See the popular discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-method">
-<p>The <a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a> includes design factors, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+<p>The <a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a> includes design factors, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
 <li id="fn:data-harm">
-<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
 </li>
 <li id="fn:prob-race">
 <p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">ACS refers to "race" and "ethnicity" separately</a>. The American Anthropological Association <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
@@ -469,17 +894,17 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <li><a href="https://www.whitehouse.gov/omb/fedreg_1997standards">Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&nbsp;1997)</a></li>
 <li><a href="http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583">American Anthropological Association, "Statement on Race" (1998)</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census">Wikipedia article "Race and ethnicity in the United States Census"</a></li>
-</ul>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</ul>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-ests">
-<p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">Guidance for Data Users</a>.&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+<p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">Guidance for Data Users</a>.&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 13 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pydata">
 <p>See the <a href="http://pydata.org/downloads/">PyData stack</a> for a collection of performant Python packages.
-<!-- ## ETL process -->&#160;<a class="footnote-backref" href="#fnref:pydata" rev="footnote" title="Jump back to footnote 13 in the text">&#8617;</a></p>
+<!-- ## ETL process -->&#160;<a class="footnote-backref" href="#fnref:pydata" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
 </li>
 <li id="fn:services">
-<p>This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
+<p>This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -489,39 +914,39 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823409d0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823400d8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82340960></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d8237c378></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82340960></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823409d0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823400d8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824675e0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823f8420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823b6420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d8234a340></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d8240b458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82471f80></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823bca78></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d8240b458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823bca40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82467458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d8240d8f0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82488298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82437730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823bca78></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824821b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824675a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82467458></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823c4c00></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d82437730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d823bca78></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d824821b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f5d8240d8f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316712a9d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316712a0d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316712a960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f3167166378></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316712a960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316712a9d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316712a0d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31672515e0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31672515a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671e2420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671a0420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f3167134340></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671f5458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316725bf80></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31672515a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671a6a78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671f5458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31672515a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671a6a40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f3167251458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671f78f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31672515a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f3167272298></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f3167221730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671a6a78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316726c1b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31672515a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f3167251458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671aec00></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f3167221730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671a6a78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f316726c1b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f31671f78f0></a></li>
     </ul>
 </section>
     <hr/>
