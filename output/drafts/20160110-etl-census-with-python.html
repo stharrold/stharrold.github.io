@@ -2,7 +2,7 @@
 <html lang="en"
 >
 <head>
-    <title>Predicting household income from census data - Data Science Demos</title>
+    <title>Extract transform load census data with Python - Data Science Demos</title>
     <!-- Using the latest rendering mode for IE -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
@@ -166,24 +166,23 @@ init_mathjax = function() {
 init_mathjax();
 </script>
 
-<link rel="canonical" href="/drafts/20151230-predict-household-income-from-census.html">
+<link rel="canonical" href="/drafts/20160110-etl-census-with-python.html">
 
         <meta name="author" content="Samuel Harrold" />
-        <meta name="keywords" content="machine-learning,predictive-analytics,how-to,python,regression" />
-        <meta name="description" content="I predict a household&#39;s income using data from the Census Bureau." />
+        <meta name="keywords" content="etl,how-to,python,pandas" />
+        <meta name="description" content="I parse, load, and validate data from the Census Bureau&#39;s American Community Survey using Python." />
 
         <meta property="og:site_name" content="Data Science Demos" />
         <meta property="og:type" content="article"/>
-        <meta property="og:title" content="Predicting household income from census data"/>
-        <meta property="og:url" content="/drafts/20151230-predict-household-income-from-census.html"/>
-        <meta property="og:description" content="I predict a household&#39;s income using data from the Census Bureau."/>
-        <meta property="article:published_time" content="2015-12-30" />
-            <meta property="article:section" content="Machine Learning" />
-            <meta property="article:tag" content="machine-learning" />
-            <meta property="article:tag" content="predictive-analytics" />
+        <meta property="og:title" content="Extract transform load census data with Python"/>
+        <meta property="og:url" content="/drafts/20160110-etl-census-with-python.html"/>
+        <meta property="og:description" content="I parse, load, and validate data from the Census Bureau&#39;s American Community Survey using Python."/>
+        <meta property="article:published_time" content="2016-01-10" />
+            <meta property="article:section" content="Extract Transform Load" />
+            <meta property="article:tag" content="etl" />
             <meta property="article:tag" content="how-to" />
             <meta property="article:tag" content="python" />
-            <meta property="article:tag" content="regression" />
+            <meta property="article:tag" content="pandas" />
             <meta property="article:author" content="Samuel Harrold" />
 
 
@@ -236,17 +235,17 @@ Data Science Demos            </a>
         <div class="col-sm-9">
             <ol class="breadcrumb">
                 <li><a href="" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
-                <li class="active">Predicting household income from census data</li>
+                <li class="active">Extract transform load census data with Python</li>
             </ol>
 
     <section id="content">
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="/drafts/20151230-predict-household-income-from-census.html"
+                    <a href="/drafts/20160110-etl-census-with-python.html"
                        rel="bookmark"
-                       title="Permalink to Predicting household income from census data">
-                        Predicting household income from census data
+                       title="Permalink to Extract transform load census data with Python">
+                        Extract transform load census data with Python
                     </a>
                 </h1>
             </header>
@@ -256,71 +255,154 @@ Data Science Demos            </a>
 <footer class="post-info">
     <span class="label label-default">Date</span>
     <span class="published">
-        <i class="fa fa-calendar"></i><time datetime="2015-12-30T12:00:00+00:00"> Wed 30 December 2015</time>
+        <i class="fa fa-calendar"></i><time datetime="2016-01-10T12:00:00+00:00"> Sun 10 January 2016</time>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2015-12-30T12:00:00+00:00"> Wed 30 December 2015</time>
+                <i class="fa fa-calendar"></i><time datetime="2016-01-10T12:00:00+00:00"> Sun 10 January 2016</time>
             </span>
 
         <span class="label label-default">Category</span>
-        <a href="/category/machine-learning.html">Machine Learning</a>
+        <a href="/category/extract-transform-load.html">Extract Transform Load</a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="/tag/machine-learning.html">machine-learning</a>
-        /
-	<a href="/tag/predictive-analytics.html">predictive-analytics</a>
+	<a href="/tag/etl.html">etl</a>
         /
 	<a href="/tag/how-to.html">how-to</a>
         /
 	<a href="/tag/python.html">python</a>
         /
-	<a href="/tag/regression.html">regression</a>
+	<a href="/tag/pandas.html">pandas</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
                 <div class="toc"><span class="toctitle">Contents</span><ul>
 <li><a href="#overview">Overview</a></li>
 <li><a href="#motivations">Motivations</a></li>
-<li><a href="#predicting-household-income">Predicting household income</a></li>
+<li><a href="#etl">ETL</a></li>
 <li><a href="#helpful-links">Helpful links</a></li>
 <li><a href="#footnotes">Footnotes</a></li>
 </ul>
 </div>
 <h3 id="overview">Overview</h3>
-<p>The <a href="https://www.census.gov/about/what.html">Census Bureau</a> collects data from people in the United States throughout the year. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public. In this post I predict a household's total annual income using the Census Bureau's <a href="http://www.census.gov/programs-surveys/acs/about.html">American Community Survey (ACS)</a>.</p>
+<p>The <a href="https://www.census.gov/about/what.html">Census Bureau</a> collects data from people in the United States throughout the year. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.<sup id="fnref:use-cases"><a class="footnote-ref" href="#fn:use-cases" rel="footnote">1</a></sup> In this post I parse, load, and validate data from the Census Bureau's <a href="http://www.census.gov/programs-surveys/acs/about.html">American Community Survey (ACS)</a> <a href="https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html">2013 5-year Public Use Microdata Sample (PUMS)</a> for Washington&nbsp;DC.</p>
+<p>Brief process:</p>
+<ul>
+<li>Start with a running Google Cloud VM instance and Jupyter Notebook server following <a href="/20151208-ipynb-on-gce-from-chrome.html">"Running an Ipython Notebook on Google Compute Engine from Chrome"</a>.  </li>
+<li>Download (and decompress):<sup id="fnref:ftp"><a class="footnote-ref" href="#fn:ftp" rel="footnote">2</a></sup><ul>
+<li>2013 5-year PUMS data dictionary: <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt">PUMS_Data_Dictionary_2009-2013.txt</a> (&lt;1&nbsp;MB)</li>
+<li>2013 5-year PUMS person records for Washington DC: <a href="http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip">csv_pdc.zip</a> (5&nbsp;MB compressed, 30&nbsp;MB decompressed)</li>
+<li>2013 5-year PUMS housing records for Washington DC: <a href="http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hdc.zip">csv_hdc.zip</a> (2&nbsp;MB compressed, 13&nbsp;MB decompressed)</li>
+<li>2015 5-year PUMS estimates for user verification: <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv">pums_estimates_9_13.csv</a> (&lt;1&nbsp;MB)</li>
+</ul>
+</li>
+<li>Load the files:<ul>
+<li>Data dictionary TXT: <code>dsdemos.census.parse_pumsdatadict</code> TODO: link.</li>
+<li>Person/housing and verification CSVs: <code>pandas.read_csv</code> <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html">link</a><sup id="fnref:pd_py35"><a class="footnote-ref" href="#fn:pd_py35" rel="footnote">3</a></sup></li>
+</ul>
+</li>
+<li>Verify calculations of estimates. Example:</li>
+</ul>
+<hr />
+<p>To replicate the calculations in this row from the verification file:</p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>&nbsp;</th>
+      <th>st&nbsp;</th>
+      <th>state&nbsp;</th>
+      <th>characteristic&nbsp;</th>
+      <th>pums_est_09_to_13&nbsp;</th>
+      <th>pums_se_09_to_13&nbsp;</th>
+      <th>pums_moe_09_to_13&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>300&nbsp;</th>
+      <td>11&nbsp;</td>
+      <td>District of Columbia&nbsp;</td>
+      <td>Age 25-34&nbsp;</td>
+      <td>134,025&nbsp;</td>
+      <td>526&nbsp;</td>
+      <td>865&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>With the verification file loaded as <code>dfe</code>, person records file loaded as <code>dfp</code>, and <code>import numpy as np</code>:  </p>
+<div class="highlight"><pre><span class="c"># Select the verification estimates for Washington DC then for &#39;Age 25-34&#39;.</span>
+<span class="c"># Select the corresponding data from the person records file.</span>
+<span class="n">tfmask_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;District of Columbia&#39;</span>
+<span class="n">dfe_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask</span><span class="p">]</span>
+<span class="n">char</span> <span class="o">=</span> <span class="s">&#39;Age 25-34&#39;</span>
+<span class="n">tfmask_ref</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="p">[</span><span class="s">&#39;characteristic&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span>
+<span class="n">tfmask_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="mi">25</span> <span class="o">&lt;=</span> <span class="n">dfp</span><span class="p">[</span><span class="s">&#39;AGEP&#39;</span><span class="p">],</span> <span class="n">dfp</span><span class="p">[</span><span class="s">&#39;AGEP&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">34</span><span class="p">)</span>
+<span class="c"># Calculate the estimate (&#39;est&#39;, also a &quot;characteristic&quot;),</span>
+<span class="c"># a weighted sum, using sample weights &#39;PWGTP&#39;.</span>
+<span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="s">&#39;pums_est_09_to_13&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
+<span class="n">test_est</span> <span class="o">=</span> <span class="n">dfp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="s">&#39;PWGTP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c"># Calculate the direct standard error (&#39;se&#39;) using replicate weights &#39;[PWGTP[1-80]&#39;.</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
+<span class="c"># section 7, &quot;Measuring Sampling Error&quot;</span>
+<span class="c"># wts = [&#39;PWGTP1&#39;, &#39;PWGTP2&#39;, ..., &#39;PWGTP80&#39;] are the per-person</span>
+<span class="c"># &#39;replicate weights&#39; for calculating &#39;direct standard error&#39;</span>
+<span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="s">&#39;pums_se_09_to_13&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_se</span> <span class="o">=</span> <span class="p">((</span><span class="mi">4</span><span class="o">/</span><span class="mi">80</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">dfp</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">wts</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">test_est</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">**</span><span class="mf">0.5</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c"># Calculate a margin of error (&#39;moe&#39;) at the 90% confidence level (+/- 1.645 standard errors)</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
+<span class="c"># section 7, &quot;Measuring Sampling Error&quot;</span>
+<span class="n">ref_moe</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="s">&#39;pums_moe_09_to_13&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_moe</span> <span class="o">=</span> <span class="mf">1.645</span><span class="o">*</span><span class="n">test_se</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_moe</span><span class="p">,</span> <span class="n">test_moe</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<hr />
+<ul>
+<li>For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):<br />
+<a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
+<a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
+<li>For the <code>dsdemos</code> source code, see TODO: link.</li>
+</ul>
 <h3 id="motivations">Motivations</h3>
-<p><strong>Why am I using Python instead of R?</strong></p>
-<p>This project can be done using R, Python, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">1</a></sup> I'm using Python, especially <a href="http://scikit-learn.org/">scikit-learn</a>, to optimize computational performance and to make an extensible, maintainable pipeline.</p>
 <p><strong>Why am I using the American Community Survey (ACS)?</strong></p>
 <ul>
-<li>The ACS is a relevant dataset. The goal of this project is to predict the income for a household given characteristics of that household, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.</li>
-<li>The ACS is a cultivated, thorough dataset.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">2</a></sup> The ACS has many quality controls to ensure that it is representative, and it samples about 3&nbsp;million addresses per year with a response rate often over 95%.</li>
-<li>The ACS is a timeseries dataset. The ACS samples continuously and releases data once per year. As a timeseries, the data can be used to predict current and future quantities, which is future step for this project.</li>
-<li><span id="problematic">However, I recognize that using ACS data can be problematic.</span> Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">3</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">4</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
+<li>The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.</li>
+<li>The ACS is a cultivated, thorough data set.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">5</a></sup> The ACS has many quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate often over 95%.</li>
+<li>The ACS is a timeseries data set. The survey sends questionnaires throughout the year and releases data once per year. As a timeseries, the data can be used for forecasting analytics, which is future step.</li>
+<li><span id="problematic">I recognize that using ACS data can be problematic.</span> Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">6</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">7</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
 </ul>
-<p><strong>Why am I using the ACS household-level data?</strong></p>
-<p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">5</a></sup> and consumers often spend on behalf of their household.<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">6</a></sup> Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
-<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">7</a></sup> Because the ACS 5-year estimates aggregate data over a 5-year window, they have the largest sample and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to a specific year is a future step for this project.</p>
-<h3 id="predicting-household-income">Predicting household income</h3>
+<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">8</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.</p>
+<p><strong>Why am I using Python?</strong></p>
+<p>This project can be done using Python, R, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">4</a></sup> I'm using Python since a future step is to make an extensible, optimized pipeline, which is a popular application for <a href="http://scikit-learn.org/">scikit-learn</a>.</p>
+<p><strong>What about "big data"?</strong></p>
+<p>I'm staring with a data set small enough to be processed in memory (i.e. operated on in RAM), since many Python packages (e.g. the <a href="http://pydata.org/downloads/">PyData stack</a>) are most often used for in-memory operations on single machines. Within these packages, operations are often parallelized across the cores within the machine. For operations that exceed the available RAM on the machine (i.e. out-of-core computations), there's <a href="http://dask.pydata.org/en/latest/">Dask</a> for Python, and for operations that require a cluster of machines, there's <a href="http://spark.apache.org/">Spark</a> for Java, Scala, Python, and R. Scaling a pipeline to large enough data that requres a cluster is a future step.</p>
+<h3 id="etl">ETL</h3>
 <ul>
-<li>TODO:<ul>
-<li>Purpose: Predict total annual household income.</li>
+<li>TODO<ul>
 <li>DevOps:<ul>
 <li>I start with a running Google Cloud VM instance and Jupyter Notebook server following a previous post, <a href="/20151208-ipynb-on-gce-from-chrome.html">"Running an Ipython Notebook on Google Compute Engine from Chrome"</a>.</li>
-<li><a href="https://cloud.google.com/compute/docs/disks/persistent-disks">Create and mount a disk</a> to the instance for storage.<sup id="fnref:services"><a class="footnote-ref" href="#fn:services" rel="footnote">8</a></sup></li>
+<li><a href="https://cloud.google.com/compute/docs/disks/persistent-disks">Create and mount a disk</a> to the instance for storage.<sup id="fnref:services"><a class="footnote-ref" href="#fn:services" rel="footnote">9</a></sup></li>
 <li>My architecture: 2-core vCPU Intel Xeon CPU @ 2.5 GHz, 30.7 KB cache; shared 7.5 GB RAM. (<code>/proc/cpuinfo</code>, <code>/proc/meminfo</code>)</li>
 </ul>
 </li>
-<li>ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)<ul>
-<li>Download the <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">ACS data via FTP</a>:<sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">9</a></sup><br />
+<li>
+<p>ETL: docs, data dict, zip file, check user verification files, format data dictionary file, imputation (knn?)</p>
+<ul>
+<li>
+<p>Download the <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">ACS data via FTP</a>:<sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">10</a></sup><br />
 <code>$ sudo curl --remote-name &lt;url&gt;</code> where the downloaded URLs were<br />
 <code>http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict13.txt</code><br />
-<code>http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hus.zip</code></li>
-<li>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums" rel="footnote">10</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</li>
-<li>TODO: Merge personal and housing files.</li>
+<code>http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hdc.zip</code> (unzip with <code>unzip</code>)</p>
+</li>
+<li>
+<p>TODO: Merge personal and housing files.</p>
+</li>
 <li>TODO:<ul>
 <li>dask vs spark: http://dask.readthedocs.org/en/latest/spark.html</li>
 <li>dask tutorial: http://nbviewer.ipython.org/github/jcrist/Dask_PyData_NYC/blob/master/Dask_DataFrame_Airline.ipynb</li>
@@ -331,9 +413,6 @@ Data Science Demos            </a>
 </li>
 </ul>
 </li>
-<li>Feature extraction: map PUMA to lat-lon, map cat cols to heir cols, incremental PCA, clustering, informative priors, create cross-term features?</li>
-<li>Data mining: feature corrs, household corrs, pairplots, dim-red vis</li>
-<li>Predictive analytics: random forest with grid search, 5-fold cross-validation, get confidence intervals, partial dependence plots with decomposed eigenvectors</li>
 </ul>
 </li>
 </ul>
@@ -363,14 +442,24 @@ Data Science Demos            </a>
 <div class="footnote">
 <hr />
 <ol>
+<li id="fn:use-cases">
+<p>Some use cases for the Census Bureau's American Community Survey with data access recommendations: <a href="https://www.census.gov/acs/www/guidance/which-data-tool/">ACS Which Data Tool</a>&#160;<a class="footnote-backref" href="#fnref:use-cases" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:ftp">
+<p>About accessing <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">ACS data via FTP</a>.&#160;<a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:pd_py35">
+<p>Pandas 0.17.1 has a compatibility issue with Python 3.5. See <a href="https://github.com/pydata/pandas/issues/11915">GitHub pandas issue 11915</a> for a temporary fix. The issue should be resolved for pandas 0.18+.
+<!-- ## Motivations -->&#160;<a class="footnote-backref" href="#fnref:pd_py35" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
 <li id="fn:rvpy">
-<p>See the popular discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>See the popular discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-method">
-<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>The <a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS methodology</a> includes design factors, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:data-harm">
-<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
 </li>
 <li id="fn:prob-race">
 <p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">ACS refers to "race" and "ethnicity" separately</a>. The American Anthropological Association <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
@@ -381,70 +470,59 @@ Data Science Demos            </a>
 <li><a href="https://www.whitehouse.gov/omb/fedreg_1997standards">Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&nbsp;1997)</a></li>
 <li><a href="http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583">American Anthropological Association, "Statement on Race" (1998)</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census">Wikipedia article "Race and ethnicity in the United States Census"</a></li>
-</ul>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
-</li>
-<li id="fn:cr-dbs">
-<p>See <a href="http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm">examples of consumer databases</a> from Consumer Reports and how they're used.&#160;<a class="footnote-backref" href="#fnref:cr-dbs" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
-</li>
-<li id="fn:bea-pce">
-<p>The Bureau of Economic Analysis measures <a href="http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm">personal consumption expenditures</a> on a per-household basis.&#160;<a class="footnote-backref" href="#fnref:bea-pce" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</ul>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-ests">
-<p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a dataset, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">Guidance for Data Users</a>.
-<!-- ## Predicting household income -->&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+<p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">Guidance for Data Users</a>.
+<!-- ## Predicting household income -->&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:services">
-<p>This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+<p>This project mounts a single disk for storage to a single instance and keeps the data in RAM for queries. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:no-api">
-<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
-</li>
-<li id="fn:pums">
-<p>See the ACS guidebook <a href="https://www.census.gov/library/publications/2009/acs/pums.html">"What Public Use Microdata Sample Users Need to Know" (2009)</a>.&#160;<a class="footnote-backref" href="#fnref:pums" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
 <!-- ## Overview -->
-
-<!-- ## Motivations -->
             </div>
             <!-- /.entry-content -->
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7f561e6e8928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e6e8030></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e6e88b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e724340></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e6e88b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e6e8928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e6e8030></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e7a03e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e75e3e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e6f2298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e7b3420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e819f48></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e764a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e7b3420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e764a08></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e7b58b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e830298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e7df730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e764a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e82a1b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e80f420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e76cbc8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e7df730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e764a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e82a1b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f561e7b58b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85839d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85830d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c8583960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85bf378></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c8583960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85839d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85830d8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5e0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c863b420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85f9420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c858d340></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c864e458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86b4f80></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85ffa78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c864e458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85ffa40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86508f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86cb298></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c867a730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85ffa78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86c51b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa5a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86aa458></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c8607c00></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c867a730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c85ffa78></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86c51b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7fa2c86508f0></a></li>
     </ul>
 </section>
     <hr/>
@@ -456,8 +534,8 @@ Data Science Demos            </a>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
 
-                    var disqus_identifier = '20151230-predict-household-income-from-census';
-                var disqus_url = '/drafts/20151230-predict-household-income-from-census.html';
+                    var disqus_identifier = '20160110-etl-census-with-python';
+                var disqus_url = '/drafts/20160110-etl-census-with-python.html';
 
             var disqus_config = function () {
                 this.language = "en";
