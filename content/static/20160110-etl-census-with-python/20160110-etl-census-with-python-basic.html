@@ -74,9 +74,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c"># Import local packages.</span>
-<span class="c"># Append current directory to module search path.</span>
+<span class="c"># Insert current directory into module search path.</span>
 <span class="c"># Autoreload local packages after editing.</span>
-<span class="c"># `dsdemos` version: https://github.com/stharrold/dsdemos/releases/tag/20160104T063000Z</span>
+<span class="c"># `dsdemos` version: https://github.com/stharrold/dsdemos/releases/tag/v0.0.3</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">r&#39;dsdemos&#39;</span><span class="p">))</span>
 <span class="o">%</span><span class="k">reload_ext</span> autoreload
 <span class="o">%</span><span class="k">autoreload</span> 2
@@ -93,7 +93,7 @@
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;Datestamp:&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;Timestamp:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">r&#39;%Y-%m-%dT%H:%M:%S%Z&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()))</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python version:&quot;</span><span class="p">)</span>
@@ -110,8 +110,8 @@
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Datestamp:
-2016-01-04T20:50:36GMT
+<pre>Timestamp:
+2016-01-05T21:23:07GMT
 
 Python version:
 sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
@@ -396,7 +396,7 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 dfp RAM usage (MB) = 72.1
 dfh RAM usage (MB) = 28.7
 
-Time elapsed (sec) = 1.9
+Time elapsed (sec) = 2.7
 </pre>
 </div>
 </div>
@@ -798,9 +798,9 @@ Time elapsed (sec) = 1.9
     <span class="s">&quot;...</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
     <span class="s">&quot;num columns described = ncols&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="n">records_dfs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;PERSON RECORD&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dataframe&#39;</span><span class="p">:</span> <span class="n">dfp</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">:</span> <span class="n">pwt</span><span class="p">,</span> <span class="s">&#39;replicate_weights&#39;</span><span class="p">:</span> <span class="n">pwts</span><span class="p">},</span>
-    <span class="s">&#39;HOUSING RECORD&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;dataframe&#39;</span><span class="p">:</span> <span class="n">dfh</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">:</span> <span class="n">hwt</span><span class="p">,</span> <span class="s">&#39;replicate_weights&#39;</span><span class="p">:</span> <span class="n">hwts</span><span class="p">}}</span>
+<span class="n">records_dfs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
+    <span class="p">(</span><span class="s">&#39;PERSON RECORD&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s">&#39;dataframe&#39;</span><span class="p">:</span> <span class="n">dfp</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">:</span> <span class="n">pwt</span><span class="p">,</span> <span class="s">&#39;replicate_weights&#39;</span><span class="p">:</span> <span class="n">pwts</span><span class="p">}),</span>
+    <span class="p">(</span><span class="s">&#39;HOUSING RECORD&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;dataframe&#39;</span><span class="p">:</span> <span class="n">dfh</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">:</span> <span class="n">hwt</span><span class="p">,</span> <span class="s">&#39;replicate_weights&#39;</span><span class="p">:</span> <span class="n">hwts</span><span class="p">})])</span>
 <span class="k">for</span> <span class="n">record_type</span> <span class="ow">in</span> <span class="n">records_dfs</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">record_type</span><span class="p">)</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">records_dfs</span><span class="p">[</span><span class="n">record_type</span><span class="p">][</span><span class="s">&#39;dataframe&#39;</span><span class="p">]</span>
@@ -851,1173 +851,6 @@ COL: Column name.
     Multi-line statistical description and data type.
 ...
 num columns described = ncols
-
-HOUSING RECORD
-insp: Column not in data dictionary.
-    count    6561.000000
-    mean      999.282731
-    std      1085.174484
-    min         0.000000
-    25%       370.000000
-    50%       790.000000
-    75%      1200.000000
-    max      8600.000000
-    Name: insp, dtype: float64
-RT: Record Type
-    H: Housing Record or Group Quarters Unit
-    count     17500
-    unique        1
-    top           H
-    freq      17500
-    Name: RT, dtype: object
-SERIALNO: Housing unit/GQ person serial number
-    2009000000001..2013999999999: Unique identifier
-    count    1.750000e+04
-    mean     2.011068e+12
-    std      1.401911e+09
-    min      2.009000e+12
-    25%      2.010000e+12
-    50%      2.011001e+12
-    75%      2.012001e+12
-    max      2.013001e+12
-    Name: SERIALNO, dtype: float64
-DIVISION: Division code
-    0: Puerto Rico
-    1: New England (Northeast region)
-    2: Middle Atlantic (Northeast region)
-    ...
-    count    17500
-    mean         5
-    std          0
-    min          5
-    25%          5
-    50%          5
-    75%          5
-    max          5
-    Name: DIVISION, dtype: float64
-PUMA00: Public use microdata area code (PUMA) based on Census 2000 definition for data collected prior to 2012. Use in combination with PUMA10.
-    [&apos;Note: Public Use Microdata Areas (PUMAs) designate areas of 100,000 or more population.  Use with ST for unique code. PUMA00 applies to data collected in calendar years 2011 and earlier. Users of multi-year datasets that contain data from before and after 2012 should use PUMA00 and PUMA10 together where possible, but not all PUMAs will be comparable. See http://tigerweb.geo.census.gov to identify PUMA changes between the two vintages.&apos;]
-    00100..08200: Public use microdata area codes
-    77777: Combination of 01801, 01802, and 01905 in Louisiana
-    -0009: Code classification is Not Applicable because data collected in 2012 or later
-    ...
-    count    17500.000000
-    mean        56.427371
-    std         55.291036
-    min         -9.000000
-    25%         -9.000000
-    50%        101.000000
-    75%        103.000000
-    max        105.000000
-    Name: PUMA00, dtype: float64
-PUMA10: Public use microdata area code (PUMA) based on 2010 Census definition for data collected in 2012 or later. Use in combination with PUMA00.
-    [&apos;Note: Public Use Microdata Areas (PUMAs) designate areas of 100,000 or more population.  Use with ST for unique code. PUMA10 applies to data collected in calendar year 2012 and later. Users of multi-year datasets that contain data from before and after 2012 should use PUMA00 and PUMA10 together where possible, but not all PUMAs will be comparable. See http://tigerweb.geo.census.gov to identify PUMA changes between the two vintages.&apos;]
-    00100..70301: Public use microdata area codes
-    -0009: Code classification is Not Applicable because data collected prior to 2012
-    count    17500.000000
-    mean        37.764171
-    std         55.358495
-    min         -9.000000
-    25%         -9.000000
-    50%         -9.000000
-    75%        103.000000
-    max        105.000000
-    Name: PUMA10, dtype: float64
-REGION: Region code
-    1: Northeast
-    2: Midwest
-    3: South
-    ...
-    count    17500
-    mean         3
-    std          0
-    min          3
-    25%          3
-    50%          3
-    75%          3
-    max          3
-    Name: REGION, dtype: float64
-ST: State Code
-    01: Alabama/AL
-    02: Alaska/AK
-    04: Arizona/AZ
-    ...
-    count    17500
-    mean        11
-    std          0
-    min         11
-    25%         11
-    50%         11
-    75%         11
-    max         11
-    Name: ST, dtype: float64
-ADJHSG: Adjustment factor for housing dollar amounts (6 implied decimal places)
-    [&apos;Note: The values of ADJHSG inflation-adjusts reported housing costs to 2013 dollars and applies to variables CONP, ELEP, FULP, GASP, GRNTP, INSP, MHP, MRGP, SMOCP, RNTP, SMP, and WATP in the housing record. ADJHSG does not apply to AGS or TAXP because they are categorical variables that should not be inflation-adjusted.&apos;]
-    1086032: 2009 factor
-    1068395: 2010 factor
-    1035725: 2011 factor
-    ...
-    count      17500.000000
-    mean     1039364.231657
-    std        31877.254257
-    min      1000000.000000
-    25%      1014531.000000
-    50%      1035725.000000
-    75%      1068395.000000
-    max      1086032.000000
-    Name: ADJHSG, dtype: float64
-ADJINC: Adjustment factor for income and earnings dollar amounts (6 implied decimal places)
-    [&apos;Note: The values of ADJINC inflation-adjusts reported income to 2013 dollars. ADJINC incorporates an adjustment that annualizes the different rolling reference periods for reported income (as done in the single-year data using the variable ADJINC from the 1-year file) and an adjustment to inflation-adjust the annualized income to 2013 dollars.  ADJINC applies to variables FINCP and HINCP in the housing record, and variables INTP, OIP, PAP, PERNP, PINCP, RETP, SEMP, SSIP, SSP, and WAGP in the person record.&apos;]
-    1085467: 2009 factor (0.999480 * 1.08603175)
-    1076540: 2010 factor (1.007624 * 1.06839475)
-    1054614: 2011 factor (1.018237 * 1.03572510)
-    ...
-    count      17500.000000
-    mean     1048478.770229
-    std        29598.269890
-    min      1007549.000000
-    25%      1024887.000000
-    50%      1054614.000000
-    75%      1076540.000000
-    max      1085467.000000
-    Name: ADJINC, dtype: float64
-WGTP: Housing Weight
-    0000: Group Quarter placeholder record
-    00001..09999: Integer weight of housing unit
-    count    17500.000000
-    mean        17.047257
-    std         13.878535
-    min          0.000000
-    25%         10.000000
-    50%         14.000000
-    75%         22.000000
-    max        172.000000
-    Name: WGTP, dtype: float64
-NP: Number of person records following this housing record
-    00: Vacant unit
-    01: One person record (one person in household or any person in group quarters)
-    02..20: Number of person records (number of persons in household)
-    ...
-    count    17500.000000
-    mean         1.746229
-    std          1.291371
-    min          0.000000
-    25%          1.000000
-    50%          1.000000
-    75%          2.000000
-    max         13.000000
-    Name: NP, dtype: float64
-TYPE: Type of unit
-    1: Housing unit
-    2: Institutional group quarters
-    3: Noninstitutional group quarters
-    ...
-    count    17500.000000
-    mean         1.268514
-    std          0.655686
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          3.000000
-    Name: TYPE, dtype: float64
-ACR: Lot size
-    b: N/A (GQ/not a one-family house or mobile home)
-    1: House on less than one acre
-    2: House on one to less than ten acres
-    ...
-    count    6388.000000
-    mean        1.028961
-    std         0.182034
-    min         1.000000
-    25%         1.000000
-    50%         1.000000
-    75%         1.000000
-    max         3.000000
-    Name: ACR, dtype: float64
-AGS: Sales of Agriculture Products (Yearly sales)
-    [&apos;Note: No adjustment factor is applied to AGS.&apos;]
-    b: N/A (GQ/vacant/not a one-family house or mobile home/less than 1 acre)
-    1: None
-    2: $    1 - $  999
-    ...
-    count    164.000000
-    mean       1.201220
-    std        0.934544
-    min        1.000000
-    25%        1.000000
-    50%        1.000000
-    75%        1.000000
-    max        6.000000
-    Name: AGS, dtype: float64
-BATH: Bathtub or shower
-    b: N/A (GQ)
-    1: Yes
-    2: No
-    ...
-    count    14844.000000
-    mean         1.005322
-    std          0.072760
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: BATH, dtype: float64
-BDSP: Number of bedrooms
-    bb    : N/A (GQ)
-    00..99: 0 to 99 bedrooms (Top-coded)
-    count    14844.000000
-    mean         2.171989
-    std          1.452519
-    min          0.000000
-    25%          1.000000
-    50%          2.000000
-    75%          3.000000
-    max         14.000000
-    Name: BDSP, dtype: float64
-BLD: Units in structure
-    bb: N/A (GQ)
-    01: Mobile home or trailer
-    02: One-family house detached
-    ...
-    count    14844.000000
-    mean         5.365131
-    std          2.671220
-    min          2.000000
-    25%          3.000000
-    50%          5.000000
-    75%          8.000000
-    max          9.000000
-    Name: BLD, dtype: float64
-BUS: Business or medical office on property
-    b: N/A (GQ/not a one-family house or mobile home)
-    1: Yes
-    2: No
-    ...
-    count    6388.000000
-    mean        1.986381
-    std         0.115913
-    min         1.000000
-    25%         2.000000
-    50%         2.000000
-    75%         2.000000
-    max         2.000000
-    Name: BUS, dtype: float64
-CONP: Condo fee (monthly amount)
-    [&apos;Note: Use values from ADJHSG to adjust CONP to constant dollars.&apos;]
-    bbbb: N/A (GQ/vacant/not owned or being bought)
-    0000: Not condo
-    0001..9999: $1 - $9999 (Rounded and top-coded)
-    ...
-    count    14844.000000
-    mean        51.061035
-    std        175.491301
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max       1700.000000
-    Name: CONP, dtype: float64
-ELEP: Electricity (monthly cost)
-    [&apos;Note: Use values from ADJHSG to adjust ELEP values 3 and over to constant dollars.&apos;]
-    bbb: N/A (GQ/vacant)
-    001: Included in rent or in condo fee
-    002: No charge or electricity not used
-    ...
-    count    13737.000000
-    mean        92.849967
-    std         94.873654
-    min          1.000000
-    25%         30.000000
-    50%         70.000000
-    75%        130.000000
-    max        570.000000
-    Name: ELEP, dtype: float64
-FS: Yearly food stamp/Supplemental Nutrition Assistance Program recipiency
-    b: N/A (vacant)
-    1: Yes
-    2: No
-    ...
-    count    16393.000000
-    mean         1.874093
-    std          0.331755
-    min          1.000000
-    25%          2.000000
-    50%          2.000000
-    75%          2.000000
-    max          2.000000
-    Name: FS, dtype: float64
-FULP: Fuel cost(yearly cost for fuels other than gas and electricity)
-    [&apos;Note: Use values from ADJHSG to adjust FULP values 3 and over to constant dollars.&apos;]
-    bbbb: N/A (GQ/vacant)
-    0001: Included in rent or in condo fee
-    0002: No charge or these fuels not used
-    ...
-    count    13737.000000
-    mean        45.400306
-    std        311.391053
-    min          1.000000
-    25%          2.000000
-    50%          2.000000
-    75%          2.000000
-    max       5200.000000
-    Name: FULP, dtype: float64
-GASP: Gas (monthly cost)
-    [&apos;Note: Use values from ADJHSG to adjust GASP values 4 and over to constant dollars.&apos;]
-    bbb: N/A (GQ/vacant)
-    001: Included in rent or in condo fee
-    002: Included in electricity payment
-    ...
-    count    13737.000000
-    mean        56.089758
-    std         88.354993
-    min          1.000000
-    25%          3.000000
-    50%         10.000000
-    75%         80.000000
-    max        580.000000
-    Name: GASP, dtype: float64
-HFL: House heating fuel
-    b: N/A (GQ/vacant)
-    1: Utility gas
-    2: Bottled, tank, or LP gas
-    ...
-    count    13737.000000
-    mean         1.878867
-    std          1.306775
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          3.000000
-    max          9.000000
-    Name: HFL, dtype: float64
-MHP: Mobile home costs (yearly amount)
-    [&apos;Note: Use values from ADJHSG to adjust MHP to constant dollars.&apos;]
-    bbbbb: N/A (GQ/vacant/not owned or being bought/ not mobile home)
-    00000: None
-    00001..99999: $1 to $99999 (Rounded and top-coded)
-    ...
-    count     0
-    mean    NaN
-    std     NaN
-    min     NaN
-    25%     NaN
-    50%     NaN
-    75%     NaN
-    max     NaN
-    Name: MHP, dtype: float64
-MRGI: First mortgage payment includes fire/hazard/flood insurance
-    b: N/A (GQ/vacant/not owned or being bought/not mortgaged)
-    1: Yes, insurance included in payment
-    2: No, insurance paid separately or no insurance
-    ...
-    count    4971.000000
-    mean        1.446590
-    std         0.497189
-    min         1.000000
-    25%         1.000000
-    50%         1.000000
-    75%         2.000000
-    max         2.000000
-    Name: MRGI, dtype: float64
-MRGP: First mortgage payment (monthly amount)
-    [&apos;Note: Use values from ADJHSG to adjust MRGP to constant dollars.&apos;]
-    bbbbb: N/A (GQ/vacant/not owned or being bought/not mortgaged)
-    00001..99999: $1 to $99999 (Rounded and top-coded)
-    count    4971.000000
-    mean     1936.767250
-    std      1244.418262
-    min        10.000000
-    25%      1000.000000
-    50%      1700.000000
-    75%      2500.000000
-    max      8000.000000
-    Name: MRGP, dtype: float64
-MRGT: First mortgage payment includes real estate taxes
-    b: N/A (GQ/vacant/not owned or being bought/not mortgaged)
-    1: Yes, taxes included in payment
-    2: No, taxes paid separately or taxes not required
-    ...
-    count    4971.000000
-    mean        1.281633
-    std         0.449841
-    min         1.000000
-    25%         1.000000
-    50%         1.000000
-    75%         2.000000
-    max         2.000000
-    Name: MRGT, dtype: float64
-MRGX: First mortgage status
-    b: N/A (GQ/vacant/not owned or being bought)
-    1: Mortgage, deed of trust, or similar debt
-    2: Contract to purchase
-    ...
-    count    6561.000000
-    mean        1.490626
-    std         0.857150
-    min         1.000000
-    25%         1.000000
-    50%         1.000000
-    75%         1.000000
-    max         3.000000
-    Name: MRGX, dtype: float64
-REFR: Refrigerator
-    b: N/A (GQ)
-    1: Yes
-    2: No
-    ...
-    count    14844.000000
-    mean         1.007949
-    std          0.088807
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: REFR, dtype: float64
-RMSP: Number of Rooms
-    bb: N/A (GQ)
-    00..99: Rooms (Top-coded)
-    count    14844.000000
-    mean         5.139854
-    std          2.895583
-    min          1.000000
-    25%          3.000000
-    50%          4.000000
-    75%          7.000000
-    max         24.000000
-    Name: RMSP, dtype: float64
-RNTM: Meals included in rent
-    b: N/A (GQ/not a rental unit/occupied without rent payment)
-    1: Yes
-    2: No
-    ...
-    count    7373.000000
-    mean        1.987658
-    std         0.110416
-    min         1.000000
-    25%         2.000000
-    50%         2.000000
-    75%         2.000000
-    max         2.000000
-    Name: RNTM, dtype: float64
-RNTP: Monthly rent
-    [&apos;Note: Use values from ADJHSG to adjust RNTP to constant dollars.&apos;]
-    bbbbb: N/A (GQ/not a rental unit/occupied without rent payment)
-    00001..99999: $1 to $99999 (Rounded and top-coded)
-    count    7373.000000
-    mean     1246.782856
-    std       769.088231
-    min         4.000000
-    25%       730.000000
-    50%      1100.000000
-    75%      1700.000000
-    max      3900.000000
-    Name: RNTP, dtype: float64
-RWAT: Hot and cold running water
-    b: N/A (GQ)
-    1: Yes
-    2: No
-    ...
-    count    14844.000000
-    mean         1.007343
-    std          0.085379
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: RWAT, dtype: float64
-RWATPR: Running water
-    b: N/A (GQ)
-    1: Yes
-    2: No
-    ...
-    count    14844
-    mean         9
-    std          0
-    min          9
-    25%          9
-    50%          9
-    75%          9
-    max          9
-    Name: RWATPR, dtype: float64
-SINK: Sink with a faucet
-    b: N/A (GQ)
-    1: Yes
-    2: No
-    ...
-    count    14844.000000
-    mean         1.005457
-    std          0.073670
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: SINK, dtype: float64
-SMP: Total payment on all second and junior mortgages and home equity loans (monthly amount)
-    [&apos;Note: Use ADJHSG to adjust SMP to constant dollars.&apos;]
-    bbbbb: N/A (GQ/vacant/not owned or being bought/ no second or junior mortgages or home equity loans)
-    00001..99999: $1 to $99999 (Rounded and top-coded)
-    count    1228.000000
-    mean      506.485342
-    std       569.513130
-    min         4.000000
-    25%       170.000000
-    50%       350.000000
-    75%       600.000000
-    max      4100.000000
-    Name: SMP, dtype: float64
-STOV: Stove or range
-    b: N/A (GQ)
-    1: Yes
-    2: No
-    ...
-    count    14844.000000
-    mean         1.010105
-    std          0.100018
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: STOV, dtype: float64
-TEL: Telephone
-    [&apos;NOTE: Problems in the collection of data on the availability of telephone service (TEL) in 2012 led to suppressing this variable in six PUMAs in Georgia. This only affects 2012 vintage data. See the Estimation section of the Accuracy of the Data for the 2009-2013 5-year PUMS for more information on PUMS estimates using TEL. http://www.census.gov/acs/www/data_documentation/pums_documentation/&apos;]
-    b: N/A (GQ/vacant)
-    1: Yes
-    2: No
-    ...
-    count    13737.000000
-    mean         1.029701
-    std          0.169767
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: TEL, dtype: float64
-TEN: Tenure
-    b: N/A (GQ/vacant)
-    1: Owned with mortgage or loan (include home equity loans)
-    2: Owned free and clear
-    ...
-    count    13737.000000
-    mean         2.174128
-    std          0.945958
-    min          1.000000
-    25%          1.000000
-    50%          3.000000
-    75%          3.000000
-    max          4.000000
-    Name: TEN, dtype: float64
-TOIL: Flush toilet
-    b: N/A (GQ)
-    1: Yes
-    2: No
-    ...
-    count    14844.000000
-    mean         1.005591
-    std          0.074569
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: TOIL, dtype: float64
-VACS: Vacancy status
-    b: N/A (GQ/occupied)
-    1: For rent
-    2: Rented, not occupied
-    ...
-    count    1107.000000
-    mean        4.214995
-    std         2.565742
-    min         1.000000
-    25%         1.000000
-    50%         4.000000
-    75%         7.000000
-    max         7.000000
-    Name: VACS, dtype: float64
-VALP: Property value
-    bbbbbbb: N/A (GQ/vacant units, except �for-sale-only� and �sold, not occupied�/not owned or being bought)
-    0000000: $0 (applies to 2009 and 2010 only)
-    0000001..9999999: $1 to $9999999 (Rounded and top-coded)
-    ...
-    count       6741.000000
-    mean      576821.155615
-    std       578742.887940
-    min          180.000000
-    25%       290000.000000
-    50%       410000.000000
-    75%       700000.000000
-    max      5303000.000000
-    Name: VALP, dtype: float64
-VEH: Vehicles (1 ton or less) available
-    b: N/A (GQ/vacant)
-    0: No vehicles
-    1: 1 vehicle
-    ...
-    count    13737.000000
-    mean         0.925311
-    std          0.869523
-    min          0.000000
-    25%          0.000000
-    50%          1.000000
-    75%          1.000000
-    max          6.000000
-    Name: VEH, dtype: float64
-WATP: Water (yearly cost)
-    [&apos;Note: Use values from ADJHSG to adjust WATP values 3 and over to constant dollars.&apos;]
-    bbbb: N/A (GQ/vacant)
-    0001: Included in rent or in condo fee
-    0002: No charge
-    ...
-    count    13737.000000
-    mean       239.380724
-    std        412.715268
-    min          1.000000
-    25%          1.000000
-    50%          2.000000
-    75%        390.000000
-    max       3900.000000
-    Name: WATP, dtype: float64
-YBL: When structure first built
-    bb: N/A (GQ)
-    01: 1939 or earlier
-    02: 1940 to 1949
-    ...
-    count    14844.000000
-    mean         3.239289
-    std          2.768117
-    min          1.000000
-    25%          1.000000
-    50%          2.000000
-    75%          4.000000
-    max         16.000000
-    Name: YBL, dtype: float64
-FES: Family type and employment status
-    b: N/A (GQ/vacant/not a family)
-    1: Married-couple family: Husband and wife in LF
-    2: Married-couple family: Husband in labor force, wife not in LF
-    ...
-    count    5929.000000
-    mean        3.998988
-    std         2.787092
-    min         1.000000
-    25%         1.000000
-    50%         4.000000
-    75%         7.000000
-    max         8.000000
-    Name: FES, dtype: float64
-FINCP: Family income (past 12 months)
-    [&apos;Note: Use values from ADJINC to adjust FINCP to constant dollars.&apos;]
-    bbbbbbbb: N/A (GQ/vacant)
-    00000000: No family income
-    -0059999: Loss of -$59,999 or more
-    ...
-    count       5953.000000
-    mean      130596.028725
-    std       154445.776061
-    min            0.000000
-    25%        36000.000000
-    50%        84500.000000
-    75%       166000.000000
-    max      2087000.000000
-    Name: FINCP, dtype: float64
-FPARC: Family presence and age of related children
-    b: N/A (GQ/vacant/not a family)
-    1: With related children under 5 years only
-    2: With related children 5 to 17 years only
-    ...
-    count    5953.000000
-    mean        3.076432
-    std         1.124643
-    min         1.000000
-    25%         2.000000
-    50%         4.000000
-    75%         4.000000
-    max         4.000000
-    Name: FPARC, dtype: float64
-GRNTP: Gross rent (monthly amount)
-    [&apos;Note: Use values from ADJHSG to adjust GRNTP to constant dollars.&apos;]
-    bbbbb: N/A (GQ/vacant/not a rental unit/occupied without rent payment)
-    00001..99999: $1 - $99999 (Components are rounded)
-    count    6989.000000
-    mean     1349.524109
-    std       791.201141
-    min         4.000000
-    25%       819.000000
-    50%      1200.000000
-    75%      1800.000000
-    max      4510.000000
-    Name: GRNTP, dtype: float64
-GRPIP: Gross rent as a percentage of household income past 12 months
-    bbb: N/A (GQ/vacant/not a rental unit/occupied without rent payment/no household income)
-    001..100: 1% to 100%
-    101: 101% or more
-    ...
-    count    6805.000000
-    mean       39.897575
-    std        28.575415
-    min         1.000000
-    25%        20.000000
-    50%        29.000000
-    75%        51.000000
-    max       101.000000
-    Name: GRPIP, dtype: float64
-HHL: Household language
-    b: N/A (GQ/vacant)
-    1: English only
-    2: Spanish
-    ...
-    count    13737.000000
-    mean         1.336245
-    std          0.850583
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          5.000000
-    Name: HHL, dtype: float64
-HHT: Household/family type
-    b: N/A (GQ/vacant)
-    1: Married couple household
-    2: Other family household:Male householder, no wife present
-    ...
-    count    13737.000000
-    mean         3.805198
-    std          2.036160
-    min          1.000000
-    25%          2.000000
-    50%          4.000000
-    75%          6.000000
-    max          7.000000
-    Name: HHT, dtype: float64
-HINCP: Household income (past 12 months)
-    [&apos;Note: Use values from ADJINC to adjust HINCP to constant dollars.&apos;]
-    bbbbbbbb: N/A(GQ/vacant)
-    00000000: No household income
-    -0059999: Loss of -$59,999 or more
-    ...
-    count      13737.000000
-    mean      102051.604353
-    std       125888.164393
-    min       -13600.000000
-    25%        29200.000000
-    50%        67000.000000
-    75%       128000.000000
-    max      2087000.000000
-    Name: HINCP, dtype: float64
-HUGCL: Household with grandparent living with grandchildren
-    b: N/A (GQ/vacant)
-    0: Household without grandparent living with grandchildren
-    1: Household with grandparent living with grandchildren
-    ...
-    count    13737.000000
-    mean         0.033559
-    std          0.180098
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          1.000000
-    Name: HUGCL, dtype: float64
-HUPAC: HH presence and age of children
-    b: N/A (GQ/vacant)
-    1: With children under 6 years only
-    2: With children 6 to 17 years only
-    ...
-    count    13737.000000
-    mean         3.591541
-    std          0.888889
-    min          1.000000
-    25%          4.000000
-    50%          4.000000
-    75%          4.000000
-    max          4.000000
-    Name: HUPAC, dtype: float64
-HUPAOC: HH presence and age of own children
-    b: N/A (GQ/vacant)
-    1: Presence of own children under 6 years only
-    2: Presence of own children 6 to 17 years only
-    ...
-    count    13737.000000
-    mean         3.652617
-    std          0.836272
-    min          1.000000
-    25%          4.000000
-    50%          4.000000
-    75%          4.000000
-    max          4.000000
-    Name: HUPAOC, dtype: float64
-HUPARC: HH presence and age of related children
-    b: N/A (GQ/vacant)
-    1: Presence of related children under 6 years only
-    2: Presence of related children 6 to 17 years only
-    ...
-    count    13737.000000
-    mean         3.594599
-    std          0.886682
-    min          1.000000
-    25%          4.000000
-    50%          4.000000
-    75%          4.000000
-    max          4.000000
-    Name: HUPARC, dtype: float64
-KIT: Complete kitchen facilities
-    b: N/A (GQ)
-    1: Yes, has stove or range, refrigerator, and sink with a faucet
-    2: No
-    ...
-    count    14844.000000
-    mean         1.011587
-    std          0.107022
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: KIT, dtype: float64
-LNGI: Limited English speaking households
-    b: N/A (GQ/vacant)
-    1: At least one person in the household 14 and over speaks English only or speaks English &apos;very well&apos;
-    2: No one in the household 14 and over speaks English only or speaks English &apos;very well&apos;
-    ...
-    count    13737.000000
-    mean         1.023368
-    std          0.151073
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: LNGI, dtype: float64
-MULTG: Multigenerational Household
-    b: N/A (GQ/Vacant/NP=0)
-    1: No, not a multigenerational household
-    2: Yes, is a multigenerational household
-    ...
-    count    13737.000000
-    mean         1.032977
-    std          0.178582
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: MULTG, dtype: float64
-MV: When moved into this house or apartment
-    b: N/A (GQ/vacant)
-    1: 12 months or less
-    2: 13 to 23 months
-    ...
-    count    13737.000000
-    mean         3.800466
-    std          1.936343
-    min          1.000000
-    25%          2.000000
-    50%          4.000000
-    75%          5.000000
-    max          7.000000
-    Name: MV, dtype: float64
-NOC: Number of own children in household (unweighted)
-    bb: N/A(GQ/vacant)
-    00: No own children
-    01..19: Number of own children in household
-    ...
-    count    13737.000000
-    mean         0.277572
-    std          0.727938
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          8.000000
-    Name: NOC, dtype: float64
-NPF: Number of persons in family (unweighted)
-    bb: N/A (GQ/vacant/non-family household)
-    02..20: Number of persons in family
-    count    5953.000000
-    mean        2.893331
-    std         1.224969
-    min         2.000000
-    25%         2.000000
-    50%         2.000000
-    75%         3.000000
-    max        12.000000
-    Name: NPF, dtype: float64
-NPP: Grandparent headed household with no parent present
-    b: N/A (GQ/vacant)
-    0: Not a grandparent headed household with no parent present
-    1: Grandparent headed household with no parent present
-    ...
-    count    13737.000000
-    mean         0.004586
-    std          0.067568
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          1.000000
-    Name: NPP, dtype: float64
-NR: Presence of nonrelative in household
-    b: N/A (GQ/vacant)
-    0: None
-    1: 1 or more nonrelatives
-    ...
-    count    13737.000000
-    mean         0.159132
-    std          0.365813
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          1.000000
-    Name: NR, dtype: float64
-NRC: Number of related children in household (unweighted)
-    bb: N/A (GQ/vacant)
-    00: No related children
-    01..19: Number of related children in household
-    ...
-    count    13737.000000
-    mean         0.333552
-    std          0.806915
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max         10.000000
-    Name: NRC, dtype: float64
-OCPIP: Selected monthly owner costs as a percentage of household income during the past 12 months
-    bbb: N/A (GQ/vacant/not owned or being bought/ no household income)
-    001..100: 1% to 100%
-    101: 101% or more
-    ...
-    count    6500.000000
-    mean       26.966923
-    std        23.259257
-    min         1.000000
-    25%        12.000000
-    50%        20.000000
-    75%        32.000000
-    max       101.000000
-    Name: OCPIP, dtype: float64
-PARTNER: Unmarried partner household
-    b: N/A (GQ/vacant)
-    0: No unmarried partner in household
-    1: Male householder, male partner
-    ...
-    count    13737.000000
-    mean         0.188032
-    std          0.751881
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          4.000000
-    Name: PARTNER, dtype: float64
-PLM: Complete plumbing facilities
-    b: N/A (GQ)
-    1: Yes, has hot and cold running water, a flush toilet, and a bathtub or shower
-    2: No
-    ...
-    count    14844.000000
-    mean         1.008690
-    std          0.092819
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          1.000000
-    max          2.000000
-    Name: PLM, dtype: float64
-PSF: Presence of subfamilies in Household
-    b: N/A (GQ/vacant)
-    0: No subfamilies
-    1: 1 or more subfamilies
-    ...
-    count    13737.000000
-    mean         0.026789
-    std          0.161472
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          1.000000
-    Name: PSF, dtype: float64
-R18: Presence of persons under 18 years in household (unweighted)
-    b: N/A (GQ/vacant)
-    0: No person under 18 in household
-    1: 1 or more persons under 18 in household
-    ...
-    count    13737.000000
-    mean         0.193638
-    std          0.395163
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          1.000000
-    Name: R18, dtype: float64
-R60: Presence of persons 60 years and over in household (unweighted)
-    b: N/A (GQ/vacant)
-    0: No person 60 and over
-    1: 1 person 60 and over
-    ...
-    count    13737.000000
-    mean         0.415447
-    std          0.647227
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          1.000000
-    max          2.000000
-    Name: R60, dtype: float64
-R65: Presence of persons 65 years and over in household (unweighted)
-    b: N/A (GQ/vacant)
-    0: No person 65 and over
-    1: 1 person 65 and over
-    ...
-    count    13737.000000
-    mean         0.297809
-    std          0.568071
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          0.000000
-    max          2.000000
-    Name: R65, dtype: float64
-RESMODE: Response mode
-    b: N/A (GQ)
-    1: Mail
-    2: CATI/CAPI
-    ...
-    count    14844.000000
-    mean         1.523579
-    std          0.657194
-    min          1.000000
-    25%          1.000000
-    50%          1.000000
-    75%          2.000000
-    max          3.000000
-    Name: RESMODE, dtype: float64
-SMOCP: Selected monthly owner costs
-    [&apos;Note: Use values from ADJHSG to adjust SMOCP to constant dollars.&apos;]
-    bbbbb: N/A (GQ/vacant/not owned or being bought)
-    00000: None
-    00001..99999: $1 - $99999 (Components are rounded)
-    ...
-    count     6561.000000
-    mean      2099.427526
-    std       1528.415666
-    min          0.000000
-    25%        956.000000
-    50%       1821.000000
-    75%       2810.000000
-    max      12113.000000
-    Name: SMOCP, dtype: float64
-SMX: Second or junior mortgage or home equity loan status
-    b: N/A (GQ/vacant/not owned or being bought)
-    1: Yes, a second mortgage
-    2: Yes, a home equity loan
-    ...
-    count    4971.000000
-    mean        2.709113
-    std         0.597341
-    min         1.000000
-    25%         3.000000
-    50%         3.000000
-    75%         3.000000
-    max         4.000000
-    Name: SMX, dtype: float64
-SRNT: Specified rent unit
-    b: N/A
-    0: Not specified rent unit
-    1: Specified rent unit
-    ...
-    count    14844.000000
-    mean         0.509229
-    std          0.499932
-    min          0.000000
-    25%          0.000000
-    50%          1.000000
-    75%          1.000000
-    max          1.000000
-    Name: SRNT, dtype: float64
-SVAL: Specified value owner unit
-    b: N/A
-    0: Not specified value owner unit
-    1: Specified value owner unit
-    ...
-    count    14844.000000
-    mean         0.328887
-    std          0.469825
-    min          0.000000
-    25%          0.000000
-    50%          0.000000
-    75%          1.000000
-    max          1.000000
-    Name: SVAL, dtype: float64
-TAXP: Property taxes (yearly amount)
-    [&apos;Note: No adjustment factor is applied to TAXP.&apos;]
-    bb: N/A (GQ/vacant/not owned or being bought)
-    01: None
-    02: $   1 - $  49
-    ...
-    count    6561.000000
-    mean       36.513032
-    std        19.481382
-    min         1.000000
-    25%        22.000000
-    50%        33.000000
-    75%        53.000000
-    max        68.000000
-    Name: TAXP, dtype: float64
-WIF: Workers in family during the past 12 months
-    b: N/A (GQ/vacant/non-family household)
-    0: No workers
-    1: 1 worker
-    ...
-    count    5953.000000
-    mean        1.432555
-    std         0.824398
-    min         0.000000
-    25%         1.000000
-    50%         2.000000
-    75%         2.000000
-    max         3.000000
-    Name: WIF, dtype: float64
-WKEXREL: Work experience of householder and spouse
-    bb: N/A (GQ/vacant/not a family)
-    01: Householder and spouse worked FT
-    02: Householder worked FT; spouse worked &lt; FT
-    ...
-    count    5953.000000
-    mean        7.787166
-    std         5.420605
-    min         1.000000
-    25%         2.000000
-    50%         8.000000
-    75%        13.000000
-    max        15.000000
-    Name: WKEXREL, dtype: float64
-WORKSTAT: Work status of householder or spouse in family households
-    bb: N/A (GQ/not a family household)
-    01: Husband and wife both in labor force, both employed or in Armed Forces
-    02: Husband and wife both in labor force, husband employed or in Armed Forces, wife unemployed
-    ...
-    count    5929.000000
-    mean        7.442570
-    std         5.594645
-    min         1.000000
-    25%         1.000000
-    50%         9.000000
-    75%        13.000000
-    max        15.000000
-    Name: WORKSTAT, dtype: float64
-num columns described = 84
 
 PERSON RECORD
 RT: Record Type
@@ -3971,6 +2804,1173 @@ WAOB: World area of birth ****
     Name: WAOB, dtype: float64
 num columns described = 145
 
+HOUSING RECORD
+insp: Column not in data dictionary.
+    count    6561.000000
+    mean      999.282731
+    std      1085.174484
+    min         0.000000
+    25%       370.000000
+    50%       790.000000
+    75%      1200.000000
+    max      8600.000000
+    Name: insp, dtype: float64
+RT: Record Type
+    H: Housing Record or Group Quarters Unit
+    count     17500
+    unique        1
+    top           H
+    freq      17500
+    Name: RT, dtype: object
+SERIALNO: Housing unit/GQ person serial number
+    2009000000001..2013999999999: Unique identifier
+    count    1.750000e+04
+    mean     2.011068e+12
+    std      1.401911e+09
+    min      2.009000e+12
+    25%      2.010000e+12
+    50%      2.011001e+12
+    75%      2.012001e+12
+    max      2.013001e+12
+    Name: SERIALNO, dtype: float64
+DIVISION: Division code
+    0: Puerto Rico
+    1: New England (Northeast region)
+    2: Middle Atlantic (Northeast region)
+    ...
+    count    17500
+    mean         5
+    std          0
+    min          5
+    25%          5
+    50%          5
+    75%          5
+    max          5
+    Name: DIVISION, dtype: float64
+PUMA00: Public use microdata area code (PUMA) based on Census 2000 definition for data collected prior to 2012. Use in combination with PUMA10.
+    [&apos;Note: Public Use Microdata Areas (PUMAs) designate areas of 100,000 or more population.  Use with ST for unique code. PUMA00 applies to data collected in calendar years 2011 and earlier. Users of multi-year datasets that contain data from before and after 2012 should use PUMA00 and PUMA10 together where possible, but not all PUMAs will be comparable. See http://tigerweb.geo.census.gov to identify PUMA changes between the two vintages.&apos;]
+    00100..08200: Public use microdata area codes
+    77777: Combination of 01801, 01802, and 01905 in Louisiana
+    -0009: Code classification is Not Applicable because data collected in 2012 or later
+    ...
+    count    17500.000000
+    mean        56.427371
+    std         55.291036
+    min         -9.000000
+    25%         -9.000000
+    50%        101.000000
+    75%        103.000000
+    max        105.000000
+    Name: PUMA00, dtype: float64
+PUMA10: Public use microdata area code (PUMA) based on 2010 Census definition for data collected in 2012 or later. Use in combination with PUMA00.
+    [&apos;Note: Public Use Microdata Areas (PUMAs) designate areas of 100,000 or more population.  Use with ST for unique code. PUMA10 applies to data collected in calendar year 2012 and later. Users of multi-year datasets that contain data from before and after 2012 should use PUMA00 and PUMA10 together where possible, but not all PUMAs will be comparable. See http://tigerweb.geo.census.gov to identify PUMA changes between the two vintages.&apos;]
+    00100..70301: Public use microdata area codes
+    -0009: Code classification is Not Applicable because data collected prior to 2012
+    count    17500.000000
+    mean        37.764171
+    std         55.358495
+    min         -9.000000
+    25%         -9.000000
+    50%         -9.000000
+    75%        103.000000
+    max        105.000000
+    Name: PUMA10, dtype: float64
+REGION: Region code
+    1: Northeast
+    2: Midwest
+    3: South
+    ...
+    count    17500
+    mean         3
+    std          0
+    min          3
+    25%          3
+    50%          3
+    75%          3
+    max          3
+    Name: REGION, dtype: float64
+ST: State Code
+    01: Alabama/AL
+    02: Alaska/AK
+    04: Arizona/AZ
+    ...
+    count    17500
+    mean        11
+    std          0
+    min         11
+    25%         11
+    50%         11
+    75%         11
+    max         11
+    Name: ST, dtype: float64
+ADJHSG: Adjustment factor for housing dollar amounts (6 implied decimal places)
+    [&apos;Note: The values of ADJHSG inflation-adjusts reported housing costs to 2013 dollars and applies to variables CONP, ELEP, FULP, GASP, GRNTP, INSP, MHP, MRGP, SMOCP, RNTP, SMP, and WATP in the housing record. ADJHSG does not apply to AGS or TAXP because they are categorical variables that should not be inflation-adjusted.&apos;]
+    1086032: 2009 factor
+    1068395: 2010 factor
+    1035725: 2011 factor
+    ...
+    count      17500.000000
+    mean     1039364.231657
+    std        31877.254257
+    min      1000000.000000
+    25%      1014531.000000
+    50%      1035725.000000
+    75%      1068395.000000
+    max      1086032.000000
+    Name: ADJHSG, dtype: float64
+ADJINC: Adjustment factor for income and earnings dollar amounts (6 implied decimal places)
+    [&apos;Note: The values of ADJINC inflation-adjusts reported income to 2013 dollars. ADJINC incorporates an adjustment that annualizes the different rolling reference periods for reported income (as done in the single-year data using the variable ADJINC from the 1-year file) and an adjustment to inflation-adjust the annualized income to 2013 dollars.  ADJINC applies to variables FINCP and HINCP in the housing record, and variables INTP, OIP, PAP, PERNP, PINCP, RETP, SEMP, SSIP, SSP, and WAGP in the person record.&apos;]
+    1085467: 2009 factor (0.999480 * 1.08603175)
+    1076540: 2010 factor (1.007624 * 1.06839475)
+    1054614: 2011 factor (1.018237 * 1.03572510)
+    ...
+    count      17500.000000
+    mean     1048478.770229
+    std        29598.269890
+    min      1007549.000000
+    25%      1024887.000000
+    50%      1054614.000000
+    75%      1076540.000000
+    max      1085467.000000
+    Name: ADJINC, dtype: float64
+WGTP: Housing Weight
+    0000: Group Quarter placeholder record
+    00001..09999: Integer weight of housing unit
+    count    17500.000000
+    mean        17.047257
+    std         13.878535
+    min          0.000000
+    25%         10.000000
+    50%         14.000000
+    75%         22.000000
+    max        172.000000
+    Name: WGTP, dtype: float64
+NP: Number of person records following this housing record
+    00: Vacant unit
+    01: One person record (one person in household or any person in group quarters)
+    02..20: Number of person records (number of persons in household)
+    ...
+    count    17500.000000
+    mean         1.746229
+    std          1.291371
+    min          0.000000
+    25%          1.000000
+    50%          1.000000
+    75%          2.000000
+    max         13.000000
+    Name: NP, dtype: float64
+TYPE: Type of unit
+    1: Housing unit
+    2: Institutional group quarters
+    3: Noninstitutional group quarters
+    ...
+    count    17500.000000
+    mean         1.268514
+    std          0.655686
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          3.000000
+    Name: TYPE, dtype: float64
+ACR: Lot size
+    b: N/A (GQ/not a one-family house or mobile home)
+    1: House on less than one acre
+    2: House on one to less than ten acres
+    ...
+    count    6388.000000
+    mean        1.028961
+    std         0.182034
+    min         1.000000
+    25%         1.000000
+    50%         1.000000
+    75%         1.000000
+    max         3.000000
+    Name: ACR, dtype: float64
+AGS: Sales of Agriculture Products (Yearly sales)
+    [&apos;Note: No adjustment factor is applied to AGS.&apos;]
+    b: N/A (GQ/vacant/not a one-family house or mobile home/less than 1 acre)
+    1: None
+    2: $    1 - $  999
+    ...
+    count    164.000000
+    mean       1.201220
+    std        0.934544
+    min        1.000000
+    25%        1.000000
+    50%        1.000000
+    75%        1.000000
+    max        6.000000
+    Name: AGS, dtype: float64
+BATH: Bathtub or shower
+    b: N/A (GQ)
+    1: Yes
+    2: No
+    ...
+    count    14844.000000
+    mean         1.005322
+    std          0.072760
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: BATH, dtype: float64
+BDSP: Number of bedrooms
+    bb    : N/A (GQ)
+    00..99: 0 to 99 bedrooms (Top-coded)
+    count    14844.000000
+    mean         2.171989
+    std          1.452519
+    min          0.000000
+    25%          1.000000
+    50%          2.000000
+    75%          3.000000
+    max         14.000000
+    Name: BDSP, dtype: float64
+BLD: Units in structure
+    bb: N/A (GQ)
+    01: Mobile home or trailer
+    02: One-family house detached
+    ...
+    count    14844.000000
+    mean         5.365131
+    std          2.671220
+    min          2.000000
+    25%          3.000000
+    50%          5.000000
+    75%          8.000000
+    max          9.000000
+    Name: BLD, dtype: float64
+BUS: Business or medical office on property
+    b: N/A (GQ/not a one-family house or mobile home)
+    1: Yes
+    2: No
+    ...
+    count    6388.000000
+    mean        1.986381
+    std         0.115913
+    min         1.000000
+    25%         2.000000
+    50%         2.000000
+    75%         2.000000
+    max         2.000000
+    Name: BUS, dtype: float64
+CONP: Condo fee (monthly amount)
+    [&apos;Note: Use values from ADJHSG to adjust CONP to constant dollars.&apos;]
+    bbbb: N/A (GQ/vacant/not owned or being bought)
+    0000: Not condo
+    0001..9999: $1 - $9999 (Rounded and top-coded)
+    ...
+    count    14844.000000
+    mean        51.061035
+    std        175.491301
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max       1700.000000
+    Name: CONP, dtype: float64
+ELEP: Electricity (monthly cost)
+    [&apos;Note: Use values from ADJHSG to adjust ELEP values 3 and over to constant dollars.&apos;]
+    bbb: N/A (GQ/vacant)
+    001: Included in rent or in condo fee
+    002: No charge or electricity not used
+    ...
+    count    13737.000000
+    mean        92.849967
+    std         94.873654
+    min          1.000000
+    25%         30.000000
+    50%         70.000000
+    75%        130.000000
+    max        570.000000
+    Name: ELEP, dtype: float64
+FS: Yearly food stamp/Supplemental Nutrition Assistance Program recipiency
+    b: N/A (vacant)
+    1: Yes
+    2: No
+    ...
+    count    16393.000000
+    mean         1.874093
+    std          0.331755
+    min          1.000000
+    25%          2.000000
+    50%          2.000000
+    75%          2.000000
+    max          2.000000
+    Name: FS, dtype: float64
+FULP: Fuel cost(yearly cost for fuels other than gas and electricity)
+    [&apos;Note: Use values from ADJHSG to adjust FULP values 3 and over to constant dollars.&apos;]
+    bbbb: N/A (GQ/vacant)
+    0001: Included in rent or in condo fee
+    0002: No charge or these fuels not used
+    ...
+    count    13737.000000
+    mean        45.400306
+    std        311.391053
+    min          1.000000
+    25%          2.000000
+    50%          2.000000
+    75%          2.000000
+    max       5200.000000
+    Name: FULP, dtype: float64
+GASP: Gas (monthly cost)
+    [&apos;Note: Use values from ADJHSG to adjust GASP values 4 and over to constant dollars.&apos;]
+    bbb: N/A (GQ/vacant)
+    001: Included in rent or in condo fee
+    002: Included in electricity payment
+    ...
+    count    13737.000000
+    mean        56.089758
+    std         88.354993
+    min          1.000000
+    25%          3.000000
+    50%         10.000000
+    75%         80.000000
+    max        580.000000
+    Name: GASP, dtype: float64
+HFL: House heating fuel
+    b: N/A (GQ/vacant)
+    1: Utility gas
+    2: Bottled, tank, or LP gas
+    ...
+    count    13737.000000
+    mean         1.878867
+    std          1.306775
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          3.000000
+    max          9.000000
+    Name: HFL, dtype: float64
+MHP: Mobile home costs (yearly amount)
+    [&apos;Note: Use values from ADJHSG to adjust MHP to constant dollars.&apos;]
+    bbbbb: N/A (GQ/vacant/not owned or being bought/ not mobile home)
+    00000: None
+    00001..99999: $1 to $99999 (Rounded and top-coded)
+    ...
+    count     0
+    mean    NaN
+    std     NaN
+    min     NaN
+    25%     NaN
+    50%     NaN
+    75%     NaN
+    max     NaN
+    Name: MHP, dtype: float64
+MRGI: First mortgage payment includes fire/hazard/flood insurance
+    b: N/A (GQ/vacant/not owned or being bought/not mortgaged)
+    1: Yes, insurance included in payment
+    2: No, insurance paid separately or no insurance
+    ...
+    count    4971.000000
+    mean        1.446590
+    std         0.497189
+    min         1.000000
+    25%         1.000000
+    50%         1.000000
+    75%         2.000000
+    max         2.000000
+    Name: MRGI, dtype: float64
+MRGP: First mortgage payment (monthly amount)
+    [&apos;Note: Use values from ADJHSG to adjust MRGP to constant dollars.&apos;]
+    bbbbb: N/A (GQ/vacant/not owned or being bought/not mortgaged)
+    00001..99999: $1 to $99999 (Rounded and top-coded)
+    count    4971.000000
+    mean     1936.767250
+    std      1244.418262
+    min        10.000000
+    25%      1000.000000
+    50%      1700.000000
+    75%      2500.000000
+    max      8000.000000
+    Name: MRGP, dtype: float64
+MRGT: First mortgage payment includes real estate taxes
+    b: N/A (GQ/vacant/not owned or being bought/not mortgaged)
+    1: Yes, taxes included in payment
+    2: No, taxes paid separately or taxes not required
+    ...
+    count    4971.000000
+    mean        1.281633
+    std         0.449841
+    min         1.000000
+    25%         1.000000
+    50%         1.000000
+    75%         2.000000
+    max         2.000000
+    Name: MRGT, dtype: float64
+MRGX: First mortgage status
+    b: N/A (GQ/vacant/not owned or being bought)
+    1: Mortgage, deed of trust, or similar debt
+    2: Contract to purchase
+    ...
+    count    6561.000000
+    mean        1.490626
+    std         0.857150
+    min         1.000000
+    25%         1.000000
+    50%         1.000000
+    75%         1.000000
+    max         3.000000
+    Name: MRGX, dtype: float64
+REFR: Refrigerator
+    b: N/A (GQ)
+    1: Yes
+    2: No
+    ...
+    count    14844.000000
+    mean         1.007949
+    std          0.088807
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: REFR, dtype: float64
+RMSP: Number of Rooms
+    bb: N/A (GQ)
+    00..99: Rooms (Top-coded)
+    count    14844.000000
+    mean         5.139854
+    std          2.895583
+    min          1.000000
+    25%          3.000000
+    50%          4.000000
+    75%          7.000000
+    max         24.000000
+    Name: RMSP, dtype: float64
+RNTM: Meals included in rent
+    b: N/A (GQ/not a rental unit/occupied without rent payment)
+    1: Yes
+    2: No
+    ...
+    count    7373.000000
+    mean        1.987658
+    std         0.110416
+    min         1.000000
+    25%         2.000000
+    50%         2.000000
+    75%         2.000000
+    max         2.000000
+    Name: RNTM, dtype: float64
+RNTP: Monthly rent
+    [&apos;Note: Use values from ADJHSG to adjust RNTP to constant dollars.&apos;]
+    bbbbb: N/A (GQ/not a rental unit/occupied without rent payment)
+    00001..99999: $1 to $99999 (Rounded and top-coded)
+    count    7373.000000
+    mean     1246.782856
+    std       769.088231
+    min         4.000000
+    25%       730.000000
+    50%      1100.000000
+    75%      1700.000000
+    max      3900.000000
+    Name: RNTP, dtype: float64
+RWAT: Hot and cold running water
+    b: N/A (GQ)
+    1: Yes
+    2: No
+    ...
+    count    14844.000000
+    mean         1.007343
+    std          0.085379
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: RWAT, dtype: float64
+RWATPR: Running water
+    b: N/A (GQ)
+    1: Yes
+    2: No
+    ...
+    count    14844
+    mean         9
+    std          0
+    min          9
+    25%          9
+    50%          9
+    75%          9
+    max          9
+    Name: RWATPR, dtype: float64
+SINK: Sink with a faucet
+    b: N/A (GQ)
+    1: Yes
+    2: No
+    ...
+    count    14844.000000
+    mean         1.005457
+    std          0.073670
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: SINK, dtype: float64
+SMP: Total payment on all second and junior mortgages and home equity loans (monthly amount)
+    [&apos;Note: Use ADJHSG to adjust SMP to constant dollars.&apos;]
+    bbbbb: N/A (GQ/vacant/not owned or being bought/ no second or junior mortgages or home equity loans)
+    00001..99999: $1 to $99999 (Rounded and top-coded)
+    count    1228.000000
+    mean      506.485342
+    std       569.513130
+    min         4.000000
+    25%       170.000000
+    50%       350.000000
+    75%       600.000000
+    max      4100.000000
+    Name: SMP, dtype: float64
+STOV: Stove or range
+    b: N/A (GQ)
+    1: Yes
+    2: No
+    ...
+    count    14844.000000
+    mean         1.010105
+    std          0.100018
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: STOV, dtype: float64
+TEL: Telephone
+    [&apos;NOTE: Problems in the collection of data on the availability of telephone service (TEL) in 2012 led to suppressing this variable in six PUMAs in Georgia. This only affects 2012 vintage data. See the Estimation section of the Accuracy of the Data for the 2009-2013 5-year PUMS for more information on PUMS estimates using TEL. http://www.census.gov/acs/www/data_documentation/pums_documentation/&apos;]
+    b: N/A (GQ/vacant)
+    1: Yes
+    2: No
+    ...
+    count    13737.000000
+    mean         1.029701
+    std          0.169767
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: TEL, dtype: float64
+TEN: Tenure
+    b: N/A (GQ/vacant)
+    1: Owned with mortgage or loan (include home equity loans)
+    2: Owned free and clear
+    ...
+    count    13737.000000
+    mean         2.174128
+    std          0.945958
+    min          1.000000
+    25%          1.000000
+    50%          3.000000
+    75%          3.000000
+    max          4.000000
+    Name: TEN, dtype: float64
+TOIL: Flush toilet
+    b: N/A (GQ)
+    1: Yes
+    2: No
+    ...
+    count    14844.000000
+    mean         1.005591
+    std          0.074569
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: TOIL, dtype: float64
+VACS: Vacancy status
+    b: N/A (GQ/occupied)
+    1: For rent
+    2: Rented, not occupied
+    ...
+    count    1107.000000
+    mean        4.214995
+    std         2.565742
+    min         1.000000
+    25%         1.000000
+    50%         4.000000
+    75%         7.000000
+    max         7.000000
+    Name: VACS, dtype: float64
+VALP: Property value
+    bbbbbbb: N/A (GQ/vacant units, except �for-sale-only� and �sold, not occupied�/not owned or being bought)
+    0000000: $0 (applies to 2009 and 2010 only)
+    0000001..9999999: $1 to $9999999 (Rounded and top-coded)
+    ...
+    count       6741.000000
+    mean      576821.155615
+    std       578742.887940
+    min          180.000000
+    25%       290000.000000
+    50%       410000.000000
+    75%       700000.000000
+    max      5303000.000000
+    Name: VALP, dtype: float64
+VEH: Vehicles (1 ton or less) available
+    b: N/A (GQ/vacant)
+    0: No vehicles
+    1: 1 vehicle
+    ...
+    count    13737.000000
+    mean         0.925311
+    std          0.869523
+    min          0.000000
+    25%          0.000000
+    50%          1.000000
+    75%          1.000000
+    max          6.000000
+    Name: VEH, dtype: float64
+WATP: Water (yearly cost)
+    [&apos;Note: Use values from ADJHSG to adjust WATP values 3 and over to constant dollars.&apos;]
+    bbbb: N/A (GQ/vacant)
+    0001: Included in rent or in condo fee
+    0002: No charge
+    ...
+    count    13737.000000
+    mean       239.380724
+    std        412.715268
+    min          1.000000
+    25%          1.000000
+    50%          2.000000
+    75%        390.000000
+    max       3900.000000
+    Name: WATP, dtype: float64
+YBL: When structure first built
+    bb: N/A (GQ)
+    01: 1939 or earlier
+    02: 1940 to 1949
+    ...
+    count    14844.000000
+    mean         3.239289
+    std          2.768117
+    min          1.000000
+    25%          1.000000
+    50%          2.000000
+    75%          4.000000
+    max         16.000000
+    Name: YBL, dtype: float64
+FES: Family type and employment status
+    b: N/A (GQ/vacant/not a family)
+    1: Married-couple family: Husband and wife in LF
+    2: Married-couple family: Husband in labor force, wife not in LF
+    ...
+    count    5929.000000
+    mean        3.998988
+    std         2.787092
+    min         1.000000
+    25%         1.000000
+    50%         4.000000
+    75%         7.000000
+    max         8.000000
+    Name: FES, dtype: float64
+FINCP: Family income (past 12 months)
+    [&apos;Note: Use values from ADJINC to adjust FINCP to constant dollars.&apos;]
+    bbbbbbbb: N/A (GQ/vacant)
+    00000000: No family income
+    -0059999: Loss of -$59,999 or more
+    ...
+    count       5953.000000
+    mean      130596.028725
+    std       154445.776061
+    min            0.000000
+    25%        36000.000000
+    50%        84500.000000
+    75%       166000.000000
+    max      2087000.000000
+    Name: FINCP, dtype: float64
+FPARC: Family presence and age of related children
+    b: N/A (GQ/vacant/not a family)
+    1: With related children under 5 years only
+    2: With related children 5 to 17 years only
+    ...
+    count    5953.000000
+    mean        3.076432
+    std         1.124643
+    min         1.000000
+    25%         2.000000
+    50%         4.000000
+    75%         4.000000
+    max         4.000000
+    Name: FPARC, dtype: float64
+GRNTP: Gross rent (monthly amount)
+    [&apos;Note: Use values from ADJHSG to adjust GRNTP to constant dollars.&apos;]
+    bbbbb: N/A (GQ/vacant/not a rental unit/occupied without rent payment)
+    00001..99999: $1 - $99999 (Components are rounded)
+    count    6989.000000
+    mean     1349.524109
+    std       791.201141
+    min         4.000000
+    25%       819.000000
+    50%      1200.000000
+    75%      1800.000000
+    max      4510.000000
+    Name: GRNTP, dtype: float64
+GRPIP: Gross rent as a percentage of household income past 12 months
+    bbb: N/A (GQ/vacant/not a rental unit/occupied without rent payment/no household income)
+    001..100: 1% to 100%
+    101: 101% or more
+    ...
+    count    6805.000000
+    mean       39.897575
+    std        28.575415
+    min         1.000000
+    25%        20.000000
+    50%        29.000000
+    75%        51.000000
+    max       101.000000
+    Name: GRPIP, dtype: float64
+HHL: Household language
+    b: N/A (GQ/vacant)
+    1: English only
+    2: Spanish
+    ...
+    count    13737.000000
+    mean         1.336245
+    std          0.850583
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          5.000000
+    Name: HHL, dtype: float64
+HHT: Household/family type
+    b: N/A (GQ/vacant)
+    1: Married couple household
+    2: Other family household:Male householder, no wife present
+    ...
+    count    13737.000000
+    mean         3.805198
+    std          2.036160
+    min          1.000000
+    25%          2.000000
+    50%          4.000000
+    75%          6.000000
+    max          7.000000
+    Name: HHT, dtype: float64
+HINCP: Household income (past 12 months)
+    [&apos;Note: Use values from ADJINC to adjust HINCP to constant dollars.&apos;]
+    bbbbbbbb: N/A(GQ/vacant)
+    00000000: No household income
+    -0059999: Loss of -$59,999 or more
+    ...
+    count      13737.000000
+    mean      102051.604353
+    std       125888.164393
+    min       -13600.000000
+    25%        29200.000000
+    50%        67000.000000
+    75%       128000.000000
+    max      2087000.000000
+    Name: HINCP, dtype: float64
+HUGCL: Household with grandparent living with grandchildren
+    b: N/A (GQ/vacant)
+    0: Household without grandparent living with grandchildren
+    1: Household with grandparent living with grandchildren
+    ...
+    count    13737.000000
+    mean         0.033559
+    std          0.180098
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          1.000000
+    Name: HUGCL, dtype: float64
+HUPAC: HH presence and age of children
+    b: N/A (GQ/vacant)
+    1: With children under 6 years only
+    2: With children 6 to 17 years only
+    ...
+    count    13737.000000
+    mean         3.591541
+    std          0.888889
+    min          1.000000
+    25%          4.000000
+    50%          4.000000
+    75%          4.000000
+    max          4.000000
+    Name: HUPAC, dtype: float64
+HUPAOC: HH presence and age of own children
+    b: N/A (GQ/vacant)
+    1: Presence of own children under 6 years only
+    2: Presence of own children 6 to 17 years only
+    ...
+    count    13737.000000
+    mean         3.652617
+    std          0.836272
+    min          1.000000
+    25%          4.000000
+    50%          4.000000
+    75%          4.000000
+    max          4.000000
+    Name: HUPAOC, dtype: float64
+HUPARC: HH presence and age of related children
+    b: N/A (GQ/vacant)
+    1: Presence of related children under 6 years only
+    2: Presence of related children 6 to 17 years only
+    ...
+    count    13737.000000
+    mean         3.594599
+    std          0.886682
+    min          1.000000
+    25%          4.000000
+    50%          4.000000
+    75%          4.000000
+    max          4.000000
+    Name: HUPARC, dtype: float64
+KIT: Complete kitchen facilities
+    b: N/A (GQ)
+    1: Yes, has stove or range, refrigerator, and sink with a faucet
+    2: No
+    ...
+    count    14844.000000
+    mean         1.011587
+    std          0.107022
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: KIT, dtype: float64
+LNGI: Limited English speaking households
+    b: N/A (GQ/vacant)
+    1: At least one person in the household 14 and over speaks English only or speaks English &apos;very well&apos;
+    2: No one in the household 14 and over speaks English only or speaks English &apos;very well&apos;
+    ...
+    count    13737.000000
+    mean         1.023368
+    std          0.151073
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: LNGI, dtype: float64
+MULTG: Multigenerational Household
+    b: N/A (GQ/Vacant/NP=0)
+    1: No, not a multigenerational household
+    2: Yes, is a multigenerational household
+    ...
+    count    13737.000000
+    mean         1.032977
+    std          0.178582
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: MULTG, dtype: float64
+MV: When moved into this house or apartment
+    b: N/A (GQ/vacant)
+    1: 12 months or less
+    2: 13 to 23 months
+    ...
+    count    13737.000000
+    mean         3.800466
+    std          1.936343
+    min          1.000000
+    25%          2.000000
+    50%          4.000000
+    75%          5.000000
+    max          7.000000
+    Name: MV, dtype: float64
+NOC: Number of own children in household (unweighted)
+    bb: N/A(GQ/vacant)
+    00: No own children
+    01..19: Number of own children in household
+    ...
+    count    13737.000000
+    mean         0.277572
+    std          0.727938
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          8.000000
+    Name: NOC, dtype: float64
+NPF: Number of persons in family (unweighted)
+    bb: N/A (GQ/vacant/non-family household)
+    02..20: Number of persons in family
+    count    5953.000000
+    mean        2.893331
+    std         1.224969
+    min         2.000000
+    25%         2.000000
+    50%         2.000000
+    75%         3.000000
+    max        12.000000
+    Name: NPF, dtype: float64
+NPP: Grandparent headed household with no parent present
+    b: N/A (GQ/vacant)
+    0: Not a grandparent headed household with no parent present
+    1: Grandparent headed household with no parent present
+    ...
+    count    13737.000000
+    mean         0.004586
+    std          0.067568
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          1.000000
+    Name: NPP, dtype: float64
+NR: Presence of nonrelative in household
+    b: N/A (GQ/vacant)
+    0: None
+    1: 1 or more nonrelatives
+    ...
+    count    13737.000000
+    mean         0.159132
+    std          0.365813
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          1.000000
+    Name: NR, dtype: float64
+NRC: Number of related children in household (unweighted)
+    bb: N/A (GQ/vacant)
+    00: No related children
+    01..19: Number of related children in household
+    ...
+    count    13737.000000
+    mean         0.333552
+    std          0.806915
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max         10.000000
+    Name: NRC, dtype: float64
+OCPIP: Selected monthly owner costs as a percentage of household income during the past 12 months
+    bbb: N/A (GQ/vacant/not owned or being bought/ no household income)
+    001..100: 1% to 100%
+    101: 101% or more
+    ...
+    count    6500.000000
+    mean       26.966923
+    std        23.259257
+    min         1.000000
+    25%        12.000000
+    50%        20.000000
+    75%        32.000000
+    max       101.000000
+    Name: OCPIP, dtype: float64
+PARTNER: Unmarried partner household
+    b: N/A (GQ/vacant)
+    0: No unmarried partner in household
+    1: Male householder, male partner
+    ...
+    count    13737.000000
+    mean         0.188032
+    std          0.751881
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          4.000000
+    Name: PARTNER, dtype: float64
+PLM: Complete plumbing facilities
+    b: N/A (GQ)
+    1: Yes, has hot and cold running water, a flush toilet, and a bathtub or shower
+    2: No
+    ...
+    count    14844.000000
+    mean         1.008690
+    std          0.092819
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          1.000000
+    max          2.000000
+    Name: PLM, dtype: float64
+PSF: Presence of subfamilies in Household
+    b: N/A (GQ/vacant)
+    0: No subfamilies
+    1: 1 or more subfamilies
+    ...
+    count    13737.000000
+    mean         0.026789
+    std          0.161472
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          1.000000
+    Name: PSF, dtype: float64
+R18: Presence of persons under 18 years in household (unweighted)
+    b: N/A (GQ/vacant)
+    0: No person under 18 in household
+    1: 1 or more persons under 18 in household
+    ...
+    count    13737.000000
+    mean         0.193638
+    std          0.395163
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          1.000000
+    Name: R18, dtype: float64
+R60: Presence of persons 60 years and over in household (unweighted)
+    b: N/A (GQ/vacant)
+    0: No person 60 and over
+    1: 1 person 60 and over
+    ...
+    count    13737.000000
+    mean         0.415447
+    std          0.647227
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          1.000000
+    max          2.000000
+    Name: R60, dtype: float64
+R65: Presence of persons 65 years and over in household (unweighted)
+    b: N/A (GQ/vacant)
+    0: No person 65 and over
+    1: 1 person 65 and over
+    ...
+    count    13737.000000
+    mean         0.297809
+    std          0.568071
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          0.000000
+    max          2.000000
+    Name: R65, dtype: float64
+RESMODE: Response mode
+    b: N/A (GQ)
+    1: Mail
+    2: CATI/CAPI
+    ...
+    count    14844.000000
+    mean         1.523579
+    std          0.657194
+    min          1.000000
+    25%          1.000000
+    50%          1.000000
+    75%          2.000000
+    max          3.000000
+    Name: RESMODE, dtype: float64
+SMOCP: Selected monthly owner costs
+    [&apos;Note: Use values from ADJHSG to adjust SMOCP to constant dollars.&apos;]
+    bbbbb: N/A (GQ/vacant/not owned or being bought)
+    00000: None
+    00001..99999: $1 - $99999 (Components are rounded)
+    ...
+    count     6561.000000
+    mean      2099.427526
+    std       1528.415666
+    min          0.000000
+    25%        956.000000
+    50%       1821.000000
+    75%       2810.000000
+    max      12113.000000
+    Name: SMOCP, dtype: float64
+SMX: Second or junior mortgage or home equity loan status
+    b: N/A (GQ/vacant/not owned or being bought)
+    1: Yes, a second mortgage
+    2: Yes, a home equity loan
+    ...
+    count    4971.000000
+    mean        2.709113
+    std         0.597341
+    min         1.000000
+    25%         3.000000
+    50%         3.000000
+    75%         3.000000
+    max         4.000000
+    Name: SMX, dtype: float64
+SRNT: Specified rent unit
+    b: N/A
+    0: Not specified rent unit
+    1: Specified rent unit
+    ...
+    count    14844.000000
+    mean         0.509229
+    std          0.499932
+    min          0.000000
+    25%          0.000000
+    50%          1.000000
+    75%          1.000000
+    max          1.000000
+    Name: SRNT, dtype: float64
+SVAL: Specified value owner unit
+    b: N/A
+    0: Not specified value owner unit
+    1: Specified value owner unit
+    ...
+    count    14844.000000
+    mean         0.328887
+    std          0.469825
+    min          0.000000
+    25%          0.000000
+    50%          0.000000
+    75%          1.000000
+    max          1.000000
+    Name: SVAL, dtype: float64
+TAXP: Property taxes (yearly amount)
+    [&apos;Note: No adjustment factor is applied to TAXP.&apos;]
+    bb: N/A (GQ/vacant/not owned or being bought)
+    01: None
+    02: $   1 - $  49
+    ...
+    count    6561.000000
+    mean       36.513032
+    std        19.481382
+    min         1.000000
+    25%        22.000000
+    50%        33.000000
+    75%        53.000000
+    max        68.000000
+    Name: TAXP, dtype: float64
+WIF: Workers in family during the past 12 months
+    b: N/A (GQ/vacant/non-family household)
+    0: No workers
+    1: 1 worker
+    ...
+    count    5953.000000
+    mean        1.432555
+    std         0.824398
+    min         0.000000
+    25%         1.000000
+    50%         2.000000
+    75%         2.000000
+    max         3.000000
+    Name: WIF, dtype: float64
+WKEXREL: Work experience of householder and spouse
+    bb: N/A (GQ/vacant/not a family)
+    01: Householder and spouse worked FT
+    02: Householder worked FT; spouse worked &lt; FT
+    ...
+    count    5953.000000
+    mean        7.787166
+    std         5.420605
+    min         1.000000
+    25%         2.000000
+    50%         8.000000
+    75%        13.000000
+    max        15.000000
+    Name: WKEXREL, dtype: float64
+WORKSTAT: Work status of householder or spouse in family households
+    bb: N/A (GQ/not a family household)
+    01: Husband and wife both in labor force, both employed or in Armed Forces
+    02: Husband and wife both in labor force, husband employed or in Armed Forces, wife unemployed
+    ...
+    count    5929.000000
+    mean        7.442570
+    std         5.594645
+    min         1.000000
+    25%         1.000000
+    50%         9.000000
+    75%        13.000000
+    max        15.000000
+    Name: WORKSTAT, dtype: float64
+num columns described = 84
+
 </pre>
 </div>
 </div>
@@ -3995,8 +3995,8 @@ num columns described = 145
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfe`: Estimates for user verification filtered for &#39;District of Columbia&#39;.&quot;</span><span class="p">)</span>
 <span class="n">dfe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_ecsv</span><span class="p">)</span>
-<span class="n">tfmask</span> <span class="o">=</span> <span class="n">dfe</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;District of Columbia&#39;</span>
-<span class="n">dfe_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask</span><span class="p">]</span>
+<span class="n">tfmask_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="p">[</span><span class="s">&#39;state&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;District of Columbia&#39;</span>
+<span class="n">dfe_dc</span> <span class="o">=</span> <span class="n">dfe</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_dc</span><span class="p">]</span>
 <span class="n">dfe_dc</span>
 </pre></div>
 
@@ -4337,6 +4337,9 @@ num columns described = 145
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfe`: Verify characteristic estimates, direct standard errors, and margin of error.&quot;</span><span class="p">)</span>
+<span class="c"># Verify the estimates following</span>
+<span class="c"># https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html</span>
+<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="n">tfmask_test_strs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
     <span class="p">(</span><span class="s">&#39;PERSON RECORD&#39;</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
@@ -4381,28 +4384,29 @@ num columns described = 145
     <span class="n">wts</span> <span class="o">=</span> <span class="n">records_dfs</span><span class="p">[</span><span class="n">record_type</span><span class="p">][</span><span class="s">&#39;replicate_weights&#39;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">tfmask_test_strs</span><span class="p">[</span><span class="n">record_type</span><span class="p">]:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{char}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">char</span><span class="o">=</span><span class="n">char</span><span class="p">))</span>
+        <span class="c"># Select the reference verification data</span>
+        <span class="c"># and the records for the characteristic.</span>
         <span class="n">tfmask_ref</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="p">[</span><span class="s">&#39;characteristic&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span>        
         <span class="n">tfmask_test</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">tfmask_test_strs</span><span class="p">[</span><span class="n">record_type</span><span class="p">][</span><span class="n">char</span><span class="p">])</span>
-        <span class="c"># Calculate an estimate (&#39;est&#39;, also a &quot;characteristic&quot;),</span>
-        <span class="c"># a weighted sum, using sample weights &#39;[P]WGTP&#39;.</span>
+        <span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic.</span>
+        <span class="c"># The estimate is the sum of the sample weights &#39;WGTP&#39;.</span>
         <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_est_09_to_13&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;        &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
         <span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
         <span class="n">test_est</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">wt</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">)))</span>
-        <span class="c"># Calculate a direct standard error (&#39;se&#39;) using replicate weights &#39;[P]WGTP[1-80]&#39;.</span>
-        <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
-        <span class="c"># section 7, &quot;Measuring Sampling Error&quot;</span>
+        <span class="c"># Calculate the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
+        <span class="c"># The direct standard error is a modified root-mean-square deviation</span>
+        <span class="c"># using the &quot;replicate weights&quot; &#39;WGTP[1-80]&#39;.</span>
         <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_se_09_to_13&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;        &#39;{col}&#39; :&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
         <span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">test_se</span> <span class="o">=</span> <span class="p">((</span><span class="mi">4</span><span class="o">/</span><span class="mi">80</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">wts</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">test_est</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">**</span><span class="mf">0.5</span>
         <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">)))</span>
-        <span class="c"># Calculate a margin of error (&#39;moe&#39;) at the 90% confidence level (+/- 1.645 standard errors)</span>
-        <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
-        <span class="c"># section 7, &quot;Measuring Sampling Error&quot;</span>
+        <span class="c"># Calculate the margin of error (&#39;moe&#39;) at the 90% confidence level</span>
+        <span class="c"># (+/- 1.645 standard errors).</span>
         <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_moe_09_to_13&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;        &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
         <span class="n">ref_moe</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -4423,55 +4427,6 @@ num columns described = 145
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>&#96;dfe&#96;: Verify characteristic estimates, direct standard errors, and margin of error.
 
-&apos;HOUSING RECORD&apos;
-    &apos;Total housing units (TYPE=1)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (298327, 298327)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (113, 112.68873058118989)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (185, 185.37296180605736)
-    &apos;Total occupied units&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (263650, 263650)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (965, 965.0778984102786)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1588, 1587.5531428849083)
-    &apos;Owner occupied units (TEN in 1,2)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (110362, 110362)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (1363, 1363.1910174293257)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (2242, 2242.449223671241)
-    &apos;Renter occupied units (TEN in 3,4)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (153288, 153288)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (1486, 1485.6482760061347)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (2444, 2443.8914140300917)
-    &apos;Owned with a mortgage (TEN=1)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (85483, 85483)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (1208, 1208.399126944405)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1988, 1987.8165638235462)
-    &apos;Owned free and clear (TEN=2)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (24879, 24879)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (565, 565.0110618386157)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (929, 929.4431967245227)
-    &apos;Rented for cash (TEN=3)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (149500, 149500)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (1511, 1510.8262970970554)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (2485, 2485.309258724656)
-    &apos;No cash rent (TEN=4)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (3788, 3788)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (262, 262.1715087495207)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (431, 431.2721318929615)
-    &apos;Total vacant units&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (34677, 34677)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (920, 920.3688391074527)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1514, 1514.0067403317596)
-    &apos;For rent (VACS=1)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (10686, 10686)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (618, 618.3948172486571)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1017, 1017.2594743740409)
-    &apos;For sale only (VACS=3)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (2953, 2953)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (325, 324.77245880770124)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (534, 534.2506947386686)
-    &apos;All Other Vacant (VACS in 2,4,5,6,7)&apos;
-        &apos;pums_est_09_to_13&apos;: (ref, test) = (21038, 21038)
-        &apos;pums_se_09_to_13&apos; : (ref, test) = (849, 849.4756618055635)
-        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1397, 1397.3874636701519)
 &apos;PERSON RECORD&apos;
     &apos;Total population&apos;
         &apos;pums_est_09_to_13&apos;: (ref, test) = (619371, 619371)
@@ -4553,6 +4508,55 @@ num columns described = 145
         &apos;pums_est_09_to_13&apos;: (ref, test) = (9679, 9679)
         &apos;pums_se_09_to_13&apos; : (ref, test) = (377, 376.5637396245156)
         &apos;pums_moe_09_to_13&apos;: (ref, test) = (619, 619.4473516823282)
+&apos;HOUSING RECORD&apos;
+    &apos;Total housing units (TYPE=1)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (298327, 298327)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (113, 112.68873058118989)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (185, 185.37296180605736)
+    &apos;Total occupied units&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (263650, 263650)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (965, 965.0778984102786)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1588, 1587.5531428849083)
+    &apos;Owner occupied units (TEN in 1,2)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (110362, 110362)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (1363, 1363.1910174293257)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (2242, 2242.449223671241)
+    &apos;Renter occupied units (TEN in 3,4)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (153288, 153288)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (1486, 1485.6482760061347)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (2444, 2443.8914140300917)
+    &apos;Owned with a mortgage (TEN=1)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (85483, 85483)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (1208, 1208.399126944405)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1988, 1987.8165638235462)
+    &apos;Owned free and clear (TEN=2)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (24879, 24879)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (565, 565.0110618386157)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (929, 929.4431967245227)
+    &apos;Rented for cash (TEN=3)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (149500, 149500)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (1511, 1510.8262970970554)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (2485, 2485.309258724656)
+    &apos;No cash rent (TEN=4)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (3788, 3788)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (262, 262.1715087495207)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (431, 431.2721318929615)
+    &apos;Total vacant units&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (34677, 34677)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (920, 920.3688391074527)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1514, 1514.0067403317596)
+    &apos;For rent (VACS=1)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (10686, 10686)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (618, 618.3948172486571)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1017, 1017.2594743740409)
+    &apos;For sale only (VACS=3)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (2953, 2953)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (325, 324.77245880770124)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (534, 534.2506947386686)
+    &apos;All Other Vacant (VACS in 2,4,5,6,7)&apos;
+        &apos;pums_est_09_to_13&apos;: (ref, test) = (21038, 21038)
+        &apos;pums_se_09_to_13&apos; : (ref, test) = (849, 849.4756618055635)
+        &apos;pums_moe_09_to_13&apos;: (ref, test) = (1397, 1397.3874636701519)
 </pre>
 </div>
 </div>
@@ -4575,7 +4579,8 @@ num columns described = 145
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
+<div class=" highlight hl-ipython3"><pre><span class="c"># Export ipynb to html</span>
+<span class="k">for</span> <span class="n">template</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">,</span> <span class="s">&#39;full&#39;</span><span class="p">]:</span>
     <span class="n">path_html</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path_ipynb</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s">&#39;-&#39;</span><span class="o">+</span><span class="n">template</span><span class="o">+</span><span class="s">&#39;.html&#39;</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;jupyter&#39;</span><span class="p">,</span> <span class="s">&#39;nbconvert&#39;</span><span class="p">,</span> <span class="s">&#39;--to&#39;</span><span class="p">,</span> <span class="s">&#39;html&#39;</span><span class="p">,</span> <span class="s">&#39;--template&#39;</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">path_ipynb</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span> <span class="n">path_html</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>

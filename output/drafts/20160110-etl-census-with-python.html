@@ -10,7 +10,7 @@
 
 
 
-<link rel="canonical" href="/drafts/20160110-etl-census-with-python.html">
+<link rel="canonical" href="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html">
 
         <meta name="author" content="Samuel Harrold" />
         <meta name="keywords" content="etl,how-to,python,pandas,census" />
@@ -19,7 +19,7 @@
         <meta property="og:site_name" content="Data Science Demos" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Extract, transform, and load census data with Python"/>
-        <meta property="og:url" content="/drafts/20160110-etl-census-with-python.html"/>
+        <meta property="og:url" content="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html"/>
         <meta property="og:description" content="I parse, load, and verify data from the Census Bureau&#39;s American Community Survey using Python."/>
         <meta property="article:published_time" content="2016-01-10" />
             <meta property="article:section" content="ETL" />
@@ -32,13 +32,17 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="/theme/css/bootstrap.flatly.min.css" type="text/css"/>
-    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://stharrold.github.io/theme/css/bootstrap.flatly.min.css" type="text/css"/>
+    <link href="https://stharrold.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="/theme/css/pygments/default.css" rel="stylesheet">
-    <link href="/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
-    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+    <link href="https://stharrold.github.io/theme/css/pygments/default.css" rel="stylesheet">
+    <link href="https://stharrold.github.io/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stharrold.github.io/theme/css/style.css" type="text/css"/>
 
+        <link href="https://stharrold.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Data Science Demos ATOM Feed"/>
+        <link href="https://stharrold.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate"
+              title="Data Science Demos RSS Feed"/>
 
 </head>
 <body>
@@ -52,12 +56,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="/" class="navbar-brand">
+            <a href="https://stharrold.github.io/" class="navbar-brand">
 Data Science Demos            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="/pages/about.html">
+                         <li><a href="https://stharrold.github.io/pages/about.html">
                              About
                           </a></li>
             </ul>
@@ -67,7 +71,7 @@ Data Science Demos            </a>
                   <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
                 </form></span>
               </li>
-              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="https://stharrold.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -79,7 +83,7 @@ Data Science Demos            </a>
     <div class="row">
         <div class="col-sm-9">
             <ol class="breadcrumb">
-                <li><a href="" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
+                <li><a href="https://stharrold.github.io" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
                 <li class="active">Extract, transform, and load census data with Python</li>
             </ol>
 
@@ -87,7 +91,7 @@ Data Science Demos            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="/drafts/20160110-etl-census-with-python.html"
+                    <a href="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html"
                        rel="bookmark"
                        title="Permalink to Extract, transform, and load census data with Python">
                         Extract, transform, and load census data with Python
@@ -108,19 +112,19 @@ Data Science Demos            </a>
             </span>
 
         <span class="label label-default">Category</span>
-        <a href="/category/etl.html">ETL</a>
+        <a href="https://stharrold.github.io/category/etl.html">ETL</a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="/tag/etl.html">etl</a>
+	<a href="https://stharrold.github.io/tag/etl.html">etl</a>
         /
-	<a href="/tag/how-to.html">how-to</a>
+	<a href="https://stharrold.github.io/tag/how-to.html">how-to</a>
         /
-	<a href="/tag/python.html">python</a>
+	<a href="https://stharrold.github.io/tag/python.html">python</a>
         /
-	<a href="/tag/pandas.html">pandas</a>
+	<a href="https://stharrold.github.io/tag/pandas.html">pandas</a>
         /
-	<a href="/tag/census.html">census</a>
+	<a href="https://stharrold.github.io/tag/census.html">census</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -171,8 +175,8 @@ where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]
 <p><span id="source"><strong>Source code:</strong></span></p>
 <ul>
 <li>For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):<br />
-<a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
-<a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
+<a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
+<a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
 <li>This post uses <code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/releases/tag/v0.0.3">v0.0.3</a>.<sup id="fnref:version"><a class="footnote-ref" href="#fn:version" rel="footnote">10</a></sup></li>
 </ul>
 <h3 id="motivations">Motivations</h3>
@@ -248,8 +252,8 @@ BEGIN IPYNB
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="c"># Import local packages.</span>
-<span class="c"># Append current directory to module search path.</span>
-<span class="c"># <code>dsdemos</code> version: https://github.com/stharrold/dsdemos/releases/tag/20160104T063000Z</span>
+<span class="c"># Insert current directory into module search path.</span>
+<span class="c"># <code>dsdemos</code> version: https://github.com/stharrold/dsdemos/releases/tag/v0.0.3</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">r&#39;dsdemos&#39;</span><span class="p">))</span>
 <span class="kn">import</span> <span class="nn">dsdemos</span> <span class="k">as</span> <span class="nn">dsd</span>
 </pre></div></p>
@@ -289,7 +293,7 @@ BEGIN IPYNB
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># Load and display the data dictionary.</span>
 <span class="n">ddict</span> <span class="o">=</span> <span class="n">dsd</span><span class="o">.</span><span class="n">census</span><span class="o">.</span><span class="n">parse_pumsdatadict</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path_dtxt</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;<code>ddict</code>, <code>dfd</code>: Convert the nested <code>dict</code> into a hierarchical dataframe.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;<code>ddict</code>, <code>dfd</code>: Convert the nested <code>dict</code> into a hierarchical data frame.&quot;</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span> <span class="c"># <code>tmp</code> is a throwaway variable</span>
 <span class="k">for</span> <span class="n">record_type</span> <span class="ow">in</span> <span class="n">ddict</span><span class="p">[</span><span class="s">&#39;record_types&#39;</span><span class="p">]:</span>
     <span class="n">tmp</span><span class="p">[</span><span class="n">record_type</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ddict</span><span class="p">[</span><span class="s">&#39;record_types&#39;</span><span class="p">][</span><span class="n">record_type</span><span class="p">],</span> <span class="n">orient</span><span class="o">=</span><span class="s">&#39;index&#39;</span><span class="p">)</span>
@@ -304,7 +308,7 @@ BEGIN IPYNB
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>&#96;ddict&#96;, &#96;dfd&#96;: Convert the nested &#96;dict&#96; into a hierarchical dataframe.
+<pre>&#96;ddict&#96;, &#96;dfd&#96;: Convert the nested &#96;dict&#96; into a hierarchical data frame.
 </pre>
 </div>
 </div>
@@ -579,7 +583,7 @@ BEGIN IPYNB
 <span class="c"># Select the records for the characteristic.</span>
 <span class="n">tfmask_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dfh</span><span class="p">[</span><span class="s">&#39;TEN&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
 <span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic.</span>
-<span class="c"># The estimate is sum with weights &#39;WGTP&#39;.</span>
+<span class="c"># The estimate is the sum of the sample weights &#39;WGTP&#39;.</span>
 <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_est_09_to_13&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
 <span class="n">ref_est</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">))</span>
@@ -588,7 +592,7 @@ BEGIN IPYNB
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">)))</span>
 <span class="c"># Calculate the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
 <span class="c"># The direct standard error is a modified root-mean-square deviation</span>
-<span class="c"># using &quot;replicate weights&quot; &#39;WGTP[1-80]&#39;.</span>
+<span class="c"># using the &quot;replicate weights&quot; &#39;WGTP[1-80]&#39;.</span>
 <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_se_09_to_13&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39; :&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
 <span class="n">ref_se</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -596,7 +600,7 @@ BEGIN IPYNB
 <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">)))</span>
 <span class="c"># Calculate the margin of error (&#39;moe&#39;) at the 90% confidence level</span>
-<span class="c"># (+/- 1.645 standard errors)</span>
+<span class="c"># (+/- 1.645 standard errors).</span>
 <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_moe_09_to_13&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
 <span class="n">ref_moe</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -783,39 +787,39 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e348998></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3480a0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e348928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e384340></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e348928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e348998></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3480a0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f5a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e4003e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3be3e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e352308></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e413420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e479f48></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3c4a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e413420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3c4a08></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e4158b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e490298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e43f730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3c4a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e48a1b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e46f420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3ccbc8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e43f730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e3c4a40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e48a1b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f4e4e4158b8></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce433960></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce433068></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4338f0></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce46f308></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4338f0></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce433960></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce433068></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a570></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a538></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4eb3b0></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4a93b0></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce43d2d0></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4fe3e8></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce564f10></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a538></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4afa08></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4fe3e8></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a538></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4af9d0></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a3e8></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce500880></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a538></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce57b298></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce52a730></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4afa08></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce5751b8></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a538></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce55a3e8></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4b7b90></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce52a730></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce4afa08></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce5751b8></a></li>
+        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fd2ce500880></a></li>
     </ul>
 </section>
     <hr/>
@@ -828,7 +832,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
             var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
 
                     var disqus_identifier = '20160110-etl-census-with-python';
-                var disqus_url = '/drafts/20160110-etl-census-with-python.html';
+                var disqus_url = 'https://stharrold.github.io/drafts/20160110-etl-census-with-python.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -861,77 +865,77 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
             <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
                 <ul class="list-group" id="recentposts">
                     <li class="list-group-item">
-                        <a href="/20151208-ipynb-on-gce-from-chrome.html">
+                        <a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">
                             Running an IPython Notebook on Google Compute Engine from Chrome
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="/20151030-test.html">
+                        <a href="https://stharrold.github.io/20151030-test.html">
                             Test page and template
                         </a>
                     </li>
                 </ul>
             </li>
 
-            <li class="list-group-item"><a href="/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+            <li class="list-group-item"><a href="https://stharrold.github.io/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
                 <ul class="list-group" id="categories">
                     <li class="list-group-item">
-                        <a href="/category/devops.html">
+                        <a href="https://stharrold.github.io/category/devops.html">
                             <i class="fa fa-folder-open fa-lg"></i> DevOps
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="/category/test.html">
+                        <a href="https://stharrold.github.io/category/test.html">
                             <i class="fa fa-folder-open fa-lg"></i> Test
                         </a>
                     </li>
                 </ul>
             </li>
 
-            <li class="list-group-item"><a href="/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+            <li class="list-group-item"><a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group list-inline tagcloud" id="tags">
                     <li class="list-group-item tag-4">
-                        <a href="/tag/chrome.html">
+                        <a href="https://stharrold.github.io/tag/chrome.html">
                             chrome
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="/tag/cloud-computing.html">
+                        <a href="https://stharrold.github.io/tag/cloud-computing.html">
                             cloud-computing
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="/tag/cloud9.html">
+                        <a href="https://stharrold.github.io/tag/cloud9.html">
                             cloud9
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="/tag/devops.html">
+                        <a href="https://stharrold.github.io/tag/devops.html">
                             devops
                         </a>
                     </li>
                     <li class="list-group-item tag-1">
-                        <a href="/tag/how-to.html">
+                        <a href="https://stharrold.github.io/tag/how-to.html">
                             how-to
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="/tag/python.html">
+                        <a href="https://stharrold.github.io/tag/python.html">
                             python
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="/tag/ssh.html">
+                        <a href="https://stharrold.github.io/tag/ssh.html">
                             ssh
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="/tag/template.html">
+                        <a href="https://stharrold.github.io/tag/template.html">
                             template
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="/tag/test.html">
+                        <a href="https://stharrold.github.io/tag/test.html">
                             test
                         </a>
                     </li>
@@ -959,13 +963,13 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
       </div>
    </div>
 </footer>
-<script src="/theme/js/jquery.min.js"></script>
+<script src="https://stharrold.github.io/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/theme/js/bootstrap.min.js"></script>
+<script src="https://stharrold.github.io/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="/theme/js/respond.min.js"></script>
+<script src="https://stharrold.github.io/theme/js/respond.min.js"></script>
 
     <!-- Disqus -->
     <script type="text/javascript">
