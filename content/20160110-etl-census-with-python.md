@@ -50,7 +50,7 @@ Brief process:
 
 * The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
 * The ACS is a reliable data set.[^acs-method] The ACS has quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate of about 95%.
-* The ACS is a timeseries data set. The survey sends questionnaires throughout the year and releases data once per year. A future step is to use the timeseries to forecast an individual's household income.
+* The ACS is a time-series data set. The survey sends questionnaires throughout the year and releases data once per year. A future step is to use the time series to forecast an individual's household income.
 * I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
 
 **Why am I using the ACS 5-year estimate?**
@@ -63,7 +63,7 @@ This project can be done using Python, R, SQL, and/or other languages.[^rvpy] I'
 
 **What about "big data"?**
 
-I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the processor cores within the machine. For operations that exceed the available RAM on the machine (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to large enough data that requre a cluster is a future step.
+I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requres a cluster is a future step.
 
 ## <span id="example">Example</span>
 
