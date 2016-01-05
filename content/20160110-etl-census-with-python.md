@@ -1,7 +1,7 @@
 Title: Extract, transform, and load census data with Python
 Status: draft
 Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-05T17:15:00Z
+Modified: 2016-01-05T19:20:00Z
 Tags: etl, how-to, python, pandas, census
 Category: ETL
 Slug: 20160110-etl-census-with-python
@@ -15,7 +15,7 @@ Summary: I parse, load, and verify data from the Census Bureau's American Commun
 
 The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.[^use-cases] In this post I parse, load, and verify data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
 
-Brief process:
+**Brief process:**
 
 * Start with ["Running an IPython Notebook on Google Compute Engine from Chrome"](/20151208-ipynb-on-gce-from-chrome.html).
     * For additional storage, [create and mount a disk](https://cloud.google.com/compute/docs/disks/persistent-disks) to the instance.[^services]
@@ -26,10 +26,10 @@ Brief process:
         * Housing records: [csv_hdc.zip](http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hdc.zip) (2&nbsp;MB compressed, 13&nbsp;MB decompressed)
     * 2013 5-year PUMS estimates for user verification: [pums_estimates_9_13.csv](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv) (<1&nbsp;MB)
 * Load the files:
-    * Data dictionary TXT: `dsdemos.census.parse_pumsdatadict` (see `dsdemos` package <a href="/20160110-etl-census-with-python.html#source">below</a>)  
+    * Data dictionary TXT: `dsdemos.census.parse_pumsdatadict` (see `dsdemos` package <a href="#source">below</a>)  
     This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.[^so-post]
     * Person/housing records and user verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
-* Confirm the user verification estimates (see example <a href="/20160110-etl-census-with-python.html#example">below</a>):[^pums-acc]
+* Confirm the user verification estimates (see example <a href="#example">below</a>):[^pums-acc]
     * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter] `'[P]WGTP'` are the sample weights.
     * To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:  
     $$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$  
@@ -37,12 +37,12 @@ Brief process:
     * To calculate the estimate's margin of error (defined by ACS at the 90% confidence level):  
     $$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$
 
-<span id="source">Source code:</span>
+<span id="source">**Source code:**</span>
 
 * For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):  
 [20160110-etl-census-with-python.ipynb]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb)  
 [20160110-etl-census-with-python-full.html]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html)
-* The version of the `dsdemos` package used for this post is [20160104T063000Z](https://github.com/stharrold/dsdemos/releases/tag/20160104T063000Z).[^branch]
+* This post uses `dsdemos` [v0.0.3](https://github.com/stharrold/dsdemos/releases/tag/v0.0.3).[^version]
 
 ## Motivations
 
@@ -65,9 +65,14 @@ This project can be done using Python, R, SQL, and/or other languages.[^rvpy] I'
 
 I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.
 
-## <span id="example">Example</span>
+<!--
+Note: The "Example" header will be rendered with `id="example"`.
+  Creating an additional `id="example"` will break the reference.
+  `href="#example"` will automatically link to this header.
+-->
+## Example
 
-This is an abbreviated example of my ETL procedure in the Jupyter Notebook (see links to source code <a href="/20160110-etl-census-with-python.html#source">above</a>).
+This is an abbreviated example of my ETL procedure in the Jupyter Notebook (see links to source code <a href="#source">above</a>).
 
 <!-- 
 Copy-pasted from
@@ -562,12 +567,16 @@ Some links I found helpful for this blog post:
     Example query: Select `'AGEP'` and `'WGTP'` where `'AGEP'` is between 25 and 34.  
     `tfmask = np.logical_and(25 <= df['AGEP'], df['AGEP'] <= 34)`  
     `df_subset = df.loc[tfmask, ['AGEP', 'WGTP']]`
-[^branch]:
-    To download `dsdemos` and checkout the version for following the example <a href="/20160110-etl-census-with-python.html#example">above</a>:  
+[^version]:
+    To download `dsdemos` and checkout `v0.0.3` for following the example <a href="#example">above</a>:  
     `$ cd ~`  
     `$ git clone https://github.com/stharrold/dsdemos.git`  
     `$ cd dsdemos`  
-    `$ git checkout tags/20160104T063000Z`
+    `$ git checkout tags/v0.0.3`  
+    If you already have a clone of `dsdemos`, update your local repository then checkout the new tag:  
+    `$ cd dsdemos`  
+    `$ git pull`  
+    `$ git checkout tags/v0.0.3`
 <!-- ## Motivations -->
 [^acs-method]:
     [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.

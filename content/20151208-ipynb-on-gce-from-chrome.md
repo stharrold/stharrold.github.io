@@ -1,14 +1,13 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2016-01-05T17:15:00Z
+Modified: 2016-01-05T19:20:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
 Alias: 20151208_ipynb_on_gce_from_chrome.html
 Authors: Samuel Harrold
 Summary: As a data scientist, I develop from a Chromebook using IPython Notebooks, Google Compute Engine, Cloud9, and SSH port forwarding.
-
 <!--
 Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
 otherwise page is named only <slug> without '.html'
@@ -20,7 +19,7 @@ otherwise page is named only <slug> without '.html'
 
 In October 2015, I bought a Chromebook with the intent of learning how to move my data-science development environment to the cloud. In exchange for an extra 5&nbsp;minutes of setup, I now have a flexible infrastructure that can scale with the task. This setup is cross-platform in that it can be used on any laptop with Chrome, not just a Chromebook.
 
-Brief setup routine:
+**Brief setup:**
 
 <div id="screenshot">
 <a href="/static/20151208-ipynb-on-gce-from-chrome/20151208-chrome-secure-shell-settings-821x451pix.png" type="image/png">
