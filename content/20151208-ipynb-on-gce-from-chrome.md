@@ -1,7 +1,7 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2016-01-04T21:30:00Z
+Modified: 2016-01-05T17:15:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
@@ -151,7 +151,7 @@ Thanks to John and Julie for their early reviews.
 [^alts]:
     There are also hosted services like [Continuum Analytics Wakari](https://wakari.io/), [Google Cloud Datalab](https://cloud.google.com/datalab/), [Cloud9 hosted workspaces](https://c9.io/?redirect=0), and [Digital Ocean](https://www.digitalocean.com/).
 [^c9-debug]:
-    As of December 2015, Cloud9 doesn't support debugging in Python. However, this hasn't been a problem for me since I use [pdb](https://docs.python.org/3.5/library/pdb.html) for debugging and [pytest](http://pytest.org/latest/) for testing. I use the IDE mostly for code navigation, autocomplete, and managing packages with many files.
+    As of Dec 2015, Cloud9 doesn't support debugging in Python. However, this hasn't been a problem for me since I use [pdb](https://docs.python.org/3.5/library/pdb.html) for debugging and [pytest](http://pytest.org/latest/) for testing. I use the IDE mostly for code navigation, autocomplete, and managing packages with many files.
 [^mem-cpu]:
     Determine if more RAM is necessary by using `free -m` to display the free memory (RAM) in MB. Use the Developers Console to determine the CPU utilization.
 [^disk]:
