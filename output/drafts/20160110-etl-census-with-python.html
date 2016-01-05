@@ -13,7 +13,7 @@
 <link rel="canonical" href="/drafts/20160110-etl-census-with-python.html">
 
         <meta name="author" content="Samuel Harrold" />
-        <meta name="keywords" content="etl,how-to,python,pandas" />
+        <meta name="keywords" content="etl,how-to,python,pandas,census" />
         <meta name="description" content="I parse, load, and validate data from the Census Bureau&#39;s American Community Survey using Python." />
 
         <meta property="og:site_name" content="Data Science Demos" />
@@ -27,6 +27,7 @@
             <meta property="article:tag" content="how-to" />
             <meta property="article:tag" content="python" />
             <meta property="article:tag" content="pandas" />
+            <meta property="article:tag" content="census" />
             <meta property="article:author" content="Samuel Harrold" />
 
 
@@ -103,7 +104,7 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2016-01-10T12:00:00+00:00"> Sun 10 January 2016</time>
+                <i class="fa fa-calendar"></i><time datetime="2016-01-05T17:15:00+00:00"> Tue 05 January 2016</time>
             </span>
 
         <span class="label label-default">Category</span>
@@ -118,6 +119,8 @@ Data Science Demos            </a>
 	<a href="/tag/python.html">python</a>
         /
 	<a href="/tag/pandas.html">pandas</a>
+        /
+	<a href="/tag/census.html">census</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -770,39 +773,39 @@ Example query: Select <code>'AGEP'</code> and <code>'WGTP'</code> where <code>'A
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de50998></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de500a0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de50928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de8c340></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de50928></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de50998></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de500a0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df775a8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df77570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df083e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3dec63e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3de5a308></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df1b420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df81f48></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df77570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3decca40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df1b420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df77570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3decca08></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df77420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df1d8b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df77570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df98298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df47730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3decca40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df921b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df77570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df77420></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3ded4bc8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df47730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3decca40></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df921b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f7f3df1d8b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f723616b998></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f723616b0a0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f723616b928></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72361a7340></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f723616b928></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f723616b998></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f723616b0a0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72362925a8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236292570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72362233e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72361e13e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236175308></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236236420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f723629cf48></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236292570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72361e7a40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236236420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236292570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72361e7a08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236292420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72362388b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236292570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72362b3298></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236262730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72361e7a40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72362ad1b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236292570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236292420></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72361efbc8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f7236262730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72361e7a40></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72362ad1b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f72362388b8></a></li>
     </ul>
 </section>
     <hr/>

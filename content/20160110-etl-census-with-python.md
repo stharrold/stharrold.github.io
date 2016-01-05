@@ -1,8 +1,8 @@
 Title: Extract, transform, and load census data with Python
 Status: draft
 Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-10T12:00:00Z
-Tags: etl, how-to, python, pandas
+Modified: 2016-01-05T17:15:00Z
+Tags: etl, how-to, python, pandas, census
 Category: ETL
 Slug: 20160110-etl-census-with-python
 Related_posts: 20151208-ipynb-on-gce-from-chrome

@@ -9,6 +9,11 @@ Alias: 20151208_ipynb_on_gce_from_chrome.html
 Authors: Samuel Harrold
 Summary: As a data scientist, I develop from a Chromebook using IPython Notebooks, Google Compute Engine, Cloud9, and SSH port forwarding.
 
+<!--
+Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
+otherwise page is named only <slug> without '.html'
+-->
+
 [TOC]
 
 ## Overview
