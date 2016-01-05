@@ -1,19 +1,19 @@
 Title: Extract, transform, and load census data with Python
 Status: draft
 Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-10T12:00:00Z
-Tags: etl, how-to, python, pandas
+Modified: 2016-01-05T17:15:00Z
+Tags: etl, how-to, python, pandas, census
 Category: ETL
 Slug: 20160110-etl-census-with-python
 Related_posts: 20151208-ipynb-on-gce-from-chrome
 Authors: Samuel Harrold
-Summary: I parse, load, and validate data from the Census Bureau's American Community Survey using Python.
+Summary: I parse, load, and verify data from the Census Bureau's American Community Survey using Python.
 
 [TOC]
 
 ## Overview
 
-The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.[^use-cases] In this post I parse, load, and validate data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
+The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.[^use-cases] In this post I parse, load, and verify data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
 
 Brief process:
 
@@ -29,7 +29,7 @@ Brief process:
     * Data dictionary TXT: `dsdemos.census.parse_pumsdatadict` (see `dsdemos` package <a href="/20160110-etl-census-with-python.html#source">below</a>)  
     This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.[^so-post]
     * Person/housing records and user verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
-* Verify calculations of estimates (see example <a href="/20160110-etl-census-with-python.html#example">below</a>):[^pums-acc]
+* Confirm the user verification estimates (see example <a href="/20160110-etl-census-with-python.html#example">below</a>):[^pums-acc]
     * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter] `'[P]WGTP'` are the sample weights.
     * To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:  
     $$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$  
@@ -63,7 +63,7 @@ This project can be done using Python, R, SQL, and/or other languages.[^rvpy] I'
 
 **What about "big data"?**
 
-I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requres a cluster is a future step.
+I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.
 
 ## <span id="example">Example</span>
 
@@ -570,7 +570,7 @@ Some links I found helpful for this blog post:
     `$ git checkout tags/20160104T063000Z`
 <!-- ## Motivations -->
 [^acs-method]:
-    The [ACS methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
+    [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
 [^data-harm]:
     Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the [ACLU's FAQ section about census data](https://www.aclu.org/frequently-asked-questions-national-census) and the [Wikipedia article "Internment of Japanese Americans"](https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans).
 [^prob-race]:
