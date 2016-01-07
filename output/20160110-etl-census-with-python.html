@@ -10,7 +10,7 @@
 
 
 
-<link rel="canonical" href="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html">
+<link rel="canonical" href="https://stharrold.github.io/20160110-etl-census-with-python.html">
 
         <meta name="author" content="Samuel Harrold" />
         <meta name="keywords" content="etl,how-to,python,pandas,census" />
@@ -19,7 +19,7 @@
         <meta property="og:site_name" content="Data Science Demos" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Extract, transform, and load census data with Python"/>
-        <meta property="og:url" content="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html"/>
+        <meta property="og:url" content="https://stharrold.github.io/20160110-etl-census-with-python.html"/>
         <meta property="og:description" content="I parse, load, and verify data from the Census Bureau&#39;s American Community Survey using Python."/>
         <meta property="article:published_time" content="2016-01-10" />
             <meta property="article:section" content="ETL" />
@@ -91,7 +91,7 @@ Data Science Demos            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html"
+                    <a href="https://stharrold.github.io/20160110-etl-census-with-python.html"
                        rel="bookmark"
                        title="Permalink to Extract, transform, and load census data with Python">
                         Extract, transform, and load census data with Python
@@ -108,7 +108,7 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2016-01-07T00:00:00+00:00"> Thu 07 January 2016</time>
+                <i class="fa fa-calendar"></i><time datetime="2016-01-07T14:15:00+00:00"> Thu 07 January 2016</time>
             </span>
 
         <span class="label label-default">Category</span>
@@ -137,14 +137,14 @@ Data Science Demos            </a>
 </ul>
 </div>
 <h3 id="overview">Overview</h3>
-<p>The <a href="https://www.census.gov/about/what.html">Census Bureau</a> collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.<sup id="fnref:use-cases"><a class="footnote-ref" href="#fn:use-cases" rel="footnote">1</a></sup> In this post I parse, load, and verify data from the Census Bureau's <a href="http://www.census.gov/programs-surveys/acs/about.html">American Community Survey (ACS)</a> <a href="https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html">2013 5-year Public Use Microdata Sample (PUMS)</a> for Washington&nbsp;DC.</p>
+<p>The <a href="https://www.census.gov/about/what.html">Census Bureau</a> collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data are also made freely available to the public and have a wide range of uses.<sup id="fnref:use-cases"><a class="footnote-ref" href="#fn:use-cases" rel="footnote">1</a></sup> In this post, I parse, load, and verify data from the Census Bureau's <a href="http://www.census.gov/programs-surveys/acs/about.html">American Community Survey (ACS)</a> <a href="https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html">2013 5-year Public Use Microdata Sample (PUMS)</a> for Washington&nbsp;DC.</p>
 <p><strong>Brief process:</strong></p>
 <ul>
 <li>Start with <a href="/20151208-ipynb-on-gce-from-chrome.html">"Running an IPython Notebook on Google Compute Engine from Chrome"</a>.<ul>
 <li>For additional storage, <a href="https://cloud.google.com/compute/docs/disks/persistent-disks">create and mount a disk</a> to the instance.<sup id="fnref:services"><a class="footnote-ref" href="#fn:services" rel="footnote">2</a></sup></li>
 </ul>
 </li>
-<li>Download (and decompress):<sup id="fnref:ftp"><a class="footnote-ref" href="#fn:ftp" rel="footnote">3</a></sup> <sup id="fnref:no-api"><a class="footnote-ref" href="#fn:no-api" rel="footnote">4</a></sup><ul>
+<li>Download (and decompress):<sup id="fnref:ftp"><a class="footnote-ref" href="#fn:ftp" rel="footnote">3</a></sup> <sup id="fnref:api"><a class="footnote-ref" href="#fn:api" rel="footnote">4</a></sup><ul>
 <li>2013 5-year PUMS data dictionary: <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt">PUMS_Data_Dictionary_2009-2013.txt</a> (&lt;1&nbsp;MB)</li>
 <li>2013 5-year PUMS person and housing records for Washington DC:<ul>
 <li>Person records: <a href="http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip">csv_pdc.zip</a> (5&nbsp;MB compressed, 30&nbsp;MB decompressed)</li>
@@ -162,11 +162,11 @@ This is a customized parser I wrote for <code>PUMS_Data_Dictionary_2009-2013.txt
 </li>
 <li>Confirm the user verification estimates (see example <a href="#example">below</a>):<sup id="fnref:pums-acc"><a class="footnote-ref" href="#fn:pums-acc" rel="footnote">9</a></sup><ul>
 <li>To calculate an estimate <span class="math">\(X\)</span> for a specific "characteristic" (e.g. "Age 25-34"), sum the column <code>'[P]WGTP'</code> of the filtered data (<code>'PWGTP'</code> for person records, <code>'WGTP'</code> for housing records).<sup id="fnref:filter"><a class="footnote-ref" href="#fn:filter" rel="footnote">10</a></sup> <code>'[P]WGTP'</code> are the sample weights.</li>
-<li>To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:<br />
+<li>To calculate the estimate's "direct standard error", use the ACS's modified <a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation">root-mean-square deviation</a>:<br />
 <div class="math">$$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$</div>
 <br />
 where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]WGTPr'</code> of the filtered data. <code>'[P]WGTP[1-80]'</code> are the "replicate weights".</li>
-<li>To calculate the estimate's margin of error (defined by ACS at the 90% confidence level):<br />
+<li>To calculate the estimate's margin of error (defined by ACS at the <a href="http://www.wolframalpha.com/input/?i=90%25+confidence+level">90%</a> <a href="https://en.wikipedia.org/wiki/Confidence_interval">confidence level</a>):<br />
 <div class="math">$$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$</div>
 </li>
 </ul>
@@ -177,7 +177,7 @@ where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]
 <li>For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):<br />
 <a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
 <a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
-<li>This post uses <code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/releases/tag/v0.0.3">v0.0.3</a>.<sup id="fnref:version"><a class="footnote-ref" href="#fn:version" rel="footnote">11</a></sup></li>
+<li>This post uses <code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/releases/tag/v0.0.3">v0.0.3</a>.<sup id="fnref:checkout"><a class="footnote-ref" href="#fn:checkout" rel="footnote">11</a></sup></li>
 </ul>
 <h3 id="motivations">Motivations</h3>
 <p><strong>Why am I using the American Community Survey (ACS)?</strong></p>
@@ -188,11 +188,11 @@ where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]
 <li>I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">13</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">14</a></sup> For this project, I take data from the Census Bureau at face value, and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
 </ul>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
-<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">15</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.</p>
+<p>As of Dec 2015, the ACS offers two windowing options for their data releases: 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">15</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be more relevant to a specific year is a future step.</p>
 <p><strong>Why am I using Python?</strong></p>
 <p>This project can be done using Python, R, SQL, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">16</a></sup> I'm using Python since a future step is to make a machine learning pipeline, which is a popular application of <a href="http://scikit-learn.org/">scikit-learn</a>.</p>
 <p><strong>What about "big data"?</strong></p>
-<p>I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.<sup id="fnref:pydata"><a class="footnote-ref" href="#fn:pydata" rel="footnote">17</a></sup> These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's <a href="http://dask.pydata.org/en/latest/">Dask</a> for Python, and for operations that require a cluster of machines, there's <a href="http://spark.apache.org/">Spark</a> for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.</p>
+<p>I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.<sup id="fnref:pydata"><a class="footnote-ref" href="#fn:pydata" rel="footnote">17</a></sup> These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. <a href="https://en.wikipedia.org/wiki/Out-of-core_algorithm">out-of-core</a> computations), there's <a href="http://dask.pydata.org/en/latest/">Dask</a> for Python, and for operations that require a cluster of machines, there's <a href="http://spark.apache.org/">Spark</a> for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.</p>
 <!--
 Note: The "Example" header will be rendered with `id="example"`.
   Creating an additional `id="example"` will break the reference.
@@ -200,7 +200,7 @@ Note: The "Example" header will be rendered with `id="example"`.
 -->
 
 <h3 id="example">Example</h3>
-<p>This is an abbreviated example of my ETL procedure in the Jupyter Notebook (see links to source code <a href="#source">above</a>).</p>
+<p>This is an abbreviated example of my ETL procedure in the Jupyter Notebook for this post (see links to source code <a href="#source">above</a>).</p>
 <!-- 
 Copy-pasted from
     /static/20160110-etl-census-with-python/example-basic.html
@@ -267,10 +267,6 @@ BEGIN IPYNB
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># File paths</span>
-<span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
-<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20160110-etl-census-with-python&#39;</span>
-<span class="n">filename</span> <span class="o">=</span> <span class="s">r&#39;example&#39;</span>
-<span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">filename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
 <span class="n">path_acs</span> <span class="o">=</span> <span class="s">r&#39;/mnt/disk-20151227t211000z/www2-census-gov/programs-surveys/acs/&#39;</span>
 <span class="c"># 2013 5-year PUMS data dictionary</span>
 <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt</span>
@@ -646,20 +642,13 @@ END IPYNB
 </ul>
 </li>
 <li>Python:<ul>
-<li><a href="http://shop.oreilly.com/product/0636920028154.do"><em>Learning Python</em> (5th ed, 2013, O'Reilly)</a> was my formal introduction to Python.</li>
+<li><a href="http://shop.oreilly.com/product/0636920028154.do"><em>Learning Python, 5th ed.</em> (2013, O'Reilly)</a> was my formal introduction to Python.</li>
 <li><a href="http://shop.oreilly.com/product/0636920023784.do"><em>Python for Data Analysis</em> (2012, O'Reilly)</a> introduced me to <code>pandas</code>.</li>
-<li><a href="http://shop.oreilly.com/product/0636920027072.do"><em>Python Cookbook</em> (3rd ed, 2013, O'Reilly)</a> has a collection of optimized recipes.</li>
+<li><a href="http://shop.oreilly.com/product/0636920027072.do"><em>Python Cookbook, 3rd ed.</em> (2013, O'Reilly)</a> has a collection of optimized recipes.</li>
 <li>From the well-documented <a href="https://docs.python.org/3/index.html">Python 3.5</a> standard library, I used <a href="https://docs.python.org/3/library/collections.html">collections</a>, <a href="https://docs.python.org/3/library/functools.html">functools</a>, <a href="https://docs.python.org/3/library/os.html">os</a>, <a href="https://docs.python.org/3/library/pdb.html">pdb</a>, <a href="https://docs.python.org/3/library/subprocess.html">subprocess</a>, <a href="https://docs.python.org/3/library/sys.html">sys</a>, and <a href="https://docs.python.org/3/library/time.html">time</a> for this post.</li>
 <li>Likewise, the documentation for <a href="http://docs.scipy.org/doc/numpy-1.10.0/reference/">numpy</a> and <a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/">pandas</a> is thorough and invaluable.</li>
 <li>Of IPython's convenient <a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html">"magic" commands</a>, within this post's Jupyter Notebooks, I used <a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-pdb">%pdb</a>, <a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-reload_ext">%reload_ext</a>, and the extension <a href="http://ipython.readthedocs.org/en/stable/config/extensions/autoreload.html?highlight=autoreload#module-IPython.extensions.autoreload">%autoreload</a>.</li>
-<li>StackOverflow <a href="http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python">"How to get line count cheaply in Python"</a> (compare to <code>wc -l</code>).</li>
-</ul>
-</li>
-<li><code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e">v0.0.3</a>:<ul>
-<li>To design the package file structure, I used <a href="http://shop.oreilly.com/product/0636920028154.do"><em>Learning Python</em> (O'Reilly)</a> Section V, "Modules and Packages".</li>
-<li>I use <a href="https://google.github.io/styleguide/pyguide.html">Google-style docstrings</a> adapted from the <a href="http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html">example</a> by the <a href="https://sphinxcontrib-napoleon.readthedocs.org/en/latest/">Napoleon</a> extension to <a href="http://sphinx-doc.org/">Sphinx</a> (a Python documentation generator, not yet used by <code>dsdemos</code>).</li>
-<li><a href="http://pytest.org/latest/">Pytest</a> for testing.</li>
-<li><a href="http://semver.org/">Semantic Versioning</a> for version numbers.</li>
+<li>StackOverflow <a href="http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python">"How to get line count cheaply in Python"</a> (not as performant as <code>wc -l</code> but still neat).</li>
 </ul>
 </li>
 <li>Git:<ul>
@@ -667,6 +656,13 @@ END IPYNB
 <li><a href="https://git-scm.com/">Git documentation</a> answers a lot of questions.</li>
 <li><a href="https://github.com/nvie/gitflow">Git-flow</a> streamlines my repository management with this <a href="http://nvie.com/posts/a-successful-git-branching-model/">branching model</a>.</li>
 <li>StackOverflow <a href="http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git">"Download a specific tag with git"</a>.</li>
+</ul>
+</li>
+<li><code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e">v0.0.3 (browse code)</a>:<ul>
+<li>To design the package file structure, I used <a href="http://shop.oreilly.com/product/0636920028154.do"><em>Learning Python, 5th ed.</em> (2013, O'Reilly)</a>, Part V, "Modules and Packages".</li>
+<li>I use <a href="https://google.github.io/styleguide/pyguide.html">Google-style docstrings</a> adapted from the <a href="http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html">example</a> by the <a href="https://sphinxcontrib-napoleon.readthedocs.org/en/latest/">Napoleon</a> extension to <a href="http://sphinx-doc.org/">Sphinx</a> (a Python documentation generator, not yet used by <code>dsdemos</code>).</li>
+<li><a href="http://pytest.org/latest/">Pytest</a> for testing.</li>
+<li><a href="http://semver.org/">Semantic Versioning</a> for version numbers.</li>
 </ul>
 </li>
 </ul>
@@ -678,18 +674,18 @@ END IPYNB
 <p>Some use cases for the Census Bureau's American Community Survey with data access recommendations: <a href="https://www.census.gov/acs/www/guidance/which-data-tool/">ACS Which Data Tool</a>&#160;<a class="footnote-backref" href="#fnref:use-cases" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:services">
-<p>This project mounts a single disk for storage to a single instance and loads the data in RAM. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>For this post, I mounted a single disk for storage to a single instance and loaded the data in RAM. A scaled version of this pipeline on Google Cloud Platform could include integrated services such as <a href="https://cloud.google.com/storage/">Cloud Storage</a> and <a href="https://cloud.google.com/bigquery/">Big Query</a>.&#160;<a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:ftp">
-<p>For how to download <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">ACS data via FTP</a>:<br />
+<p>To download <a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html">ACS data via FTP</a>:<br />
 <code>$ sudo curl --remote-name &lt;url&gt;</code><br />
 Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
-<li id="fn:no-api">
-<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<li id="fn:api">
+<p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:api" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:so-post">
-<p>StackOverflow <a href="http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141">"regex to parse well-formated multi-line data dictionary"</a>.&#160;<a class="footnote-backref" href="#fnref:so-post" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p>StackOverflow <a href="http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141">"regex to parse well-formatted multi-line data dictionary"</a>.&#160;<a class="footnote-backref" href="#fnref:so-post" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:json">
 <p>With <code>dsdemos</code> v0.0.3 <a href="#source">above</a>, you can export the data dictionary to <a href="http://json.org/">JSON format</a> with the <a href="https://docs.python.org/3.5/library/json.html"><code>json</code> Python library</a>. See <a href="https://github.com/stharrold/dsdemos/blob/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e/tests/test_census.py#L34-L43">example from <code>dsdemos</code> tests</a>.&#160;<a class="footnote-backref" href="#fnref:json" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
@@ -701,21 +697,21 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <p>Pandas 0.17.1 has a compatibility issue with Python 3.5. See <a href="https://github.com/pydata/pandas/issues/11915">GitHub pandas issue 11915</a> for a temporary fix. The issue should be resolved in pandas 0.18.&#160;<a class="footnote-backref" href="#fnref:pd-py35" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pums-acc">
-<p>For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf">2013 5-year PUMS Accuracy</a>, section 7, "Measuring Sampling Error". The sample weights <code>'[P]WGTP'</code> mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (uncertainty) associated with an estimate of a characteristic:<br />
+<p>For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf">2013 5-year PUMS Accuracy</a>, section 7, "Measuring Sampling Error". The sample weights <code>'[P]WGTP'</code> mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (i.e. uncertainty) associated with an estimate of a characteristic:<br />
 <ol>
-<li>Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns <code>'[P]WGTP[1-80]'</code> and requires looking up a design factor for the specific characteristic (e.g "Population by Tenure"). See the accuracy PDF for the design factors.</li>
+<li>Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns <code>'[P]WGTP[1-80]'</code> and requires looking up a design factor for the specific characteristic (e.g "population by tenure"). See the accuracy PDF for the design factors.</li>
 <li>Calculate the "direct standard error" of the estimate using the "replicate weights", which are the columns <code>'[P]WGTP[1-80]'</code>. This method is extensible to many kinds of characteristics (e.g. population by tenure by age).
 </ol><br />
 Note: Controlled estimates of characteristics like "total population" have 0 direct standard error from replicate weights. Use the generalized standard error for these estimates.&#160;<a class="footnote-backref" href="#fnref:pums-acc" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:filter">
-<p>There are <a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html">several ways</a> to select rows by filtering on conditions within <code>pandas</code>. I prefer creating a <code>pandas.Series</code> with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the <a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html">docs for <code>pandas.DataFrame.loc</code></a>.<br />
-Example query: Select <code>'AGEP'</code> and <code>'WGTP'</code> where <code>'AGEP'</code> is between 25 and 34.<br />
+<p>There are <a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html">several ways</a> to select rows by filtering on conditions using <code>pandas</code>. I prefer creating a <code>pandas.Series</code> with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the <a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html">docs for <code>pandas.DataFrame.loc</code></a>.<br />
+Example query: Select columns <code>'AGEP'</code> and <code>'WGTP'</code> where values for <code>'AGEP'</code> are between 25 and 34.<br />
 <code>tfmask = np.logical_and(25 &lt;= df['AGEP'], df['AGEP'] &lt;= 34)</code><br />
 <code>df_subset = df.loc[tfmask, ['AGEP', 'WGTP']]</code>&#160;<a class="footnote-backref" href="#fnref:filter" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
-<li id="fn:version">
-<p>To download <code>dsdemos</code> and checkout <code>v0.0.3</code> for following the example <a href="#example">above</a>:<br />
+<li id="fn:checkout">
+<p>To download <code>dsdemos</code> and checkout v0.0.3 for following the example <a href="#example">above</a>:<br />
 <code>$ cd ~</code><br />
 <code>$ git clone https://github.com/stharrold/dsdemos.git</code><br />
 <code>$ cd dsdemos</code><br />
@@ -724,7 +720,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <code>$ cd dsdemos</code><br />
 <code>$ git pull</code><br />
 <code>$ git checkout tags/v0.0.3</code>
-<!-- ## Motivations -->&#160;<a class="footnote-backref" href="#fnref:version" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+<!-- ## Motivations -->&#160;<a class="footnote-backref" href="#fnref:checkout" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-method">
 <p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS Methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
@@ -818,39 +814,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2c1960></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2c1068></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2c18f0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2fd308></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2c18f0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2c1960></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2c1068></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e8570></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e8538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3793b0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3373b0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a2cb2d0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a38c3e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3f2f10></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e8538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a33da08></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a38c3e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e8538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a33d9d0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e83e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a38e880></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e8538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a409298></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3b8730></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a33da08></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a4031b8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e8538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3e83e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a345b90></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a3b8730></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a33da08></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a4031b8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fe84a38e880></a></li>
+        <li><a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">Running an IPython Notebook on Google Compute Engine from Chrome</a></li>
     </ul>
 </section>
     <hr/>
@@ -863,7 +827,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
             var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
 
                     var disqus_identifier = '20160110-etl-census-with-python';
-                var disqus_url = 'https://stharrold.github.io/drafts/20160110-etl-census-with-python.html';
+                var disqus_url = 'https://stharrold.github.io/20160110-etl-census-with-python.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -896,6 +860,11 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
             <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
                 <ul class="list-group" id="recentposts">
                     <li class="list-group-item">
+                        <a href="https://stharrold.github.io/20160110-etl-census-with-python.html">
+                            Extract, transform, and load census data with Python
+                        </a>
+                    </li>
+                    <li class="list-group-item">
                         <a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">
                             Running an IPython Notebook on Google Compute Engine from Chrome
                         </a>
@@ -916,6 +885,11 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
                         </a>
                     </li>
                     <li class="list-group-item">
+                        <a href="https://stharrold.github.io/category/etl.html">
+                            <i class="fa fa-folder-open fa-lg"></i> ETL
+                        </a>
+                    </li>
+                    <li class="list-group-item">
                         <a href="https://stharrold.github.io/category/test.html">
                             <i class="fa fa-folder-open fa-lg"></i> Test
                         </a>
@@ -925,6 +899,11 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 
             <li class="list-group-item"><a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group list-inline tagcloud" id="tags">
+                    <li class="list-group-item tag-4">
+                        <a href="https://stharrold.github.io/tag/census.html">
+                            census
+                        </a>
+                    </li>
                     <li class="list-group-item tag-4">
                         <a href="https://stharrold.github.io/tag/chrome.html">
                             chrome
@@ -945,12 +924,22 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
                             devops
                         </a>
                     </li>
+                    <li class="list-group-item tag-4">
+                        <a href="https://stharrold.github.io/tag/etl.html">
+                            etl
+                        </a>
+                    </li>
                     <li class="list-group-item tag-1">
                         <a href="https://stharrold.github.io/tag/how-to.html">
                             how-to
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
+                        <a href="https://stharrold.github.io/tag/pandas.html">
+                            pandas
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-2">
                         <a href="https://stharrold.github.io/tag/python.html">
                             python
                         </a>
@@ -982,7 +971,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
    <div class="container">
       <hr>
       <div class="row">
-         <div class="col-xs-10">&copy; 2015 Samuel Harrold
+         <div class="col-xs-10">&copy; 2016 Samuel Harrold
             &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
             <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
