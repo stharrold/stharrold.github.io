@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Data Science Demos</title><link>https://stharrold.github.io/</link><description></description><atom:link href="https://stharrold.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Tue, 05 Jan 2016 19:20:00 +0000</lastBuildDate><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;!--
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Data Science Demos</title><link>https://stharrold.github.io/</link><description></description><atom:link href="https://stharrold.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 07 Jan 2016 00:00:00 +0000</lastBuildDate><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;!--
 Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
 otherwise page is named only &lt;slug&gt; without '.html'
 --&gt;
@@ -48,7 +48,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;p&gt;&lt;strong&gt;Why do I use Google Cloud?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its intuitive UI. &lt;a href="https://cloud.google.com/compute/docs/ssh-in-browser"&gt;SSH within the browser&lt;/a&gt; is very convenient.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Why do I use IPython Notebooks?&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="http://ipython.org/notebook.html"&gt;IPython (Jupyter) Notebooks&lt;/a&gt; are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages. I prefer the &lt;a href="https://www.continuum.io/"&gt;Continuum Analytics Anaconda Python distribution&lt;/a&gt; for its &lt;a href="http://conda.pydata.org/docs/"&gt;Conda package manager&lt;/a&gt;. I'm using Python 3.5.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://ipython.org/notebook.html"&gt;IPython (Jupyter) Notebooks&lt;/a&gt; are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages. I prefer the &lt;a href="https://www.continuum.io/"&gt;Continuum Analytics Anaconda Python distribution&lt;/a&gt; for its &lt;a href="http://conda.pydata.org/docs/"&gt;Conda package manager&lt;/a&gt;. I'm using &lt;a href="https://docs.python.org/3.5/"&gt;Python 3.5&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Why do I use Cloud9?&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;I saw that &lt;a href="http://stackshare.io/stackups/cloud9-ide-vs-nitrous-io-vs-koding"&gt;Cloud9 is popular&lt;/a&gt; and has good &lt;a href="https://docs.c9.io/docs/"&gt;documentation&lt;/a&gt;.&lt;sup id="fnref:c9-debug"&gt;&lt;a class="footnote-ref" href="#fn:c9-debug" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt; I wanted a cloud-based IDE since I didn't want to spend resources on my Chromebook or on my instances to run the IDE.&lt;/p&gt;
 &lt;h3 id="first-time-setup"&gt;First-time setup&lt;/h3&gt;
@@ -136,12 +136,13 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;li&gt;Linux:&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://shop.oreilly.com/product/9780596005955.do"&gt;&lt;em&gt;Classic Shell Scripting&lt;/em&gt; (2005, O'Reilly)&lt;/a&gt; was my formal introduction to Bash and Linux/Unix.&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html"&gt;Choosing between Debian and Ubuntu.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.linuxproblem.org/art_9.html"&gt;SSH login without password.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html"&gt;SSH port forwarding (tunnels) explained.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://cloud.google.com/solutions/connecting-securely"&gt;Google's recommended best practices for securing communications with Compute Engine instances.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.thegeekstuff.com/2012/07/wget-curl/"&gt;&lt;code&gt;wget&lt;/code&gt; vs &lt;code&gt;curl&lt;/code&gt; with examples&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal"&gt;Download from Google Drive with &lt;code&gt;wget&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;StackExchange Unix and Linux &lt;a href="http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal"&gt;download from Google Drive with &lt;code&gt;wget&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line"&gt;Download from Kaggle with &lt;code&gt;wget&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/"&gt;&lt;code&gt;disown&lt;/code&gt; examples.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -216,13 +217,13 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 (install &lt;code&gt;lsof&lt;/code&gt; with &lt;code&gt;sudo apt-get install lsof&lt;/code&gt;)&amp;#160;&lt;a class="footnote-backref" href="#fnref:lsof-kill" rev="footnote" title="Jump back to footnote 15 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:networking"&gt;
-&lt;p&gt;In the Developers Console, manage IP addresses under "Products &amp;amp; services" &amp;gt; "Networking".&amp;#160;&lt;a class="footnote-backref" href="#fnref:networking" rev="footnote" title="Jump back to footnote 16 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In the Developers Console, &lt;a href="https://cloud.google.com/compute/docs/instances-and-network"&gt;manage IP addresses&lt;/a&gt; under "Products &amp;amp; services" &amp;gt; "Networking".&amp;#160;&lt;a class="footnote-backref" href="#fnref:networking" rev="footnote" title="Jump back to footnote 16 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:host-id"&gt;
 &lt;p&gt;Because the external IP address was reassigned to a new instance, a warning will appear that the remote host identification has changed. To remove the offending ECDSA key from &lt;code&gt;known_hosts&lt;/code&gt;, in Chrome, open the JavaScript console (Ctrl+Shift+J) and run &lt;code&gt;term_.command.removeKnownHostByIndex(idx)&lt;/code&gt; where idx is the given line number in &lt;code&gt;known_hosts&lt;/code&gt;, e.g. from the warning line &lt;code&gt;Offending ECDSA key in /.ssh/known_hosts:1&lt;/code&gt;, idx=1.&amp;#160;&lt;a class="footnote-backref" href="#fnref:host-id" rev="footnote" title="Jump back to footnote 17 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Tue, 05 Jan 2016 19:20:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-12-08:20151208-ipynb-on-gce-from-chrome.html</guid><category>devops</category><category>how-to</category><category>python</category><category>cloud-computing</category><category>chrome</category><category>cloud9</category><category>ssh</category></item><item><title>Test page and template</title><link>https://stharrold.github.io/20151030-test.html</link><description>&lt;!--
+&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Thu, 07 Jan 2016 00:00:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-12-08:20151208-ipynb-on-gce-from-chrome.html</guid><category>devops</category><category>how-to</category><category>python</category><category>cloud-computing</category><category>chrome</category><category>cloud9</category><category>ssh</category></item><item><title>Test page and template</title><link>https://stharrold.github.io/20151030-test.html</link><description>&lt;!--
 Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
 otherwise page is named only &lt;slug&gt; without '.html'
 --&gt;
@@ -241,10 +242,8 @@ otherwise page is named only &lt;slug&gt; without '.html'
 &lt;/li&gt;
 &lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="#body"&gt;Body&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href="#include-exported-files"&gt;Include exported files&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;li&gt;&lt;a href="#body"&gt;Body&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#helpful-links"&gt;Helpful links&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#footnotes"&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
@@ -265,6 +264,15 @@ otherwise page is named only &lt;slug&gt; without '.html'
 &lt;/ul&gt;
 &lt;h3 id="body"&gt;Body&lt;/h3&gt;
 &lt;p&gt;Text with a footnote.&lt;sup id="fnref:fn"&gt;&lt;a class="footnote-ref" href="#fn:fn" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;A link:&lt;br /&gt;
+&lt;a href="https://github.com/stharrold/demo/blob/5ececb3b400ea8d51bcb396933e6b9c2a7b29963/demo/utils.py#L27-L62"&gt;GitHub link&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A link with code as text: &lt;a href="https://docs.python.org/3/index.html"&gt;&lt;code&gt;python&lt;/code&gt; docs&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Text with always-rendered dollar signs &amp;#36;1.12.&lt;/p&gt;
 &lt;p&gt;Text with a non-breaking&amp;nbsp;space.&lt;/p&gt;
 &lt;!--
@@ -298,7 +306,6 @@ https://github.com/stharrold/stharrold.github.io/issues/34
     &lt;/div&gt;
     &lt;div id="details" class="collapse"&gt;Long answer.&lt;/div&gt;
 &lt;/div&gt;&lt;/p&gt;
-&lt;h4 id="include-exported-files"&gt;Include exported files&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;A plot included via Markdown:&lt;/li&gt;
 &lt;/ul&gt;
@@ -386,10 +393,6 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;ul&gt;
-&lt;li&gt;A GitHub link:&lt;br /&gt;
-&lt;a href="https://github.com/stharrold/demo/blob/5ececb3b400ea8d51bcb396933e6b9c2a7b29963/demo/utils.py#L27-L62"&gt;GitHub link&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 &lt;!--
 TODO: Include a D3 document in an ipynb and as embedded html.
 https://github.com/stharrold/stharrold.github.io/issues/14
@@ -783,6 +786,11 @@ jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.githu
 END IPYNB
 --&gt;
 
+&lt;h3 id="helpful-links"&gt;Helpful links&lt;/h3&gt;
+&lt;p&gt;Some links I found helpful for this blog post:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Some links here.&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id="footnotes"&gt;Footnotes&lt;/h3&gt;
 &lt;div class="footnote"&gt;
 &lt;hr /&gt;
@@ -864,4 +872,4 @@ $('.collapse').on('shown.bs.collapse', function() {
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Tue, 05 Jan 2016 19:20:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-10-30:20151030-test.html</guid><category>test</category><category>how-to</category><category>template</category></item></channel></rss>
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Thu, 07 Jan 2016 00:00:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-10-30:20151030-test.html</guid><category>test</category><category>how-to</category><category>template</category></item></channel></rss>
