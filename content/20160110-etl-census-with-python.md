@@ -552,7 +552,7 @@ Some links I found helpful for this blog post:
 * Git:
     * [GitHub Guides](https://guides.github.com/) are where I started with `git`.
     * [Git documentation](https://git-scm.com/) answers a lot of questions.
-    * [Gitflow](https://github.com/nvie/gitflow) streamlines my repository management with this [branching model](http://nvie.com/posts/a-successful-git-branching-model/).
+    * [Git-flow](https://github.com/nvie/gitflow) streamlines my repository management with this [branching model](http://nvie.com/posts/a-successful-git-branching-model/).
     * StackOverflow ["Download a specific tag with git"](http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git).
 
 ## Footnotes
