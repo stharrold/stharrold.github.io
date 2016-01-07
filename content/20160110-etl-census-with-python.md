@@ -27,7 +27,7 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
     * 2013 5-year PUMS estimates for user verification: [pums_estimates_9_13.csv](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv) (<1&nbsp;MB)
 * Load the files:
     * Data dictionary TXT: `dsdemos.census.parse_pumsdatadict` (see `dsdemos` package <a href="#source">below</a>)  
-    This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.[^so-post]
+    This is a customized parser I wrote for `PUMS_Data_Dictionary_2009-2013.txt`. The data dictionary is inconsistently formatted, which complicates parsing.[^so-post] [^json]
     * Person/housing records and user verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
 * Confirm the user verification estimates (see example <a href="#example">below</a>):[^pums-acc]
     * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter] `'[P]WGTP'` are the sample weights.
@@ -572,6 +572,8 @@ Some links I found helpful for this blog post:
     I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
 [^so-post]:
     StackOverflow ["regex to parse well-formated multi-line data dictionary"](http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141).
+[^json]:
+    With `dsdemos` v0.0.3 <a href="#source">above</a>, you can export the data dictionary to [JSON format](http://json.org/) with the [`json` Python library](https://docs.python.org/3.5/library/json.html). See [example from `dsdemos` tests](https://github.com/stharrold/dsdemos/blob/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e/tests/test_census.py#L34-L43).
 [^pd-csv]:
     [Docs for `pandas.read_csv`](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html)
 [^pd-py35]:

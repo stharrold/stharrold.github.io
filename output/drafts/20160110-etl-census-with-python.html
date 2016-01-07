@@ -152,12 +152,12 @@ Data Science Demos            </a>
 </li>
 <li>Load the files:<ul>
 <li>Data dictionary TXT: <code>dsdemos.census.parse_pumsdatadict</code> (see <code>dsdemos</code> package <a href="#source">below</a>)<br />
-This is a customized parser I wrote for <code>PUMS_Data_Dictionary_2009-2013.txt</code>. The data dictionary is inconsistently formatted, which complicates parsing.<sup id="fnref:so-post"><a class="footnote-ref" href="#fn:so-post" rel="footnote">5</a></sup></li>
-<li>Person/housing records and user verification CSVs: <code>pandas.read_csv</code> <sup id="fnref:pd-csv"><a class="footnote-ref" href="#fn:pd-csv" rel="footnote">6</a></sup> <sup id="fnref:pd-py35"><a class="footnote-ref" href="#fn:pd-py35" rel="footnote">7</a></sup></li>
+This is a customized parser I wrote for <code>PUMS_Data_Dictionary_2009-2013.txt</code>. The data dictionary is inconsistently formatted, which complicates parsing.<sup id="fnref:so-post"><a class="footnote-ref" href="#fn:so-post" rel="footnote">5</a></sup> <sup id="fnref:json"><a class="footnote-ref" href="#fn:json" rel="footnote">6</a></sup></li>
+<li>Person/housing records and user verification CSVs: <code>pandas.read_csv</code> <sup id="fnref:pd-csv"><a class="footnote-ref" href="#fn:pd-csv" rel="footnote">7</a></sup> <sup id="fnref:pd-py35"><a class="footnote-ref" href="#fn:pd-py35" rel="footnote">8</a></sup></li>
 </ul>
 </li>
-<li>Confirm the user verification estimates (see example <a href="#example">below</a>):<sup id="fnref:pums-acc"><a class="footnote-ref" href="#fn:pums-acc" rel="footnote">8</a></sup><ul>
-<li>To calculate an estimate <span class="math">\(X\)</span> for a specific "characteristic" (e.g. "Age 25-34"), sum the column <code>'[P]WGTP'</code> of the filtered data (<code>'PWGTP'</code> for person records, <code>'WGTP'</code> for housing records).<sup id="fnref:filter"><a class="footnote-ref" href="#fn:filter" rel="footnote">9</a></sup> <code>'[P]WGTP'</code> are the sample weights.</li>
+<li>Confirm the user verification estimates (see example <a href="#example">below</a>):<sup id="fnref:pums-acc"><a class="footnote-ref" href="#fn:pums-acc" rel="footnote">9</a></sup><ul>
+<li>To calculate an estimate <span class="math">\(X\)</span> for a specific "characteristic" (e.g. "Age 25-34"), sum the column <code>'[P]WGTP'</code> of the filtered data (<code>'PWGTP'</code> for person records, <code>'WGTP'</code> for housing records).<sup id="fnref:filter"><a class="footnote-ref" href="#fn:filter" rel="footnote">10</a></sup> <code>'[P]WGTP'</code> are the sample weights.</li>
 <li>To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:<br />
 <div class="math">$$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$</div>
 <br />
@@ -173,22 +173,22 @@ where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]
 <li>For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):<br />
 <a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
 <a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
-<li>This post uses <code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/releases/tag/v0.0.3">v0.0.3</a>.<sup id="fnref:version"><a class="footnote-ref" href="#fn:version" rel="footnote">10</a></sup></li>
+<li>This post uses <code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/releases/tag/v0.0.3">v0.0.3</a>.<sup id="fnref:version"><a class="footnote-ref" href="#fn:version" rel="footnote">11</a></sup></li>
 </ul>
 <h3 id="motivations">Motivations</h3>
 <p><strong>Why am I using the American Community Survey (ACS)?</strong></p>
 <ul>
 <li>The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.</li>
-<li>The ACS is a reliable data set.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">11</a></sup> The ACS has quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate of about 95%.</li>
+<li>The ACS is a reliable data set.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">12</a></sup> The ACS has quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate of about 95%.</li>
 <li>The ACS is a time-series data set. The survey sends questionnaires throughout the year and releases data once per year. A future step is to use the time series to forecast an individual's household income.</li>
-<li>I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">12</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">13</a></sup> For this project, I take data from the Census Bureau at face value, and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
+<li>I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">13</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">14</a></sup> For this project, I take data from the Census Bureau at face value, and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
 </ul>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
-<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">14</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.</p>
+<p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">15</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.</p>
 <p><strong>Why am I using Python?</strong></p>
-<p>This project can be done using Python, R, SQL, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">15</a></sup> I'm using Python since a future step is to make a machine learning pipeline, which is a popular application of <a href="http://scikit-learn.org/">scikit-learn</a>.</p>
+<p>This project can be done using Python, R, SQL, and/or other languages.<sup id="fnref:rvpy"><a class="footnote-ref" href="#fn:rvpy" rel="footnote">16</a></sup> I'm using Python since a future step is to make a machine learning pipeline, which is a popular application of <a href="http://scikit-learn.org/">scikit-learn</a>.</p>
 <p><strong>What about "big data"?</strong></p>
-<p>I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.<sup id="fnref:pydata"><a class="footnote-ref" href="#fn:pydata" rel="footnote">16</a></sup> These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's <a href="http://dask.pydata.org/en/latest/">Dask</a> for Python, and for operations that require a cluster of machines, there's <a href="http://spark.apache.org/">Spark</a> for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.</p>
+<p>I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.<sup id="fnref:pydata"><a class="footnote-ref" href="#fn:pydata" rel="footnote">17</a></sup> These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's <a href="http://dask.pydata.org/en/latest/">Dask</a> for Python, and for operations that require a cluster of machines, there's <a href="http://spark.apache.org/">Spark</a> for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.</p>
 <!--
 Note: The "Example" header will be rendered with `id="example"`.
   Creating an additional `id="example"` will break the reference.
@@ -687,11 +687,14 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <li id="fn:so-post">
 <p>StackOverflow <a href="http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141">"regex to parse well-formated multi-line data dictionary"</a>.&#160;<a class="footnote-backref" href="#fnref:so-post" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
+<li id="fn:json">
+<p>With <code>dsdemos</code> v0.0.3 <a href="#source">above</a>, you can export the data dictionary to <a href="http://json.org/">JSON format</a> with the <a href="https://docs.python.org/3.5/library/json.html"><code>json</code> Python library</a>. See <a href="https://github.com/stharrold/dsdemos/blob/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e/tests/test_census.py#L34-L43">example from <code>dsdemos</code> tests</a>.&#160;<a class="footnote-backref" href="#fnref:json" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
 <li id="fn:pd-csv">
-<p><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html">Docs for <code>pandas.read_csv</code></a>&#160;<a class="footnote-backref" href="#fnref:pd-csv" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+<p><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html">Docs for <code>pandas.read_csv</code></a>&#160;<a class="footnote-backref" href="#fnref:pd-csv" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pd-py35">
-<p>Pandas 0.17.1 has a compatibility issue with Python 3.5. See <a href="https://github.com/pydata/pandas/issues/11915">GitHub pandas issue 11915</a> for a temporary fix. The issue should be resolved in pandas 0.18.&#160;<a class="footnote-backref" href="#fnref:pd-py35" rev="footnote" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+<p>Pandas 0.17.1 has a compatibility issue with Python 3.5. See <a href="https://github.com/pydata/pandas/issues/11915">GitHub pandas issue 11915</a> for a temporary fix. The issue should be resolved in pandas 0.18.&#160;<a class="footnote-backref" href="#fnref:pd-py35" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pums-acc">
 <p>For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf">2013 5-year PUMS Accuracy</a>, section 7, "Measuring Sampling Error". The sample weights <code>'[P]WGTP'</code> mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (uncertainty) associated with an estimate of a characteristic:<br />
@@ -699,13 +702,13 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <li>Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns <code>'[P]WGTP[1-80]'</code> and requires looking up a design factor for the specific characteristic (e.g "Population by Tenure"). See the accuracy PDF for the design factors.</li>
 <li>Calculate the "direct standard error" of the estimate using the "replicate weights", which are the columns <code>'[P]WGTP[1-80]'</code>. This method is extensible to many kinds of characteristics (e.g. population by tenure by age).
 </ol><br />
-Note: Controlled estimates of characteristics like "total population" have 0 direct standard error from replicate weights. Use the generalized standard error for these estimates.&#160;<a class="footnote-backref" href="#fnref:pums-acc" rev="footnote" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+Note: Controlled estimates of characteristics like "total population" have 0 direct standard error from replicate weights. Use the generalized standard error for these estimates.&#160;<a class="footnote-backref" href="#fnref:pums-acc" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:filter">
 <p>There are <a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html">several ways</a> to select rows by filtering on conditions within <code>pandas</code>. I prefer creating a <code>pandas.Series</code> with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the <a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html">docs for <code>pandas.DataFrame.loc</code></a>.<br />
 Example query: Select <code>'AGEP'</code> and <code>'WGTP'</code> where <code>'AGEP'</code> is between 25 and 34.<br />
 <code>tfmask = np.logical_and(25 &lt;= df['AGEP'], df['AGEP'] &lt;= 34)</code><br />
-<code>df_subset = df.loc[tfmask, ['AGEP', 'WGTP']]</code>&#160;<a class="footnote-backref" href="#fnref:filter" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+<code>df_subset = df.loc[tfmask, ['AGEP', 'WGTP']]</code>&#160;<a class="footnote-backref" href="#fnref:filter" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
 </li>
 <li id="fn:version">
 <p>To download <code>dsdemos</code> and checkout <code>v0.0.3</code> for following the example <a href="#example">above</a>:<br />
@@ -717,13 +720,13 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <code>$ cd dsdemos</code><br />
 <code>$ git pull</code><br />
 <code>$ git checkout tags/v0.0.3</code>
-<!-- ## Motivations -->&#160;<a class="footnote-backref" href="#fnref:version" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+<!-- ## Motivations -->&#160;<a class="footnote-backref" href="#fnref:version" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-method">
-<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS Methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+<p><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS Methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.&#160;<a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
 </li>
 <li id="fn:data-harm">
-<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+<p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 13 in the text">&#8617;</a></p>
 </li>
 <li id="fn:prob-race">
 <p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. The <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">2015 ACS questionnaire</a> refers to "race" and "ethnicity" separately. The American Anthropological Association <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
@@ -734,16 +737,16 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <li><a href="https://www.whitehouse.gov/omb/fedreg_1997standards">Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&nbsp;1997)</a></li>
 <li><a href="http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583">American Anthropological Association, "Statement on Race" (1998)</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census">Wikipedia article "Race and ethnicity in the United States Census"</a></li>
-</ul>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 13 in the text">&#8617;</a></p>
+</ul>&#160;<a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
 </li>
 <li id="fn:acs-ests">
-<p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">ACS Guidance for Data Users</a>.&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
+<p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">ACS Guidance for Data Users</a>.&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
 </li>
 <li id="fn:rvpy">
-<p>StackExchange Programmers <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a>.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
+<p>StackExchange Programmers <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a>.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 16 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pydata">
-<p>See the <a href="http://pydata.org/downloads/">PyData stack</a> for a collection of performant Python packages.&#160;<a class="footnote-backref" href="#fnref:pydata" rev="footnote" title="Jump back to footnote 16 in the text">&#8617;</a></p>
+<p>See the <a href="http://pydata.org/downloads/">PyData stack</a> for a collection of performant Python packages.&#160;<a class="footnote-backref" href="#fnref:pydata" rev="footnote" title="Jump back to footnote 17 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -811,39 +814,39 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7946960></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7946068></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79468f0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7982308></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79468f0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7946960></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7946068></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d570></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79fe3b0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79bc3b0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79502d0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a113e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a77f10></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79c2a08></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a113e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79c29d0></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d3e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a13880></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a8e298></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a3d730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79c2a08></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a881b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d3e8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79cab90></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a3d730></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da79c2a08></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a881b8></a></li>
-        <li><a href="/"><built-in method title of str object at 0x7f8da7a13880></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0c1960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0c1068></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0c18f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0fd308></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0c18f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0c1960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0c1068></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e8570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e8538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1793b0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1373b0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b0cb2d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b18c3e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1f2f10></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e8538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b13da08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b18c3e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e8538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b13d9d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e83e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b18e880></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e8538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b209298></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1b8730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b13da08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b2031b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e8538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1e83e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b145b90></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b1b8730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b13da08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b2031b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f413b18e880></a></li>
     </ul>
 </section>
     <hr/>
