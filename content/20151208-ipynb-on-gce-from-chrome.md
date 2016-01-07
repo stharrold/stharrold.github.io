@@ -1,7 +1,7 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2016-01-05T19:20:00Z
+Modified: 2016-01-07T00:00:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
@@ -54,7 +54,7 @@ Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its in
 
 **Why do I use IPython Notebooks?**
 
-[IPython (Jupyter) Notebooks](http://ipython.org/notebook.html) are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages. I prefer the [Continuum Analytics Anaconda Python distribution](https://www.continuum.io/) for its [Conda package manager](http://conda.pydata.org/docs/). I'm using Python 3.5.
+[IPython (Jupyter) Notebooks](http://ipython.org/notebook.html) are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages. I prefer the [Continuum Analytics Anaconda Python distribution](https://www.continuum.io/) for its [Conda package manager](http://conda.pydata.org/docs/). I'm using [Python 3.5](https://docs.python.org/3.5/).
 
 **Why do I use Cloud9?**
 
@@ -127,12 +127,13 @@ Some links I found helpful for this blog post:
     * [Chromebook app SFTP.](https://chrome.google.com/webstore/detail/sftp-file-system/gbheifiifcfekkamhepkeogobihicgmn)
     * [Chomebook app Caret text editor.](https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml)
 * Linux:
+    * [*Classic Shell Scripting* (2005, O'Reilly)](http://shop.oreilly.com/product/9780596005955.do) was my formal introduction to Bash and Linux/Unix.
     * [Choosing between Debian and Ubuntu.](http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html)
     * [SSH login without password.](http://www.linuxproblem.org/art_9.html)
     * [SSH port forwarding (tunnels) explained.](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html)
     * [Google's recommended best practices for securing communications with Compute Engine instances.](https://cloud.google.com/solutions/connecting-securely)
     * [`wget` vs `curl` with examples](http://www.thegeekstuff.com/2012/07/wget-curl/)
-    * [Download from Google Drive with `wget`](http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal)
+    * StackExchange Unix and Linux [download from Google Drive with `wget`](http://unix.stackexchange.com/questions/136371/how-to-download-a-folder-from-google-drive-using-terminal)
     * [Download from Kaggle with `wget`](https://www.kaggle.com/forums/f/15/kaggle-forum/t/6604/downloading-data-via-command-line)
     * [`disown` examples.](http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/)
 * IPython Notebooks:
@@ -189,6 +190,6 @@ Thanks to John and Julie for their early reviews.
     `$ kill 1234` (send a termination signal to the process ID)  
     (install `lsof` with `sudo apt-get install lsof`)
 [^networking]:
-    In the Developers Console, manage IP addresses under "Products & services" > "Networking".
+    In the Developers Console, [manage IP addresses](https://cloud.google.com/compute/docs/instances-and-network) under "Products & services" > "Networking".
 [^host-id]:
     Because the external IP address was reassigned to a new instance, a warning will appear that the remote host identification has changed. To remove the offending ECDSA key from `known_hosts`, in Chrome, open the JavaScript console (Ctrl+Shift+J) and run `term_.command.removeKnownHostByIndex(idx)` where idx is the given line number in `known_hosts`, e.g. from the warning line `Offending ECDSA key in /.ssh/known_hosts:1`, idx=1.

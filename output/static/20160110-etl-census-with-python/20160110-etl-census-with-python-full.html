@@ -266,8 +266,10 @@ div#notebook {
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;Timestamp:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">r&#39;%Y-%m-%dT%H:%M:%S%Z&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()))</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python version:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Versions:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python: &quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;numpy: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;pandas: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -281,10 +283,12 @@ div#notebook {
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Timestamp:
-2016-01-05T21:23:07GMT
+2016-01-07T05:31:12GMT
 
-Python version:
-sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
+Versions:
+Python:  sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
+numpy:  1.10.2
+pandas:  0.17.1
 </pre>
 </div>
 </div>
@@ -566,7 +570,7 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 dfp RAM usage (MB) = 72.1
 dfh RAM usage (MB) = 28.7
 
-Time elapsed (sec) = 2.7
+Time elapsed (sec) = 2.1
 </pre>
 </div>
 </div>
