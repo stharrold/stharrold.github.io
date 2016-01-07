@@ -33,7 +33,11 @@ PATH = 'content'
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
-STATIC_PATHS = ['static']
+STATIC_PATHS = ['static', 'extra/robots.txt']
+# For search engines using `robots.txt`:
+# https://github.com/getpelican/pelican/wiki/Tips-n-Tricks
+EXTRA_PATH_METADATA = {
+    'extra/robots.txt': {'path': 'robots.txt'}}
 ARTICLE_EXCLUDES = STATIC_PATHS
 TIMEZONE = 'Etc/UTC'
 DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
