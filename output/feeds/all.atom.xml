@@ -1,5 +1,685 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2016-01-07T00:00:00+00:00</updated><entry><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html" rel="alternate"></link><updated>2016-01-07T00:00:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2015-12-08:20151208-ipynb-on-gce-from-chrome.html</id><summary type="html">&lt;!--
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2016-01-07T14:15:00+00:00</updated><entry><title>Extract, transform, and load census data with Python</title><link href="https://stharrold.github.io/20160110-etl-census-with-python.html" rel="alternate"></link><updated>2016-01-07T14:15:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</id><summary type="html">&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#example"&gt;Example&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#helpful-links"&gt;Helpful links&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="#footnotes"&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;h3 id="overview"&gt;Overview&lt;/h3&gt;
+&lt;p&gt;The &lt;a href="https://www.census.gov/about/what.html"&gt;Census Bureau&lt;/a&gt; collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data are also made freely available to the public and have a wide range of uses.&lt;sup id="fnref:use-cases"&gt;&lt;a class="footnote-ref" href="#fn:use-cases" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; In this post, I parse, load, and verify data from the Census Bureau's &lt;a href="http://www.census.gov/programs-surveys/acs/about.html"&gt;American Community Survey (ACS)&lt;/a&gt; &lt;a href="https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html"&gt;2013 5-year Public Use Microdata Sample (PUMS)&lt;/a&gt; for Washington&amp;nbsp;DC.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Brief process:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Start with &lt;a href="/20151208-ipynb-on-gce-from-chrome.html"&gt;"Running an IPython Notebook on Google Compute Engine from Chrome"&lt;/a&gt;.&lt;ul&gt;
+&lt;li&gt;For additional storage, &lt;a href="https://cloud.google.com/compute/docs/disks/persistent-disks"&gt;create and mount a disk&lt;/a&gt; to the instance.&lt;sup id="fnref:services"&gt;&lt;a class="footnote-ref" href="#fn:services" rel="footnote"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Download (and decompress):&lt;sup id="fnref:ftp"&gt;&lt;a class="footnote-ref" href="#fn:ftp" rel="footnote"&gt;3&lt;/a&gt;&lt;/sup&gt; &lt;sup id="fnref:api"&gt;&lt;a class="footnote-ref" href="#fn:api" rel="footnote"&gt;4&lt;/a&gt;&lt;/sup&gt;&lt;ul&gt;
+&lt;li&gt;2013 5-year PUMS data dictionary: &lt;a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt"&gt;PUMS_Data_Dictionary_2009-2013.txt&lt;/a&gt; (&amp;lt;1&amp;nbsp;MB)&lt;/li&gt;
+&lt;li&gt;2013 5-year PUMS person and housing records for Washington DC:&lt;ul&gt;
+&lt;li&gt;Person records: &lt;a href="http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip"&gt;csv_pdc.zip&lt;/a&gt; (5&amp;nbsp;MB compressed, 30&amp;nbsp;MB decompressed)&lt;/li&gt;
+&lt;li&gt;Housing records: &lt;a href="http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_hdc.zip"&gt;csv_hdc.zip&lt;/a&gt; (2&amp;nbsp;MB compressed, 13&amp;nbsp;MB decompressed)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;2013 5-year PUMS estimates for user verification: &lt;a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv"&gt;pums_estimates_9_13.csv&lt;/a&gt; (&amp;lt;1&amp;nbsp;MB)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Load the files:&lt;ul&gt;
+&lt;li&gt;Data dictionary TXT: &lt;code&gt;dsdemos.census.parse_pumsdatadict&lt;/code&gt; (see &lt;code&gt;dsdemos&lt;/code&gt; package &lt;a href="#source"&gt;below&lt;/a&gt;)&lt;br /&gt;
+This is a customized parser I wrote for &lt;code&gt;PUMS_Data_Dictionary_2009-2013.txt&lt;/code&gt;. The data dictionary is inconsistently formatted, which complicates parsing.&lt;sup id="fnref:so-post"&gt;&lt;a class="footnote-ref" href="#fn:so-post" rel="footnote"&gt;5&lt;/a&gt;&lt;/sup&gt; &lt;sup id="fnref:json"&gt;&lt;a class="footnote-ref" href="#fn:json" rel="footnote"&gt;6&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;li&gt;Person/housing records and user verification CSVs: &lt;code&gt;pandas.read_csv&lt;/code&gt; &lt;sup id="fnref:pd-csv"&gt;&lt;a class="footnote-ref" href="#fn:pd-csv" rel="footnote"&gt;7&lt;/a&gt;&lt;/sup&gt; &lt;sup id="fnref:pd-py35"&gt;&lt;a class="footnote-ref" href="#fn:pd-py35" rel="footnote"&gt;8&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Confirm the user verification estimates (see example &lt;a href="#example"&gt;below&lt;/a&gt;):&lt;sup id="fnref:pums-acc"&gt;&lt;a class="footnote-ref" href="#fn:pums-acc" rel="footnote"&gt;9&lt;/a&gt;&lt;/sup&gt;&lt;ul&gt;
+&lt;li&gt;To calculate an estimate &lt;span class="math"&gt;\(X\)&lt;/span&gt; for a specific "characteristic" (e.g. "Age 25-34"), sum the column &lt;code&gt;'[P]WGTP'&lt;/code&gt; of the filtered data (&lt;code&gt;'PWGTP'&lt;/code&gt; for person records, &lt;code&gt;'WGTP'&lt;/code&gt; for housing records).&lt;sup id="fnref:filter"&gt;&lt;a class="footnote-ref" href="#fn:filter" rel="footnote"&gt;10&lt;/a&gt;&lt;/sup&gt; &lt;code&gt;'[P]WGTP'&lt;/code&gt; are the sample weights.&lt;/li&gt;
+&lt;li&gt;To calculate the estimate's "direct standard error", use the ACS's modified &lt;a href="https://en.wikipedia.org/wiki/Root-mean-square_deviation"&gt;root-mean-square deviation&lt;/a&gt;:&lt;br /&gt;
+&lt;div class="math"&gt;$$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$&lt;/div&gt;
+&lt;br /&gt;
+where each &lt;span class="math"&gt;\(X_r\)&lt;/span&gt; is the sum of the column &lt;code&gt;'[P]WGTPr'&lt;/code&gt; of the filtered data. &lt;code&gt;'[P]WGTP[1-80]'&lt;/code&gt; are the "replicate weights".&lt;/li&gt;
+&lt;li&gt;To calculate the estimate's margin of error (defined by ACS at the &lt;a href="http://www.wolframalpha.com/input/?i=90%25+confidence+level"&gt;90%&lt;/a&gt; &lt;a href="https://en.wikipedia.org/wiki/Confidence_interval"&gt;confidence level&lt;/a&gt;):&lt;br /&gt;
+&lt;div class="math"&gt;$$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;span id="source"&gt;&lt;strong&gt;Source code:&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):&lt;br /&gt;
+&lt;a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb"&gt;20160110-etl-census-with-python.ipynb&lt;/a&gt;&lt;br /&gt;
+&lt;a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html"&gt;20160110-etl-census-with-python-full.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;This post uses &lt;code&gt;dsdemos&lt;/code&gt; &lt;a href="https://github.com/stharrold/dsdemos/releases/tag/v0.0.3"&gt;v0.0.3&lt;/a&gt;.&lt;sup id="fnref:checkout"&gt;&lt;a class="footnote-ref" href="#fn:checkout" rel="footnote"&gt;11&lt;/a&gt;&lt;/sup&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="motivations"&gt;Motivations&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Why am I using the American Community Survey (ACS)?&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the &lt;a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html"&gt;subjects that the ACS survey addresses&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;The ACS is a reliable data set.&lt;sup id="fnref:acs-method"&gt;&lt;a class="footnote-ref" href="#fn:acs-method" rel="footnote"&gt;12&lt;/a&gt;&lt;/sup&gt; The ACS has quality controls to ensure that it is representative. The survey samples about &lt;a href="https://www.census.gov/acs/www/methodology/sample-size-and-data-quality/sample-size/"&gt;3&amp;nbsp;million addresses per year&lt;/a&gt; with a &lt;a href="https://www.census.gov/acs/www/methodology/sample-size-and-data-quality/response-rates/"&gt;response rate of about 97%&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;The ACS is a time-series data set. The survey sends questionnaires throughout the year and &lt;a href="https://www.census.gov/programs-surveys/acs/news/data-releases.html"&gt;releases data once per year&lt;/a&gt;. A future step is to use the time series to forecast an individual's household income.&lt;/li&gt;
+&lt;li&gt;I recognize that using ACS data can be &lt;span id="problematic"&gt;problematic&lt;/span&gt;. Data from the Census Bureau has been used for harm,&lt;sup id="fnref:data-harm"&gt;&lt;a class="footnote-ref" href="#fn:data-harm" rel="footnote"&gt;13&lt;/a&gt;&lt;/sup&gt; and current ACS terminology asks respondents to identify by terms such as "race".&lt;sup id="fnref:prob-race"&gt;&lt;a class="footnote-ref" href="#fn:prob-race" rel="footnote"&gt;14&lt;/a&gt;&lt;/sup&gt; For this project, I take data from the Census Bureau at face value, and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Why am I using the ACS 5-year estimate?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;As of Dec 2015, the ACS offers two windowing options for their data releases: 1-year estimates and 5-year estimates.&lt;sup id="fnref:acs-ests"&gt;&lt;a class="footnote-ref" href="#fn:acs-ests" rel="footnote"&gt;15&lt;/a&gt;&lt;/sup&gt; Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be more relevant to a specific year is a future step.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Why am I using Python?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This project can be done using Python, R, SQL, and/or other languages.&lt;sup id="fnref:rvpy"&gt;&lt;a class="footnote-ref" href="#fn:rvpy" rel="footnote"&gt;16&lt;/a&gt;&lt;/sup&gt; I'm using Python since a future step is to make a machine learning pipeline, which is a popular application of &lt;a href="http://scikit-learn.org/"&gt;scikit-learn&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;What about "big data"?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.&lt;sup id="fnref:pydata"&gt;&lt;a class="footnote-ref" href="#fn:pydata" rel="footnote"&gt;17&lt;/a&gt;&lt;/sup&gt; These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. &lt;a href="https://en.wikipedia.org/wiki/Out-of-core_algorithm"&gt;out-of-core&lt;/a&gt; computations), there's &lt;a href="http://dask.pydata.org/en/latest/"&gt;Dask&lt;/a&gt; for Python, and for operations that require a cluster of machines, there's &lt;a href="http://spark.apache.org/"&gt;Spark&lt;/a&gt; for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.&lt;/p&gt;
+&lt;!--
+Note: The "Example" header will be rendered with `id="example"`.
+  Creating an additional `id="example"` will break the reference.
+  `href="#example"` will automatically link to this header.
+--&gt;
+
+&lt;h3 id="example"&gt;Example&lt;/h3&gt;
+&lt;p&gt;This is an abbreviated example of my ETL procedure in the Jupyter Notebook for this post (see links to source code &lt;a href="#source"&gt;above&lt;/a&gt;).&lt;/p&gt;
+&lt;!-- 
+Copy-pasted from
+    /static/20160110-etl-census-with-python/example-basic.html
+TODO: Add exported notebook by embedding HTML rather than copy-paste.
+    https://github.com/stharrold/stharrold.github.io/issues/5
+--&gt;
+
+&lt;!--
+BEGIN IPYNB
+--&gt;
+
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[1]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="n"&gt;cd&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;/home/samuel_harrold
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[2]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Import standard packages.&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;subprocess&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sys&lt;/span&gt;
+&lt;span class="c"&gt;# Import installed packages.&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt;
+&lt;span class="c"&gt;# Import local packages.&lt;/span&gt;
+&lt;span class="c"&gt;# Insert current directory into module search path.&lt;/span&gt;
+&lt;span class="c"&gt;# &lt;code&gt;dsdemos&lt;/code&gt; version: https://github.com/stharrold/dsdemos/releases/tag/v0.0.3&lt;/span&gt;
+&lt;span class="n"&gt;sys&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;curdir&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;r&amp;#39;dsdemos&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;dsdemos&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;dsd&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[3]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="c"&gt;# File paths&lt;/span&gt;
+&lt;span class="n"&gt;path_acs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;r&amp;#39;/mnt/disk-20151227t211000z/www2-census-gov/programs-surveys/acs/&amp;#39;&lt;/span&gt;
+&lt;span class="c"&gt;# 2013 5-year PUMS data dictionary&lt;/span&gt;
+&lt;span class="c"&gt;# http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt&lt;/span&gt;
+&lt;span class="n"&gt;path_dtxt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path_acs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;r&amp;#39;tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c"&gt;# 2013 5-year PUMS housing records for Washington DC (extracted from csv_pdc.zip)&lt;/span&gt;
+&lt;span class="c"&gt;# http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip&lt;/span&gt;
+&lt;span class="n"&gt;path_hcsv&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path_acs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;r&amp;#39;data/pums/2013/5-Year/ss13hdc.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c"&gt;# 2013 5-year PUMS user verification estimates&lt;/span&gt;
+&lt;span class="c"&gt;# http://www2.census.gov/programs-surveys/acs/tech_docs/pums/estimates/pums_estimates_9_13.csv&lt;/span&gt;
+&lt;span class="n"&gt;path_ecsv&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path_acs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;r&amp;#39;tech_docs/pums/estimates/pums_estimates_9_13.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[4]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Load and display the data dictionary.&lt;/span&gt;
+&lt;span class="n"&gt;ddict&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dsd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;census&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;parse_pumsdatadict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;path_dtxt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;code&gt;ddict&lt;/code&gt;, &lt;code&gt;dfd&lt;/code&gt;: Convert the nested &lt;code&gt;dict&lt;/code&gt; into a hierarchical data frame.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c"&gt;# &lt;code&gt;tmp&lt;/code&gt; is a throwaway variable&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;record_type&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;ddict&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;record_types&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
+    &lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;record_type&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_dict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ddict&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;record_types&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="n"&gt;record_type&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;orient&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;index&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;dfd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;names&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;record_type&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;var_name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="n"&gt;dfd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&amp;#96;ddict&amp;#96;, &amp;#96;dfd&amp;#96;: Convert the nested &amp;#96;dict&amp;#96; into a hierarchical data frame.
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[4]:&lt;/div&gt;
+
+&lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
+&lt;div&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;length&lt;/th&gt;
+      &lt;th&gt;description&lt;/th&gt;
+      &lt;th&gt;var_codes&lt;/th&gt;
+      &lt;th&gt;notes&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;record_type&lt;/th&gt;
+      &lt;th&gt;var_name&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th rowspan="5" valign="top"&gt;HOUSING RECORD&lt;/th&gt;
+      &lt;th&gt;ACR&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;Lot size&lt;/td&gt;
+      &lt;td&gt;{'b': 'N/A (GQ/not a one-family house or mobil...&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ADJHSG&lt;/th&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;Adjustment factor for housing dollar amounts (...&lt;/td&gt;
+      &lt;td&gt;{'1086032': '2009 factor', '1068395': '2010 fa...&lt;/td&gt;
+      &lt;td&gt;[Note: The values of ADJHSG inflation-adjusts ...&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ADJINC&lt;/th&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;Adjustment factor for income and earnings doll...&lt;/td&gt;
+      &lt;td&gt;{'1085467': '2009 factor (0.999480 * 1.0860317...&lt;/td&gt;
+      &lt;td&gt;[Note: The values of ADJINC inflation-adjusts ...&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;AGS&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;Sales of Agriculture Products (Yearly sales)&lt;/td&gt;
+      &lt;td&gt;{'b': 'N/A (GQ/vacant/not a one-family house o...&lt;/td&gt;
+      &lt;td&gt;[Note: No adjustment factor is applied to AGS.]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;BATH&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;Bathtub or shower&lt;/td&gt;
+      &lt;td&gt;{'b': 'N/A (GQ)', '1': 'Yes', '2': 'No'}&lt;/td&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[5]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Load and display the housing records.&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;code&gt;dfh&lt;/code&gt;: First 5 housing records and first 10 columns.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;dfh&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path_hcsv&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;dfh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;iloc&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&amp;#96;dfh&amp;#96;: First 5 housing records and first 10 columns.
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[5]:&lt;/div&gt;
+
+&lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
+&lt;div&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;insp&lt;/th&gt;
+      &lt;th&gt;RT&lt;/th&gt;
+      &lt;th&gt;SERIALNO&lt;/th&gt;
+      &lt;th&gt;DIVISION&lt;/th&gt;
+      &lt;th&gt;PUMA00&lt;/th&gt;
+      &lt;th&gt;PUMA10&lt;/th&gt;
+      &lt;th&gt;REGION&lt;/th&gt;
+      &lt;th&gt;ST&lt;/th&gt;
+      &lt;th&gt;ADJHSG&lt;/th&gt;
+      &lt;th&gt;ADJINC&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;600&lt;/td&gt;
+      &lt;td&gt;H&lt;/td&gt;
+      &lt;td&gt;2009000000403&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;102&lt;/td&gt;
+      &lt;td&gt;-9&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;1086032&lt;/td&gt;
+      &lt;td&gt;1085467&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;H&lt;/td&gt;
+      &lt;td&gt;2009000001113&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;103&lt;/td&gt;
+      &lt;td&gt;-9&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;1086032&lt;/td&gt;
+      &lt;td&gt;1085467&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;480&lt;/td&gt;
+      &lt;td&gt;H&lt;/td&gt;
+      &lt;td&gt;2009000001978&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;103&lt;/td&gt;
+      &lt;td&gt;-9&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;1086032&lt;/td&gt;
+      &lt;td&gt;1085467&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;NaN&lt;/td&gt;
+      &lt;td&gt;H&lt;/td&gt;
+      &lt;td&gt;2009000002250&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;105&lt;/td&gt;
+      &lt;td&gt;-9&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;1086032&lt;/td&gt;
+      &lt;td&gt;1085467&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;2500&lt;/td&gt;
+      &lt;td&gt;H&lt;/td&gt;
+      &lt;td&gt;2009000002985&lt;/td&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;101&lt;/td&gt;
+      &lt;td&gt;-9&lt;/td&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;1086032&lt;/td&gt;
+      &lt;td&gt;1085467&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[6]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Load and display the verification estimates.&lt;/span&gt;
+&lt;span class="c"&gt;# Select the estimates for Washington DC then for the&lt;/span&gt;
+&lt;span class="c"&gt;# characteristic &amp;#39;Owner occupied units (TEN in 1,2)&amp;#39;.&lt;/span&gt;
+&lt;span class="n"&gt;dfe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path_ecsv&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;tfmask_dc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dfe&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;state&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;District of Columbia&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;dfe_dc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dfe&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;tfmask_dc&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;code&gt;dfe_dc&lt;/code&gt;: This example verifies these quantities.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;dfe_dc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;310&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&amp;#96;dfe_dc&amp;#96;: This example verifies these quantities.
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt output_prompt"&gt;Out[6]:&lt;/div&gt;
+
+&lt;div class="output_html rendered_html output_subarea output_execute_result"&gt;
+&lt;div&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;st&lt;/th&gt;
+      &lt;th&gt;state&lt;/th&gt;
+      &lt;th&gt;characteristic&lt;/th&gt;
+      &lt;th&gt;pums_est_09_to_13&lt;/th&gt;
+      &lt;th&gt;pums_se_09_to_13&lt;/th&gt;
+      &lt;th&gt;pums_moe_09_to_13&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;310&lt;/th&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;District of Columbia&lt;/td&gt;
+      &lt;td&gt;Owner occupied units (TEN in 1,2)&lt;/td&gt;
+      &lt;td&gt;110,362&lt;/td&gt;
+      &lt;td&gt;1363&lt;/td&gt;
+      &lt;td&gt;2242&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In&amp;nbsp;[7]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Verify the estimates following&lt;/span&gt;
+&lt;span class="c"&gt;# https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html&lt;/span&gt;
+&lt;span class="c"&gt;# http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf&lt;/span&gt;
+&lt;span class="c"&gt;# Define the column names for the housing weights.&lt;/span&gt;
+&lt;span class="n"&gt;hwt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;WGTP&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;hwts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;hwt&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;inum&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;inum&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;81&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="c"&gt;# [&amp;#39;WGTP1&amp;#39;, ..., &amp;#39;WGTP80&amp;#39;]&lt;/span&gt;
+&lt;span class="c"&gt;# Select the reference verification data for the characteristic.&lt;/span&gt;
+&lt;span class="n"&gt;char&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;Owner occupied units (TEN in 1,2)&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;#39;{char}&amp;#39;&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;char&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;char&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;tfmask_ref&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dfe_dc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;characteristic&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;char&lt;/span&gt;
+&lt;span class="c"&gt;# Select the records for the characteristic.&lt;/span&gt;
+&lt;span class="n"&gt;tfmask_test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;logical_or&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dfh&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;TEN&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dfh&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;TEN&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c"&gt;# Calculate the estimate (&amp;#39;est&amp;#39;) for the characteristic.&lt;/span&gt;
+&lt;span class="c"&gt;# The estimate is the sum of the sample weights &amp;#39;WGTP&amp;#39;.&lt;/span&gt;
+&lt;span class="n"&gt;col&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;pums_est_09_to_13&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;    &amp;#39;{col}&amp;#39;:&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ref_est&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;int&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dfe_dc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;tfmask_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;,&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;test_est&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dfh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;tfmask_test&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;hwt&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isclose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ref_est&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_est&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rtol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;atol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;(ref, test) = {tup}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tup&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ref_est&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_est&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;span class="c"&gt;# Calculate the &amp;quot;direct standard error&amp;quot; (&amp;#39;se&amp;#39;) of the estimate.&lt;/span&gt;
+&lt;span class="c"&gt;# The direct standard error is a modified root-mean-square deviation&lt;/span&gt;
+&lt;span class="c"&gt;# using the &amp;quot;replicate weights&amp;quot; &amp;#39;WGTP[1-80]&amp;#39;.&lt;/span&gt;
+&lt;span class="n"&gt;col&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;pums_se_09_to_13&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;    &amp;#39;{col}&amp;#39; :&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ref_se&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dfe_dc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;tfmask_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;test_se&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&lt;em&gt;&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;dfh&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;tfmask_test&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;hwts&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;test_est&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&lt;strong&gt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;&lt;span class="o"&gt;&lt;/strong&gt;&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isclose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ref_se&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_se&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rtol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;atol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;(ref, test) = {tup}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tup&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ref_se&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_se&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;span class="c"&gt;# Calculate the margin of error (&amp;#39;moe&amp;#39;) at the 90% confidence level&lt;/span&gt;
+&lt;span class="c"&gt;# (+/- 1.645 standard errors).&lt;/span&gt;
+&lt;span class="n"&gt;col&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;pums_moe_09_to_13&amp;#39;&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;    &amp;#39;{col}&amp;#39;:&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;ref_moe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;dfe_dc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;tfmask_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;col&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;test_moe&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;1.645&lt;/span&gt;&lt;span class="o"&gt;&lt;/em&gt;&lt;/span&gt;&lt;span class="n"&gt;test_se&lt;/span&gt;
+&lt;span class="k"&gt;assert&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;isclose&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ref_moe&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_moe&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;rtol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;atol&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;(ref, test) = {tup}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;tup&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ref_moe&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_moe&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;p&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+&lt;div class="output_area"&gt;&lt;div class="prompt"&gt;&lt;/div&gt;
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;&amp;apos;Owner occupied units (TEN in 1,2)&amp;apos;
+    &amp;apos;pums_est_09_to_13&amp;apos;: (ref, test) = (110362, 110362)
+    &amp;apos;pums_se_09_to_13&amp;apos; : (ref, test) = (1363, 1363.1910174293257)
+    &amp;apos;pums_moe_09_to_13&amp;apos;: (ref, test) = (2242, 2242.449223671241)
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;!--
+END IPYNB
+--&gt;
+
+&lt;h3 id="helpful-links"&gt;Helpful links&lt;/h3&gt;
+&lt;p&gt;Some links I found helpful for this blog post:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;American Community Survey (ACS):&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://www.census.gov/programs-surveys/acs/about.html"&gt;ACS About&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.census.gov/programs-surveys/acs/guidance.html"&gt;ACS Guidance for Data Users&lt;/a&gt; describes how to get started with ACS data.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.census.gov/programs-surveys/acs/technical-documentation.html"&gt;ACS Technical Documentation&lt;/a&gt; links to resources for learning how to work with ACS data.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.census.gov/programs-surveys/acs/methodology.html"&gt;ACS Methodology&lt;/a&gt; includes design details, sample sizes, coverage estimates, and past questionnaires.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.census.gov/programs-surveys/acs/library.All.html"&gt;ACS Library&lt;/a&gt; has a collection of reports and infographics using ACS data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Python:&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://shop.oreilly.com/product/0636920028154.do"&gt;&lt;em&gt;Learning Python, 5th ed.&lt;/em&gt; (2013, O'Reilly)&lt;/a&gt; was my formal introduction to Python.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://shop.oreilly.com/product/0636920023784.do"&gt;&lt;em&gt;Python for Data Analysis&lt;/em&gt; (2012, O'Reilly)&lt;/a&gt; introduced me to &lt;code&gt;pandas&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://shop.oreilly.com/product/0636920027072.do"&gt;&lt;em&gt;Python Cookbook, 3rd ed.&lt;/em&gt; (2013, O'Reilly)&lt;/a&gt; has a collection of optimized recipes.&lt;/li&gt;
+&lt;li&gt;From the well-documented &lt;a href="https://docs.python.org/3/index.html"&gt;Python 3.5&lt;/a&gt; standard library, I used &lt;a href="https://docs.python.org/3/library/collections.html"&gt;collections&lt;/a&gt;, &lt;a href="https://docs.python.org/3/library/functools.html"&gt;functools&lt;/a&gt;, &lt;a href="https://docs.python.org/3/library/os.html"&gt;os&lt;/a&gt;, &lt;a href="https://docs.python.org/3/library/pdb.html"&gt;pdb&lt;/a&gt;, &lt;a href="https://docs.python.org/3/library/subprocess.html"&gt;subprocess&lt;/a&gt;, &lt;a href="https://docs.python.org/3/library/sys.html"&gt;sys&lt;/a&gt;, and &lt;a href="https://docs.python.org/3/library/time.html"&gt;time&lt;/a&gt; for this post.&lt;/li&gt;
+&lt;li&gt;Likewise, the documentation for &lt;a href="http://docs.scipy.org/doc/numpy-1.10.0/reference/"&gt;numpy&lt;/a&gt; and &lt;a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/"&gt;pandas&lt;/a&gt; is thorough and invaluable.&lt;/li&gt;
+&lt;li&gt;Of IPython's convenient &lt;a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html"&gt;"magic" commands&lt;/a&gt;, within this post's Jupyter Notebooks, I used &lt;a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-pdb"&gt;%pdb&lt;/a&gt;, &lt;a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-reload_ext"&gt;%reload_ext&lt;/a&gt;, and the extension &lt;a href="http://ipython.readthedocs.org/en/stable/config/extensions/autoreload.html?highlight=autoreload#module-IPython.extensions.autoreload"&gt;%autoreload&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;StackOverflow &lt;a href="http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python"&gt;"How to get line count cheaply in Python"&lt;/a&gt; (not as performant as &lt;code&gt;wc -l&lt;/code&gt; but still neat).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Git:&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://guides.github.com/"&gt;GitHub Guides&lt;/a&gt; are where I started with &lt;code&gt;git&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://git-scm.com/"&gt;Git documentation&lt;/a&gt; answers a lot of questions.&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/nvie/gitflow"&gt;Git-flow&lt;/a&gt; streamlines my repository management with this &lt;a href="http://nvie.com/posts/a-successful-git-branching-model/"&gt;branching model&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;StackOverflow &lt;a href="http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git"&gt;"Download a specific tag with git"&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;dsdemos&lt;/code&gt; &lt;a href="https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e"&gt;v0.0.3 (browse code)&lt;/a&gt;:&lt;ul&gt;
+&lt;li&gt;To design the package file structure, I used &lt;a href="http://shop.oreilly.com/product/0636920028154.do"&gt;&lt;em&gt;Learning Python, 5th ed.&lt;/em&gt; (2013, O'Reilly)&lt;/a&gt;, Part V, "Modules and Packages".&lt;/li&gt;
+&lt;li&gt;I use &lt;a href="https://google.github.io/styleguide/pyguide.html"&gt;Google-style docstrings&lt;/a&gt; adapted from the &lt;a href="http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html"&gt;example&lt;/a&gt; by the &lt;a href="https://sphinxcontrib-napoleon.readthedocs.org/en/latest/"&gt;Napoleon&lt;/a&gt; extension to &lt;a href="http://sphinx-doc.org/"&gt;Sphinx&lt;/a&gt; (a Python documentation generator, not yet used by &lt;code&gt;dsdemos&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://pytest.org/latest/"&gt;Pytest&lt;/a&gt; for testing.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://semver.org/"&gt;Semantic Versioning&lt;/a&gt; for version numbers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="footnotes"&gt;Footnotes&lt;/h3&gt;
+&lt;div class="footnote"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn:use-cases"&gt;
+&lt;p&gt;Some use cases for the Census Bureau's American Community Survey with data access recommendations: &lt;a href="https://www.census.gov/acs/www/guidance/which-data-tool/"&gt;ACS Which Data Tool&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:use-cases" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:services"&gt;
+&lt;p&gt;For this post, I mounted a single disk for storage to a single instance and loaded the data in RAM. A scaled version of this pipeline on Google Cloud Platform could include integrated services such as &lt;a href="https://cloud.google.com/storage/"&gt;Cloud Storage&lt;/a&gt; and &lt;a href="https://cloud.google.com/bigquery/"&gt;Big Query&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:services" rev="footnote" title="Jump back to footnote 2 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:ftp"&gt;
+&lt;p&gt;To download &lt;a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html"&gt;ACS data via FTP&lt;/a&gt;:&lt;br /&gt;
+&lt;code&gt;$ sudo curl --remote-name &amp;lt;url&amp;gt;&lt;/code&gt;&lt;br /&gt;
+Decompress the &lt;code&gt;.zip&lt;/code&gt; files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:api"&gt;
+&lt;p&gt;I'm downloading the data files rather than using the &lt;a href="http://www.census.gov/developers/"&gt;Census Bureau's API&lt;/a&gt; because this project requires one-time access to all data rather than dynamic access to a subset of the data.&amp;#160;&lt;a class="footnote-backref" href="#fnref:api" rev="footnote" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:so-post"&gt;
+&lt;p&gt;StackOverflow &lt;a href="http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141"&gt;"regex to parse well-formatted multi-line data dictionary"&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:so-post" rev="footnote" title="Jump back to footnote 5 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:json"&gt;
+&lt;p&gt;With &lt;code&gt;dsdemos&lt;/code&gt; v0.0.3 &lt;a href="#source"&gt;above&lt;/a&gt;, you can export the data dictionary to &lt;a href="http://json.org/"&gt;JSON format&lt;/a&gt; with the &lt;a href="https://docs.python.org/3.5/library/json.html"&gt;&lt;code&gt;json&lt;/code&gt; Python library&lt;/a&gt;. See &lt;a href="https://github.com/stharrold/dsdemos/blob/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e/tests/test_census.py#L34-L43"&gt;example from &lt;code&gt;dsdemos&lt;/code&gt; tests&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:json" rev="footnote" title="Jump back to footnote 6 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:pd-csv"&gt;
+&lt;p&gt;&lt;a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html"&gt;Docs for &lt;code&gt;pandas.read_csv&lt;/code&gt;&lt;/a&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:pd-csv" rev="footnote" title="Jump back to footnote 7 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:pd-py35"&gt;
+&lt;p&gt;Pandas 0.17.1 has a compatibility issue with Python 3.5. See &lt;a href="https://github.com/pydata/pandas/issues/11915"&gt;GitHub pandas issue 11915&lt;/a&gt; for a temporary fix. The issue should be resolved in pandas 0.18.&amp;#160;&lt;a class="footnote-backref" href="#fnref:pd-py35" rev="footnote" title="Jump back to footnote 8 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:pums-acc"&gt;
+&lt;p&gt;For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see &lt;a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf"&gt;2013 5-year PUMS Accuracy&lt;/a&gt;, section 7, "Measuring Sampling Error". The sample weights &lt;code&gt;'[P]WGTP'&lt;/code&gt; mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (i.e. uncertainty) associated with an estimate of a characteristic:&lt;br /&gt;
+&lt;ol&gt;
+&lt;li&gt;Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns &lt;code&gt;'[P]WGTP[1-80]'&lt;/code&gt; and requires looking up a design factor for the specific characteristic (e.g "population by tenure"). See the accuracy PDF for the design factors.&lt;/li&gt;
+&lt;li&gt;Calculate the "direct standard error" of the estimate using the "replicate weights", which are the columns &lt;code&gt;'[P]WGTP[1-80]'&lt;/code&gt;. This method is extensible to many kinds of characteristics (e.g. population by tenure by age).
+&lt;/ol&gt;&lt;br /&gt;
+Note: Controlled estimates of characteristics like "total population" have 0 direct standard error from replicate weights. Use the generalized standard error for these estimates.&amp;#160;&lt;a class="footnote-backref" href="#fnref:pums-acc" rev="footnote" title="Jump back to footnote 9 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:filter"&gt;
+&lt;p&gt;There are &lt;a href="http://pandas.pydata.org/pandas-docs/stable/indexing.html"&gt;several ways&lt;/a&gt; to select rows by filtering on conditions using &lt;code&gt;pandas&lt;/code&gt;. I prefer creating a &lt;code&gt;pandas.Series&lt;/code&gt; with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the &lt;a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html"&gt;docs for &lt;code&gt;pandas.DataFrame.loc&lt;/code&gt;&lt;/a&gt;.&lt;br /&gt;
+Example query: Select columns &lt;code&gt;'AGEP'&lt;/code&gt; and &lt;code&gt;'WGTP'&lt;/code&gt; where values for &lt;code&gt;'AGEP'&lt;/code&gt; are between 25 and 34.&lt;br /&gt;
+&lt;code&gt;tfmask = np.logical_and(25 &amp;lt;= df['AGEP'], df['AGEP'] &amp;lt;= 34)&lt;/code&gt;&lt;br /&gt;
+&lt;code&gt;df_subset = df.loc[tfmask, ['AGEP', 'WGTP']]&lt;/code&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:filter" rev="footnote" title="Jump back to footnote 10 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:checkout"&gt;
+&lt;p&gt;To download &lt;code&gt;dsdemos&lt;/code&gt; and checkout v0.0.3 for following the example &lt;a href="#example"&gt;above&lt;/a&gt;:&lt;br /&gt;
+&lt;code&gt;$ cd ~&lt;/code&gt;&lt;br /&gt;
+&lt;code&gt;$ git clone https://github.com/stharrold/dsdemos.git&lt;/code&gt;&lt;br /&gt;
+&lt;code&gt;$ cd dsdemos&lt;/code&gt;&lt;br /&gt;
+&lt;code&gt;$ git checkout tags/v0.0.3&lt;/code&gt;&lt;br /&gt;
+If you already have a clone of &lt;code&gt;dsdemos&lt;/code&gt;, update your local repository then checkout the new tag:&lt;br /&gt;
+&lt;code&gt;$ cd dsdemos&lt;/code&gt;&lt;br /&gt;
+&lt;code&gt;$ git pull&lt;/code&gt;&lt;br /&gt;
+&lt;code&gt;$ git checkout tags/v0.0.3&lt;/code&gt;
+&lt;!-- ## Motivations --&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:checkout" rev="footnote" title="Jump back to footnote 11 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:acs-method"&gt;
+&lt;p&gt;&lt;a href="http://www.census.gov/programs-surveys/acs/methodology.html"&gt;ACS Methodology&lt;/a&gt; includes design details, sample sizes, coverage estimates, and past questionnaires.&amp;#160;&lt;a class="footnote-backref" href="#fnref:acs-method" rev="footnote" title="Jump back to footnote 12 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:data-harm"&gt;
+&lt;p&gt;Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&amp;nbsp;War&amp;nbsp;II. See the &lt;a href="https://www.aclu.org/frequently-asked-questions-national-census"&gt;ACLU's FAQ section about census data&lt;/a&gt; and the &lt;a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans"&gt;Wikipedia article "Internment of Japanese Americans"&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 13 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:prob-race"&gt;
+&lt;p&gt;"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. The &lt;a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf"&gt;2015 ACS questionnaire&lt;/a&gt; refers to "race" and "ethnicity" separately. The American Anthropological Association &lt;a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf"&gt;recommended in 1997&lt;/a&gt; that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:&lt;br /&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.census.gov/topics/population/race/about.html"&gt;Census Bureau's statement about "race" (2013)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.whitehouse.gov/omb/fedreg_notice_15/"&gt;Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&amp;nbsp;15 (1977)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.whitehouse.gov/omb/fedreg_directive_15"&gt;Office of Management and Budget, "Review of the Racial and Ethnic Standards to the OMB Concerning Changes" (Jul&amp;nbsp;1997)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.whitehouse.gov/omb/fedreg_1997standards"&gt;Office of Management and Budget, "Revisions to the Standards for the Classification of Federal Data on Race and Ethnicity" (Oct&amp;nbsp;1997)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.americananthro.org/ConnectWithAAA/Content.aspx?ItemNumber=2583"&gt;American Anthropological Association, "Statement on Race" (1998)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Race_and_ethnicity_in_the_United_States_Census"&gt;Wikipedia article "Race and ethnicity in the United States Census"&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&amp;#160;&lt;a class="footnote-backref" href="#fnref:prob-race" rev="footnote" title="Jump back to footnote 14 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:acs-ests"&gt;
+&lt;p&gt;The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see &lt;a href="https://www.census.gov/programs-surveys/acs/guidance.html"&gt;ACS Guidance for Data Users&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 15 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:rvpy"&gt;
+&lt;p&gt;StackExchange Programmers &lt;a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis"&gt;"R vs Python for data analysis"&lt;/a&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 16 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id="fn:pydata"&gt;
+&lt;p&gt;See the &lt;a href="http://pydata.org/downloads/"&gt;PyData stack&lt;/a&gt; for a collection of performant Python packages.&amp;#160;&lt;a class="footnote-backref" href="#fnref:pydata" rev="footnote" title="Jump back to footnote 17 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;!-- ## Overview --&gt;
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "left",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</summary><category term="etl"></category><category term="how-to"></category><category term="python"></category><category term="pandas"></category><category term="census"></category></entry><entry><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html" rel="alternate"></link><updated>2016-01-07T14:15:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2015-12-08:20151208-ipynb-on-gce-from-chrome.html</id><summary type="html">&lt;!--
 Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
 otherwise page is named only &lt;slug&gt; without '.html'
 --&gt;
@@ -147,7 +827,7 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;li&gt;&lt;a href="http://www.cyberciti.biz/faq/unix-linux-disown-command-examples-usage-syntax/"&gt;&lt;code&gt;disown&lt;/code&gt; examples.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;IPython Notebooks:&lt;ul&gt;
+&lt;li&gt;IPython (Jupyter) Notebooks:&lt;ul&gt;
 &lt;li&gt;&lt;a href="https://gist.github.com/iamatypeofwalrus/5183133"&gt;Running an IPython Notebook from Amazon Web Services.&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://gist.github.com/samklr/07bee2868a6ed72a8ec4"&gt;Hosting a password-protected IPython Notebook on Google Compute Engine.&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;

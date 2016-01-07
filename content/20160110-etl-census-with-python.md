@@ -1,7 +1,7 @@
 Title: Extract, transform, and load census data with Python
-Status: draft
+Status: published
 Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-07T00:00:00Z
+Modified: 2016-01-07T14:15:00Z
 Tags: etl, how-to, python, pandas, census
 Category: ETL
 Slug: 20160110-etl-census-with-python
@@ -13,13 +13,13 @@ Summary: I parse, load, and verify data from the Census Bureau's American Commun
 
 ## Overview
 
-The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data is also made freely available to the public and has a wide range of use cases.[^use-cases] In this post I parse, load, and verify data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
+The [Census Bureau](https://www.census.gov/about/what.html) collects data from people in the United States through multiple survey programs. Federal, state, and local governments use the data to assess how constituents are represented and to allocate spending. The data are also made freely available to the public and have a wide range of uses.[^use-cases] In this post, I parse, load, and verify data from the Census Bureau's [American Community Survey (ACS)](http://www.census.gov/programs-surveys/acs/about.html) [2013 5-year Public Use Microdata Sample (PUMS)](https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html) for Washington&nbsp;DC.
 
 **Brief process:**
 
 * Start with ["Running an IPython Notebook on Google Compute Engine from Chrome"](/20151208-ipynb-on-gce-from-chrome.html).
     * For additional storage, [create and mount a disk](https://cloud.google.com/compute/docs/disks/persistent-disks) to the instance.[^services]
-* Download (and decompress):[^ftp] [^no-api]
+* Download (and decompress):[^ftp] [^api]
     * 2013 5-year PUMS data dictionary: [PUMS_Data_Dictionary_2009-2013.txt](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt) (<1&nbsp;MB)
     * 2013 5-year PUMS person and housing records for Washington DC:
         * Person records: [csv_pdc.zip](http://www2.census.gov/programs-surveys/acs/data/pums/2013/5-Year/csv_pdc.zip) (5&nbsp;MB compressed, 30&nbsp;MB decompressed)
@@ -31,10 +31,10 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
     * Person/housing records and user verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
 * Confirm the user verification estimates (see example <a href="#example">below</a>):[^pums-acc]
     * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter] `'[P]WGTP'` are the sample weights.
-    * To calculate the estimate's "direct standard error", use the ACS's modified root-mean-square deviation:  
+    * To calculate the estimate's "direct standard error", use the ACS's modified [root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation):  
     $$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$  
     where each $X_r$ is the sum of the column `'[P]WGTPr'` of the filtered data. `'[P]WGTP[1-80]'` are the "replicate weights".
-    * To calculate the estimate's margin of error (defined by ACS at the 90% confidence level):  
+    * To calculate the estimate's margin of error (defined by ACS at the [90%](http://www.wolframalpha.com/input/?i=90%25+confidence+level) [confidence level](https://en.wikipedia.org/wiki/Confidence_interval)):  
     $$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$
 
 <span id="source">**Source code:**</span>
@@ -42,7 +42,7 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 * For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):  
 [20160110-etl-census-with-python.ipynb]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb)  
 [20160110-etl-census-with-python-full.html]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html)
-* This post uses `dsdemos` [v0.0.3](https://github.com/stharrold/dsdemos/releases/tag/v0.0.3).[^version]
+* This post uses `dsdemos` [v0.0.3](https://github.com/stharrold/dsdemos/releases/tag/v0.0.3).[^checkout]
 
 ## Motivations
 
@@ -55,7 +55,7 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 
 **Why am I using the ACS 5-year estimate?**
 
-As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.[^acs-ests] Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.
+As of Dec 2015, the ACS offers two windowing options for their data releases: 1-year estimates and 5-year estimates.[^acs-ests] Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be more relevant to a specific year is a future step.
 
 **Why am I using Python?**
 
@@ -63,7 +63,7 @@ This project can be done using Python, R, SQL, and/or other languages.[^rvpy] I'
 
 **What about "big data"?**
 
-I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. out-of-core computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.
+I'm starting with a data set small enough to be processed in memory (i.e. operated on in RAM), since the focus of many Python packages is in-memory operations on single machines.[^pydata] These packages often parallelize operations across the machine's processor cores. For operations that exceed the machine's available RAM (i.e. [out-of-core](https://en.wikipedia.org/wiki/Out-of-core_algorithm) computations), there's [Dask](http://dask.pydata.org/en/latest/) for Python, and for operations that require a cluster of machines, there's [Spark](http://spark.apache.org/) for Java, Scala, Python, and R. Scaling a pipeline to a large enough data set that requires a cluster is a future step.
 
 <!--
 Note: The "Example" header will be rendered with `id="example"`.
@@ -72,7 +72,7 @@ Note: The "Example" header will be rendered with `id="example"`.
 -->
 ## Example
 
-This is an abbreviated example of my ETL procedure in the Jupyter Notebook (see links to source code <a href="#source">above</a>).
+This is an abbreviated example of my ETL procedure in the Jupyter Notebook for this post (see links to source code <a href="#source">above</a>).
 
 <!-- 
 Copy-pasted from
@@ -84,7 +84,6 @@ TODO: Add exported notebook by embedding HTML rather than copy-paste.
 <!--
 BEGIN IPYNB
 -->
-
 
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -143,10 +142,6 @@ BEGIN IPYNB
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="c"># File paths</span>
-<span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
-<span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20160110-etl-census-with-python&#39;</span>
-<span class="n">filename</span> <span class="o">=</span> <span class="s">r&#39;example&#39;</span>
-<span class="n">path_ipynb</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="n">filename</span><span class="o">+</span><span class="s">&#39;.ipynb&#39;</span><span class="p">)</span>
 <span class="n">path_acs</span> <span class="o">=</span> <span class="s">r&#39;/mnt/disk-20151227t211000z/www2-census-gov/programs-surveys/acs/&#39;</span>
 <span class="c"># 2013 5-year PUMS data dictionary</span>
 <span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt</span>
@@ -537,23 +532,23 @@ Some links I found helpful for this blog post:
     * [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
     * [ACS Library](https://www.census.gov/programs-surveys/acs/library.All.html) has a collection of reports and infographics using ACS data.
 * Python:
-    * [*Learning Python* (5th ed, 2013, O'Reilly)](http://shop.oreilly.com/product/0636920028154.do) was my formal introduction to Python.
+    * [*Learning Python, 5th ed.* (2013, O'Reilly)](http://shop.oreilly.com/product/0636920028154.do) was my formal introduction to Python.
     * [*Python for Data Analysis* (2012, O'Reilly)](http://shop.oreilly.com/product/0636920023784.do) introduced me to `pandas`.
-    * [*Python Cookbook* (3rd ed, 2013, O'Reilly)](http://shop.oreilly.com/product/0636920027072.do) has a collection of optimized recipes.
+    * [*Python Cookbook, 3rd ed.* (2013, O'Reilly)](http://shop.oreilly.com/product/0636920027072.do) has a collection of optimized recipes.
     * From the well-documented [Python 3.5](https://docs.python.org/3/index.html) standard library, I used [collections](https://docs.python.org/3/library/collections.html), [functools](https://docs.python.org/3/library/functools.html), [os](https://docs.python.org/3/library/os.html), [pdb](https://docs.python.org/3/library/pdb.html), [subprocess](https://docs.python.org/3/library/subprocess.html), [sys](https://docs.python.org/3/library/sys.html), and [time](https://docs.python.org/3/library/time.html) for this post.
     * Likewise, the documentation for [numpy](http://docs.scipy.org/doc/numpy-1.10.0/reference/) and [pandas](http://pandas.pydata.org/pandas-docs/version/0.17.1/) is thorough and invaluable.
     * Of IPython's convenient ["magic" commands](http://ipython.readthedocs.org/en/stable/interactive/magics.html), within this post's Jupyter Notebooks, I used [%pdb](http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-pdb), [%reload_ext](http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-reload_ext), and the extension [%autoreload](http://ipython.readthedocs.org/en/stable/config/extensions/autoreload.html?highlight=autoreload#module-IPython.extensions.autoreload).
-    * StackOverflow ["How to get line count cheaply in Python"](http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python) (compare to `wc -l`).
-* `dsdemos` [v0.0.3](https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e):
-    * To design the package file structure, I used [*Learning Python* (O'Reilly)](http://shop.oreilly.com/product/0636920028154.do) Section V, "Modules and Packages".
-    * I use [Google-style docstrings](https://google.github.io/styleguide/pyguide.html) adapted from the [example](http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html) by the [Napoleon](https://sphinxcontrib-napoleon.readthedocs.org/en/latest/) extension to [Sphinx](http://sphinx-doc.org/) (a Python documentation generator, not yet used by `dsdemos`).
-    * [Pytest](http://pytest.org/latest/) for testing.
-    * [Semantic Versioning](http://semver.org/) for version numbers.
+    * StackOverflow ["How to get line count cheaply in Python"](http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python) (not as performant as `wc -l` but still neat).
 * Git:
     * [GitHub Guides](https://guides.github.com/) are where I started with `git`.
     * [Git documentation](https://git-scm.com/) answers a lot of questions.
     * [Git-flow](https://github.com/nvie/gitflow) streamlines my repository management with this [branching model](http://nvie.com/posts/a-successful-git-branching-model/).
     * StackOverflow ["Download a specific tag with git"](http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git).
+* `dsdemos` [v0.0.3 (browse code)](https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e):
+    * To design the package file structure, I used [*Learning Python, 5th ed.* (2013, O'Reilly)](http://shop.oreilly.com/product/0636920028154.do), Part V, "Modules and Packages".
+    * I use [Google-style docstrings](https://google.github.io/styleguide/pyguide.html) adapted from the [example](http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html) by the [Napoleon](https://sphinxcontrib-napoleon.readthedocs.org/en/latest/) extension to [Sphinx](http://sphinx-doc.org/) (a Python documentation generator, not yet used by `dsdemos`).
+    * [Pytest](http://pytest.org/latest/) for testing.
+    * [Semantic Versioning](http://semver.org/) for version numbers.
 
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
@@ -563,15 +558,15 @@ Some links I found helpful for this blog post:
 [^use-cases]:
     Some use cases for the Census Bureau's American Community Survey with data access recommendations: [ACS Which Data Tool](https://www.census.gov/acs/www/guidance/which-data-tool/)
 [^services]:
-    This project mounts a single disk for storage to a single instance and loads the data in RAM. A scaled version of this pipeline on the Google Cloud Platform may include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).
+    For this post, I mounted a single disk for storage to a single instance and loaded the data in RAM. A scaled version of this pipeline on Google Cloud Platform could include integrated services such as [Cloud Storage](https://cloud.google.com/storage/) and [Big Query](https://cloud.google.com/bigquery/).
 [^ftp]:
-    For how to download [ACS data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html):  
+    To download [ACS data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html):  
     `$ sudo curl --remote-name <url>`  
     Decompress the `.zip` files with `unzip`.
-[^no-api]:
+[^api]:
     I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
 [^so-post]:
-    StackOverflow ["regex to parse well-formated multi-line data dictionary"](http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141).
+    StackOverflow ["regex to parse well-formatted multi-line data dictionary"](http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141).
 [^json]:
     With `dsdemos` v0.0.3 <a href="#source">above</a>, you can export the data dictionary to [JSON format](http://json.org/) with the [`json` Python library](https://docs.python.org/3.5/library/json.html). See [example from `dsdemos` tests](https://github.com/stharrold/dsdemos/blob/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e/tests/test_census.py#L34-L43).
 [^pd-csv]:
@@ -579,19 +574,19 @@ Some links I found helpful for this blog post:
 [^pd-py35]:
     Pandas 0.17.1 has a compatibility issue with Python 3.5. See [GitHub pandas issue 11915](https://github.com/pydata/pandas/issues/11915) for a temporary fix. The issue should be resolved in pandas 0.18.
 [^pums-acc]:
-    For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see [2013 5-year PUMS Accuracy](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf), section 7, "Measuring Sampling Error". The sample weights `'[P]WGTP'` mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (uncertainty) associated with an estimate of a characteristic:  
+    For the formulas to calculate the estimates, the direct standard error, and the margin of error, as well as for example calculations, see [2013 5-year PUMS Accuracy](http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf), section 7, "Measuring Sampling Error". The sample weights `'[P]WGTP'` mitigate over/under-representation and control agreement with published ACS estimates. The accuracy PDF describes two methods of calculating the error (i.e. uncertainty) associated with an estimate of a characteristic:  
     <ol>
-    <li>Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns `'[P]WGTP[1-80]'` and requires looking up a design factor for the specific characteristic (e.g "Population by Tenure"). See the accuracy PDF for the design factors.</li>
+    <li>Calculate the "generalized standard error" of the estimate using "design factors" from the survey. This method does not use columns `'[P]WGTP[1-80]'` and requires looking up a design factor for the specific characteristic (e.g "population by tenure"). See the accuracy PDF for the design factors.</li>
     <li>Calculate the "direct standard error" of the estimate using the "replicate weights", which are the columns `'[P]WGTP[1-80]'`. This method is extensible to many kinds of characteristics (e.g. population by tenure by age).
     </ol>  
     Note: Controlled estimates of characteristics like "total population" have 0 direct standard error from replicate weights. Use the generalized standard error for these estimates.
 [^filter]:
-    There are [several ways](http://pandas.pydata.org/pandas-docs/stable/indexing.html) to select rows by filtering on conditions within `pandas`. I prefer creating a `pandas.Series` with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the [docs for `pandas.DataFrame.loc`](http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html).  
-    Example query: Select `'AGEP'` and `'WGTP'` where `'AGEP'` is between 25 and 34.  
+    There are [several ways](http://pandas.pydata.org/pandas-docs/stable/indexing.html) to select rows by filtering on conditions using `pandas`. I prefer creating a `pandas.Series` with boolean values as true-false mask then using the true-false mask as an index to filter the rows. See the [docs for `pandas.DataFrame.loc`](http://pandas.pydata.org/pandas-docs/version/0.17.1/generated/pandas.DataFrame.loc.html).  
+    Example query: Select columns `'AGEP'` and `'WGTP'` where values for `'AGEP'` are between 25 and 34.  
     `tfmask = np.logical_and(25 <= df['AGEP'], df['AGEP'] <= 34)`  
     `df_subset = df.loc[tfmask, ['AGEP', 'WGTP']]`
-[^version]:
-    To download `dsdemos` and checkout `v0.0.3` for following the example <a href="#example">above</a>:  
+[^checkout]:
+    To download `dsdemos` and checkout v0.0.3 for following the example <a href="#example">above</a>:  
     `$ cd ~`  
     `$ git clone https://github.com/stharrold/dsdemos.git`  
     `$ cd dsdemos`  
