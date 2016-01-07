@@ -49,8 +49,8 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 **Why am I using the American Community Survey (ACS)?**
 
 * The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
-* The ACS is a reliable data set.[^acs-method] The ACS has quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate of about 95%.
-* The ACS is a time-series data set. The survey sends questionnaires throughout the year and releases data once per year. A future step is to use the time series to forecast an individual's household income.
+* The ACS is a reliable data set.[^acs-method] The ACS has quality controls to ensure that it is representative. The survey samples about [3&nbsp;million addresses per year](https://www.census.gov/acs/www/methodology/sample-size-and-data-quality/sample-size/) with a [response rate of about 97%](https://www.census.gov/acs/www/methodology/sample-size-and-data-quality/response-rates/).
+* The ACS is a time-series data set. The survey sends questionnaires throughout the year and [releases data once per year](https://www.census.gov/programs-surveys/acs/news/data-releases.html). A future step is to use the time series to forecast an individual's household income.
 * I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value, and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
 
 **Why am I using the ACS 5-year estimate?**
