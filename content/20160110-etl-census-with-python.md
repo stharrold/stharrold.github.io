@@ -1,7 +1,7 @@
 Title: Extract, transform, and load census data with Python
 Status: draft
 Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-05T19:20:00Z
+Modified: 2016-01-07T00:00:00Z
 Tags: etl, how-to, python, pandas, census
 Category: ETL
 Slug: 20160110-etl-census-with-python
@@ -51,7 +51,7 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 * The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the [subjects that the ACS survey addresses](http://www.census.gov/programs-surveys/acs/guidance/subjects.html).
 * The ACS is a reliable data set.[^acs-method] The ACS has quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate of about 95%.
 * The ACS is a time-series data set. The survey sends questionnaires throughout the year and releases data once per year. A future step is to use the time series to forecast an individual's household income.
-* I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
+* I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,[^data-harm] and current ACS terminology asks respondents to identify by terms such as "race".[^prob-race] For this project, I take data from the Census Bureau at face value, and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.
 
 **Why am I using the ACS 5-year estimate?**
 
@@ -530,10 +530,30 @@ END IPYNB
 
 Some links I found helpful for this blog post:
 
-* [ACS Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html) describes how to get started with ACS data.
-* [ACS Technical Documentation](https://www.census.gov/programs-surveys/acs/technical-documentation.html) links to resources for learning how to work with ACS data.
-* [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
-* [ACS Library](https://www.census.gov/programs-surveys/acs/library.All.html) has a collection of reports and infographics using ACS data.
+* American Community Survey (ACS):
+    * [ACS About](https://www.census.gov/programs-surveys/acs/about.html).
+    * [ACS Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html) describes how to get started with ACS data.
+    * [ACS Technical Documentation](https://www.census.gov/programs-surveys/acs/technical-documentation.html) links to resources for learning how to work with ACS data.
+    * [ACS Methodology](http://www.census.gov/programs-surveys/acs/methodology.html) includes design details, sample sizes, coverage estimates, and past questionnaires.
+    * [ACS Library](https://www.census.gov/programs-surveys/acs/library.All.html) has a collection of reports and infographics using ACS data.
+* Python:
+    * [*Learning Python* (5th ed, 2013, O'Reilly)](http://shop.oreilly.com/product/0636920028154.do) was my formal introduction to Python.
+    * [*Python for Data Analysis* (2012, O'Reilly)](http://shop.oreilly.com/product/0636920023784.do) introduced me to `pandas`.
+    * [*Python Cookbook* (3rd ed, 2013, O'Reilly)](http://shop.oreilly.com/product/0636920027072.do) has a collection of optimized recipes.
+    * From the well-documented [Python 3.5](https://docs.python.org/3/index.html) standard library, I used [collections](https://docs.python.org/3/library/collections.html), [functools](https://docs.python.org/3/library/functools.html), [os](https://docs.python.org/3/library/os.html), [pdb](https://docs.python.org/3/library/pdb.html), [subprocess](https://docs.python.org/3/library/subprocess.html), [sys](https://docs.python.org/3/library/sys.html), and [time](https://docs.python.org/3/library/time.html) for this post.
+    * Likewise, the documentation for [numpy](http://docs.scipy.org/doc/numpy-1.10.0/reference/) and [pandas](http://pandas.pydata.org/pandas-docs/version/0.17.1/) is thorough and invaluable.
+    * Of IPython's convenient ["magic" commands](http://ipython.readthedocs.org/en/stable/interactive/magics.html), within this post's Jupyter Notebooks, I used [%pdb](http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-pdb), [%reload_ext](http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-reload_ext), and the extension [%autoreload](http://ipython.readthedocs.org/en/stable/config/extensions/autoreload.html?highlight=autoreload#module-IPython.extensions.autoreload).
+    * StackOverflow ["How to get line count cheaply in Python"](http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python) (compare to `wc -l`).
+* `dsdemos` [v0.0.3](https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e):
+    * To design the package file structure, I used [*Learning Python* (O'Reilly)](http://shop.oreilly.com/product/0636920028154.do) Section V, "Modules and Packages".
+    * I use [Google-style docstrings](https://google.github.io/styleguide/pyguide.html) adapted from the [example](http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html) by the [Napoleon](https://sphinxcontrib-napoleon.readthedocs.org/en/latest/) extension to [Sphinx](http://sphinx-doc.org/) (a Python documentation generator, not yet used by `dsdemos`).
+    * [Pytest](http://pytest.org/latest/) for testing.
+    * [Semantic Versioning](http://semver.org/) for version numbers.
+* Git:
+    * [GitHub Guides](https://guides.github.com/) are where I started with `git`.
+    * [Git documentation](https://git-scm.com/) answers a lot of questions.
+    * [Gitflow](https://github.com/nvie/gitflow) streamlines my repository management with this [branching model](http://nvie.com/posts/a-successful-git-branching-model/).
+    * StackOverflow ["Download a specific tag with git"](http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git).
 
 ## Footnotes
 <!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
@@ -551,7 +571,7 @@ Some links I found helpful for this blog post:
 [^no-api]:
     I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
 [^so-post]:
-    [Related StackOverflow post.](http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141)
+    StackOverflow ["regex to parse well-formated multi-line data dictionary"](http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141).
 [^pd-csv]:
     [Docs for `pandas.read_csv`](http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html)
 [^pd-py35]:
@@ -584,7 +604,7 @@ Some links I found helpful for this blog post:
 [^data-harm]:
     Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the [ACLU's FAQ section about census data](https://www.aclu.org/frequently-asked-questions-national-census) and the [Wikipedia article "Internment of Japanese Americans"](https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans).
 [^prob-race]:
-    "Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the [ACS questionnaire refers to "race" and "ethnicity" separately](http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf). The American Anthropological Association [recommended in 1997](http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf) that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:  
+    "Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. The [2015 ACS questionnaire](http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf) refers to "race" and "ethnicity" separately. The American Anthropological Association [recommended in 1997](http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf) that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:  
     <ul>
     <li>[Census Bureau's statement about "race" (2013)](http://www.census.gov/topics/population/race/about.html)</li>
     <li>[Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&nbsp;15 (1977)](https://www.whitehouse.gov/omb/fedreg_notice_15/)</li>
@@ -596,6 +616,6 @@ Some links I found helpful for this blog post:
 [^acs-ests]:
     The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see [ACS Guidance for Data Users](https://www.census.gov/programs-surveys/acs/guidance.html).
 [^rvpy]:
-    See the discussion ["R vs Python for data analysis"](http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis) on StackExchange Programmers.
+    StackExchange Programmers ["R vs Python for data analysis"](http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis).
 [^pydata]:
     See the [PyData stack](http://pydata.org/downloads/) for a collection of performant Python packages.

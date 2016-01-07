@@ -10,7 +10,7 @@
 
 
 
-<link rel="canonical" href="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html">
+<link rel="canonical" href="/drafts/20160110-etl-census-with-python.html">
 
         <meta name="author" content="Samuel Harrold" />
         <meta name="keywords" content="etl,how-to,python,pandas,census" />
@@ -19,7 +19,7 @@
         <meta property="og:site_name" content="Data Science Demos" />
         <meta property="og:type" content="article"/>
         <meta property="og:title" content="Extract, transform, and load census data with Python"/>
-        <meta property="og:url" content="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html"/>
+        <meta property="og:url" content="/drafts/20160110-etl-census-with-python.html"/>
         <meta property="og:description" content="I parse, load, and verify data from the Census Bureau&#39;s American Community Survey using Python."/>
         <meta property="article:published_time" content="2016-01-10" />
             <meta property="article:section" content="ETL" />
@@ -32,17 +32,13 @@
 
 
     <!-- Bootstrap -->
-        <link rel="stylesheet" href="https://stharrold.github.io/theme/css/bootstrap.flatly.min.css" type="text/css"/>
-    <link href="https://stharrold.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/theme/css/bootstrap.flatly.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
 
-    <link href="https://stharrold.github.io/theme/css/pygments/default.css" rel="stylesheet">
-    <link href="https://stharrold.github.io/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://stharrold.github.io/theme/css/style.css" type="text/css"/>
+    <link href="/theme/css/pygments/default.css" rel="stylesheet">
+    <link href="/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
 
-        <link href="https://stharrold.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
-              title="Data Science Demos ATOM Feed"/>
-        <link href="https://stharrold.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate"
-              title="Data Science Demos RSS Feed"/>
 
 </head>
 <body>
@@ -56,12 +52,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="https://stharrold.github.io/" class="navbar-brand">
+            <a href="/" class="navbar-brand">
 Data Science Demos            </a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                         <li><a href="https://stharrold.github.io/pages/about.html">
+                         <li><a href="/pages/about.html">
                              About
                           </a></li>
             </ul>
@@ -71,7 +67,7 @@ Data Science Demos            </a>
                   <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
                 </form></span>
               </li>
-              <li><a href="https://stharrold.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
@@ -83,7 +79,7 @@ Data Science Demos            </a>
     <div class="row">
         <div class="col-sm-9">
             <ol class="breadcrumb">
-                <li><a href="https://stharrold.github.io" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
+                <li><a href="" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
                 <li class="active">Extract, transform, and load census data with Python</li>
             </ol>
 
@@ -91,7 +87,7 @@ Data Science Demos            </a>
         <article>
             <header class="page-header">
                 <h1>
-                    <a href="https://stharrold.github.io/drafts/20160110-etl-census-with-python.html"
+                    <a href="/drafts/20160110-etl-census-with-python.html"
                        rel="bookmark"
                        title="Permalink to Extract, transform, and load census data with Python">
                         Extract, transform, and load census data with Python
@@ -108,23 +104,23 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2016-01-05T19:20:00+00:00"> Tue 05 January 2016</time>
+                <i class="fa fa-calendar"></i><time datetime="2016-01-07T00:00:00+00:00"> Thu 07 January 2016</time>
             </span>
 
         <span class="label label-default">Category</span>
-        <a href="https://stharrold.github.io/category/etl.html">ETL</a>
+        <a href="/category/etl.html">ETL</a>
 
 
 <span class="label label-default">Tags</span>
-	<a href="https://stharrold.github.io/tag/etl.html">etl</a>
+	<a href="/tag/etl.html">etl</a>
         /
-	<a href="https://stharrold.github.io/tag/how-to.html">how-to</a>
+	<a href="/tag/how-to.html">how-to</a>
         /
-	<a href="https://stharrold.github.io/tag/python.html">python</a>
+	<a href="/tag/python.html">python</a>
         /
-	<a href="https://stharrold.github.io/tag/pandas.html">pandas</a>
+	<a href="/tag/pandas.html">pandas</a>
         /
-	<a href="https://stharrold.github.io/tag/census.html">census</a>
+	<a href="/tag/census.html">census</a>
     
 </footer><!-- /.post-info -->                    </div>
                 </div>
@@ -175,8 +171,8 @@ where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]
 <p><span id="source"><strong>Source code:</strong></span></p>
 <ul>
 <li>For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):<br />
-<a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
-<a href="https://stharrold.github.io/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
+<a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb">20160110-etl-census-with-python.ipynb</a><br />
+<a href="/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html">20160110-etl-census-with-python-full.html</a></li>
 <li>This post uses <code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/releases/tag/v0.0.3">v0.0.3</a>.<sup id="fnref:version"><a class="footnote-ref" href="#fn:version" rel="footnote">10</a></sup></li>
 </ul>
 <h3 id="motivations">Motivations</h3>
@@ -185,7 +181,7 @@ where each <span class="math">\(X_r\)</span> is the sum of the column <code>'[P]
 <li>The ACS is a relevant data set. A future step is to predict an individual's household income, which is among the <a href="http://www.census.gov/programs-surveys/acs/guidance/subjects.html">subjects that the ACS survey addresses</a>.</li>
 <li>The ACS is a reliable data set.<sup id="fnref:acs-method"><a class="footnote-ref" href="#fn:acs-method" rel="footnote">11</a></sup> The ACS has quality controls to ensure that it is representative. The survey samples about 3&nbsp;million addresses per year with a response rate of about 95%.</li>
 <li>The ACS is a time-series data set. The survey sends questionnaires throughout the year and releases data once per year. A future step is to use the time series to forecast an individual's household income.</li>
-<li>I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">12</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">13</a></sup> For this project, I take data from the Census Bureau at face value and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
+<li>I recognize that using ACS data can be <span id="problematic">problematic</span>. Data from the Census Bureau has been used for harm,<sup id="fnref:data-harm"><a class="footnote-ref" href="#fn:data-harm" rel="footnote">12</a></sup> and current ACS terminology asks respondents to identify by terms such as "race".<sup id="fnref:prob-race"><a class="footnote-ref" href="#fn:prob-race" rel="footnote">13</a></sup> For this project, I take data from the Census Bureau at face value, and I infer from it at face value. It's important to respect that these aren't simply data points; these are people.</li>
 </ul>
 <p><strong>Why am I using the ACS 5-year estimate?</strong></p>
 <p>As of Dec 2015, the ACS offers two windowing options for their data releases, 1-year estimates and 5-year estimates.<sup id="fnref:acs-ests"><a class="footnote-ref" href="#fn:acs-ests" rel="footnote">14</a></sup> Because the ACS 5-year estimates include data over a 5-year window, they have the largest sample size and thus the highest precision for modeling small populations. However, the sample size comes at the expense of currency. Forecasting the predictions from a 5-year window to be relevant to a specific year is a future step.</p>
@@ -637,10 +633,38 @@ END IPYNB
 <h3 id="helpful-links">Helpful links</h3>
 <p>Some links I found helpful for this blog post:</p>
 <ul>
+<li>American Community Survey (ACS):<ul>
+<li><a href="https://www.census.gov/programs-surveys/acs/about.html">ACS About</a>.</li>
 <li><a href="https://www.census.gov/programs-surveys/acs/guidance.html">ACS Guidance for Data Users</a> describes how to get started with ACS data.</li>
 <li><a href="https://www.census.gov/programs-surveys/acs/technical-documentation.html">ACS Technical Documentation</a> links to resources for learning how to work with ACS data.</li>
 <li><a href="http://www.census.gov/programs-surveys/acs/methodology.html">ACS Methodology</a> includes design details, sample sizes, coverage estimates, and past questionnaires.</li>
 <li><a href="https://www.census.gov/programs-surveys/acs/library.All.html">ACS Library</a> has a collection of reports and infographics using ACS data.</li>
+</ul>
+</li>
+<li>Python:<ul>
+<li><a href="http://shop.oreilly.com/product/0636920028154.do"><em>Learning Python</em> (5th ed, 2013, O'Reilly)</a> was my formal introduction to Python.</li>
+<li><a href="http://shop.oreilly.com/product/0636920023784.do"><em>Python for Data Analysis</em> (2012, O'Reilly)</a> introduced me to <code>pandas</code>.</li>
+<li><a href="http://shop.oreilly.com/product/0636920027072.do"><em>Python Cookbook</em> (3rd ed, 2013, O'Reilly)</a> has a collection of optimized recipes.</li>
+<li>From the well-documented <a href="https://docs.python.org/3/index.html">Python 3.5</a> standard library, I used <a href="https://docs.python.org/3/library/collections.html">collections</a>, <a href="https://docs.python.org/3/library/functools.html">functools</a>, <a href="https://docs.python.org/3/library/os.html">os</a>, <a href="https://docs.python.org/3/library/pdb.html">pdb</a>, <a href="https://docs.python.org/3/library/subprocess.html">subprocess</a>, <a href="https://docs.python.org/3/library/sys.html">sys</a>, and <a href="https://docs.python.org/3/library/time.html">time</a> for this post.</li>
+<li>Likewise, the documentation for <a href="http://docs.scipy.org/doc/numpy-1.10.0/reference/">numpy</a> and <a href="http://pandas.pydata.org/pandas-docs/version/0.17.1/">pandas</a> is thorough and invaluable.</li>
+<li>Of IPython's convenient <a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html">"magic" commands</a>, within this post's Jupyter Notebooks, I used <a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-pdb">%pdb</a>, <a href="http://ipython.readthedocs.org/en/stable/interactive/magics.html#magic-reload_ext">%reload_ext</a>, and the extension <a href="http://ipython.readthedocs.org/en/stable/config/extensions/autoreload.html?highlight=autoreload#module-IPython.extensions.autoreload">%autoreload</a>.</li>
+<li>StackOverflow <a href="http://stackoverflow.com/questions/845058/how-to-get-line-count-cheaply-in-python">"How to get line count cheaply in Python"</a> (compare to <code>wc -l</code>).</li>
+</ul>
+</li>
+<li><code>dsdemos</code> <a href="https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e">v0.0.3</a>:<ul>
+<li>To design the package file structure, I used <a href="http://shop.oreilly.com/product/0636920028154.do"><em>Learning Python</em> (O'Reilly)</a> Section V, "Modules and Packages".</li>
+<li>I use <a href="https://google.github.io/styleguide/pyguide.html">Google-style docstrings</a> adapted from the <a href="http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html">example</a> by the <a href="https://sphinxcontrib-napoleon.readthedocs.org/en/latest/">Napoleon</a> extension to <a href="http://sphinx-doc.org/">Sphinx</a> (a Python documentation generator, not yet used by <code>dsdemos</code>).</li>
+<li><a href="http://pytest.org/latest/">Pytest</a> for testing.</li>
+<li><a href="http://semver.org/">Semantic Versioning</a> for version numbers.</li>
+</ul>
+</li>
+<li>Git:<ul>
+<li><a href="https://guides.github.com/">GitHub Guides</a> are where I started with <code>git</code>.</li>
+<li><a href="https://git-scm.com/">Git documentation</a> answers a lot of questions.</li>
+<li><a href="https://github.com/nvie/gitflow">Gitflow</a> streamlines my repository management with this <a href="http://nvie.com/posts/a-successful-git-branching-model/">branching model</a>.</li>
+<li>StackOverflow <a href="http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git">"Download a specific tag with git"</a>.</li>
+</ul>
+</li>
 </ul>
 <h3 id="footnotes">Footnotes</h3>
 <div class="footnote">
@@ -661,7 +685,7 @@ Decompress the <code>.zip</code> files with <code>unzip</code>.&#160;<a class="f
 <p>I'm downloading the data files rather than using the <a href="http://www.census.gov/developers/">Census Bureau's API</a> because this project requires one-time access to all data rather than dynamic access to a subset of the data.&#160;<a class="footnote-backref" href="#fnref:no-api" rev="footnote" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:so-post">
-<p><a href="http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141">Related StackOverflow post.</a>&#160;<a class="footnote-backref" href="#fnref:so-post" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+<p>StackOverflow <a href="http://stackoverflow.com/questions/26564775/regex-to-parse-well-formated-multi-line-data-dictionary/34564141#34564141">"regex to parse well-formated multi-line data dictionary"</a>.&#160;<a class="footnote-backref" href="#fnref:so-post" rev="footnote" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pd-csv">
 <p><a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.read_csv.html">Docs for <code>pandas.read_csv</code></a>&#160;<a class="footnote-backref" href="#fnref:pd-csv" rev="footnote" title="Jump back to footnote 6 in the text">&#8617;</a></p>
@@ -702,7 +726,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <p>Data from the Census Bureau was used to identify Japanese communities as part of the internment of US citizens and residents with Japanese ancestry during World&nbsp;War&nbsp;II. See the <a href="https://www.aclu.org/frequently-asked-questions-national-census">ACLU's FAQ section about census data</a> and the <a href="https://en.wikipedia.org/wiki/Internment_of_Japanese_Americans">Wikipedia article "Internment of Japanese Americans"</a>.&#160;<a class="footnote-backref" href="#fnref:data-harm" rev="footnote" title="Jump back to footnote 12 in the text">&#8617;</a></p>
 </li>
 <li id="fn:prob-race">
-<p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. As of Dec 2015, the <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">ACS questionnaire refers to "race" and "ethnicity" separately</a>. The American Anthropological Association <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
+<p>"Race" is a problematic term with historical connotations and conflicts between self-identification and labeling by others. The <a href="http://www2.census.gov/programs-surveys/acs/methodology/questionnaires/2015/quest15.pdf">2015 ACS questionnaire</a> refers to "race" and "ethnicity" separately. The American Anthropological Association <a href="http://s3.amazonaws.com/rdcms-aaa/files/production/public/FileDownloads/pdfs/cmtes/minority/upload/AAA_Response_OMB1997.pdf">recommended in 1997</a> that questions about "race" and "ethnicity" are ambiguous given the historical context and would be better phrased as about "race/ethnicity". For this project, I refer to "race" and "ethnicity" as "race/ethnicity". The following links are also helpful:<br />
 <ul>
 <li><a href="http://www.census.gov/topics/population/race/about.html">Census Bureau's statement about "race" (2013)</a></li>
 <li><a href="https://www.whitehouse.gov/omb/fedreg_notice_15/">Office of Management and Budget, "Standards for the Classification of Federal Data on Race and Ethnicity" (1994), Appendix Directive No.&nbsp;15 (1977)</a></li>
@@ -716,7 +740,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <p>The ACS 3-year estimates are discontinued; 2013 is the last year included in the 3-year estimates. For guidance in choosing, accessing, and using a data set, see <a href="https://www.census.gov/programs-surveys/acs/guidance.html">ACS Guidance for Data Users</a>.&#160;<a class="footnote-backref" href="#fnref:acs-ests" rev="footnote" title="Jump back to footnote 14 in the text">&#8617;</a></p>
 </li>
 <li id="fn:rvpy">
-<p>See the discussion <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a> on StackExchange Programmers.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
+<p>StackExchange Programmers <a href="http://programmers.stackexchange.com/questions/181342/r-vs-python-for-data-analysis">"R vs Python for data analysis"</a>.&#160;<a class="footnote-backref" href="#fnref:rvpy" rev="footnote" title="Jump back to footnote 15 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pydata">
 <p>See the <a href="http://pydata.org/downloads/">PyData stack</a> for a collection of performant Python packages.&#160;<a class="footnote-backref" href="#fnref:pydata" rev="footnote" title="Jump back to footnote 16 in the text">&#8617;</a></p>
@@ -787,39 +811,39 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b032960></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b032068></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0328f0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b06e308></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0328f0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b032960></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b032068></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b159570></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b159538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0ea3b0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0a83b0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b03c2d0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0fd3e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b163f10></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b159538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0aea08></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0fd3e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b159538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0ae9d0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b1593e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0ff880></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b159538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b17a298></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b129730></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0aea08></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b1741b8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b159538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b1593e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0b6b90></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b129730></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0aea08></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b1741b8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7f8e7b0ff880></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7946960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7946068></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79468f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7982308></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79468f0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7946960></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7946068></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d570></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79fe3b0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79bc3b0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79502d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a113e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a77f10></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79c2a08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a113e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79c29d0></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d3e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a13880></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a8e298></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a3d730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79c2a08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a881b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d538></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a6d3e8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79cab90></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a3d730></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da79c2a08></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a881b8></a></li>
+        <li><a href="/"><built-in method title of str object at 0x7f8da7a13880></a></li>
     </ul>
 </section>
     <hr/>
@@ -832,7 +856,7 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
             var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
 
                     var disqus_identifier = '20160110-etl-census-with-python';
-                var disqus_url = 'https://stharrold.github.io/drafts/20160110-etl-census-with-python.html';
+                var disqus_url = '/drafts/20160110-etl-census-with-python.html';
 
             var disqus_config = function () {
                 this.language = "en";
@@ -865,77 +889,77 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
             <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
                 <ul class="list-group" id="recentposts">
                     <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">
+                        <a href="/20151208-ipynb-on-gce-from-chrome.html">
                             Running an IPython Notebook on Google Compute Engine from Chrome
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20151030-test.html">
+                        <a href="/20151030-test.html">
                             Test page and template
                         </a>
                     </li>
                 </ul>
             </li>
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+            <li class="list-group-item"><a href="/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
                 <ul class="list-group" id="categories">
                     <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/devops.html">
+                        <a href="/category/devops.html">
                             <i class="fa fa-folder-open fa-lg"></i> DevOps
                         </a>
                     </li>
                     <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/test.html">
+                        <a href="/category/test.html">
                             <i class="fa fa-folder-open fa-lg"></i> Test
                         </a>
                     </li>
                 </ul>
             </li>
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+            <li class="list-group-item"><a href="/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
                 <ul class="list-group list-inline tagcloud" id="tags">
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/chrome.html">
+                        <a href="/tag/chrome.html">
                             chrome
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud-computing.html">
+                        <a href="/tag/cloud-computing.html">
                             cloud-computing
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud9.html">
+                        <a href="/tag/cloud9.html">
                             cloud9
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/devops.html">
+                        <a href="/tag/devops.html">
                             devops
                         </a>
                     </li>
                     <li class="list-group-item tag-1">
-                        <a href="https://stharrold.github.io/tag/how-to.html">
+                        <a href="/tag/how-to.html">
                             how-to
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/python.html">
+                        <a href="/tag/python.html">
                             python
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/ssh.html">
+                        <a href="/tag/ssh.html">
                             ssh
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/template.html">
+                        <a href="/tag/template.html">
                             template
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/test.html">
+                        <a href="/tag/test.html">
                             test
                         </a>
                     </li>
@@ -963,13 +987,13 @@ If you already have a clone of <code>dsdemos</code>, update your local repositor
       </div>
    </div>
 </footer>
-<script src="https://stharrold.github.io/theme/js/jquery.min.js"></script>
+<script src="/theme/js/jquery.min.js"></script>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="https://stharrold.github.io/theme/js/bootstrap.min.js"></script>
+<script src="/theme/js/bootstrap.min.js"></script>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
-<script src="https://stharrold.github.io/theme/js/respond.min.js"></script>
+<script src="/theme/js/respond.min.js"></script>
 
     <!-- Disqus -->
     <script type="text/javascript">
