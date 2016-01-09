@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Data Science Demos</title><link>https://stharrold.github.io/</link><description></description><atom:link href="https://stharrold.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 07 Jan 2016 14:15:00 +0000</lastBuildDate><item><title>Extract, transform, and load census data with Python</title><link>https://stharrold.github.io/20160110-etl-census-with-python.html</link><description>&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Data Science Demos</title><link>https://stharrold.github.io/</link><description></description><atom:link href="https://stharrold.github.io/feeds/all.rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 09 Jan 2016 17:00:00 +0000</lastBuildDate><item><title>Extract, transform, and load census data with Python</title><link>https://stharrold.github.io/20160110-etl-census-with-python.html</link><description>&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#example"&gt;Example&lt;/a&gt;&lt;/li&gt;
@@ -550,7 +550,7 @@ END IPYNB
 &lt;li id="fn:ftp"&gt;
 &lt;p&gt;To download &lt;a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html"&gt;ACS data via FTP&lt;/a&gt;:&lt;br /&gt;
 &lt;code&gt;$ sudo curl --remote-name &amp;lt;url&amp;gt;&lt;/code&gt;&lt;br /&gt;
-Decompress the &lt;code&gt;.zip&lt;/code&gt; files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+Decompress the ZIP files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:api"&gt;
 &lt;p&gt;I'm downloading the data files rather than using the &lt;a href="http://www.census.gov/developers/"&gt;Census Bureau's API&lt;/a&gt; because this project requires one-time access to all data rather than dynamic access to a subset of the data.&amp;#160;&lt;a class="footnote-backref" href="#fnref:api" rev="footnote" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
@@ -679,7 +679,7 @@ If you already have a clone of &lt;code&gt;dsdemos&lt;/code&gt;, update your loc
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Thu, 07 Jan 2016 14:15:00 +0000</pubDate><guid>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</guid><category>etl</category><category>how-to</category><category>python</category><category>pandas</category><category>census</category></item><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;!--
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Sat, 09 Jan 2016 17:00:00 +0000</pubDate><guid>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</guid><category>etl</category><category>how-to</category><category>python</category><category>pandas</category><category>census</category></item><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;!--
 Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
 otherwise page is named only &lt;slug&gt; without '.html'
 --&gt;
@@ -909,6 +909,7 @@ otherwise page is named only &lt;slug&gt; without '.html'
 --&gt;
 
 &lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#heading2"&gt;Heading2&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#heading3"&gt;Heading3&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#heading4"&gt;Heading4&lt;/a&gt;&lt;ul&gt;
@@ -920,23 +921,22 @@ otherwise page is named only &lt;slug&gt; without '.html'
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#body"&gt;Body&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#helpful-links"&gt;Helpful links&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#footnotes"&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
+&lt;h3 id="overview"&gt;Overview&lt;/h3&gt;
+&lt;p&gt;I use this page for testing how structures are rendered on the blog and for templating new posts. I leave this page openly visible as a resource for others who are interested in building their own blog.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Source code:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb"&gt;20151030-test.ipynb&lt;/a&gt;&lt;br /&gt;
+&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test-full.html"&gt;20151030-test-full.html&lt;/a&gt;  &lt;/p&gt;
 &lt;h3 id="heading2"&gt;Heading2&lt;/h3&gt;
 &lt;h4 id="heading3"&gt;Heading3&lt;/h4&gt;
 &lt;h5 id="heading4"&gt;Heading4&lt;/h5&gt;
 &lt;h6 id="heading5"&gt;Heading5&lt;/h6&gt;
 &lt;h6 id="heading6"&gt;Heading6&lt;/h6&gt;
-&lt;h3 id="overview"&gt;Overview&lt;/h3&gt;
-&lt;p&gt;Test page and template.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Source code:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb"&gt;20151030-test.ipynb&lt;/a&gt;&lt;br /&gt;
-&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test-full.html"&gt;20151030-test-full.html&lt;/a&gt;  &lt;/p&gt;
 &lt;h3 id="motivations"&gt;Motivations&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Why am I doing this?&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -1552,4 +1552,4 @@ $('.collapse').on('shown.bs.collapse', function() {
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Thu, 07 Jan 2016 00:00:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-10-30:20151030-test.html</guid><category>test</category><category>how-to</category><category>template</category></item></channel></rss>
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Sat, 09 Jan 2016 17:00:00 +0000</pubDate><guid>tag:stharrold.github.io,2015-10-30:20151030-test.html</guid><category>test</category><category>how-to</category><category>template</category></item></channel></rss>
