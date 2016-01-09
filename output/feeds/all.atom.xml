@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2016-01-07T14:15:00+00:00</updated><entry><title>Extract, transform, and load census data with Python</title><link href="https://stharrold.github.io/20160110-etl-census-with-python.html" rel="alternate"></link><updated>2016-01-07T14:15:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</id><summary type="html">&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2016-01-09T17:00:00+00:00</updated><entry><title>Extract, transform, and load census data with Python</title><link href="https://stharrold.github.io/20160110-etl-census-with-python.html" rel="alternate"></link><updated>2016-01-09T17:00:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</id><summary type="html">&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#example"&gt;Example&lt;/a&gt;&lt;/li&gt;
@@ -550,7 +550,7 @@ END IPYNB
 &lt;li id="fn:ftp"&gt;
 &lt;p&gt;To download &lt;a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html"&gt;ACS data via FTP&lt;/a&gt;:&lt;br /&gt;
 &lt;code&gt;$ sudo curl --remote-name &amp;lt;url&amp;gt;&lt;/code&gt;&lt;br /&gt;
-Decompress the &lt;code&gt;.zip&lt;/code&gt; files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+Decompress the ZIP files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:api"&gt;
 &lt;p&gt;I'm downloading the data files rather than using the &lt;a href="http://www.census.gov/developers/"&gt;Census Bureau's API&lt;/a&gt; because this project requires one-time access to all data rather than dynamic access to a subset of the data.&amp;#160;&lt;a class="footnote-backref" href="#fnref:api" rev="footnote" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
@@ -903,12 +903,13 @@ For &lt;a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapf
 &lt;p&gt;Because the external IP address was reassigned to a new instance, a warning will appear that the remote host identification has changed. To remove the offending ECDSA key from &lt;code&gt;known_hosts&lt;/code&gt;, in Chrome, open the JavaScript console (Ctrl+Shift+J) and run &lt;code&gt;term_.command.removeKnownHostByIndex(idx)&lt;/code&gt; where idx is the given line number in &lt;code&gt;known_hosts&lt;/code&gt;, e.g. from the warning line &lt;code&gt;Offending ECDSA key in /.ssh/known_hosts:1&lt;/code&gt;, idx=1.&amp;#160;&lt;a class="footnote-backref" href="#fnref:host-id" rev="footnote" title="Jump back to footnote 17 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;/div&gt;</summary><category term="devops"></category><category term="how-to"></category><category term="python"></category><category term="cloud-computing"></category><category term="chrome"></category><category term="cloud9"></category><category term="ssh"></category></entry><entry><title>Test page and template</title><link href="https://stharrold.github.io/20151030-test.html" rel="alternate"></link><updated>2016-01-07T00:00:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2015-10-30:20151030-test.html</id><summary type="html">&lt;!--
+&lt;/div&gt;</summary><category term="devops"></category><category term="how-to"></category><category term="python"></category><category term="cloud-computing"></category><category term="chrome"></category><category term="cloud9"></category><category term="ssh"></category></entry><entry><title>Test page and template</title><link href="https://stharrold.github.io/20151030-test.html" rel="alternate"></link><updated>2016-01-09T17:00:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2015-10-30:20151030-test.html</id><summary type="html">&lt;!--
 Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
 otherwise page is named only &lt;slug&gt; without '.html'
 --&gt;
 
 &lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#heading2"&gt;Heading2&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#heading3"&gt;Heading3&lt;/a&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#heading4"&gt;Heading4&lt;/a&gt;&lt;ul&gt;
@@ -920,23 +921,22 @@ otherwise page is named only &lt;slug&gt; without '.html'
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#body"&gt;Body&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#helpful-links"&gt;Helpful links&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#footnotes"&gt;Footnotes&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
+&lt;h3 id="overview"&gt;Overview&lt;/h3&gt;
+&lt;p&gt;I use this page for testing how structures are rendered on the blog and for templating new posts. I leave this page openly visible as a resource for others who are interested in building their own blog.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Source code:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb"&gt;20151030-test.ipynb&lt;/a&gt;&lt;br /&gt;
+&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test-full.html"&gt;20151030-test-full.html&lt;/a&gt;  &lt;/p&gt;
 &lt;h3 id="heading2"&gt;Heading2&lt;/h3&gt;
 &lt;h4 id="heading3"&gt;Heading3&lt;/h4&gt;
 &lt;h5 id="heading4"&gt;Heading4&lt;/h5&gt;
 &lt;h6 id="heading5"&gt;Heading5&lt;/h6&gt;
 &lt;h6 id="heading6"&gt;Heading6&lt;/h6&gt;
-&lt;h3 id="overview"&gt;Overview&lt;/h3&gt;
-&lt;p&gt;Test page and template.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Source code:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb"&gt;20151030-test.ipynb&lt;/a&gt;&lt;br /&gt;
-&lt;a href="https://stharrold.github.io/static/20151030-test/20151030-test-full.html"&gt;20151030-test-full.html&lt;/a&gt;  &lt;/p&gt;
 &lt;h3 id="motivations"&gt;Motivations&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;Why am I doing this?&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
