@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2016-01-09T17:00:00+00:00</updated><entry><title>Extract, transform, and load census data with Python</title><link href="https://stharrold.github.io/20160110-etl-census-with-python.html" rel="alternate"></link><updated>2016-01-07T14:15:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</id><summary type="html">&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Data Science Demos</title><link href="https://stharrold.github.io/" rel="alternate"></link><link href="https://stharrold.github.io/feeds/all.atom.xml" rel="self"></link><id>https://stharrold.github.io/</id><updated>2016-01-09T17:00:00+00:00</updated><entry><title>Extract, transform, and load census data with Python</title><link href="https://stharrold.github.io/20160110-etl-census-with-python.html" rel="alternate"></link><updated>2016-01-09T17:00:00+00:00</updated><author><name>Samuel Harrold</name></author><id>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</id><summary type="html">&lt;div class="toc"&gt;&lt;span class="toctitle"&gt;Contents&lt;/span&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href="#overview"&gt;Overview&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#motivations"&gt;Motivations&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="#example"&gt;Example&lt;/a&gt;&lt;/li&gt;
@@ -550,7 +550,7 @@ END IPYNB
 &lt;li id="fn:ftp"&gt;
 &lt;p&gt;To download &lt;a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html"&gt;ACS data via FTP&lt;/a&gt;:&lt;br /&gt;
 &lt;code&gt;$ sudo curl --remote-name &amp;lt;url&amp;gt;&lt;/code&gt;&lt;br /&gt;
-Decompress the &lt;code&gt;.zip&lt;/code&gt; files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+Decompress the ZIP files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:api"&gt;
 &lt;p&gt;I'm downloading the data files rather than using the &lt;a href="http://www.census.gov/developers/"&gt;Census Bureau's API&lt;/a&gt; because this project requires one-time access to all data rather than dynamic access to a subset of the data.&amp;#160;&lt;a class="footnote-backref" href="#fnref:api" rev="footnote" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;

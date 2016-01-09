@@ -550,7 +550,7 @@ END IPYNB
 &lt;li id="fn:ftp"&gt;
 &lt;p&gt;To download &lt;a href="https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html"&gt;ACS data via FTP&lt;/a&gt;:&lt;br /&gt;
 &lt;code&gt;$ sudo curl --remote-name &amp;lt;url&amp;gt;&lt;/code&gt;&lt;br /&gt;
-Decompress the &lt;code&gt;.zip&lt;/code&gt; files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+Decompress the ZIP files with &lt;code&gt;unzip&lt;/code&gt;.&amp;#160;&lt;a class="footnote-backref" href="#fnref:ftp" rev="footnote" title="Jump back to footnote 3 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li id="fn:api"&gt;
 &lt;p&gt;I'm downloading the data files rather than using the &lt;a href="http://www.census.gov/developers/"&gt;Census Bureau's API&lt;/a&gt; because this project requires one-time access to all data rather than dynamic access to a subset of the data.&amp;#160;&lt;a class="footnote-backref" href="#fnref:api" rev="footnote" title="Jump back to footnote 4 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
@@ -679,7 +679,7 @@ If you already have a clone of &lt;code&gt;dsdemos&lt;/code&gt;, update your loc
         "}";
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
-&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Thu, 07 Jan 2016 14:15:00 +0000</pubDate><guid>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</guid><category>etl</category><category>how-to</category><category>python</category><category>pandas</category><category>census</category></item><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;!--
+&lt;/script&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Samuel Harrold</dc:creator><pubDate>Sat, 09 Jan 2016 17:00:00 +0000</pubDate><guid>tag:stharrold.github.io,2016-01-10:20160110-etl-census-with-python.html</guid><category>etl</category><category>how-to</category><category>python</category><category>pandas</category><category>census</category></item><item><title>Running an IPython Notebook on Google Compute Engine from Chrome</title><link>https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html</link><description>&lt;!--
 Note: Plugin 'pelican_alias' requires 'Alias:' to have '.html' extension,
 otherwise page is named only &lt;slug&gt; without '.html'
 --&gt;

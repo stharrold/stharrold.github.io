@@ -1,13 +1,13 @@
 Title: Extract, transform, and load census data with Python
 Status: published
 Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-07T14:15:00Z
+Modified: 2016-01-09T17:00:00Z
 Tags: etl, how-to, python, pandas, census
 Category: ETL
 Slug: 20160110-etl-census-with-python
 Related_posts: 20151208-ipynb-on-gce-from-chrome
 Authors: Samuel Harrold
-Summary: I parse, load, and verify data from the Census Bureau's American Community Survey using Python.
+Summary: Parse, load, and verify data from the Census Bureau's American Community Survey using Python.
 
 [TOC]
 
@@ -562,7 +562,7 @@ Some links I found helpful for this blog post:
 [^ftp]:
     To download [ACS data via FTP](https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html):  
     `$ sudo curl --remote-name <url>`  
-    Decompress the `.zip` files with `unzip`.
+    Decompress the ZIP files with `unzip`.
 [^api]:
     I'm downloading the data files rather than using the [Census Bureau's API](http://www.census.gov/developers/) because this project requires one-time access to all data rather than dynamic access to a subset of the data.
 [^so-post]:
