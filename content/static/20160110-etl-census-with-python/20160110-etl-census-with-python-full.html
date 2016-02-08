@@ -267,9 +267,9 @@ div#notebook {
 <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">r&#39;%Y-%m-%dT%H:%M:%S%Z&#39;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">()))</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Versions:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python: &quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;numpy: &quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s">&quot;pandas: &quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python:&quot;</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;numpy:&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s">&quot;pandas:&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -283,12 +283,12 @@ div#notebook {
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Timestamp:
-2016-01-07T05:31:12GMT
+2016-02-08T04:30:52GMT
 
 Versions:
-Python:  sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
-numpy:  1.10.2
-pandas:  0.17.1
+Python: sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
+numpy: 1.10.2
+pandas: 0.17.1
 </pre>
 </div>
 </div>
@@ -332,6 +332,7 @@ pandas:  0.17.1
 <span class="n">path_hcsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;data/pums/2013/5-Year/ss13hdc.csv&#39;</span><span class="p">)</span> <span class="c"># &#39;hdc&#39; = &#39;housing DC&#39;</span>
 <span class="n">path_ecsv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;tech_docs/pums/estimates/pums_estimates_9_13.csv&#39;</span><span class="p">)</span>
 <span class="n">path_dtxt</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_acs</span><span class="p">,</span> <span class="s">r&#39;tech_docs/pums/data_dict/PUMS_Data_Dictionary_2009-2013.txt&#39;</span><span class="p">)</span>
+
 <span class="c"># Weights</span>
 <span class="n">pwt</span> <span class="o">=</span> <span class="s">&#39;PWGTP&#39;</span> <span class="c"># person weight</span>
 <span class="n">pwts</span> <span class="o">=</span> <span class="p">[</span><span class="n">pwt</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">inum</span><span class="p">)</span> <span class="k">for</span> <span class="n">inum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">81</span><span class="p">)]</span>
@@ -536,6 +537,7 @@ pandas:  0.17.1
     <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    num lines   = {nlines}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nlines</span><span class="o">=</span><span class="n">nlines</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s">&quot;    num columns = {ncols}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="n">ncols</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">()</span>
+
 <span class="c"># For ss13pdc.csv, low_memory=False since otherwise pandas raises DtypeWarning.</span>
 <span class="n">dfp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_pcsv</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="k">False</span><span class="p">)</span>
 <span class="n">dfh</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_hcsv</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
@@ -570,7 +572,7 @@ pandas:  0.17.1
 dfp RAM usage (MB) = 72.1
 dfh RAM usage (MB) = 28.7
 
-Time elapsed (sec) = 2.1
+Time elapsed (sec) = 2.0
 </pre>
 </div>
 </div>
@@ -961,16 +963,16 @@ Time elapsed (sec) = 2.1
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span>
-    <span class="s">&quot;`dfp`, `dfh`, `ddict`: Describe all columns (&#39;variables&#39;) that aren&#39;t weights or flags.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;Printed format:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;[PERSON, HOUSING] RECORD</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;COL: Column name.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;    Column description.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;    Multi-line optional column notes.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;    1-3 line description of value meanings (&#39;variable codes&#39;).</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;    Multi-line statistical description and data type.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;...</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">+</span>
-    <span class="s">&quot;num columns described = ncols&quot;</span><span class="p">)</span>
+<span class="sd">r&quot;&quot;&quot;`dfp`, `dfh`, `ddict`: Describe all columns (&#39;variables&#39;) that aren&#39;t weights or flags.</span>
+<span class="sd">Printed format:</span>
+<span class="sd">[PERSON, HOUSING] RECORD</span>
+<span class="sd">COL: Column name.</span>
+<span class="sd">    Column description.</span>
+<span class="sd">    Multi-line optional column notes.</span>
+<span class="sd">    1-3 line description of value meanings (&#39;variable codes&#39;).</span>
+<span class="sd">    Multi-line statistical description and data type.</span>
+<span class="sd">...</span>
+<span class="sd">num columns described = ncols&quot;&quot;&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="n">records_dfs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
     <span class="p">(</span><span class="s">&#39;PERSON RECORD&#39;</span><span class="p">,</span>  <span class="p">{</span><span class="s">&#39;dataframe&#39;</span><span class="p">:</span> <span class="n">dfp</span><span class="p">,</span> <span class="s">&#39;weight&#39;</span><span class="p">:</span> <span class="n">pwt</span><span class="p">,</span> <span class="s">&#39;replicate_weights&#39;</span><span class="p">:</span> <span class="n">pwts</span><span class="p">}),</span>
@@ -4512,8 +4514,9 @@ num columns described = 84
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span class="nb">print</span><span class="p">(</span><span class="s">&quot;`dfe`: Verify characteristic estimates, direct standard errors, and margin of error.&quot;</span><span class="p">)</span>
 <span class="c"># Verify the estimates following</span>
-<span class="c"># https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.2013.html</span>
-<span class="c"># http://www2.census.gov/programs-surveys/acs/tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
+<span class="c"># https://www.census.gov/programs-surveys/acs/</span>
+<span class="c">#     technical-documentation/pums/documentation.2013.html</span>
+<span class="c">#     tech_docs/pums/accuracy/2009_2013AccuracyPUMS.pdf</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="n">tfmask_test_strs</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
     <span class="p">(</span><span class="s">&#39;PERSON RECORD&#39;</span><span class="p">,</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">([</span>
@@ -4562,7 +4565,7 @@ num columns described = 84
         <span class="c"># and the records for the characteristic.</span>
         <span class="n">tfmask_ref</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="p">[</span><span class="s">&#39;characteristic&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span>        
         <span class="n">tfmask_test</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">tfmask_test_strs</span><span class="p">[</span><span class="n">record_type</span><span class="p">][</span><span class="n">char</span><span class="p">])</span>
-        <span class="c"># Calculate the estimate (&#39;est&#39;) for the characteristic.</span>
+        <span class="c"># Calculate and verify the estimate (&#39;est&#39;) for the characteristic.</span>
         <span class="c"># The estimate is the sum of the sample weights &#39;WGTP&#39;.</span>
         <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_est_09_to_13&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;        &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
@@ -4570,7 +4573,7 @@ num columns described = 84
         <span class="n">test_est</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">wt</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_est</span><span class="p">,</span> <span class="n">test_est</span><span class="p">)))</span>
-        <span class="c"># Calculate the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
+        <span class="c"># Calculate and verify the &quot;direct standard error&quot; (&#39;se&#39;) of the estimate.</span>
         <span class="c"># The direct standard error is a modified root-mean-square deviation</span>
         <span class="c"># using the &quot;replicate weights&quot; &#39;WGTP[1-80]&#39;.</span>
         <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_se_09_to_13&#39;</span>
@@ -4579,8 +4582,8 @@ num columns described = 84
         <span class="n">test_se</span> <span class="o">=</span> <span class="p">((</span><span class="mi">4</span><span class="o">/</span><span class="mi">80</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_test</span><span class="p">,</span> <span class="n">wts</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">-</span> <span class="n">test_est</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">**</span><span class="mf">0.5</span>
         <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;(ref, test) = {tup}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tup</span><span class="o">=</span><span class="p">(</span><span class="n">ref_se</span><span class="p">,</span> <span class="n">test_se</span><span class="p">)))</span>
-        <span class="c"># Calculate the margin of error (&#39;moe&#39;) at the 90% confidence level</span>
-        <span class="c"># (+/- 1.645 standard errors).</span>
+        <span class="c"># Calculate and verify the margin of error (&#39;moe&#39;) at the</span>
+        <span class="c"># 90% confidence level (+/- 1.645 standard errors).</span>
         <span class="n">col</span> <span class="o">=</span> <span class="s">&#39;pums_moe_09_to_13&#39;</span>
         <span class="nb">print</span><span class="p">(</span><span class="s">&quot;        &#39;{col}&#39;:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">)</span>
         <span class="n">ref_moe</span> <span class="o">=</span> <span class="n">dfe_dc</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">tfmask_ref</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
