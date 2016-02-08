@@ -110,7 +110,7 @@ Data Science Demos            </a>
     </span>
             <span class="label label-default">Modified</span>
             <span class="modified">
-                <i class="fa fa-calendar"></i><time datetime="2016-01-07T14:15:00+00:00"> Thu 07 January 2016</time>
+                <i class="fa fa-calendar"></i><time datetime="2016-02-08T02:45:00+00:00"> Mon 08 February 2016</time>
             </span>
 
         <span class="label label-default">Category</span>
@@ -181,7 +181,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <li>I wanted to test the scalability of a pipeline. On a cloud platform, I can mount disks with large data sets and change the instance size to test how efficiently algorithms use CPUs and memory. Connecting other cloud services expands the possibilities.<sup id="fnref:alts"><a class="footnote-ref" href="#fn:alts" rel="footnote">2</a></sup></li>
 </ul>
 <p><strong>Why do I use Google Cloud?</strong></p>
-<p>Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its intuitive UI. <a href="https://cloud.google.com/compute/docs/ssh-in-browser">SSH within the browser</a> is very convenient.</p>
+<p>Between Google Cloud and Amazon Web Services, I chose Google Cloud for its intuitive UI. <a href="https://cloud.google.com/compute/docs/ssh-in-browser">SSH within the browser</a> is very convenient.</p>
 <p><strong>Why do I use IPython Notebooks?</strong></p>
 <p><a href="http://ipython.org/notebook.html">IPython (Jupyter) Notebooks</a> are an important part of my development process since they enable me to prototype quickly and to share my work in-progress. The notebook serves as a top-level script, the parts of which I eventually modularize as components of installable packages. I prefer the <a href="https://www.continuum.io/">Continuum Analytics Anaconda Python distribution</a> for its <a href="http://conda.pydata.org/docs/">Conda package manager</a>. I'm using <a href="https://docs.python.org/3.5/">Python 3.5</a>.</p>
 <p><strong>Why do I use Cloud9?</strong></p>
@@ -199,7 +199,8 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 </ul>
 </li>
 <li>Connect to the instance, e.g. with Google's <a href="https://cloud.google.com/compute/docs/ssh-in-browser">in-browser SSH</a>.</li>
-<li><a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">Update the Debian system.</a></li>
+<li><a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">Update the Debian system</a>:<br />
+<code>$ sudo apt-get update &amp;&amp; sudo apt-get dist-upgrade</code></li>
 <li><a href="https://help.github.com/articles/generating-ssh-keys/">Generate an SSH key pair for the instance</a> <span id="ssh-keygen"></span> and might as well connect to GitHub.<sup id="fnref:use-less"><a class="footnote-ref" href="#fn:use-less" rel="footnote">7</a></sup></li>
 </ul>
 </li>
@@ -273,6 +274,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <li>Linux:<ul>
 <li><a href="http://shop.oreilly.com/product/9780596005955.do"><em>Classic Shell Scripting</em> (2005, O'Reilly)</a> was my formal introduction to Bash and Linux/Unix.</li>
 <li><a href="http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html">Choosing between Debian and Ubuntu.</a></li>
+<li><a href="http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do">Updating a Debian system.</a></li>
 <li><a href="http://www.linuxproblem.org/art_9.html">SSH login without password.</a></li>
 <li><a href="http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html">SSH port forwarding (tunnels) explained.</a></li>
 <li><a href="https://cloud.google.com/solutions/connecting-securely">Google's recommended best practices for securing communications with Compute Engine instances.</a></li>
@@ -326,7 +328,7 @@ For <a href="https://chrome.google.com/webstore/detail/secure-shell/pnhechapfain
 <p>To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as <a href="#ssh-keygen">above</a> then move them to the Chromebook. I save mine under <code>Downloads/ssh</code> (no dot-file access without developer mode). Transfer the keys by copy-paste using <code>less</code> from instance's in-browser SSH and <a href="https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml">a text editor app for Chromebook</a> or download them from a connected <a href="https://docs.c9.io/docs/running-your-own-ssh-workspace">Cloud9 SSH workspace</a>: right-click the file &gt; "Download".&#160;<a class="footnote-backref" href="#fnref:keys" rev="footnote" title="Jump back to footnote 9 in the text">&#8617;</a></p>
 </li>
 <li id="fn:cat">
-<p>To copy a local public SSH key, e.g. <code>id_rsa.pub</code>, to a remote machine's <code>authorized_keys</code>, in the instance's in-browser shell:<br />
+<p>To append a local public SSH key, e.g. <code>id_rsa.pub</code>, to a remote machine's <code>authorized_keys</code> file, in the instance's in-browser shell:<br />
 <code>$ cat &gt;&gt; ~/.ssh/authorized_keys</code><br />
 <code>[Ctrl+V to paste the local public key, then Enter]</code><br />
 <code>[Ctrl+D to signal end of file]</code>  &#160;<a class="footnote-backref" href="#fnref:cat" rev="footnote" title="Jump back to footnote 10 in the text">&#8617;</a></p>
