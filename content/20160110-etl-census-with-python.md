@@ -1,7 +1,7 @@
 Title: Extract, transform, and load census data with Python
 Status: published
 Date: 2016-01-10T12:00:00Z
-Modified: 2016-01-09T17:00:00Z
+Modified: 2016-02-08T03:00:00Z
 Tags: etl, how-to, python, pandas, census
 Category: ETL
 Slug: 20160110-etl-census-with-python
@@ -545,7 +545,7 @@ Some links I found helpful for this blog post:
     * [Git-flow](https://github.com/nvie/gitflow) streamlines my repository management with this [branching model](http://nvie.com/posts/a-successful-git-branching-model/).
     * StackOverflow ["Download a specific tag with git"](http://stackoverflow.com/questions/791959/download-a-specific-tag-with-git).
 * `dsdemos` [v0.0.3 (browse code)](https://github.com/stharrold/dsdemos/tree/59705867b61b1bbc054c9ff2a5f8c6b2305ca60e):
-    * To design the package file structure, I used [*Learning Python, 5th ed.* (2013, O'Reilly)](http://shop.oreilly.com/product/0636920028154.do), Part V, "Modules and Packages".
+    * To design the package file structure, I used [*Learning Python, 5th ed.* (2013, O'Reilly)](http://shop.oreilly.com/product/0636920028154.do), Part V, "Modules and Packages"; and [*Python Cookbook, 3rd ed.* (2013, O'Reilly)](http://shop.oreilly.com/product/0636920027072.do), Ch. 10, "Modules and Packages".
     * I use [Google-style docstrings](https://google.github.io/styleguide/pyguide.html) adapted from the [example](http://sphinxcontrib-napoleon.readthedocs.org/en/latest/example_google.html) by the [Napoleon](https://sphinxcontrib-napoleon.readthedocs.org/en/latest/) extension to [Sphinx](http://sphinx-doc.org/) (a Python documentation generator, not yet used by `dsdemos`).
     * [Pytest](http://pytest.org/latest/) for testing.
     * [Semantic Versioning](http://semver.org/) for version numbers.
@@ -591,7 +591,7 @@ Some links I found helpful for this blog post:
     `$ git clone https://github.com/stharrold/dsdemos.git`  
     `$ cd dsdemos`  
     `$ git checkout tags/v0.0.3`  
-    If you already have a clone of `dsdemos`, update your local repository then checkout the new tag:  
+    If you already have a clone of `dsdemos`, update your local repository then checkout the version's tag:  
     `$ cd dsdemos`  
     `$ git pull`  
     `$ git checkout tags/v0.0.3`

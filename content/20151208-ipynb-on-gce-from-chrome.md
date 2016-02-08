@@ -1,7 +1,7 @@
 Title: Running an IPython Notebook on Google Compute Engine from Chrome
 Status: published
 Date: 2015-12-08T03:20:00Z
-Modified: 2016-01-07T14:15:00Z
+Modified: 2016-02-08T02:45:00Z
 Tags: devops, how-to, python, cloud-computing, chrome, cloud9, ssh
 Category: DevOps
 Slug: 20151208-ipynb-on-gce-from-chrome
@@ -50,7 +50,7 @@ For [Chrome Secure Shell](https://chrome.google.com/webstore/detail/secure-shell
 
 **Why do I use Google Cloud?**
 
-Between Google Cloud and Amazon Web Services, I chose Google Cloud due to its intuitive UI. [SSH within the browser](https://cloud.google.com/compute/docs/ssh-in-browser) is very convenient.
+Between Google Cloud and Amazon Web Services, I chose Google Cloud for its intuitive UI. [SSH within the browser](https://cloud.google.com/compute/docs/ssh-in-browser) is very convenient.
 
 **Why do I use IPython Notebooks?**
 
@@ -72,7 +72,8 @@ There are many ways to run a Jupyter Notebook server on a virtual machine instan
         * Firewall: Allow HTTP and HTTPS connections to use `curl` and `wget`.
         * Project access: Reserve an external IP address ("Networking" > "External IP"). Other settings can be left at default.[^ext-ip] For this example, I give `123.123.123.123` as my instance's static external IP address.
     * Connect to the instance, e.g. with Google's [in-browser SSH](https://cloud.google.com/compute/docs/ssh-in-browser).
-    * [Update the Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
+    * [Update the Debian system](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do):  
+      `$ sudo apt-get update && sudo apt-get dist-upgrade`
     * [Generate an SSH key pair for the instance](https://help.github.com/articles/generating-ssh-keys/) <span id="ssh-keygen"></span> and might as well connect to GitHub.[^use-less]
 * <span id="ipynb-server">Start a Jupyter Notebook server</span> on the instance from the in-browser SSH:
     * [Install Python](https://www.continuum.io/downloads) on the instance.
@@ -129,6 +130,7 @@ Some links I found helpful for this blog post:
 * Linux:
     * [*Classic Shell Scripting* (2005, O'Reilly)](http://shop.oreilly.com/product/9780596005955.do) was my formal introduction to Bash and Linux/Unix.
     * [Choosing between Debian and Ubuntu.](http://www.datamation.com/open-source/debian-vs-ubuntu-which-is-best-for-you-1.html)
+    * [Updating a Debian system.](http://askubuntu.com/questions/222348/what-does-sudo-apt-get-update-do)
     * [SSH login without password.](http://www.linuxproblem.org/art_9.html)
     * [SSH port forwarding (tunnels) explained.](http://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html)
     * [Google's recommended best practices for securing communications with Compute Engine instances.](https://cloud.google.com/solutions/connecting-securely)
@@ -170,7 +172,7 @@ Thanks to John and Julie for their early reviews.
 [^keys]:
     To create an SSH key pair for the Chromebook without going into the laptop's developer mode, generate an extra pair of keys on the instance as <a href="#ssh-keygen">above</a> then move them to the Chromebook. I save mine under `Downloads/ssh` (no dot-file access without developer mode). Transfer the keys by copy-paste using `less` from instance's in-browser SSH and [a text editor app for Chromebook](https://chrome.google.com/webstore/detail/caret/fljalecfjciodhpcledpamjachpmelml) or download them from a connected [Cloud9 SSH workspace](https://docs.c9.io/docs/running-your-own-ssh-workspace): right-click the file > "Download".
 [^cat]:
-    To copy a local public SSH key, e.g. `id_rsa.pub`, to a remote machine's `authorized_keys`, in the instance's in-browser shell:  
+    To append a local public SSH key, e.g. `id_rsa.pub`, to a remote machine's `authorized_keys` file, in the instance's in-browser shell:  
     `$ cat >> ~/.ssh/authorized_keys`  
     `[Ctrl+V to paste the local public key, then Enter]`  
     `[Ctrl+D to signal end of file]`  
