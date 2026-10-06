@@ -33,6 +33,11 @@ To release: merge `src_feature_*` into `src_develop`, then `src_develop` into `s
 ruff, pytest, `pelican --settings publishconf.py --fatal warnings`, and Pagefind, then deploys `output/`.
 GitHub Pages must be set to **Settings > Pages > Source: GitHub Actions**. `output/` is generated and not tracked.
 
+To verify a deploy, wait for the run (`gh run watch <id>`; find it with
+`gh run list --workflow pages.yml --json databaseId,headSha`), then check the live site with a cache-busting query,
+e.g. `curl -s "https://stharrold.github.io/?v=$(date +%s)"`. For visual changes, compare before/after screenshots of a
+local dev build served with `python3 -m http.server` before merging to `src_master`.
+
 **Automation:**
 - `.github/workflows/links.yml` logs internal and external link status every Monday (and on manual dispatch) against
   a fresh build: a job summary plus a `link-report` JSON artifact kept 90 days. It is report-only (never fails, files
@@ -78,6 +83,13 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
 - **Privacy:** `content/pages/privacy.md` lists every third-party service the site loads; update it when adding one.
 - **Plugins:** `related_posts`, `tag_cloud`, `sitemap` (from PyPI), and `plugins/pelican_alias.py`
   (Python 3 port of [pelican-alias](https://github.com/Nitron/pelican-alias)) for `Alias:` redirects.
+
+## Work tracking
+
+Open work is tracked as GitHub issues grouped in milestones: one per post ("post about predicting income",
+"post about agentic development", ...) plus **Site maintenance** for build, theme, and tooling upkeep. The next
+planned post, an interactive household-income demo built from ACS PUMS data, is specified in #68. Published
+2015-2016 posts are frozen as written.
 
 ## License
 
