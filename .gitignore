@@ -116,3 +116,6 @@ target/
 # Keep compiled translations shipped with vendored themes.
 !themes/**/*.mo
 !themes/**/*.pot
+
+# Playwright MCP browser snapshots and logs
+.playwright-mcp/
