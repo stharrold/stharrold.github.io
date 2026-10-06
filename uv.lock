@@ -369,6 +369,18 @@ wheels = [
 ]
 
 [[package]]
+name = "pelican-sitemap"
+version = "1.2.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pelican" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5c/c1/d9e1d539decfba947d711bcb37427ad15914557a728418bd928d56e58a32/pelican_sitemap-1.2.2.tar.gz", hash = "sha256:93f72d035dd0ec2f5cee38b2766bbd7f6a54bf186635ae1261a6deac422dcfb7", size = 8013, upload-time = "2025-10-12T15:24:36.727Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/68/c2/d2f98364b49a40bac9f315f29d8c22322b47bc4ebdec6a8e3a4f657ebc24/pelican_sitemap-1.2.2-py3-none-any.whl", hash = "sha256:09ba150dd1b54ef855f18e7ec920160d7118e932e0dac1c6e8bf3a41e938e682", size = 8046, upload-time = "2025-10-12T15:24:35.678Z" },
+]
+
+[[package]]
 name = "pelican-tag-cloud"
 version = "1.0.1"
 source = { registry = "https://pypi.org/simple" }
@@ -578,6 +590,7 @@ dependencies = [
     { name = "pagefind", extra = ["bin"] },
     { name = "pelican", extra = ["markdown"] },
     { name = "pelican-related-posts" },
+    { name = "pelican-sitemap" },
     { name = "pelican-tag-cloud" },
     { name = "pymdown-extensions" },
 ]
@@ -595,6 +608,7 @@ requires-dist = [
     { name = "pagefind", extras = ["bin"], specifier = ">=1.5" },
     { name = "pelican", extras = ["markdown"], specifier = ">=4.12,<5" },
     { name = "pelican-related-posts", specifier = ">=1.0" },
+    { name = "pelican-sitemap", specifier = ">=1.2.2" },
     { name = "pelican-tag-cloud", specifier = ">=1.0.1" },
     { name = "pymdown-extensions", specifier = ">=12.1" },
 ]

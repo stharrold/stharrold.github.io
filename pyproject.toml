@@ -12,6 +12,7 @@ dependencies = [
     # Static site search index, built from output/ after Pelican runs.
     "pagefind[bin]>=1.5",
     "ghp-import>=2.1",
+    "pelican-sitemap>=1.2.2",
 ]
 
 [dependency-groups]
