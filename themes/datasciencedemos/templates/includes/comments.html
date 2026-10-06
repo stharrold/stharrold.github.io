@@ -1,24 +1,29 @@
-{% if DISQUS_SITENAME %}
+{# Comments: archived Disqus comments (static HTML from data/archived-comments/) followed by Giscus,
+   which stores new comments in the repository's GitHub Discussions. Threads map to the post slug. #}
+{% set item = article or page %}
+{% if ARCHIVED_COMMENTS and ARCHIVED_COMMENTS.get(item.slug) %}
+{{ ARCHIVED_COMMENTS[item.slug] }}
+{% endif %}
+{% if GISCUS %}
 <section class="comments mt-4" id="comments" data-pagefind-ignore>
-    <h2>Comments</h2>
-    <div id="disqus_thread"></div>
-    <script>
-        var disqus_config = function () {
-            {% if article %}
-            this.page.identifier = '{{ article.date | strftime('%Y-%m-%d-') ~ article.slug }}';
-            {% if SITEURL %}this.page.url = '{{ SITEURL }}/{{ article.url }}';{% endif %}
-            {% elif page %}
-            this.page.identifier = 'page-{{ page.slug }}';
-            {% if SITEURL %}this.page.url = '{{ SITEURL }}/{{ page.url }}';{% endif %}
-            {% endif %}
-        };
-        (function () {
-            var d = document, s = d.createElement('script');
-            s.src = 'https://{{ DISQUS_SITENAME }}.disqus.com/embed.js';
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
+    <h2 class="h4">Comments</h2>
+    <script src="https://giscus.app/client.js"
+            data-repo="{{ GISCUS.repo }}"
+            data-repo-id="{{ GISCUS.repo_id }}"
+            data-category="{{ GISCUS.category }}"
+            data-category-id="{{ GISCUS.category_id }}"
+            data-mapping="specific"
+            data-term="{{ item.slug }}"
+            data-strict="1"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="light"
+            data-lang="en"
+            data-loading="lazy"
+            crossorigin="anonymous"
+            async>
     </script>
-    <noscript>Please enable JavaScript to view the comments.</noscript>
+    <noscript>Comments require JavaScript and a GitHub account.</noscript>
 </section>
 {% endif %}

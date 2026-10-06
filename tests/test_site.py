@@ -124,6 +124,17 @@ def test_math_rendering(site):
     assert "mathjax" not in gce.lower()
 
 
+def test_comments_are_giscus_with_archived_disqus(site):
+    expected_archived = {"20160110-etl-census-with-python": 3, "20151208-ipynb-on-gce-from-chrome": 2, "20151030-test": 1}
+    for slug, count in expected_archived.items():
+        html = (site / f"{slug}.html").read_text()
+        assert f"Archived comments ({count})" in html, slug
+        assert 'src="https://giscus.app/client.js"' in html, slug
+        assert f'data-term="{slug}"' in html, slug
+        assert "disqus.com/embed.js" not in html, slug
+        assert "disq.us/url" not in html, slug
+
+
 def test_feeds_use_absolute_urls(site):
     atom = (site / "feeds" / "all.atom.xml").read_text()
     assert "https://stharrold.github.io/" in atom

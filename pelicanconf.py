@@ -14,6 +14,7 @@ References:
 """
 
 import datetime
+from pathlib import Path
 
 # Basic settings
 AUTHOR = "Samuel Harrold"
@@ -90,7 +91,15 @@ TRANSLATION_FEED_ATOM = None
 # Theme settings
 # Bootstrap 5 theme forked from pelican-bootstrap3 (see themes/README.md).
 THEME = "themes/datasciencedemos"
-DISQUS_SITENAME = "stharroldgithubio"
+# Comments: Giscus (GitHub Discussions, "Announcements" category) for new comments; the comments
+#     left on Disqus through 2017 are kept as static HTML in data/archived-comments/<slug>.html.
+GISCUS = {
+    "repo": "stharrold/stharrold.github.io",
+    "repo_id": "MDEwOlJlcG9zaXRvcnkyOTYzNDExOQ==",
+    "category": "Announcements",
+    "category_id": "DIC_kwDOAcQuR84DHLf2",
+}
+ARCHIVED_COMMENTS = {p.stem: p.read_text() for p in (Path(__file__).parent / "data" / "archived-comments").glob("*.html")}
 # Google Analytics 4 is set only in publishconf.py so local builds are not tracked.
 #     The Universal Analytics property UA-43020842-2 stopped collecting on 2023-07-01.
 GOOGLE_ANALYTICS = None
