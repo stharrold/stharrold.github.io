@@ -99,8 +99,31 @@ def test_favicons_at_site_root(site):
 def test_search_index_covers_published_posts_and_pages_only(site):
     assert (site / "pagefind" / "pagefind-component-ui.js").is_file()
     entry = json.loads((site / "pagefind" / "pagefind-entry.json").read_text())
-    # 3 published articles + the About page; list pages, drafts, and notebook exports are not indexed.
-    assert sum(lang["page_count"] for lang in entry["languages"].values()) == 4
+    # 3 published articles + the About and Privacy pages; list pages, drafts, and notebook exports are not indexed.
+    assert sum(lang["page_count"] for lang in entry["languages"].values()) == 5
+
+
+def test_sitemap_and_robots(site):
+    sitemap = (site / "sitemap.xml").read_text()
+    urls = set(re.findall(r"<loc>([^<]+)</loc>", sitemap))
+    base = "https://stharrold.github.io/"
+    expected = {
+        base,
+        base + "archives.html",
+        base + "pages/about.html",
+        base + "20151030-test.html",
+        base + "20151208-ipynb-on-gce-from-chrome.html",
+        base + "20160110-etl-census-with-python.html",
+    }
+    assert urls == expected
+    assert "Sitemap: https://stharrold.github.io/sitemap.xml" in (site / "robots.txt").read_text()
+
+
+def test_privacy_page_linked_from_footer_not_menu(site):
+    index = (site / "index.html").read_text()
+    assert (site / "pages" / "privacy.html").is_file()
+    assert 'href="https://stharrold.github.io/pages/privacy.html">Privacy</a>' in index
+    assert 'class="nav-link" href="https://stharrold.github.io/pages/privacy.html"' not in index
 
 
 def test_no_third_party_fonts_or_jquery(site):

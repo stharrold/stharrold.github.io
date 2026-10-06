@@ -26,7 +26,8 @@ DELETE_OUTPUT_DIRECTORY = True
 MARKDOWN = {
     "extension_configs": {
         "markdown.extensions.codehilite": {"css_class": "highlight"},
-        "markdown.extensions.extra": {},
+        # Footnote back-links as a text arrow (U+FE0E) rather than an emoji.
+        "markdown.extensions.extra": {"footnotes": {"BACKLINK_TEXT": "&#8617;&#xFE0E;"}},
         "markdown.extensions.toc": {"title": "Contents", "baselevel": 2},
         # Math as $...$ and $$...$$, rendered by MathJax 4 (theme includes/math.html).
         #     smart_dollar (default) ignores prices like "$20 per month".
@@ -63,11 +64,16 @@ DIRECT_TEMPLATES = ["index", "tags", "categories", "archives"]
 # TODO: Add embed_html as plugin
 #     https://github.com/stharrold/stharrold.github.io/issues/5
 PLUGIN_PATHS = ["plugins"]
-PLUGINS = ["related_posts", "tag_cloud", "pelican_alias"]
+PLUGINS = ["related_posts", "tag_cloud", "sitemap", "pelican_alias"]
 # For 'related_posts':
 RELATED_POSTS_MAX = 5
 # For 'tag_cloud':
 TAG_CLOUD_SORTING = "alphabetically"
+# For 'sitemap': posts, pages, and the home and archive pages; robots.txt points here.
+SITEMAP = {
+    "format": "xml",
+    "exclude": [r"^tag/", r"^category/", r"^author/", r"^tags\.html$", r"^categories\.html$", r"^authors\.html$", r"^search\.html$"],
+}
 # Site search: search.html loads the Pagefind index, which is built from
 #     output/ after Pelican runs (`uv run python -m pagefind --site output`).
 DIRECT_TEMPLATES.append("search")
@@ -118,3 +124,4 @@ DISPLAY_TAGS_ON_SIDEBAR = True
 DISPLAY_CATEGORIES_ON_SIDEBAR = True
 DISPLAY_RECENT_POSTS_ON_SIDEBAR = True
 RECENT_POST_COUNT = 5
+FOOTER_LINKS = [("Privacy", "pages/privacy.html")]
