@@ -16,19 +16,6 @@ wheels = [
 ]
 
 [[package]]
-name = "beautifulsoup4"
-version = "4.15.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "soupsieve" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/43/65/318323f98dbee45d42dff61d8f047181bc6f2268a9068cfad035a46be5af/beautifulsoup4-4.15.0.tar.gz", hash = "sha256:288e3ca7d54b06f2ac191970bc275c1939cb46d450b255bf6718b04aa37ab4f7", size = 632571, upload-time = "2026-06-07T16:44:20.453Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/88/c6/92fcd42f1ba33e1184263f25bfabf3d27c383410470f169e4b8163bf9c17/beautifulsoup4-4.15.0-py3-none-any.whl", hash = "sha256:d6f88de62e1d4e38ecb1077eb9724cd0eff29d2a08ca16a401e9b9e93f117cf9", size = 109924, upload-time = "2026-06-07T16:44:21.566Z" },
-]
-
-[[package]]
 name = "blinker"
 version = "1.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -92,18 +79,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/53/e4/34efcb869715cf299e47d1ac7b2624d2bcb6f2d3dffc2f0abe8417f65ab2/filelock-4.0.12.tar.gz", hash = "sha256:cf42711a7ac791818b299fab0332a088c65aeeefa36290de98db92c434303b0c", size = 253880, upload-time = "2026-10-05T13:17:43.677Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/da/a1/b047e1c486a2c66283633b7dbb73872ca16ca1ce6a426f70d4d037fc8e1c/filelock-4.0.12-py3-none-any.whl", hash = "sha256:5f17ee83ecee8a6f3e389c75822fb70a1c2f0506b99438a6dffa1d56793588c8", size = 111732, upload-time = "2026-10-05T13:17:42.361Z" },
-]
-
-[[package]]
-name = "ghp-import"
-version = "2.1.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "python-dateutil" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/d9/29/d40217cbe2f6b1359e00c6c307bb3fc876ba74068cbab3dde77f03ca0dc4/ghp-import-2.1.0.tar.gz", hash = "sha256:9c535c4c61193c2df8871222567d7fd7e5014d835f97dc7b7439069e2413d343", size = 10943, upload-time = "2022-05-02T15:47:16.11Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/ec/67fbef5d497f86283db54c22eec6f6140243aae73265799baaaa19cd17fb/ghp_import-2.1.0-py3-none-any.whl", hash = "sha256:8337dd7b50877f163d4c0289bc1f1c7f127550241988d568c1db512c4324a619", size = 11034, upload-time = "2022-05-02T15:47:14.552Z" },
 ]
 
 [[package]]
@@ -316,6 +291,33 @@ wheels = [
 ]
 
 [[package]]
+name = "pagefind"
+version = "1.5.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/50/cc/efc080eb3191d1afc75dc58c336676c0847fc4610b1d9e7d58b4083836b6/pagefind-1.5.2.tar.gz", hash = "sha256:fffddd6e2016b06bdca83b83d4ac4bef379cf0559f05ecdb6908a8729a27dbf3", size = 52521, upload-time = "2026-04-12T12:51:59.814Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/0a/a7/414e1df2749f647784e32da78ce3081a9fedf1ae8d5b3bb8d4c5643f06cd/pagefind-1.5.2-py3-none-any.whl", hash = "sha256:6c4086ad9eaa7e8f863085652f6b1093549b1737848d946daa0706ee57f778d1", size = 10104, upload-time = "2026-04-12T12:51:27.563Z" },
+]
+
+[package.optional-dependencies]
+bin = [
+    { name = "pagefind-bin" },
+]
+
+[[package]]
+name = "pagefind-bin"
+version = "1.5.2"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8c/0e/8926c87123e6ccf0df0e70e0d8c7c02acdb505df81e63399b87d486a9767/pagefind_bin-1.5.2-py3-none-macosx_12_0_arm64.whl", hash = "sha256:40b39a852fac5dfb565ae288d7c44ac0627dd354f154166675e73257a28f8e3c", size = 4980054, upload-time = "2026-04-12T12:51:28.875Z" },
+    { url = "https://files.pythonhosted.org/packages/66/19/ba248d72322a27738408a9b2f556931dcb3d21772573bb5071873da193a1/pagefind_bin-1.5.2-py3-none-macosx_12_0_x86_64.whl", hash = "sha256:0e83f5823a116166128b35f6c4818f4b5c3c0a9d476c228d137187e772d190cf", size = 5057535, upload-time = "2026-04-12T12:51:30.955Z" },
+    { url = "https://files.pythonhosted.org/packages/40/cf/2a7608bd67242c3b7a2d3fc0ff238d9183287a63b1e6838ff26b351b4d2a/pagefind_bin-1.5.2-py3-none-manylinux_2_12_x86_64.manylinux2010_x86_64.musllinux_1_1_x86_64.whl", hash = "sha256:92eb3f492fc7dbf0fc68c18c78f8de44ecfb266ba64cb982e3ccc1b4bbd7203e", size = 5401199, upload-time = "2026-04-12T12:51:32.664Z" },
+    { url = "https://files.pythonhosted.org/packages/11/23/21bd734280f3c4fa412c881940a343acd6ed685795f9efd10525ef74b2c6/pagefind_bin-1.5.2-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:c33f8019bb21f8b417b847efe2cb8ffbbf03ba6996a233a9bb5c764c56d76f6a", size = 5139097, upload-time = "2026-04-12T12:51:34.315Z" },
+    { url = "https://files.pythonhosted.org/packages/9e/7d/4dae4033f428bd1533bc46c520ff910d2909b636aed1b0d2f5bf830316af/pagefind_bin-1.5.2-py3-none-win_amd64.whl", hash = "sha256:02512ae24c483487a5d2742ba990a0bb6823c205aa0ce5594f2f641fc0babed3", size = 5193304, upload-time = "2026-04-12T12:51:36.03Z" },
+    { url = "https://files.pythonhosted.org/packages/e1/d2/86737796d057c1abe48797abaa465f75676d4dd76c52a07ffdb79472c74a/pagefind_bin-1.5.2-py3-none-win_arm64.whl", hash = "sha256:ee34dac9f83e6c8a15a516f6fecc26b7f4143a6c763544991e2b996f591e0492", size = 5067764, upload-time = "2026-04-12T12:51:37.817Z" },
+]
+
+[[package]]
 name = "pelican"
 version = "4.12.0"
 source = { registry = "https://pypi.org/simple" }
@@ -343,18 +345,6 @@ markdown = [
 ]
 
 [[package]]
-name = "pelican-i18n-subsites"
-version = "1.0.0"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "pelican" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/ce/1e/e5b862b9fca0d792ee61ab0af7f0d05471587983141fcf59a03d58dd7bcb/pelican_i18n_subsites-1.0.0.tar.gz", hash = "sha256:fdde5b23b79ceea9b2b640695eceb666e66688ba618a9aa9f99053e546092e93", size = 13550, upload-time = "2025-05-26T19:16:39.346Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b8/2a/67872fc6bf3b89d47128b86ab8218a077c11dc89e08175450db47d435167/pelican_i18n_subsites-1.0.0-py3-none-any.whl", hash = "sha256:443818256caea963c58c95de13c687bc064f84ddd879ce10f13c108b08e4bd0d", size = 11914, upload-time = "2025-05-26T19:16:38.123Z" },
-]
-
-[[package]]
 name = "pelican-related-posts"
 version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -367,15 +357,15 @@ wheels = [
 ]
 
 [[package]]
-name = "pelican-render-math"
-version = "1.0.5"
+name = "pelican-sitemap"
+version = "1.2.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pelican" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/39/ce/b7ca0f603d78811b944951ad2f83f28ad3018ef1b3653221deef81e068c5/pelican_render_math-1.0.5.tar.gz", hash = "sha256:dfb36fb5cb62f40ee05d747f47207ec15511f8d77635def8c22a00846cca742b", size = 29453, upload-time = "2025-10-22T09:13:58.185Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5c/c1/d9e1d539decfba947d711bcb37427ad15914557a728418bd928d56e58a32/pelican_sitemap-1.2.2.tar.gz", hash = "sha256:93f72d035dd0ec2f5cee38b2766bbd7f6a54bf186635ae1261a6deac422dcfb7", size = 8013, upload-time = "2025-10-12T15:24:36.727Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/51/0e/368abb67e18c4ce965ce88cf96aa67c6cb8be2f8e0b2ed1ec1f306be5dad/pelican_render_math-1.0.5-py3-none-any.whl", hash = "sha256:6383b798aba721ed033a67bbc71c8f555b72c7d35e22a32477c958286f719eca", size = 28788, upload-time = "2025-10-22T09:13:56.792Z" },
+    { url = "https://files.pythonhosted.org/packages/68/c2/d2f98364b49a40bac9f315f29d8c22322b47bc4ebdec6a8e3a4f657ebc24/pelican_sitemap-1.2.2-py3-none-any.whl", hash = "sha256:09ba150dd1b54ef855f18e7ec920160d7118e932e0dac1c6e8bf3a41e938e682", size = 8046, upload-time = "2025-10-12T15:24:35.678Z" },
 ]
 
 [[package]]
@@ -388,15 +378,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/40/48/4777ee6c0cdd919fd607f15b9782f6cb91c1356ebf6dc1e547f71cf64950/pelican-tag-cloud-1.0.1.tar.gz", hash = "sha256:bf29107e7f2cd01f7710ed992dee7e5e67becb63c7de8a24719635d439f51f25", size = 7093, upload-time = "2021-10-02T08:58:52.041Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/36/2d/aaa2a8bb3473774be0dd14616712a9397903b4e652b32d94710d820be1bb/pelican_tag_cloud-1.0.1-py3-none-any.whl", hash = "sha256:0dee042f01821b6142f43907d27e3041b19677483f94cc9bf3162c209dbdd834", size = 6613, upload-time = "2021-10-02T08:58:53.493Z" },
-]
-
-[[package]]
-name = "pelican-tipue-search"
-version = "0.0.0"
-source = { git = "https://github.com/getpelican/pelican-plugins?subdirectory=tipue_search&rev=216d1ddb5cf5dc8f5a308d1b1554102013ff7c79#216d1ddb5cf5dc8f5a308d1b1554102013ff7c79" }
-dependencies = [
-    { name = "beautifulsoup4" },
-    { name = "pelican" },
 ]
 
 [[package]]
@@ -440,6 +421,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b0/77/a5b8c569bf593b0140bde72ea885a803b82086995367bf2037de0159d924/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887", size = 4968631, upload-time = "2025-06-21T13:39:12.283Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c7/21/705964c7812476f378728bdf590ca4b771ec72385c533964653c68e86bdc/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b", size = 1225217, upload-time = "2025-06-21T13:39:07.939Z" },
+]
+
+[[package]]
+name = "pymdown-extensions"
+version = "12.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "markdown" },
+    { name = "pyyaml" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2a/94/858e0163cb4d83d6d8234018a01792c749a56daee41794cac7d6c46661e8/pymdown_extensions-12.1.tar.gz", hash = "sha256:fdb8f47f5d7fd069d10ef2a7d8908e613d7865ff0419d544a0ffd3984e884f11", size = 868245, upload-time = "2026-09-23T00:08:42Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/36/d1/98313da89960a604402266a115311b510254900ff1295ea426403f9423cc/pymdown_extensions-12.1-py3-none-any.whl", hash = "sha256:4a254b771acfcddc6c110a7f4590d818f1f849e2d5aacf69b4b07c8dd2a9700d", size = 277069, upload-time = "2026-09-23T00:08:40.069Z" },
 ]
 
 [[package]]
@@ -576,26 +570,16 @@ wheels = [
 ]
 
 [[package]]
-name = "soupsieve"
-version = "2.10"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/71/c3/1b817965ac12dc002d7c9cd7dfffdd7d4fbf9b45763ef2ffe7b86ee94670/soupsieve-2.10.tar.gz", hash = "sha256:49e9380d7d2905463583bafe285e818c7366a9ed7b3aee221c1ac79c905d8bc0", size = 124337, upload-time = "2026-09-24T02:36:35.048Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/66/87/5ed59e1d0290564e2027ed066c52b059892c4637741337fc0967183c8d4d/soupsieve-2.10-py3-none-any.whl", hash = "sha256:8596eb8967d744174820280fa62b4542a2e955bfaccca73ed8a13c6eb8e9b502", size = 38019, upload-time = "2026-09-24T02:36:33.709Z" },
-]
-
-[[package]]
 name = "stharrold-github-io"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "ghp-import" },
+    { name = "pagefind", extra = ["bin"] },
     { name = "pelican", extra = ["markdown"] },
-    { name = "pelican-i18n-subsites" },
     { name = "pelican-related-posts" },
-    { name = "pelican-render-math" },
+    { name = "pelican-sitemap" },
     { name = "pelican-tag-cloud" },
-    { name = "pelican-tipue-search" },
+    { name = "pymdown-extensions" },
 ]
 
 [package.dev-dependencies]
@@ -607,13 +591,12 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "ghp-import", specifier = ">=2.1" },
+    { name = "pagefind", extras = ["bin"], specifier = ">=1.5" },
     { name = "pelican", extras = ["markdown"], specifier = ">=4.12,<5" },
-    { name = "pelican-i18n-subsites", specifier = ">=1.0" },
     { name = "pelican-related-posts", specifier = ">=1.0" },
-    { name = "pelican-render-math", specifier = ">=1.0.5" },
+    { name = "pelican-sitemap", specifier = ">=1.2.2" },
     { name = "pelican-tag-cloud", specifier = ">=1.0.1" },
-    { name = "pelican-tipue-search", git = "https://github.com/getpelican/pelican-plugins?subdirectory=tipue_search&rev=216d1ddb5cf5dc8f5a308d1b1554102013ff7c79" },
+    { name = "pymdown-extensions", specifier = ">=12.1" },
 ]
 
 [package.metadata.requires-dev]

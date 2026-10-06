@@ -1,0 +1,17 @@
+{% if articles_page and articles_paginator.num_pages > 1 %}
+<nav aria-label="Article pages">
+    <ul class="pagination">
+        <li class="page-item{% if not articles_page.has_previous() %} disabled{% endif %}">
+            <a class="page-link" href="{{ SITEURL }}/{{ articles_previous_page.url if articles_page.has_previous() else '#' }}">&laquo; Newer</a>
+        </li>
+        {% for num in range(1, 1 + articles_paginator.num_pages) %}
+        <li class="page-item{% if num == articles_page.number %} active{% endif %}">
+            <a class="page-link" href="{{ SITEURL }}/{{ articles_paginator.page(num).url }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item{% if not articles_page.has_next() %} disabled{% endif %}">
+            <a class="page-link" href="{{ SITEURL }}/{{ articles_next_page.url if articles_page.has_next() else '#' }}">Older &raquo;</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

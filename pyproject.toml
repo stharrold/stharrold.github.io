@@ -6,14 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "pelican[markdown]>=4.12,<5",
-    "pelican-i18n-subsites>=1.0",
     "pelican-related-posts>=1.0",
-    "pelican-render-math>=1.0.5",
     "pelican-tag-cloud>=1.0.1",
-    # Abandoned upstream and not on PyPI; pinned to the archived legacy repo.
-    # The vendored pelican-bootstrap3 theme ships Tipue Search 7.0, which this plugin feeds.
-    "pelican-tipue-search @ git+https://github.com/getpelican/pelican-plugins@216d1ddb5cf5dc8f5a308d1b1554102013ff7c79#subdirectory=tipue_search",
-    "ghp-import>=2.1",
+    "pymdown-extensions>=12.1",
+    # Static site search index, built from output/ after Pelican runs.
+    "pagefind[bin]>=1.5",
+    "pelican-sitemap>=1.2.2",
 ]
 
 [dependency-groups]

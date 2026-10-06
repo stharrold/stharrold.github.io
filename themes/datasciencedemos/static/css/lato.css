@@ -1,0 +1,30 @@
+/* Lato (SIL OFL 1.1, see licenses/lato-OFL-1.1.txt), self-hosted from @fontsource/lato 5.3.0
+   so pages make no request to Google Fonts. Latin subset; weights used by Bootswatch Flatly. */
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/lato-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lato";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/lato-latin-400-italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/lato-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lato";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/lato-latin-700-italic.woff2") format("woff2");
+}

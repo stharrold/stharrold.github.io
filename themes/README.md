@@ -1,28 +1,35 @@
-# Vendored themes
+# Themes
 
-`pelican-bootstrap3/` is copied from
-[getpelican/pelican-themes](https://github.com/getpelican/pelican-themes/tree/2b80541d755cd2d7891672650a52444e4d685e22/pelican-bootstrap3)
-at commit `2b80541d755cd2d7891672650a52444e4d685e22` (2025-10-22).
+## datasciencedemos
 
-## Local patches
+The site theme: Bootstrap 5 with the [Bootswatch Flatly](https://bootswatch.com/flatly/) styles, no jQuery.
 
-Pelican >= 4.5 rewrites `PLUGINS` to full module names (e.g. `pelican.plugins.tag_cloud`),
-so the theme's `'<name>' in PLUGINS` checks never match namespace plugins. These checks
-were changed to also accept the full name:
+**Lineage.** Forked in 2026-10 from
+[pelican-bootstrap3](https://github.com/getpelican/pelican-themes/tree/2b80541d755cd2d7891672650a52444e4d685e22/pelican-bootstrap3)
+(MIT, see `licenses/pelican-bootstrap3-LICENSE.txt`), which the site used from 2015. The templates were rewritten
+for Bootstrap 5 and trimmed to the features this site uses: article and page layouts, breadcrumbs, sidebar
+(recent posts, categories, tag cloud), related posts, comments, GA4, and search. Removed: i18n/translations,
+AddThis, Shariff, Twitter, Piwik/Matomo, series, GitHub widgets, liquid_tags, banners, Tipue Search, jQuery.
 
-- `templates/base.html`: both `'tipue_search' in PLUGINS` checks (search CSS, navbar search box).
-- `templates/includes/sidebar/tag_cloud.html`: `'tag_cloud' in PLUGINS` check.
+**Settings used by the templates** (see `pelicanconf.py`): `DISPLAY_PAGES_ON_MENU`, `DISPLAY_BREADCRUMBS`,
+`DISPLAY_ARTICLE_INFO_ON_INDEX`, `DISPLAY_RECENT_POSTS_ON_SIDEBAR` / `RECENT_POST_COUNT`,
+`DISPLAY_CATEGORIES_ON_SIDEBAR`, `DISPLAY_TAGS_ON_SIDEBAR` (needs the `tag_cloud` plugin), `SHOW_ARTICLE_CATEGORY`,
+`SHOW_DATE_MODIFIED`, `FAVICON`, `TOUCHICON`, `PYGMENTS_STYLE`, `GOOGLE_ANALYTICS` / `GOOGLE_ANALYTICS_CONFIG` /
+`GA_GTM_CONTAINER_ID`, `DISQUS_SITENAME`, `BUILD_YEAR` / `OUTDATED_AFTER_YEARS` (notice on old posts),
+`FOOTER_LINKS`.
 
-Other fixes:
+**Search.** `templates/search.html` uses the [Pagefind](https://pagefind.app/) Component UI. Post and page bodies
+are marked `data-pagefind-body`; related posts, comments, and notices are `data-pagefind-ignore`. The index is built
+after Pelican: `uv run python -m pagefind --site output`.
 
-- `static/tipuesearch/tipuesearch.js`: added `escapeHtml()` and applied it where the search query
-  is inserted as HTML (the "Showing results for" replace message and related-search button ids),
-  fixing a reflected XSS via `search.html?q=`. `templates/search.html` now loads `tipuesearch.js`
-  instead of the unpatched `tipuesearch.min.js`.
-- `templates/includes/ga.html`: the GA4 measurement ID is now quoted (`| tojson`); it was emitted as a
-  bare JS expression (`ReferenceError`). The Google Tag Manager snippet is emitted only when
-  `GA_GTM_CONTAINER_ID` is set, instead of always requesting `gtm.js?id=`. An optional
-  `GOOGLE_ANALYTICS_CONFIG` dict is passed as the third argument to `gtag('config', ...)`.
+**Vendored assets** (update by replacing the files and the versions here):
 
-To update, copy the `pelican-bootstrap3/` directory from a newer commit, update the commit above,
-and re-apply the patches if upstream has not fixed them.
+| File | Source | License |
+|---|---|---|
+| `static/css/bootstrap.flatly.min.css` | bootswatch 5.3.8 `dist/flatly/bootstrap.min.css`, with its Google Fonts `@import` removed | MIT |
+| `static/js/bootstrap.bundle.min.js` | bootstrap 5.3.8 `dist/js/bootstrap.bundle.min.js` | MIT |
+| `static/fonts/lato-latin-*.woff2`, `static/css/lato.css` | @fontsource/lato 5.3.0 (self-hosted so pages make no Google Fonts request) | SIL OFL 1.1 |
+| `static/css/font-awesome.min.css`, `static/fonts/fontawesome-webfont.*`, `FontAwesome.otf` | Font Awesome 4.7.0, from pelican-bootstrap3 | CSS MIT, fonts SIL OFL 1.1 |
+| `static/css/pygments/default.css` | from pelican-bootstrap3 | MIT |
+
+License texts are in `licenses/`.

@@ -1,0 +1,149 @@
+/* Site styles on top of Bootswatch Flatly (Bootstrap 5). */
+
+/* Keep in-page anchors (table of contents, footnotes) clear of the sticky navbar. Fixes #18. */
+html {
+  scroll-padding-top: 5rem;
+}
+
+.navbar .form-control {
+  min-width: 12rem;
+}
+/* Current page in the navbar: white and bold instead of Flatly's teal, for contrast on navy. */
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Links keep the text color, as in the previous pelican-bootstrap3 theme;
+   in post bodies they get a dotted underline that turns solid on hover. */
+a,
+a:hover {
+  color: inherit;
+}
+.entry-content a,
+.post-info a,
+#sidebar a,
+.breadcrumb a {
+  text-decoration: none;
+  border-bottom: 1px dotted;
+}
+.entry-content a:hover,
+.post-info a:hover,
+#sidebar a:hover,
+.breadcrumb a:hover {
+  border-bottom-style: solid;
+}
+.breadcrumb a:first-child,
+.btn {
+  border-bottom: 0;
+}
+
+/* Post metadata strip (date, modified, category, tags). */
+.post-info {
+  font-size: 0.95rem;
+}
+.post-info .badge {
+  font-weight: 700;
+  margin-right: 0.15rem;
+}
+.post-info .fa {
+  margin-right: 0.2rem;
+}
+.post-info > span {
+  margin-right: 0.4rem;
+}
+
+/* Article body. */
+.entry-content img,
+.entry-content iframe {
+  max-width: 100%;
+  height: auto;
+}
+.entry-content table {
+  margin-bottom: 1rem;
+}
+.entry-content table th,
+.entry-content table td {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--bs-border-color);
+}
+.entry-content blockquote {
+  border-left: 0.25rem solid var(--bs-border-color);
+  padding-left: 1rem;
+  color: var(--bs-secondary-color);
+}
+.entry-content .footnote {
+  font-size: 0.9rem;
+}
+.highlight pre {
+  padding: 0.75rem;
+  border-radius: var(--bs-border-radius);
+  overflow-x: auto;
+}
+
+/* Python-Markdown table of contents ([TOC]). */
+.toc {
+  display: inline-block;
+  background: var(--bs-light);
+  border-radius: var(--bs-border-radius);
+  padding: 0.75rem 1.25rem 0.25rem 1rem;
+  margin-bottom: 1rem;
+}
+.toc .toctitle {
+  font-weight: 700;
+}
+
+/* Sidebar. */
+#sidebar h2 {
+  font-size: 1.15rem;
+  margin-top: 0.5rem;
+}
+#sidebar h2 .fa {
+  width: 1.4rem;
+}
+#sidebar .list-group-item {
+  background: transparent;
+  border: 0;
+  padding: 0.3rem 0 0.3rem 1.4rem;
+}
+.tagcloud {
+  line-height: 1.6;
+}
+.tagcloud .tag-1 { font-size: 1.6rem; }
+.tagcloud .tag-2 { font-size: 1.35rem; }
+.tagcloud .tag-3 { font-size: 1.15rem; }
+.tagcloud .tag-4 { font-size: 0.85rem; }
+
+/* Notice on old posts. */
+.outdated-notice {
+  font-size: 0.95rem;
+  background: var(--bs-light);
+  color: var(--bs-body-color);
+  border: 0;
+  border-left: 0.3rem solid var(--bs-warning);
+}
+.outdated-notice .fa {
+  color: var(--bs-warning);
+}
+
+/* Archived Disqus comments. */
+.archived-comments .comment {
+  border-left: 0.25rem solid var(--bs-border-color);
+  padding-left: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Pagefind Component UI, matched to Flatly. */
+:root {
+  --pf-font: Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --pf-text: var(--bs-body-color);
+  --pf-border-focus: var(--bs-primary);
+  --pf-mark: var(--bs-primary);
+  --pf-input-font-size: 1rem;
+  --pf-result-title-font-size: 1.1rem;
+  --pf-result-excerpt-font-size: 0.95rem;
+}
+
+footer.site-footer {
+  font-size: 0.9rem;
+}

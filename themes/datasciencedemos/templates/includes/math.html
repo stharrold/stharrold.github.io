@@ -1,0 +1,21 @@
+{# MathJax 4 for math written as $...$ / $$...$$ in Markdown. pymdownx.arithmatex (generic mode) wraps it in
+   .arithmatex elements with \(...\) and \[...\] delimiters, so MathJax only processes those elements.
+   Included by article.html and page.html only when the content contains math. #}
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [['\\[', '\\]']],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        options: {
+            ignoreHtmlClass: '.*',
+            processHtmlClass: 'arithmatex'
+        },
+        output: {
+            displayAlign: 'left'
+        }
+    };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-chtml.js" integrity="sha384-IgpmJyK7IVIVd18E1Ubslp9a1s6/6VBt9aJFbpzNIJPPMaxwEV7OxR/xY0hHbSck" crossorigin="anonymous"></script>
