@@ -122,3 +122,6 @@ target/
 
 # Generated site; built and deployed by GitHub Actions (.github/workflows/pages.yml)
 output/
+
+# macOS Finder metadata
+.DS_Store

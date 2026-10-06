@@ -27,11 +27,18 @@ process leaves its file watcher running.
 | `src_master` | Production source. Every push builds, tests, and deploys the site (`.github/workflows/pages.yml`). |
 | `src_develop` | Integration branch; pushes run the same checks without deploying. |
 | `src_feature_*` | Feature branches off `src_develop` (git-flow); merged with `--no-ff`. |
-| `master` | Legacy. Held the built site (via `ghp-import`) until 2026-10-06; no longer deployed. |
+| _(tag)_ `legacy-ghp-import-master` | The former `master` branch, which held the built site (via `ghp-import`) until 2026-10-06. |
 
 To release: merge `src_feature_*` into `src_develop`, then `src_develop` into `src_master`, and push. The workflow runs
 ruff, pytest, `pelican --settings publishconf.py --fatal warnings`, and Pagefind, then deploys `output/`.
 GitHub Pages must be set to **Settings > Pages > Source: GitHub Actions**. `output/` is generated and not tracked.
+
+**Automation:**
+- `.github/workflows/links.yml` checks internal and external links every Monday (and on manual dispatch) against a
+  fresh build; broken links open or update a single issue labeled `link-check`. It never blocks deploys.
+- Dependabot (`.github/dependabot.yml`) opens weekly grouped PRs for GitHub Actions and Python packages against
+  `src_develop`; security fixes target `src_master`, so review them as deploys. Actions are pinned to commit SHAs.
+- Vendored theme files and the MathJax CDN version are not covered by Dependabot; see `themes/README.md`.
 
 `pelicanconf.py` holds the site settings; `publishconf.py` extends it for production (absolute URLs, feeds, GA4,
 no drafts).

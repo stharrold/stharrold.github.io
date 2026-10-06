@@ -22,7 +22,8 @@ AddThis, Shariff, Twitter, Piwik/Matomo, series, GitHub widgets, liquid_tags, ba
 are marked `data-pagefind-body`; related posts, comments, and notices are `data-pagefind-ignore`. The index is built
 after Pelican: `uv run python -m pagefind --site output`.
 
-**Vendored assets** (update by replacing the files and the versions here):
+**Vendored assets** (update by replacing the files and the versions here). Dependabot does not track these or the
+MathJax CDN pin in `templates/includes/math.html` (update its SRI hash too), so review them a few times a year:
 
 | File | Source | License |
 |---|---|---|
