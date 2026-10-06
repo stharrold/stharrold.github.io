@@ -1,0 +1,242 @@
+- generic [ref=e3]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: Analytics
+      - search [ref=e14]:
+        - img [aria-hidden] [ref=e15]: search
+        - textbox "Search" [ref=e17]:
+          - /placeholder: Try searching "Web overview"
+      - button "Switch products" [ref=e19] [cursor=pointer]
+      - button "Ask Advisor" [ref=e24] [cursor=pointer]:
+        - img [aria-hidden] [ref=e25]: search_spark
+      - button "Help entry menu" [ref=e29] [cursor=pointer]:
+        - img [aria-hidden] [ref=e30]: help
+      - button "Open the user account switcher panel." [ref=e34] [cursor=pointer]
+  - generic [ref=e37]:
+    - generic [ref=e41]:
+      - navigation "Main pages" [ref=e42]:
+        - link "Home" [ref=e44] [cursor=pointer]
+        - link "Reports" [ref=e52] [cursor=pointer]:
+          - img [aria-hidden] [ref=e53]: insert_chart_filled
+        - link "Explore" [ref=e56] [cursor=pointer]:
+          - img [aria-hidden] [ref=e57]: data_exploration
+        - link "Advertising" [ref=e60] [cursor=pointer]:
+          - img [aria-hidden] [ref=e61]: ads_click
+      - navigation "Settings pages" [ref=e63]:
+        - link "Tasks" [ref=e65] [cursor=pointer]:
+          - img [aria-hidden] [ref=e66]: task_alt
+        - link "Admin" [ref=e69] [cursor=pointer]:
+          - img [aria-hidden] [ref=e70]: settings_filled
+    - generic [ref=e75]:
+      - main [ref=e76]:
+        - generic [ref=e77]:
+          - generic [ref=e80]:
+            - generic [ref=e83]:
+              - heading "Home" [active] [level=1] [ref=e88]
+              - generic [ref=e93]:
+                - generic "View annotations" [ref=e94]:
+                  - button "View annotations" [ref=e95] [cursor=pointer]
+                - generic "Insights" [ref=e102]:
+                  - button "Insights" [ref=e103] [cursor=pointer]
+            - generic [ref=e116]:
+              - heading "No data received from your website yet." [level=2] [ref=e117]
+              - paragraph [ref=e118]: "To start collecting data make sure your website is tagged using the Measurement ID: G-K4PX9089RZ"
+              - button "Get tagging instructions" [ref=e119] [cursor=pointer]
+            - generic [ref=e125]:
+              - generic [ref=e130]:
+                - generic [ref=e131]:
+                  - button "Ask Advisor" [ref=e135] [cursor=pointer]:
+                    - img [aria-hidden] [ref=e136]: search_spark
+                  - generic [ref=e145]:
+                    - generic [ref=e146]:
+                      - generic [ref=e147]:
+                        - tablist [ref=e150]:
+                          - generic [ref=e151]:
+                            - tab [selected] [ref=e152] [cursor=pointer]:
+                              - generic "Active users 0" [ref=e158]:
+                                - button "Active users" [ref=e160]:
+                                  - img [aria-hidden] [ref=e162]: arrow_drop_down
+                                - generic [ref=e163]:
+                                  - generic [ref=e164]: "0"
+                                  - generic [ref=e166]: "-"
+                            - tab [ref=e167] [cursor=pointer]:
+                              - generic "Event count 0" [ref=e173]:
+                                - button "Event count" [ref=e175]:
+                                  - img [aria-hidden] [ref=e177]: arrow_drop_down
+                                - generic [ref=e178]:
+                                  - generic [ref=e179]: "0"
+                                  - generic [ref=e181]: "-"
+                            - tab [ref=e182] [cursor=pointer]:
+                              - generic "Key events 0" [ref=e188]:
+                                - button "Key events" [ref=e190]:
+                                  - img [aria-hidden] [ref=e192]: arrow_drop_down
+                                - generic [ref=e193]:
+                                  - generic [ref=e194]: "0"
+                                  - generic [ref=e196]: "-"
+                            - tab [ref=e197] [cursor=pointer]:
+                              - generic "Views 0" [ref=e203]:
+                                - button "Views" [ref=e205]:
+                                  - img [aria-hidden] [ref=e207]: arrow_drop_down
+                                - generic [ref=e208]:
+                                  - generic [ref=e209]: "0"
+                                  - generic [ref=e211]: "-"
+                        - generic:
+                          - tabpanel "Active users 0"
+                      - generic [ref=e212]:
+                        - button "Benchmarking data on" [ref=e214] [cursor=pointer]
+                        - button "This card uses mostly complete data. Click to view more information." [ref=e222] [cursor=pointer]:
+                          - img [aria-hidden] [ref=e223]: warning_amber
+                    - img [ref=e229]:
+                      - generic [ref=e230]:
+                        - generic [ref=e236]:
+                          - generic [ref=e237]: 29Sep
+                          - generic [ref=e239]: "30"
+                          - generic [ref=e241]: 01Oct
+                          - generic [ref=e243]: "02"
+                          - generic [ref=e245]: "03"
+                          - generic [ref=e247]: "04"
+                          - generic [ref=e249]: "05"
+                        - generic [ref=e251]:
+                          - generic [ref=e252]: "0"
+                          - generic [ref=e254]: "100"
+                          - generic [ref=e256]: "200"
+                          - generic [ref=e258]: "300"
+                          - generic [ref=e260]: "400"
+                          - generic [ref=e262]: "500"
+                      - list [ref=e275]:
+                        - listitem [ref=e276]:
+                          - generic [aria-hidden] [ref=e277]: Last 7 days
+                          - button "Highlight Last 7 days line" [pressed] [ref=e278] [cursor=pointer]
+                        - listitem [ref=e279]:
+                          - generic [aria-hidden] [ref=e280]: Previous period
+                          - button "Highlight Previous period line" [pressed] [ref=e281] [cursor=pointer]
+                        - listitem [ref=e282]:
+                          - generic [aria-hidden] [ref=e284]: "Peer median and range: Computers & Electronics"
+                          - 'button "Highlight Peer median and range: Computers & Electronics line" [pressed] [ref=e285] [cursor=pointer]'
+                  - generic [ref=e286]:
+                    - combobox "Open date range picker" [ref=e290] [cursor=pointer]:
+                      - generic [ref=e291]: Last 7 days
+                      - img [aria-hidden] [ref=e294]: arrow_drop_down
+                    - button "View reports snapshot" [ref=e298] [cursor=pointer]:
+                      - img [aria-hidden] [ref=e301]: arrow_forward
+                - generic [ref=e304]:
+                  - generic [ref=e307]:
+                    - generic:
+                      - generic [ref=e311]:
+                        - generic [ref=e312]:
+                          - button "Active users in last 30 minutes" [ref=e314]
+                          - generic [ref=e315]: "0"
+                        - button "This card uses 100% of available data. Click to view more information." [ref=e318] [cursor=pointer]:
+                          - img [aria-hidden] [ref=e319]: check_circle
+                      - generic [ref=e324]: Active users per minute
+                      - img [ref=e335]:
+                        - listbox [ref=e337]:
+                          - group "Active users 0 Active users" [ref=e338]
+                          - group "Active users 0 Active users" [ref=e340]
+                          - group "Active users 0 Active users" [ref=e342]
+                          - group "Active users 0 Active users" [ref=e344]
+                          - group "Active users 0 Active users" [ref=e346]
+                          - group "Active users 0 Active users" [ref=e348]
+                          - group "Active users 0 Active users" [ref=e350]
+                          - group "Active users 0 Active users" [ref=e352]
+                          - group "Active users 0 Active users" [ref=e354]
+                          - group "Active users 0 Active users" [ref=e356]
+                          - group "Active users 0 Active users" [ref=e358]
+                          - group "Active users 0 Active users" [ref=e360]
+                          - group "Active users 0 Active users" [ref=e362]
+                          - group "Active users 0 Active users" [ref=e364]
+                          - group "Active users 0 Active users" [ref=e366]
+                          - group "Active users 0 Active users" [ref=e368]
+                          - group "Active users 0 Active users" [ref=e370]
+                          - group "Active users 0 Active users" [ref=e372]
+                          - group "Active users 0 Active users" [ref=e374]
+                          - group "Active users 0 Active users" [ref=e376]
+                          - group "Active users 0 Active users" [ref=e378]
+                          - group "Active users 0 Active users" [ref=e380]
+                          - group "Active users 0 Active users" [ref=e382]
+                          - group "Active users 0 Active users" [ref=e384]
+                          - group "Active users 0 Active users" [ref=e386]
+                          - group "Active users 0 Active users" [ref=e388]
+                          - group "Active users 0 Active users" [ref=e390]
+                          - group "Active users 0 Active users" [ref=e392]
+                          - group "Active users 0 Active users" [ref=e394]
+                          - group "Active users 0 Active users" [ref=e396]
+                      - generic [ref=e409]:
+                        - table [ref=e410]:
+                          - row [ref=e411]:
+                            - columnheader [ref=e412]:
+                              - button "City" [ref=e416] [cursor=pointer]:
+                                - generic [ref=e418]:
+                                  - generic [ref=e419]: City
+                                  - img [aria-hidden] [ref=e420]: arrow_drop_down
+                            - columnheader [ref=e423]:
+                              - button "Active users" [ref=e427] [cursor=pointer]:
+                                - generic [ref=e429]:
+                                  - generic [ref=e430]: Active users
+                                  - img [aria-hidden] [ref=e431]: arrow_drop_down
+                        - generic [ref=e434]: No data available
+                        - table [aria-hidden]:
+                          - row
+                  - button "View realtime" [ref=e437] [cursor=pointer]:
+                    - img [aria-hidden] [ref=e440]: arrow_forward
+              - generic [ref=e445]:
+                - heading "Get started with Google Analytics 4" [level=2] [ref=e448]
+                - generic [ref=e451]:
+                  - generic [ref=e454]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - button "Ask Advisor":
+                            - img [aria-hidden]: search_spark
+                    - generic [ref=e455]:
+                      - heading "Continue setting up your property" [level=3] [ref=e467]
+                      - generic [ref=e469]: A property holds all the measurement data for your website, mobile app, or both. Set up your property so that you can collect data, measure activity, and much more.
+                    - link "Go to Tasks" [ref=e484] [cursor=pointer]:
+                      - /url: "#/a43020842p393124094/task-assistant"
+                  - generic [ref=e493]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - button "Ask Advisor":
+                            - img [aria-hidden]: search_spark
+                    - generic [ref=e494]:
+                      - heading "Try the Analytics demo account" [level=3] [ref=e506]
+                      - generic [ref=e511]:
+                        - generic [ref=e512]: Get to know Google Analytics 4 features by analyzing and experimenting with real business data.
+                        - generic [ref=e517]: The demo trial lets you explore GA4 using demo data, without affecting your own data. You can remove the demo account at any time.
+                    - link "Access the account" [ref=e528] [cursor=pointer]:
+                      - /url: https://support.google.com/analytics/answer/6367342#access
+                      - generic [ref=e530]:
+                        - generic [ref=e531]: Access the account
+                        - img [aria-hidden] [ref=e533]: open_in_new
+                  - generic [ref=e538]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - button "Ask Advisor":
+                            - img [aria-hidden]: search_spark
+                    - generic [ref=e539]:
+                      - heading "Learn about Analytics" [level=3] [ref=e551]
+                      - generic [ref=e553]: Get the most out of Google Analytics with this free course.
+                    - link "Take the course on Skillshop" [ref=e568] [cursor=pointer]:
+                      - /url: https://goo.gle/ga-courses
+                      - generic [ref=e570]:
+                        - generic [ref=e571]: Take the course on Skillshop
+                        - img [aria-hidden] [ref=e573]: open_in_new
+          - generic [ref=e577]:
+            - text: © 2026 Google |
+            - link "Analytics home" [ref=e578] [cursor=pointer]:
+              - /url: https://www.google.com/analytics/?hl=en-US
+            - text: "|"
+            - link "Terms of Service" [ref=e579] [cursor=pointer]:
+              - /url: https://www.google.com/analytics/tos.html?hl=en-US
+            - text: "|"
+            - link "Privacy Policy" [ref=e580] [cursor=pointer]:
+              - /url: https://www.google.com/policies/privacy/?hl=en-US
+            - text: "|"
+            - button "Send feedback" [ref=e581] [cursor=pointer]:
+              - img [aria-hidden] [ref=e582]: feedback
+      - generic:
+        - complementary
+    - generic:
+      - button "Open context menu"

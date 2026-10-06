@@ -30,6 +30,9 @@ SITEURL = 'https://stharrold.github.io'
 # Theme settings
 # Google Analytics 4 measurement ID (public; it appears in every page's HTML).
 GOOGLE_ANALYTICS = 'G-K4PX9089RZ'
+# Passed to gtag('config', ...). Keep Google signals and ads personalization off
+# on the page too, so gtag.js sends no stats.g.doubleclick.net requests.
+GOOGLE_ANALYTICS_CONFIG = {'allow_google_signals': False, 'allow_ad_personalization_signals': False}
 
 
 # Feed settings
