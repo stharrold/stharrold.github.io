@@ -111,6 +111,8 @@ ARCHIVED_COMMENTS = {p.stem: p.read_text() for p in (Path(__file__).parent / "da
 GOOGLE_ANALYTICS = None
 # Articles last updated at least this many years before the build year show an outdated-content notice.
 BUILD_YEAR = datetime.date.today().year
+# Footer copyright: COPYRIGHT_START_YEAR (first post, 2015-10-30) through BUILD_YEAR.
+COPYRIGHT_START_YEAR = 2015
 OUTDATED_AFTER_YEARS = 5
 SHOW_ARTICLE_CATEGORY = True
 SHOW_DATE_MODIFIED = True

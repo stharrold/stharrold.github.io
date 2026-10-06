@@ -15,8 +15,8 @@ AddThis, Shariff, Twitter, Piwik/Matomo, series, GitHub widgets, liquid_tags, ba
 `DISPLAY_ARTICLE_INFO_ON_INDEX`, `DISPLAY_RECENT_POSTS_ON_SIDEBAR` / `RECENT_POST_COUNT`,
 `DISPLAY_CATEGORIES_ON_SIDEBAR`, `DISPLAY_TAGS_ON_SIDEBAR` (needs the `tag_cloud` plugin), `SHOW_ARTICLE_CATEGORY`,
 `SHOW_DATE_MODIFIED`, `FAVICON`, `TOUCHICON`, `PYGMENTS_STYLE`, `GOOGLE_ANALYTICS` / `GOOGLE_ANALYTICS_CONFIG` /
-`GA_GTM_CONTAINER_ID`, `DISQUS_SITENAME`, `BUILD_YEAR` / `OUTDATED_AFTER_YEARS` (notice on old posts),
-`FOOTER_LINKS`.
+`GA_GTM_CONTAINER_ID`, `GISCUS` / `ARCHIVED_COMMENTS`, `BUILD_YEAR` / `OUTDATED_AFTER_YEARS` (notice on old posts),
+`COPYRIGHT_START_YEAR` (footer shows start year through `BUILD_YEAR`), `FOOTER_LINKS`.
 
 **Search.** `templates/search.html` uses the [Pagefind](https://pagefind.app/) Component UI. Post and page bodies
 are marked `data-pagefind-body`; related posts, comments, and notices are `data-pagefind-ignore`. The index is built

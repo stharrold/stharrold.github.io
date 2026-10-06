@@ -1,11 +1,11 @@
-{% if articles %}
-{% set copy_year = (articles | map(attribute='modified') | select | list + articles | map(attribute='date') | list) | max %}
-{% endif %}
+{# Copyright range: COPYRIGHT_START_YEAR (first publication) through the build year (the site's latest update).
+   Not derived from `articles`, which tag and category pages narrow to their own posts. #}
+{% set first_year = COPYRIGHT_START_YEAR | default(BUILD_YEAR) %}
 <footer class="site-footer container mt-4 mb-4">
     <hr>
     <div class="d-flex flex-wrap justify-content-between gap-2">
         <div>
-            &copy; {{ copy_year.strftime('%Y') if copy_year }} {{ AUTHOR }}
+            &copy; {{ first_year }}{% if BUILD_YEAR > first_year %}&ndash;{{ BUILD_YEAR }}{% endif %} {{ AUTHOR }}
             &middot; Built with <a href="https://getpelican.com/">Pelican</a> and <a href="https://getbootstrap.com/">Bootstrap</a>
             {% for title, url in FOOTER_LINKS | default([]) %}&middot; <a href="{{ SITEURL }}/{{ url }}">{{ title }}</a> {% endfor %}
             <br>
