@@ -5,6 +5,7 @@ publish builds, redirects, search, math, comments, sitemap. Expectations are der
 so adding, publishing, or editing posts needs no test changes.
 """
 
+import datetime
 import json
 import re
 import subprocess
@@ -200,3 +201,11 @@ def test_comments_are_giscus_with_archived_disqus(site):
 def test_feeds_use_absolute_urls(site):
     atom = (site / "feeds" / "all.atom.xml").read_text()
     assert f"{SITEURL}/" in atom
+
+
+def test_copyright_range_in_footer(site):
+    """Footer shows first-post year through build year on every page, including tag and category pages."""
+    first_year = min(int(post["date"][:4]) for post in posts("published"))
+    expected = f"&copy; {first_year}&ndash;{datetime.date.today().year} "
+    for page in site_pages(site):
+        assert expected in page.read_text(), page
