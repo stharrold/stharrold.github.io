@@ -38,6 +38,9 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - **Analytics:** GA4 is set only in `publishconf.py`; dev builds must not load it (tested). Avoid generating test
   page views on the live site; verify against a local dev build instead.
 - **Privacy page:** when adding any third-party script or request, update `content/pages/privacy.md`.
+- **Scheduled workflows stop after 60 quiet days** (GitHub disables them in public repos without activity). If the
+  weekly link log has gone stale, run `gh workflow enable links.yml`. Published 2015-2016 posts are frozen: never
+  edit their text or fix their dead links.
 
 ## Layout
 

@@ -37,6 +37,8 @@ GitHub Pages must be set to **Settings > Pages > Source: GitHub Actions**. `outp
 - `.github/workflows/links.yml` logs internal and external link status every Monday (and on manual dispatch) against
   a fresh build: a job summary plus a `link-report` JSON artifact kept 90 days. It is report-only (never fails, files
   no issues); alerting belongs to whatever reads the log. Dead links in the frozen 2015-2016 posts are left as is.
+  GitHub disables scheduled workflows in public repos after 60 days without repository activity, so the log can
+  stop silently on a quiet blog; re-enable with `gh workflow enable links.yml` (see #67).
 - Dependabot (`.github/dependabot.yml`) opens weekly grouped PRs for GitHub Actions and Python packages against
   `src_develop`; security fixes target `src_master`, so review them as deploys. Actions are pinned to commit SHAs.
 - Vendored theme files and the MathJax CDN version are not covered by Dependabot; see `themes/README.md`.
