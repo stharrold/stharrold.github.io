@@ -20,6 +20,24 @@
     {% endfor %}
 {% endblock %}
 {% block canonical_rel %}<link rel="canonical" href="{{ SITEURL }}/{{ article.url }}">{% endblock %}
+{% block head_extra %}
+{# schema.org structured data for search results (issue #49); tojson escapes <, >, & for safe embedding. #}
+{% set article_url = SITEURL ~ '/' ~ article.url %}
+{% set structured_data = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": article.title | striptags,
+    "description": article.summary | striptags,
+    "datePublished": article.date.isoformat(),
+    "dateModified": (article.modified or article.date).isoformat(),
+    "author": {"@type": "Person", "name": (article.author or AUTHOR) | string, "url": SITEURL ~ '/pages/about.html'},
+    "url": article_url,
+    "mainEntityOfPage": article_url,
+    "articleSection": article.category | string,
+    "keywords": article.tags | join(', '),
+} %}
+<script type="application/ld+json">{{ structured_data | tojson }}</script>
+{% endblock %}
 {% block breadcrumbs %}{{ breadcrumbs([(article.title, None)]) }}{% endblock %}
 {% block content %}
 <article>

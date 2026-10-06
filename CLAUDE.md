@@ -11,7 +11,11 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   the publish site and encode past regressions (drafts, analytics tag, search index, comments, sitemap).
 - **Deploys happen on push to `src_master`.** Merge feature branches into `src_develop`, then `src_develop` into
   `src_master` (`--no-ff`). Never push `src_master` with unreviewed visual changes.
-- **Treat `master` as legacy.** It held `ghp-import` output until 2026-10-06; don't publish to it.
+- **There is no `master` branch.** It held `ghp-import` output until 2026-10-06 and is archived as the tag
+  `legacy-ghp-import-master`; don't recreate it or publish with `ghp-import`.
+- **Pin GitHub Actions to commit SHAs** with the version in a comment (`uses: owner/action@<sha>  # vX.Y.Z`).
+  Dependabot updates them. Keep jobs that write (issues, pages) separate from jobs that run third-party code.
+- **Dependabot** version PRs target `src_develop`; security PRs target `src_master`, and merging one deploys.
 
 ## Gotchas learned the hard way
 

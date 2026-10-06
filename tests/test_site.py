@@ -209,3 +209,16 @@ def test_copyright_range_in_footer(site):
     expected = f"&copy; {first_year}&ndash;{datetime.date.today().year} "
     for page in site_pages(site):
         assert expected in page.read_text(), page
+
+
+def test_structured_data_on_posts(site):
+    """Every published post carries schema.org BlogPosting JSON-LD (issue #49)."""
+    for post in posts("published"):
+        html = (site / f"{post['slug']}.html").read_text()
+        blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+        assert len(blocks) == 1, post["slug"]
+        data = json.loads(blocks[0])
+        assert data["@type"] == "BlogPosting", post["slug"]
+        assert data["url"] == f"{SITEURL}/{post['slug']}.html", post["slug"]
+        assert data["headline"] and data["datePublished"] and data["author"]["name"], post["slug"]
+        assert "<" not in data["description"], post["slug"]
