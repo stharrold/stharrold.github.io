@@ -112,6 +112,18 @@ def test_no_third_party_fonts_or_jquery(site):
         assert "fonts.googleapis.com" not in css.read_text(), css
 
 
+def test_math_rendering(site):
+    etl = (site / "20160110-etl-census-with-python.html").read_text()
+    # Display equations are blocks and inline math stays inline; MathJax 4 is loaded with SRI.
+    assert etl.count('<div class="arithmatex">\\[') == 2
+    assert etl.count('<span class="arithmatex">\\(') == 2
+    assert re.search(r'mathjax@4[^"]*/tex-chtml\.js" integrity="sha384-', etl)
+    # Prices such as "$20 per month" are not math, and pages without math don't load MathJax.
+    gce = (site / "20151208-ipynb-on-gce-from-chrome.html").read_text()
+    assert "arithmatex" not in gce
+    assert "mathjax" not in gce.lower()
+
+
 def test_feeds_use_absolute_urls(site):
     atom = (site / "feeds" / "all.atom.xml").read_text()
     assert "https://stharrold.github.io/" in atom
