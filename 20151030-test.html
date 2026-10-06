@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
->
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
     <title>Test page and template - Data Science Demos</title>
     <!-- Using the latest rendering mode for IE -->
@@ -29,6 +28,7 @@
             <meta property="article:author" content="Samuel Harrold" />
 
 
+
     <!-- Bootstrap -->
         <link rel="stylesheet" href="https://stharrold.github.io/theme/css/bootstrap.flatly.min.css" type="text/css"/>
     <link href="https://stharrold.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
@@ -39,14 +39,26 @@
 
         <link href="https://stharrold.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="Data Science Demos ATOM Feed"/>
+
         <link href="https://stharrold.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate"
               title="Data Science Demos RSS Feed"/>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K4PX9089RZ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', "G-K4PX9089RZ");
+    </script>
+    <!-- End Google Analytics Code -->
 
 </head>
 <body>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -65,18 +77,20 @@ Data Science Demos            </a>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><span>
-                <form class="navbar-search" action="/search">
+                <form class="navbar-search" action="/search.html">
                   <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
                 </form></span>
               </li>
-              <li><a href="https://stharrold.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
 </div> <!-- /.navbar -->
+
 <!-- Banner -->
 <!-- End Banner -->
+
+<!-- Content Container -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -84,7 +98,6 @@ Data Science Demos            </a>
                 <li><a href="https://stharrold.github.io" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
                 <li class="active">Test page and template</li>
             </ol>
-
     <section id="content">
         <article>
             <header class="page-header">
@@ -104,10 +117,12 @@ Data Science Demos            </a>
     <span class="published">
         <i class="fa fa-calendar"></i><time datetime="2015-10-30T18:00:00+00:00"> Fri 30 October 2015</time>
     </span>
-            <span class="label label-default">Modified</span>
+          <span class="label label-default">Modified</span>
             <span class="modified">
                 <i class="fa fa-calendar"></i><time datetime="2016-02-08T02:45:00+00:00"> Mon 08 February 2016</time>
             </span>
+
+
 
         <span class="label label-default">Category</span>
         <a href="https://stharrold.github.io/category/test.html">Test</a>
@@ -149,7 +164,7 @@ otherwise page is named only <slug> without '.html'
 <h3 id="overview">Overview</h3>
 <p>I use this page for testing how structures are rendered on the blog and for templating new posts. I leave this page openly visible as a resource for others who are interested in building their own blog.</p>
 <p><strong>Source code:</strong></p>
-<p><a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb">20151030-test.ipynb</a><br />
+<p><a href="https://stharrold.github.io/static/20151030-test/20151030-test.ipynb">20151030-test.ipynb</a><br>
 <a href="https://stharrold.github.io/static/20151030-test/20151030-test-full.html">20151030-test-full.html</a>  </p>
 <h3 id="heading2">Heading2</h3>
 <h4 id="heading3">Heading3</h4>
@@ -162,10 +177,10 @@ otherwise page is named only <slug> without '.html'
 <li>Why I'm doing this.</li>
 </ul>
 <h3 id="body">Body</h3>
-<p>Text with a footnote.<sup id="fnref:fn"><a class="footnote-ref" href="#fn:fn" rel="footnote">1</a></sup></p>
+<p>Text with a footnote.<sup id="fnref:fn"><a class="footnote-ref" href="#fn:fn">1</a></sup></p>
 <ul>
 <li>
-<p>A link:<br />
+<p>A link:<br>
 <a href="https://github.com/stharrold/demo/blob/5ececb3b400ea8d51bcb396933e6b9c2a7b29963/demo/utils.py#L27-L62">GitHub link</a></p>
 </li>
 <li>
@@ -181,21 +196,19 @@ Note:
 * Use href="/<slug>.html#ref" for references between pages
   and href="#ref" for references within a single page.
 -->
-
 <p>Text with a <span id="ref">referenced portion</span>.</p>
 <p>Text referencing <a href="/20151030-test.html#ref">above</a>.</p>
 <p>Text with an equation <span class="math">\(\mathrm{SE}(X) = \sqrt{(\sum_{i=1}^{n}(X_i-X)^2)/n}\)</span> inline.</p>
-<p>Text with an equation<br />
+<p>Text with an equation<br>
 </p>
 <div class="math">$$\mathrm{SE}(X) = \sqrt{\frac{\sum_{i=1}^{n}(X_i-X)^2}{n}}$$</div>
-<p><br />
+<p><br>
 as a paragraph.</p>
 <!--
 TODO: Fix JavaScript event handling. Icon doesn't change.
 https://github.com/stharrold/stharrold.github.io/issues/34
 -->
-
-<p>Text that is collapsible:<br />
+<p>Text that is collapsible:  </p>
 <div>
     Short answer.
     <div class="btn-group">
@@ -204,11 +217,12 @@ https://github.com/stharrold/stharrold.github.io/issues/34
         </button>
     </div>
     <div id="details" class="collapse">Long answer.</div>
-</div></p>
+</div>
+
 <ul>
 <li>A plot included via Markdown:</li>
 </ul>
-<p><img alt="plot.jpg" src="https://stharrold.github.io/static/20151030-test/plot.jpg" /><br />
+<p><img alt="plot.jpg" src="https://stharrold.github.io/static/20151030-test/plot.jpg"><br>
 <a href="https://stharrold.github.io/static/20151030-test/plot.jpg">plot.jpg</a>  </p>
 <ul>
 <li>A screenshot included via HTML:</li>
@@ -217,7 +231,6 @@ https://github.com/stharrold/stharrold.github.io/issues/34
 Note:
 Use align="left" attribute to wrap image rather than have in-line.
 -->
-
 <p><a href="/static/20151030-test/screenshot-432x323pix.png" type="image/png">
     <img src="/static/20151030-test/screenshot-432x323pix.png" alt="Chrome Secure Shell settings" width="320" />
 </a></p>
@@ -260,14 +273,11 @@ Use align="left" attribute to wrap image rather than have in-line.
 TODO: Add table by embedding HTML rather than copy-paste.
 https://github.com/stharrold/stharrold.github.io/issues/5
 -->
-
 <!--
 TODO: Fix event handling for JavaScript. Included content isn't included. 
 https://github.com/stharrold/stharrold.github.io/issues/14
 -->
-
 <div id="includedContent"></div>
-
 <script type="text/javascript"> 
   $(document).onload(function() {
     $("#includedContent").load("/static/20151030-test/table.html");
@@ -277,8 +287,8 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 <ul>
 <li>A code snippet:</li>
 </ul>
-<div class="highlight"><pre><span class="k">def</span> <span class="nf">my_print</span><span class="p">(</span><span class="n">string</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="bp">None</span><span class="p">:</span>
-  <span class="sd">r&quot;&quot;&quot;My docstring.</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">my_print</span><span class="p">(</span><span class="n">string</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">  </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;My docstring.</span>
 
 <span class="sd">  Args:</span>
 <span class="sd">    string (str): String to print.</span>
@@ -287,10 +297,9 @@ https://github.com/stharrold/stharrold.github.io/issues/14
 <span class="sd">    None</span>
 
 <span class="sd">  &quot;&quot;&quot;</span>
-  <span class="k">print</span><span class="p">(</span><span class="s">&#39;my &#39;</span><span class="o">+</span><span class="n">string</span><span class="p">)</span>
-  <span class="k">return</span> <span class="bp">None</span>
-</pre></div>
-
+  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;my &#39;</span><span class="o">+</span><span class="n">string</span><span class="p">)</span>
+  <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
 
 <!--
 TODO: Include a D3 document in an ipynb and as embedded html.
@@ -326,7 +335,6 @@ BEGIN IPYNB
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -337,7 +345,6 @@ BEGIN IPYNB
 </div>
 </div>
 </div>
-
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
@@ -347,11 +354,12 @@ BEGIN IPYNB
 </pre></div>
 
 </div>
+</div>
+</div>
 
-<p></div>
-</div></p>
 <div class="output_wrapper">
 <div class="output">
+
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -361,10 +369,9 @@ BEGIN IPYNB
 </div>
 
 </div>
-
 </div>
 
-<p></div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
@@ -382,17 +389,19 @@ BEGIN IPYNB
 <span class="c"># Import local packages.</span>
 <span class="c"># Append current directory to module search path.</span>
 <span class="c"># Autoreload local packages after editing.</span>
-<span class="c"># <code>dsdemos</code> version: https://github.com/stharrold/dsdemos (master branch)</span>
+<span class="c"># `dsdemos` version: https://github.com/stharrold/dsdemos (master branch)</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">curdir</span><span class="p">,</span> <span class="s">r&#39;dsdemos&#39;</span><span class="p">))</span>
 <span class="o">%</span><span class="k">reload_ext</span> autoreload
 <span class="o">%</span><span class="k">autoreload</span> 2
 <span class="kn">import</span> <span class="nn">dsdemos</span> <span class="k">as</span> <span class="nn">dsd</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
-</pre></div></p>
-<p></div>
+</pre></div>
+
 </div>
-</div></p>
-<p></div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
@@ -403,12 +412,15 @@ BEGIN IPYNB
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s">&quot;Python version:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">)</span>
-</pre></div></p>
-<p></div>
+</pre></div>
+
 </div>
-</div></p>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -419,12 +431,12 @@ Python version:
 sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, serial=0)
 </pre>
 </div>
-
 </div>
 
-<p></div>
-</div></p>
-<p></div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -443,18 +455,21 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 <span class="n">path_static</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">r&#39;~&#39;</span><span class="p">),</span> <span class="s">r&#39;stharrold.github.io/content/static&#39;</span><span class="p">)</span>
 <span class="n">basename</span> <span class="o">=</span> <span class="s">r&#39;20151030-test&#39;</span>
 <span class="n">filename</span> <span class="o">=</span> <span class="n">basename</span>
-</pre></div></p>
-<p></div>
+</pre></div>
+
 </div>
-</div></p>
-<p></div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Section-1">Section 1<a class="anchor-link" href="#Section-1">&#182;</a></h2><p>Description of section 1.</p></p>
-<p></div>
+<h2 id="Section-1">Section 1<a class="anchor-link" href="#Section-1">&#182;</a></h2><p>Description of section 1.</p>
+
+</div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
@@ -467,12 +482,15 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 <span class="n">df</span><span class="o">.</span><span class="n">to_html</span><span class="p">(</span><span class="n">buf</span><span class="o">=</span><span class="n">path_html</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">path_html</span><span class="p">)</span>
 <span class="n">df</span>
-</pre></div></p>
-<p></div>
+</pre></div>
+
 </div>
-</div></p>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -520,9 +538,10 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 
 </div>
 
-<p></div>
-</div></p>
-<p></div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[6]:</div>
@@ -532,12 +551,15 @@ sys.version_info(major=3, minor=5, micro=1, releaselevel=&apos;final&apos;, seri
 <span class="n">path_jpg</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_static</span><span class="p">,</span> <span class="n">basename</span><span class="p">,</span> <span class="s">r&#39;plot.jpg&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path_jpg</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">path_jpg</span><span class="p">)</span>
-</pre></div></p>
-<p></div>
+</pre></div>
+
 </div>
-</div></p>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -634,9 +656,10 @@ H5gI1cNra0F7AAAAAElFTkSuQmCC
 
 </div>
 
-<p></div>
-</div></p>
-<p></div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
@@ -659,12 +682,15 @@ H5gI1cNra0F7AAAAAElFTkSuQmCC
     <span class="nb">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
     <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">cmd</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">()</span>
-</pre></div></p>
-<p></div>
+</pre></div>
+
 </div>
-</div></p>
+</div>
+</div>
+
 <div class="output_wrapper">
 <div class="output">
+
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
@@ -674,11 +700,11 @@ jupyter nbconvert --to html --template full /home/samuel_harrold/stharrold.githu
 
 </pre>
 </div>
-
 </div>
 
-<p></div>
-</div></p>
+</div>
+</div>
+
 </div>
 
 <!--
@@ -691,14 +717,17 @@ END IPYNB
 <li>Some links here.</li>
 </ul>
 <h3 id="footnotes">Footnotes</h3>
+<!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
 <div class="footnote">
-<hr />
+<hr>
 <ol>
 <li id="fn:fn">
-<p>Text as a footnote.&#160;<a class="footnote-backref" href="#fnref:fn" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>Text as a footnote.&#160;<a class="footnote-backref" href="#fnref:fn" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
+<!-- ## Overview -->
+<!-- ## Body -->
 <!-- JavaScript -->
 
 <!--
@@ -706,7 +735,6 @@ Collapsible text
 http://www.w3schools.com/bootstrap/bootstrap_ref_js_collapse.asp
 http://stackoverflow.com/questions/13778703/adding-open-closed-icon-to-twitter-bootstrap-collapsibles-accordions
 -->
-
 <script type="text/javascript">
 $('.collapse').on('shown.bs.collapse', function() {
   $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
@@ -727,15 +755,16 @@ $('.collapse').on('shown.bs.collapse', function() {
     }
 
     var mathjaxscript = document.createElement('script');
-    var location_protocol = (false) ? 'https' : document.location.protocol;
-    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
     mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
     mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
-    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
         "MathJax.Hub.Config({" +
         "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
         "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
         "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
         "    displayAlign: '"+ align +"'," +
@@ -749,6 +778,8 @@ $('.collapse').on('shown.bs.collapse', function() {
         "        preview: 'TeX'," +
         "    }, " +
         "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
         "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
         "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
         "    }, " +
@@ -769,6 +800,8 @@ $('.collapse').on('shown.bs.collapse', function() {
                 "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
             "});" +
         "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script>
@@ -777,8 +810,8 @@ $('.collapse').on('shown.bs.collapse', function() {
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">Running an IPython Notebook on Google Compute Engine from Chrome</a></li>
         <li><a href="https://stharrold.github.io/20160110-etl-census-with-python.html">Extract, transform, and load census data with Python</a></li>
+        <li><a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">Running an IPython Notebook on Google Compute Engine from Chrome</a></li>
     </ul>
 </section>
     <hr/>
@@ -790,11 +823,11 @@ $('.collapse').on('shown.bs.collapse', function() {
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
 
-                    var disqus_identifier = '20151030-test';
-                var disqus_url = 'https://stharrold.github.io/20151030-test.html';
-
             var disqus_config = function () {
                 this.language = "en";
+
+                        this.page.identifier = '2015-10-30-20151030-test';
+                        this.page.url = 'https://stharrold.github.io/20151030-test.html';
             };
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
@@ -817,130 +850,99 @@ $('.collapse').on('shown.bs.collapse', function() {
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>
-
+<!-- Sidebar -->
 <section class="well well-sm">
-    <ul class="list-group list-group-flush">
+  <ul class="list-group list-group-flush">
 
-            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
-                <ul class="list-group" id="recentposts">
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20160110-etl-census-with-python.html">
-                            Extract, transform, and load census data with Python
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">
-                            Running an IPython Notebook on Google Compute Engine from Chrome
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20151030-test.html">
-                            Test page and template
-                        </a>
-                    </li>
-                </ul>
-            </li>
+<!-- Sidebar/Recent Posts -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
+  <ul class="list-group" id="recentposts">
+    <li class="list-group-item"><a href="https://stharrold.github.io/20160110-etl-census-with-python.html">Extract, transform, and load census data with Python</a></li>
+    <li class="list-group-item"><a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">Running an IPython Notebook on Google Compute Engine from Chrome</a></li>
+    <li class="list-group-item"><a href="https://stharrold.github.io/20151030-test.html">Test page and template</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Recent Posts -->
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                <ul class="list-group" id="categories">
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/devops.html">
-                            <i class="fa fa-folder-open fa-lg"></i> DevOps
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/etl.html">
-                            <i class="fa fa-folder-open fa-lg"></i> ETL
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/test.html">
-                            <i class="fa fa-folder-open fa-lg"></i> Test
-                        </a>
-                    </li>
-                </ul>
-            </li>
+<!-- Sidebar/Categories -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4>
+  <ul class="list-group" id="categories">
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/devops.html"><i class="fa fa-folder-open fa-lg"></i>DevOps</a>
+    </li>
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/etl.html"><i class="fa fa-folder-open fa-lg"></i>ETL</a>
+    </li>
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/test.html"><i class="fa fa-folder-open fa-lg"></i>Test</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Categories -->
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
-                <ul class="list-group list-inline tagcloud" id="tags">
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/census.html">
-                            census
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/chrome.html">
-                            chrome
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud-computing.html">
-                            cloud-computing
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud9.html">
-                            cloud9
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/devops.html">
-                            devops
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/etl.html">
-                            etl
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-1">
-                        <a href="https://stharrold.github.io/tag/how-to.html">
-                            how-to
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/pandas.html">
-                            pandas
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-2">
-                        <a href="https://stharrold.github.io/tag/python.html">
-                            python
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/ssh.html">
-                            ssh
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/template.html">
-                            template
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/test.html">
-                            test
-                        </a>
-                    </li>
-                </ul>
-            </li>
-    </ul>
+<!-- Sidebar/Tag Cloud -->
+<li class="list-group-item">
+  <a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+  <ul class="list-group list-inline tagcloud" id="tags">
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/census.html">census</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/chrome.html">chrome</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/cloud-computing.html">cloud-computing</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/cloud9.html">cloud9</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/devops.html">devops</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/etl.html">etl</a>
+    </li>
+    <li class="list-group-item tag-1">
+      <a href="https://stharrold.github.io/tag/how-to.html">how-to</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/pandas.html">pandas</a>
+    </li>
+    <li class="list-group-item tag-2">
+      <a href="https://stharrold.github.io/tag/python.html">python</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/ssh.html">ssh</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/template.html">template</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/test.html">test</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Tag Cloud -->
+  </ul>
 </section>
-            </aside>
+<!-- End Sidebar -->            </aside>
         </div>
     </div>
 </div>
+<!-- End Content Container -->
+
 <footer>
    <div class="container">
       <hr>
       <div class="row">
          <div class="col-xs-10">&copy; 2016 Samuel Harrold
-            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
     Content
-  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
 </small></p>
          </div>
          <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
@@ -954,6 +956,7 @@ $('.collapse').on('shown.bs.collapse', function() {
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="https://stharrold.github.io/theme/js/respond.min.js"></script>
+
 
     <!-- Disqus -->
     <script type="text/javascript">
@@ -970,23 +973,7 @@ $('.collapse').on('shown.bs.collapse', function() {
         }());
     </script>
     <!-- End Disqus Code -->
-    <!-- Google Analytics -->
-    <script type="text/javascript">
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-43020842-2']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
-    <!-- End Google Analytics Code -->
 
 </body>
 </html>
