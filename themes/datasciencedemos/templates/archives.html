@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from 'includes/breadcrumbs.html' import breadcrumbs with context %}
+{% block title %}Archives - {{ SITENAME }}{% endblock %}
+{% block breadcrumbs %}{{ breadcrumbs([('Archives', None)]) }}{% endblock %}
+{% block content %}
+<h1 class="mb-3">Archives</h1>
+<ul class="list-unstyled">
+    {% for article in dates %}
+    <li class="mb-2"><time class="text-body-secondary me-2" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
+        <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

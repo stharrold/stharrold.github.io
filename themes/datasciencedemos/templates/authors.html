@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from 'includes/breadcrumbs.html' import breadcrumbs with context %}
+{% block title %}Authors - {{ SITENAME }}{% endblock %}
+{% block breadcrumbs %}{{ breadcrumbs([('Authors', None)]) }}{% endblock %}
+{% block content %}
+<h1 class="mb-3">Authors</h1>
+<ul>
+    {% for author, author_articles in authors | sort %}
+    <li><a href="{{ SITEURL }}/{{ author.url }}">{{ author }}</a> ({{ author_articles | count }})</li>
+    {% endfor %}
+</ul>
+{% endblock %}

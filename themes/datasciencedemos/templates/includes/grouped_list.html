@@ -1,0 +1,26 @@
+{# Accordion of (group, articles) pairs, used by tags.html and categories.html. #}
+{% macro grouped_list(groups, id) -%}
+<div class="accordion" id="{{ id }}">
+    {% for group, group_articles in groups %}
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#{{ id }}-{{ group.slug }}" aria-expanded="false" aria-controls="{{ id }}-{{ group.slug }}">
+                {{ group }}&nbsp;<span class="badge text-bg-secondary rounded-pill">{{ group_articles | count }}</span>
+            </button>
+        </h2>
+        <div id="{{ id }}-{{ group.slug }}" class="accordion-collapse collapse" data-bs-parent="#{{ id }}">
+            <div class="accordion-body">
+                <p class="mb-2"><a href="{{ SITEURL }}/{{ group.url }}">All posts in {{ group }}</a></p>
+                <ul class="list-unstyled mb-0">
+                    {% for article in group_articles %}
+                    <li><time class="text-body-secondary me-2" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
+                        <a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{%- endmacro %}

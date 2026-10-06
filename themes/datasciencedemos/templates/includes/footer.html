@@ -1,0 +1,19 @@
+{% if articles %}
+{% set copy_year = (articles | map(attribute='modified') | select | list + articles | map(attribute='date') | list) | max %}
+{% endif %}
+<footer class="site-footer container mt-4 mb-4">
+    <hr>
+    <div class="d-flex flex-wrap justify-content-between gap-2">
+        <div>
+            &copy; {{ copy_year.strftime('%Y') if copy_year }} {{ AUTHOR }}
+            &middot; Built with <a href="https://getpelican.com/">Pelican</a> and <a href="https://getbootstrap.com/">Bootstrap</a>
+            {% for title, url in FOOTER_LINKS | default([]) %}&middot; <a href="{{ SITEURL }}/{{ url }}">{{ title }}</a> {% endfor %}
+            <br>
+            <small>Content licensed under a
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>,
+                except where indicated otherwise; code under the
+                <a href="https://github.com/stharrold/stharrold.github.io/blob/src_master/LICENSE">MIT License</a>.</small>
+        </div>
+        <div><a href="#"><i class="fa fa-arrow-up" aria-hidden="true"></i> Back to top</a></div>
+    </div>
+</footer>

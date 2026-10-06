@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% from 'includes/breadcrumbs.html' import breadcrumbs with context %}
+{% from 'includes/grouped_list.html' import grouped_list with context %}
+{% block title %}Tags - {{ SITENAME }}{% endblock %}
+{% block breadcrumbs %}{{ breadcrumbs([('Tags', None)]) }}{% endblock %}
+{% block content %}
+<h1 class="mb-3">Tags</h1>
+{{ grouped_list(tags | sort, 'tags') }}
+{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "article_list.html" %}
+{% from 'includes/breadcrumbs.html' import breadcrumbs with context %}
+{% block title %}Posts by {{ author }} - {{ SITENAME }}{% endblock %}
+{% block breadcrumbs %}{{ breadcrumbs([('Authors', AUTHORS_URL | default('authors.html')), (author, None)]) }}{% endblock %}
+{% block list_heading %}<h1 class="h3 mb-3">Posts by {{ author }}</h1>{% endblock %}

@@ -13,6 +13,8 @@ References:
 
 """
 
+import datetime
+
 # Basic settings
 AUTHOR = "Samuel Harrold"
 DISPLAY_PAGES_ON_MENU = True
@@ -54,38 +56,23 @@ DIRECT_TEMPLATES = ["index", "tags", "categories", "archives"]
 #     https://github.com/Nitron/pelican-alias
 # Note: An explicit PLUGINS list disables namespace plugin auto-discovery,
 #     so every plugin must be listed.
-# Note: liquid_tags.notebook has been disabled since it does not
-#     render cleanly with pelican-bootstrap3. Also collapse code does not
-#     function with pelican-bootstrap3, ipython v4.0.0, pelicanhtml_[3,3.1].tpl
-#     NOTEBOOK_DIR = 'static'
-#     pelican-bootstrap3 does not require EXTRA_HEADER to include the notebook.
-# TODO: Experiment with Google Custom Search vs tipue_search.
-#     https://github.com/stharrold/stharrold.github.io/issues/8
 # TODO: Add embed_html as plugin
 #     https://github.com/stharrold/stharrold.github.io/issues/5
-# TODO: PLUGINS = ['ga_page_view', 'embed_html']
 PLUGIN_PATHS = ["plugins"]
-PLUGINS = ["i18n_subsites", "related_posts", "tag_cloud", "tipue_search", "render_math", "pelican_alias"]
-# For 'i18n_subsites':
-#     pelican-bootstrap3 templates use `_()` and `{% trans %}`, which need
-#     the jinja2 i18n extension and the translations installed by this plugin.
-#     The dict replaces pelican's default, so keep its whitespace settings.
-JINJA_ENVIRONMENT = {"trim_blocks": True, "lstrip_blocks": True, "extensions": ["jinja2.ext.i18n"]}
+PLUGINS = ["related_posts", "tag_cloud", "render_math", "pelican_alias"]
 # For 'related_posts':
 RELATED_POSTS_MAX = 5
 # For 'tag_cloud':
 TAG_CLOUD_SORTING = "alphabetically"
-# For 'tipue_search':
-#     pelican-bootstrap3 requires 'search' in DIRECT_TEMPLATES.
-#     The plugin writes `tipuesearch_content.js` for the Tipue Search 7.0
-#         files bundled with pelican-bootstrap3.
+# Site search: search.html loads the Pagefind index, which is built from
+#     output/ after Pelican runs (`uv run python -m pagefind --site output`).
 DIRECT_TEMPLATES.append("search")
 # For 'render_math':
 MATH_JAX = {"align": "left"}
 
 
 # URL settings
-# Required by pelican-boostrap3 to resolve "Tags" and "Categories" links.
+# Used by the theme for "Tags" and "Categories" links.
 CATEGORIES_URL = "categories.html"
 TAGS_URL = "tags.html"
 
@@ -100,27 +87,24 @@ TRANSLATION_FEED_ATOM = None
 
 
 # Theme settings
-# Vendored from https://github.com/getpelican/pelican-themes (see themes/README.md)
-THEME = "themes/pelican-bootstrap3"
+# Bootstrap 5 theme forked from pelican-bootstrap3 (see themes/README.md).
+THEME = "themes/datasciencedemos"
 DISQUS_SITENAME = "stharroldgithubio"
 # Google Analytics 4 is set only in publishconf.py so local builds are not tracked.
 #     The Universal Analytics property UA-43020842-2 stopped collecting on 2023-07-01.
 GOOGLE_ANALYTICS = None
-BOOTSTRAP_THEME = "flatly"
+# Articles last updated at least this many years before the build year show an outdated-content notice.
+BUILD_YEAR = datetime.date.today().year
+OUTDATED_AFTER_YEARS = 5
 SHOW_ARTICLE_CATEGORY = True
 SHOW_DATE_MODIFIED = True
 PYGMENTS_STYLE = "default"
 DISPLAY_BREADCRUMBS = True
 # "DS" monogram in the flatly navbar color (#2C3E50); files are in content/extra/.
 FAVICON = "favicon.png"
-FAVICON_IE = "favicon.ico"
 TOUCHICON = "apple-touch-icon.png"
 DISPLAY_ARTICLE_INFO_ON_INDEX = True
 DISPLAY_TAGS_ON_SIDEBAR = True
-DISPLAY_TAGS_INLINE = True
 DISPLAY_CATEGORIES_ON_SIDEBAR = True
 DISPLAY_RECENT_POSTS_ON_SIDEBAR = True
 RECENT_POST_COUNT = 5
-DISQUS_DISPLAY_COUNTS = True
-CC_LICENSE_DERIVATIVES = "yes"
-CC_LICENSE_COMMERCIAL = "yes"

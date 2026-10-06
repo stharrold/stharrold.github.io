@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from 'includes/breadcrumbs.html' import breadcrumbs with context %}
+{% block title %}Search - {{ SITENAME }}{% endblock %}
+{# The Pagefind index and Component UI are generated into output/pagefind/ after the Pelican build (see README). #}
+{% block head_extra %}<link rel="stylesheet" href="{{ SITEURL }}/pagefind/pagefind-component-ui.css">{% endblock %}
+{% block breadcrumbs %}{{ breadcrumbs([('Search', None)]) }}{% endblock %}
+{% block content %}
+<h1 class="mb-3">Search</h1>
+<pagefind-config bundle-path="{{ SITEURL }}/pagefind/"></pagefind-config>
+<pagefind-input></pagefind-input>
+<pagefind-summary></pagefind-summary>
+<pagefind-results></pagefind-results>
+<noscript>Search requires JavaScript.</noscript>
+{% endblock %}
+{% block scripts %}
+<script src="{{ SITEURL }}/pagefind/pagefind-component-ui.js" type="module"></script>
+<script type="module">
+    // Run the query from the navbar form (search.html?q=...).
+    const query = new URLSearchParams(window.location.search).get('q');
+    if (query) {
+        window.PagefindComponents.getInstanceManager().getInstance('default').triggerSearch(query);
+    }
+</script>
+{% endblock %}
