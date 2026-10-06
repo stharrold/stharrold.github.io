@@ -1,0 +1,215 @@
+- generic [ref=e3]:
+  - banner [ref=e6]:
+    - generic [ref=e7]:
+      - generic [ref=e8]: Analytics
+      - button "Open the universal picker." [ref=e589] [cursor=pointer]:
+        - generic [ref=e590]:
+          - generic [ref=e591]:
+            - generic [ref=e592]: All accounts
+            - img [aria-hidden] [ref=e593]: chevron_right
+            - generic [ref=e594]: stharrold
+          - generic [ref=e595]:
+            - generic [ref=e596]: Data Science Demos - GA4
+            - img [aria-hidden] [ref=e598]: arrow_drop_down
+      - search [ref=e14]:
+        - img [aria-hidden] [ref=e15]: search
+        - textbox "Search" [ref=e17]:
+          - /placeholder: Try searching "Web overview"
+      - button "Switch products" [ref=e19] [cursor=pointer]
+      - button "Ask Advisor" [ref=e24] [cursor=pointer]:
+        - img [aria-hidden] [ref=e25]: search_spark
+      - button "Help entry menu" [ref=e29] [cursor=pointer]:
+        - img [aria-hidden] [ref=e30]: help
+      - button "Open the user account switcher panel." [ref=e34] [cursor=pointer]
+  - generic [ref=e37]:
+    - generic [ref=e40]:
+      - generic [ref=e41]:
+        - navigation "Main pages" [ref=e42]:
+          - link "Home" [ref=e602] [cursor=pointer]
+          - link "Reports" [ref=e610] [cursor=pointer]:
+            - img [aria-hidden] [ref=e611]: insert_chart_filled
+          - link "Explore" [ref=e615] [cursor=pointer]:
+            - img [aria-hidden] [ref=e616]: data_exploration
+          - link "Advertising" [ref=e620] [cursor=pointer]:
+            - img [aria-hidden] [ref=e621]: ads_click
+        - navigation "Settings pages" [ref=e63]:
+          - link "Tasks" [ref=e1334] [cursor=pointer]:
+            - img [aria-hidden] [ref=e626]: task_alt
+          - link "Admin" [ref=e632] [cursor=pointer]:
+            - img [aria-hidden] [ref=e633]: settings_filled
+      - navigation "Secondary navigation" [ref=e636]:
+        - navigation "Secondary pages" [ref=e637]:
+          - button [ref=e642] [cursor=pointer]:
+            - img [aria-hidden] [ref=e643]: add
+            - generic [ref=e645]:
+              - text: Create
+              - img [aria-hidden] [ref=e646]: arrow_drop_down
+        - tree [ref=e649]:
+          - treeitem [level=1] [ref=e650]:
+            - button "Admin" [ref=e652] [cursor=pointer]
+          - treeitem [level=1] [ref=e658]:
+            - button "My preferences" [ref=e660] [cursor=pointer]
+          - treeitem [expanded] [level=1] [ref=e666]:
+            - generic [ref=e667]:
+              - separator [ref=e668]
+              - button "Account settings" [ref=e669] [cursor=pointer]:
+                - generic [ref=e672]:
+                  - generic [ref=e673]: Account settings
+                  - img [aria-hidden] [ref=e674]: keyboard_arrow_up
+          - treeitem [level=2] [ref=e677]:
+            - button "Account" [ref=e679] [cursor=pointer]:
+              - generic [ref=e681]:
+                - img [aria-hidden] [ref=e682]: arrow_right
+                - generic [ref=e683]: Account
+          - treeitem [expanded] [level=1] [ref=e686]:
+            - generic [ref=e687]:
+              - separator [ref=e688]
+              - button "Property settings" [ref=e689] [cursor=pointer]:
+                - generic [ref=e692]:
+                  - generic [ref=e693]: Property settings
+                  - img [aria-hidden] [ref=e694]: keyboard_arrow_up
+          - treeitem [level=2] [ref=e697]:
+            - button "Property" [ref=e699] [cursor=pointer]:
+              - generic [ref=e701]:
+                - img [aria-hidden] [ref=e702]: arrow_right
+                - generic [ref=e703]: Property
+          - treeitem [expanded] [level=2] [ref=e706]:
+            - button "Data collection and modification" [ref=e708] [cursor=pointer]:
+              - generic [ref=e710]:
+                - img [aria-hidden] [ref=e711]: arrow_drop_down
+                - generic [ref=e712]: Data collection and modification
+          - treeitem [level=3] [ref=e1336]:
+            - button "Data streams" [ref=e1338] [cursor=pointer]
+          - treeitem [level=3] [ref=e1344]:
+            - button "Data collection" [ref=e1346] [cursor=pointer]
+          - treeitem [level=3] [ref=e1352]:
+            - button "Data import" [ref=e1354] [cursor=pointer]
+          - treeitem [level=3] [ref=e1360]:
+            - button "Data retention" [ref=e1362] [cursor=pointer]
+          - treeitem [level=3] [ref=e1368]:
+            - button "Data filters" [ref=e1370] [cursor=pointer]
+          - treeitem [level=3] [ref=e1376]:
+            - button "Data deletion requests" [ref=e1378] [cursor=pointer]
+          - treeitem [level=3] [ref=e1384]:
+            - button "Consent settings" [ref=e1386] [cursor=pointer]
+          - treeitem [level=2] [ref=e715]:
+            - button "Data display" [ref=e717] [cursor=pointer]:
+              - generic [ref=e719]:
+                - img [aria-hidden] [ref=e720]: arrow_right
+                - generic [ref=e721]: Data display
+          - treeitem [level=2] [ref=e724]:
+            - button "Product links" [ref=e726] [cursor=pointer]:
+              - generic [ref=e728]:
+                - img [aria-hidden] [ref=e729]: arrow_right
+                - generic [ref=e730]: Product links
+        - separator [ref=e733]
+      - button "Nav toggle" [expanded] [ref=e735] [cursor=pointer]:
+        - img [aria-hidden] [ref=e736]: keyboard_arrow_left
+    - generic [ref=e739]:
+      - main [ref=e740]:
+        - generic [ref=e1393]:
+          - heading "Data collection" [active] [level=1] [ref=e1396]
+          - generic [ref=e1399]:
+            - button "Google signals data collection" [expanded] [ref=e1401] [cursor=pointer]:
+              - heading "Google signals data collection" [level=2] [ref=e1403]
+            - region "Google signals data collection" [ref=e1405]:
+              - generic [ref=e1408]:
+                - generic [ref=e1409]:
+                  - img [aria-hidden] [ref=e1410]: info
+                  - generic [ref=e1411]:
+                    - generic [ref=e1412]:
+                      - generic [ref=e1413]: Notification
+                      - generic [ref=e1414]: Enhance user insights.
+                    - button "Turn on Google signals" [ref=e1416] [cursor=pointer]:
+                      - generic [ref=e1417]: Turn on
+                - paragraph [ref=e1420]:
+                  - text: Analytics features can be enhanced with data from users who have turned on Ads Personalization and are signed-in to their Google accounts. This provides you with deeper insights about your users, such as aggregated demographics and interests data.
+                  - link "Learn more about activating Google signals" [ref=e1421] [cursor=pointer]:
+                    - /url: https://support.google.com/analytics/answer/9445345?hl=en_US&utm_id=ad
+                  - text: .
+                - paragraph [ref=e1422]:
+                  - text: When you turn on Google signals, Google Analytics will associate the session data it collects from your site and apps with Google's information from accounts of signed-in, consented users. By turning on Google signals, you acknowledge you adhere to the
+                  - link "Google Advertising Features Policy" [ref=e1423] [cursor=pointer]:
+                    - /url: https://support.google.com/analytics/answer/2700409?hl=en_US&utm_id=ad
+                  - text: ", including rules around sensitive categories, have the necessary privacy disclosures and rights from your end users for such association, and that such data may be accessed and deleted by end users via"
+                  - link "My Activity" [ref=e1424] [cursor=pointer]:
+                    - /url: https://myactivity.google.com/myactivity
+                  - text: .
+          - generic [ref=e1427]:
+            - button "User-ID and user-provided data collection" [expanded] [ref=e1429] [cursor=pointer]:
+              - heading "User-ID and user-provided data collection" [level=2] [ref=e1432]
+            - region "User-ID and user-provided data collection" [ref=e1434]:
+              - generic [ref=e1436]:
+                - generic [ref=e1439]:
+                  - generic [ref=e1440]: Improve measurement and enable additional capabilities with your Google Ads integrations.
+                  - generic [ref=e1441]:
+                    - text: With user-ID and user-provided data, you can use your first-party data to better understand how users are engaging with your website and apps, improve conversion measurement, and supplement audience sharing capabilities when you link your Analytics property to Google Ads accounts.
+                    - link "Learn more about user-ID" [ref=e1442] [cursor=pointer]:
+                      - /url: https://support.google.com/analytics/answer/9213390?hl=en_US&utm_id=ad
+                    - text: .
+                - generic [ref=e1443]:
+                  - generic [ref=e1444]: User-ID collection
+                  - generic [ref=e1446]:
+                    - text: The user-ID feature allows you to provide your own identifiers for your site and app users, so you can connect their behavior across different sessions and the various devices and platforms from which they visit. Google Analytics interprets each distinct user-ID as a separate user, which provides you with more accurate user counts and a more holistic story about a user's interactions with your business.
+                    - link "Learn more about user-ID" [ref=e1447] [cursor=pointer]:
+                      - /url: https://support.google.com/analytics/answer/9213390?hl=en_US&utm_id=ad
+                    - text: .
+                  - generic [ref=e1448]:
+                    - text: You’re responsible for ensuring that you use the user-ID feature in accordance with the
+                    - link "Google Analytics Terms of Service" [ref=e1449] [cursor=pointer]:
+                      - /url: https://marketingplatform.google.com/about/analytics/terms/us
+                    - text: . This includes not sending Google Analytics personally identifiable information as user-ID, and providing appropriate notice of your use of identifiers in your privacy policy. For instructions on how to send user-IDs to Google Analytics see
+                    - link "Send user-IDs" [ref=e1450] [cursor=pointer]:
+                      - /url: https://developers.google.com/analytics/devguides/collection/ga4/user-id
+                    - text: .
+                - generic [ref=e1451]:
+                  - generic [ref=e1453]:
+                    - generic [ref=e1454]: User-provided data collection
+                    - generic [ref=e1455]: Beta
+                  - generic [ref=e1456]:
+                    - img [aria-hidden] [ref=e1457]: info
+                    - generic [ref=e1458]:
+                      - generic [ref=e1459]:
+                        - generic [ref=e1460]: Notification
+                        - generic [ref=e1461]:
+                          - text: Improve audience and conversion measurement, and enable additional audience list capabilities in Google Ads. Please review the
+                          - link "beta feature documentation" [ref=e1462] [cursor=pointer]:
+                            - /url: https://support.google.com/analytics/answer/14077171?hl=en_US&utm_id=ad
+                          - text: before turning this feature on to understand how this will impact your Analytics property.
+                      - button "Turn on" [ref=e1464] [cursor=pointer]
+                  - generic [ref=e1468]:
+                    - text: This activates improved user and conversion measurement by giving you enriched more-detailed audience data. Capabilities such as improved conversion measurement and audience sharing require having linked advertising accounts and
+                    - link "Ads Personalization" [ref=e1469] [cursor=pointer]:
+                      - /url: https://support.google.com/analytics/answer/9626162?hl=en_US&utm_id=ad
+                    - text: turned on in your Google Analytics property. User-provided data collection supplements your existing Google Analytics data by allowing you to send your consented, hashed customer data to Google Analytics in a privacy-safe way.
+                    - link "Learn more about user-provided data collection" [ref=e1470] [cursor=pointer]:
+                      - /url: https://support.google.com/analytics/answer/14077171?hl=en_US&utm_id=ad
+                    - text: .
+                  - generic [ref=e1471]:
+                    - text: By turning on user-provided data collection, you acknowledge you adhere to the
+                    - link "user-provided data feature policy" [ref=e1472] [cursor=pointer]:
+                      - /url: https://support.google.com/analytics/answer/12150158?hl=en_US&utm_id=ad
+                    - text: and the need to have the necessary privacy disclosures and rights from your end users for such use. Per our policy, use of this feature is prohibited for customers in sensitive categories.
+          - generic [ref=e1476]:
+            - button "Granular location and device data collection" [ref=e1477] [cursor=pointer]:
+              - heading "Granular location and device data collection" [level=2] [ref=e1479]
+            - switch "Granular location and device data collection" [checked] [ref=e1484] [cursor=pointer]
+          - button "Advanced settings to allow for ads personalization" [ref=e1498] [cursor=pointer]:
+            - heading "Advanced settings to allow for ads personalization" [level=2] [ref=e1500]
+          - button "User Data Collection Acknowledgement" [ref=e1505] [cursor=pointer]:
+            - heading "User Data Collection Acknowledgement" [level=2] [ref=e1507]
+      - contentinfo [ref=e1325]:
+        - text: © 2026 Google |
+        - link "Analytics home" [ref=e1326] [cursor=pointer]:
+          - /url: https://www.google.com/analytics/?hl=en-US
+        - text: "|"
+        - link "Terms of Service" [ref=e1327] [cursor=pointer]:
+          - /url: https://www.google.com/analytics/tos.html?hl=en-US
+        - text: "|"
+        - link "Privacy Policy" [ref=e1328] [cursor=pointer]:
+          - /url: https://www.google.com/policies/privacy/?hl=en-US
+        - text: "|"
+        - button "Send feedback" [ref=e1329] [cursor=pointer]:
+          - img [aria-hidden] [ref=e1330]: feedback
+    - generic:
+      - button "Open context menu"

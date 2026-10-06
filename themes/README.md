@@ -21,7 +21,8 @@ Other fixes:
   instead of the unpatched `tipuesearch.min.js`.
 - `templates/includes/ga.html`: the GA4 measurement ID is now quoted (`| tojson`); it was emitted as a
   bare JS expression (`ReferenceError`). The Google Tag Manager snippet is emitted only when
-  `GA_GTM_CONTAINER_ID` is set, instead of always requesting `gtm.js?id=`.
+  `GA_GTM_CONTAINER_ID` is set, instead of always requesting `gtm.js?id=`. An optional
+  `GOOGLE_ANALYTICS_CONFIG` dict is passed as the third argument to `gtag('config', ...)`.
 
 To update, copy the `pelican-bootstrap3/` directory from a newer commit, update the commit above,
 and re-apply the patches if upstream has not fixed them.
