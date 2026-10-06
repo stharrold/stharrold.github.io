@@ -8,6 +8,11 @@ html {
 .navbar .form-control {
   min-width: 12rem;
 }
+/* Current page in the navbar: white and bold instead of Flatly's teal, for contrast on navy. */
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #fff;
+  font-weight: 700;
+}
 
 /* Links keep the text color, as in the previous pelican-bootstrap3 theme;
    in post bodies they get a dotted underline that turns solid on hover. */
