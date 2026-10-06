@@ -27,6 +27,8 @@ jobs:
         run: uv sync --locked
       - name: Build site
         run: uv run pelican --settings pelicanconf.py --fatal warnings
+      - name: Build search index  # search.html links to output/pagefind/
+        run: uv run python -m pagefind --site output
       - name: Check links
         id: lychee
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8  # v2.9.0
