@@ -19,7 +19,10 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   which would have published the raw source tree. Check with
   `gh api repos/stharrold/stharrold.github.io/pages --jq '{build_type, source}'`.
 - **Drafts:** `Status: draft` posts are excluded by `DRAFT_SAVE_AS = ""` in `publishconf.py`, but their static files
-  are not; add the draft's folder to `STATIC_EXCLUDES`.
+  are not; add the draft's folder to `STATIC_EXCLUDES`, and remove it when publishing (a test enforces both).
+- **Keep tests content-driven.** Derive expectations from `content/` and `data/` (see `posts()`/`pages()` in
+  `tests/test_site.py`); never hard-code slugs or counts, or publishing a post will block deploys.
+- **Builds use `--fatal warnings`** in CI and tests, so any Pelican warning blocks a deploy; fix the warning.
 - **`--autoreload` leaves orphans.** Killing only the parent `pelican` process leaves multiprocessing workers that keep
   rebuilding `output/` with dev settings. Stop it with Ctrl-C, or `pkill -f 'stharrold.github.io/.venv/bin/python -c from multiprocessing'`.
 - **Pelican rewrites `PLUGINS`** to full module names (`pelican.plugins.tag_cloud`) after loading, so templates must

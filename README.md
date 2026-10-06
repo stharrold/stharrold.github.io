@@ -49,6 +49,10 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   Prices such as `$20` are left alone.
 - **Old posts:** posts last updated 5+ years before the build year show an "out of date" notice
   (`OUTDATED_AFTER_YEARS`).
+- **Before pushing:** run `uv run pytest`. Deploys stop on any Pelican warning (for example a broken
+  `{filename}`/`{static}` link) or failed test. The tests derive what to expect from `content/`, so new and newly
+  published posts need no test changes; publishing a draft that has a `STATIC_EXCLUDES` entry fails with a message
+  saying which entry to remove.
 
 ## Site features
 
