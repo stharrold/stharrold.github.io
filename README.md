@@ -34,8 +34,9 @@ ruff, pytest, `pelican --settings publishconf.py --fatal warnings`, and Pagefind
 GitHub Pages must be set to **Settings > Pages > Source: GitHub Actions**. `output/` is generated and not tracked.
 
 **Automation:**
-- `.github/workflows/links.yml` checks internal and external links every Monday (and on manual dispatch) against a
-  fresh build; broken links open or update a single issue labeled `link-check`. It never blocks deploys.
+- `.github/workflows/links.yml` logs internal and external link status every Monday (and on manual dispatch) against
+  a fresh build: a job summary plus a `link-report` JSON artifact kept 90 days. It is report-only (never fails, files
+  no issues); alerting belongs to whatever reads the log. Dead links in the frozen 2015-2016 posts are left as is.
 - Dependabot (`.github/dependabot.yml`) opens weekly grouped PRs for GitHub Actions and Python packages against
   `src_develop`; security fixes target `src_master`, so review them as deploys. Actions are pinned to commit SHAs.
 - Vendored theme files and the MathJax CDN version are not covered by Dependabot; see `themes/README.md`.
