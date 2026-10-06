@@ -10,15 +10,9 @@ Notes:
     * Undefined settings have default values from pelican docs.[^pel]
 
 References:
-    [^pel]: http://docs.getpelican.com/en/3.6.3/settings.html
+    [^pel]: https://docs.getpelican.com/en/4.12.0/settings.html
 
 """
-
-
-# Import standard packages.
-import os
-import shutil
-import warnings
 
 
 # Basic settings
@@ -27,8 +21,13 @@ DISPLAY_PAGES_ON_MENU = True
 DISPLAY_CATEGORIES_ON_MENU = False
 # Remove all old files and directories when building.
 DELETE_OUTPUT_DIRECTORY = True
-# Markdown extensions from http://pythonhosted.org/Markdown/extensions/index.html
-MD_EXTENSIONS = ['codehilite(css_class=highlight)', 'extra', 'toc(title=Contents, baselevel=2)']
+# Markdown extensions from https://python-markdown.github.io/extensions/
+MARKDOWN = {
+    'extension_configs': {
+        'markdown.extensions.codehilite': {'css_class': 'highlight'},
+        'markdown.extensions.extra': {},
+        'markdown.extensions.toc': {'title': 'Contents', 'baselevel': 2}},
+    'output_format': 'html5'}
 PATH = 'content'
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
@@ -44,8 +43,12 @@ DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
 
 
 # Plugin settings
-# From https://github.com/getpelican/pelican-plugins
+# Namespace plugins from https://github.com/pelican-plugins are installed by
+#     `uv sync` (see pyproject.toml) and load by short name.
+# 'pelican_alias' is a local Python 3 port in plugins/ of
 #     https://github.com/Nitron/pelican-alias
+# Note: An explicit PLUGINS list disables namespace plugin auto-discovery,
+#     so every plugin must be listed.
 # Note: liquid_tags.notebook has been disabled since it does not
 #     render cleanly with pelican-bootstrap3. Also collapse code does not
 #     function with pelican-bootstrap3, ipython v4.0.0, pelicanhtml_[3,3.1].tpl
@@ -56,27 +59,22 @@ DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
 # TODO: Add embed_html as plugin
 #     https://github.com/stharrold/stharrold.github.io/issues/5
 # TODO: PLUGINS = ['ga_page_view', 'embed_html']
-PLUGIN_PATHS = ['pelican-plugins', 'pelican-alias']
-PLUGINS = ['related_posts', 'tag_cloud', 'tipue_search', 'render_math', 'pelican_alias']
+PLUGIN_PATHS = ['plugins']
+PLUGINS = ['i18n_subsites', 'related_posts', 'tag_cloud', 'tipue_search', 'render_math', 'pelican_alias']
+# For 'i18n_subsites':
+#     pelican-bootstrap3 templates use `_()` and `{% trans %}`, which need
+#     the jinja2 i18n extension and the translations installed by this plugin.
+#     The dict replaces pelican's default, so keep its whitespace settings.
+JINJA_ENVIRONMENT = {'trim_blocks': True, 'lstrip_blocks': True, 'extensions': ['jinja2.ext.i18n']}
 # For 'related_posts':
 RELATED_POSTS_MAX = 5
 # For 'tag_cloud':
 TAG_CLOUD_SORTING = 'alphabetically'
 # For 'tipue_search':
-#     pelican-bootstrap3 requires 'search' in DIRECT_TEMPLATES
-#     As of 2015-12-03, pelican-bootstrap3 has not been updated to
-#         Tipue Search v5.
-#     https://github.com/DandyDev/pelican-bootstrap3/issues/220
-#     'tipuesearch_v5' from 'http://www.tipue.com/search',
-#         'tipuesearch.zip:Tipue Search 5.0/tipuesearch'
-#     Keep original files for troubleshooting.
+#     pelican-bootstrap3 requires 'search' in DIRECT_TEMPLATES.
+#     The plugin writes `tipuesearch_content.js` for the Tipue Search 7.0
+#         files bundled with pelican-bootstrap3.
 DIRECT_TEMPLATES.append('search')
-path_repo = os.path.join(os.path.expanduser(r'~'), r'stharrold.github.io')
-path_src = os.path.join(path_repo, r'tipuesearch_v5')
-path_dst = os.path.join(path_repo, r'pelican-themes/pelican-bootstrap3/static/tipuesearch')
-if os.path.exists(path=path_dst):
-    shutil.rmtree(path=path_dst)
-shutil.copytree(src=path_src, dst=path_dst)
 # For 'render_math':
 MATH_JAX = {'align': 'left'}
 
@@ -97,13 +95,12 @@ TRANSLATION_FEED_ATOM = None
 
 
 # Theme settings
-# From https://github.com/getpelican/pelican-themes
-THEME = 'pelican-themes/pelican-bootstrap3'
+# Vendored from https://github.com/getpelican/pelican-themes (see themes/README.md)
+THEME = 'themes/pelican-bootstrap3'
 DISQUS_SITENAME = 'stharroldgithubio'
-GOOGLE_ANALYTICS = 'UA-43020842-2'
-# TODO: Explore Google Universal Analytics options.
-#GOOGLE_ANALYTICS_UNIVERSAL = ''
-#GOOGLE_ANALYTICS_UNIVERSAL_PROPERTY = ''
+# Google Analytics 4 is set only in publishconf.py so local builds are not tracked.
+#     The Universal Analytics property UA-43020842-2 stopped collecting on 2023-07-01.
+GOOGLE_ANALYTICS = None
 BOOTSTRAP_THEME = 'flatly'
 SHOW_ARTICLE_CATEGORY = True
 SHOW_DATE_MODIFIED = True

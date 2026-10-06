@@ -40,8 +40,8 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
 <span id="source">**Source code:**</span>
 
 * For step-by-step, see the Jupyter Notebook (click the HTML export to render in-browser):  
-[20160110-etl-census-with-python.ipynb]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb)  
-[20160110-etl-census-with-python-full.html]({filename}/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html)
+[20160110-etl-census-with-python.ipynb]({static}/static/20160110-etl-census-with-python/20160110-etl-census-with-python.ipynb)  
+[20160110-etl-census-with-python-full.html]({static}/static/20160110-etl-census-with-python/20160110-etl-census-with-python-full.html)
 * This post uses `dsdemos` [v0.0.3](https://github.com/stharrold/dsdemos/releases/tag/v0.0.3).[^checkout]
 
 ## Motivations

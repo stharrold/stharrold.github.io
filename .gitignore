@@ -109,3 +109,10 @@ target/
 
 # IPython Notebooks
 .ipynb_checkpoints/
+
+# uv virtual environment
+.venv/
+
+# Keep compiled translations shipped with vendored themes.
+!themes/**/*.mo
+!themes/**/*.pot
