@@ -1,0 +1,10 @@
+{% if article.related_posts %}
+<section class="bg-light rounded px-3 py-2 mb-3" id="related-posts" data-pagefind-ignore>
+    <h2 class="h5">Related Posts</h2>
+    <ul class="mb-1">
+        {% for related_post in article.related_posts %}
+        <li><a href="{{ SITEURL }}/{{ related_post.url }}">{{ related_post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}

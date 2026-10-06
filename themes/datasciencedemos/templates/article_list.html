@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% block list_heading %}{% endblock %}
+{% for article in (articles_page.object_list if articles_page else articles) %}
+<article class="mb-4">
+    <h2><a class="text-reset text-decoration-none" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
+    {% if DISPLAY_ARTICLE_INFO_ON_INDEX %}{% include 'includes/article_info.html' %}{% endif %}
+    <div class="summary">{{ article.summary }}</div>
+    <a class="btn btn-secondary btn-sm mt-2" href="{{ SITEURL }}/{{ article.url }}">Read more <span class="visually-hidden">of {{ article.title | striptags }}</span>&hellip;</a>
+</article>
+{% if not loop.last %}<hr>{% endif %}
+{% endfor %}
+{% include 'includes/pagination.html' %}
+{% endblock content %}

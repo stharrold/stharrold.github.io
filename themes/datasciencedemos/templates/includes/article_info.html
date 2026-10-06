@@ -1,0 +1,16 @@
+<footer class="post-info bg-light rounded px-3 py-2 mb-3">
+    <span><span class="badge text-bg-secondary">Date</span>
+        <i class="fa fa-calendar" aria-hidden="true"></i><time datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time></span>
+    {% if SHOW_DATE_MODIFIED and article.modified %}
+    <span><span class="badge text-bg-secondary">Modified</span>
+        <i class="fa fa-calendar" aria-hidden="true"></i><time datetime="{{ article.modified.isoformat() }}">{{ article.locale_modified }}</time></span>
+    {% endif %}
+    {% if SHOW_ARTICLE_CATEGORY %}
+    <span><span class="badge text-bg-secondary">Category</span>
+        <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a></span>
+    {% endif %}
+    {% if article.tags %}
+    <span><span class="badge text-bg-secondary">Tags</span>
+        {% for tag in article.tags %}<a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>{% if not loop.last %} / {% endif %}{% endfor %}</span>
+    {% endif %}
+</footer>

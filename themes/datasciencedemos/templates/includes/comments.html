@@ -1,0 +1,24 @@
+{% if DISQUS_SITENAME %}
+<section class="comments mt-4" id="comments" data-pagefind-ignore>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            {% if article %}
+            this.page.identifier = '{{ article.date | strftime('%Y-%m-%d-') ~ article.slug }}';
+            {% if SITEURL %}this.page.url = '{{ SITEURL }}/{{ article.url }}';{% endif %}
+            {% elif page %}
+            this.page.identifier = 'page-{{ page.slug }}';
+            {% if SITEURL %}this.page.url = '{{ SITEURL }}/{{ page.url }}';{% endif %}
+            {% endif %}
+        };
+        (function () {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://{{ DISQUS_SITENAME }}.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the comments.</noscript>
+</section>
+{% endif %}

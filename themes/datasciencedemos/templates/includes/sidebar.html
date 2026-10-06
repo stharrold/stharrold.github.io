@@ -1,0 +1,26 @@
+<div class="bg-light rounded px-3 py-2 mb-3">
+    {% if DISPLAY_RECENT_POSTS_ON_SIDEBAR %}
+    <h2><i class="fa fa-clock-o" aria-hidden="true"></i> Recent Posts</h2>
+    <ul class="list-group mb-3">
+        {% for article in articles[:RECENT_POST_COUNT | default(5)] %}
+        <li class="list-group-item"><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if DISPLAY_CATEGORIES_ON_SIDEBAR %}
+    <h2><i class="fa fa-folder-open" aria-hidden="true"></i> Categories</h2>
+    <ul class="list-group mb-3">
+        {% for cat, null in categories %}
+        <li class="list-group-item"><a href="{{ SITEURL }}/{{ cat.url }}">{{ cat }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% if DISPLAY_TAGS_ON_SIDEBAR and tag_cloud %}
+    <h2><i class="fa fa-tags" aria-hidden="true"></i> <a href="{{ SITEURL }}/{{ TAGS_URL }}">Tags</a></h2>
+    <p class="tagcloud">
+        {% for tag in tag_cloud | sort(attribute='0') %}
+        <a class="tag-{{ tag.1 }}" href="{{ SITEURL }}/{{ tag.0.url }}">{{ tag.0 }}</a>
+        {% endfor %}
+    </p>
+    {% endif %}
+</div>

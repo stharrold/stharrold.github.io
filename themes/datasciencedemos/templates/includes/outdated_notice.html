@@ -1,0 +1,8 @@
+{# Shown on articles last updated more than OUTDATED_AFTER_YEARS before the build year (BUILD_YEAR). #}
+{% set last_updated = article.modified or article.date %}
+{% if OUTDATED_AFTER_YEARS and BUILD_YEAR - last_updated.year >= OUTDATED_AFTER_YEARS %}
+<div class="alert alert-warning outdated-notice" role="note" data-pagefind-ignore>
+    <i class="fa fa-history" aria-hidden="true"></i>
+    This post was last updated in {{ last_updated.strftime('%B %Y') }}. Some tools, links, and instructions may be out of date.
+</div>
+{% endif %}

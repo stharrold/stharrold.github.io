@@ -4,6 +4,7 @@ These encode checks that were previously done by hand before deploying:
 no drafts, analytics only in publish builds, working redirects and favicons.
 """
 
+import json
 import re
 import subprocess
 import sys
@@ -28,9 +29,16 @@ def build(settings, output):
     return output
 
 
+def index_search(output):
+    """Build the Pagefind search index into output/pagefind/, as CI does after Pelican."""
+    result = subprocess.run([sys.executable, "-m", "pagefind", "--site", str(output)], cwd=ROOT, capture_output=True, text=True)
+    assert result.returncode == 0, result.stdout + result.stderr
+    return output
+
+
 @pytest.fixture(scope="session")
 def site(tmp_path_factory):
-    return build("publishconf.py", tmp_path_factory.mktemp("publish"))
+    return index_search(build("publishconf.py", tmp_path_factory.mktemp("publish")))
 
 
 @pytest.fixture(scope="session")
@@ -86,6 +94,22 @@ def test_favicons_at_site_root(site):
     for name in ["favicon.ico", "favicon.png", "apple-touch-icon.png"]:
         assert (site / name).stat().st_size > 0, name
     assert 'rel="icon"' in (site / "index.html").read_text()
+
+
+def test_search_index_covers_published_posts_and_pages_only(site):
+    assert (site / "pagefind" / "pagefind-component-ui.js").is_file()
+    entry = json.loads((site / "pagefind" / "pagefind-entry.json").read_text())
+    # 3 published articles + the About page; list pages, drafts, and notebook exports are not indexed.
+    assert sum(lang["page_count"] for lang in entry["languages"].values()) == 4
+
+
+def test_no_third_party_fonts_or_jquery(site):
+    for page in site_pages(site):
+        html = page.read_text()
+        assert "fonts.googleapis.com" not in html, page
+        assert not re.search(r"<script[^>]+src=\"[^\"]*jquery", html, re.IGNORECASE), page
+    for css in (site / "theme" / "css").glob("*.css"):
+        assert "fonts.googleapis.com" not in css.read_text(), css
 
 
 def test_feeds_use_absolute_urls(site):

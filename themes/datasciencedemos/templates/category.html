@@ -1,0 +1,9 @@
+{% extends "article_list.html" %}
+{% from 'includes/breadcrumbs.html' import breadcrumbs with context %}
+{% block title %}{{ category }} - {{ SITENAME }}{% endblock %}
+{% block meta %}
+    <meta name="author" content="{{ AUTHOR }}">
+    <meta name="keywords" content="{{ category }}">
+{% endblock %}
+{% block breadcrumbs %}{{ breadcrumbs([('Categories', CATEGORIES_URL), (category, None)]) }}{% endblock %}
+{% block list_heading %}<h1 class="h3 mb-3">Posts in <em>{{ category }}</em></h1>{% endblock %}

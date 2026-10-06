@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% from 'includes/breadcrumbs.html' import breadcrumbs with context %}
+{% from 'includes/grouped_list.html' import grouped_list with context %}
+{% block title %}Categories - {{ SITENAME }}{% endblock %}
+{% block breadcrumbs %}{{ breadcrumbs([('Categories', None)]) }}{% endblock %}
+{% block content %}
+<h1 class="mb-3">Categories</h1>
+{{ grouped_list(categories, 'categories') }}
+{% endblock %}
