@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
->
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
     <title>Predicting household income from census data - Data Science Demos</title>
     <!-- Using the latest rendering mode for IE -->
@@ -31,6 +30,7 @@
             <meta property="article:author" content="Samuel Harrold" />
 
 
+
     <!-- Bootstrap -->
         <link rel="stylesheet" href="https://stharrold.github.io/theme/css/bootstrap.flatly.min.css" type="text/css"/>
     <link href="https://stharrold.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
@@ -41,14 +41,33 @@
 
         <link href="https://stharrold.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="Data Science Demos ATOM Feed"/>
+
         <link href="https://stharrold.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate"
               title="Data Science Demos RSS Feed"/>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43020842-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', UA-43020842-2);
+    </script>
+    <!-- End Google Analytics Code -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','');</script>
+    <!-- End Google Tag Manager -->
 
 </head>
 <body>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -67,18 +86,20 @@ Data Science Demos            </a>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><span>
-                <form class="navbar-search" action="/search">
+                <form class="navbar-search" action="/search.html">
                   <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
                 </form></span>
               </li>
-              <li><a href="https://stharrold.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
 </div> <!-- /.navbar -->
+
 <!-- Banner -->
 <!-- End Banner -->
+
+<!-- Content Container -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -86,7 +107,6 @@ Data Science Demos            </a>
                 <li><a href="https://stharrold.github.io" title="Data Science Demos"><i class="fa fa-home fa-lg"></i></a></li>
                 <li class="active">Predicting household income from census data</li>
             </ol>
-
     <section id="content">
         <article>
             <header class="page-header">
@@ -106,10 +126,12 @@ Data Science Demos            </a>
     <span class="published">
         <i class="fa fa-calendar"></i><time datetime="2016-02-21T12:00:00+00:00"> Sun 21 February 2016</time>
     </span>
-            <span class="label label-default">Modified</span>
+          <span class="label label-default">Modified</span>
             <span class="modified">
                 <i class="fa fa-calendar"></i><time datetime="2016-02-08T19:20:00+00:00"> Mon 08 February 2016</time>
             </span>
+
+
 
         <span class="label label-default">Category</span>
         <a href="https://stharrold.github.io/category/machine-learning.html">Machine Learning</a>
@@ -139,11 +161,11 @@ Data Science Demos            </a>
 <h3 id="overview">Overview</h3>
 <h3 id="motivations">Motivations</h3>
 <p><strong>Why am I using the ACS household-level data?</strong></p>
-<p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs" rel="footnote">1</a></sup> and consumers often spend on behalf of their household.<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce" rel="footnote">2</a></sup> Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
+<p>Companies collect information on their consumers<sup id="fnref:cr-dbs"><a class="footnote-ref" href="#fn:cr-dbs">1</a></sup> and consumers often spend on behalf of their household.<sup id="fnref:bea-pce"><a class="footnote-ref" href="#fn:bea-pce">2</a></sup> Connecting ACS household-level data with the personal-level data is a future step for this project.</p>
 <h3 id="predicting-household-income">Predicting household income</h3>
 <ul>
 <li>TODO:<ul>
-<li>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums" rel="footnote">3</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</li>
+<li>The Public Use Microdata Sample (PUMS)<sup id="fnref:pums"><a class="footnote-ref" href="#fn:pums">3</a></sup> has more features than the summary data sets but low geographic resolution to protect respondents' privacy &mdash; the Public Use Microdata Areas (PUMAs) each have at least 100K people.</li>
 <li>Join personal and housing files.</li>
 <li>imputation (knn?)</li>
 <li>Purpose: Predict total annual household income.</li>
@@ -162,15 +184,14 @@ Data Science Demos            </a>
 </ul>
 <h3 id="helpful-links">Helpful links</h3>
 <p>Some links I found helpful for this blog post: TODO</p>
-<div class="highlight"><pre>* Kaggle competition, [2013 American Community Survey](https://www.kaggle.com/census/2013-american-community-survey).
-* <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)&quot;</span> <span class="na">type=</span><span class="s">&quot;text/html&quot;</span><span class="nt">&gt;</span>UCI Census-Income (KDD) Data Set<span class="nt">&lt;/a&gt;</span>, see &quot;Papers That Cite This Data Set&quot;.
-* <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)&quot;</span> <span class="na">type=</span><span class="s">&quot;text/html&quot;</span><span class="nt">&gt;</span>UCI US Census Data (1990) Data Set<span class="nt">&lt;/a&gt;</span>, see &quot;Papers That Cite This Data Set&quot;.
-* [Predicting Income Level, An Analytics Casestudy in R](http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r).
-* RPubs, [Predict Income Range](https://rpubs.com/Jovin/census_data_income).
-* Mathematica for prediction algorithms, [Classification and association rules for census income data](https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/).
-* [Using PUMS Census data](http://www-rohan.sdsu.edu/~gawron/python_for_ss/course_core/book_draft/data/PUMS_data.html) from a social science perspective.
-</pre></div>
-
+<div class="highlight"><pre><span></span><code>*<span class="w"> </span>Kaggle<span class="w"> </span>competition,<span class="w"> </span>[2013<span class="w"> </span>American<span class="w"> </span>Community<span class="w"> </span>Survey](https://www.kaggle.com/census/2013-american-community-survey).
+*<span class="w"> </span><span class="nt">&lt;a</span><span class="w"> </span><span class="na">href=</span><span class="s">&quot;https://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;text/html&quot;</span><span class="nt">&gt;</span>UCI<span class="w"> </span>Census-Income<span class="w"> </span>(KDD)<span class="w"> </span>Data<span class="w"> </span>Set<span class="nt">&lt;/a&gt;</span>,<span class="w"> </span>see<span class="w"> </span>&quot;Papers<span class="w"> </span>That<span class="w"> </span>Cite<span class="w"> </span>This<span class="w"> </span>Data<span class="w"> </span>Set&quot;.
+*<span class="w"> </span><span class="nt">&lt;a</span><span class="w"> </span><span class="na">href=</span><span class="s">&quot;https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990)&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;text/html&quot;</span><span class="nt">&gt;</span>UCI<span class="w"> </span>US<span class="w"> </span>Census<span class="w"> </span>Data<span class="w"> </span>(1990)<span class="w"> </span>Data<span class="w"> </span>Set<span class="nt">&lt;/a&gt;</span>,<span class="w"> </span>see<span class="w"> </span>&quot;Papers<span class="w"> </span>That<span class="w"> </span>Cite<span class="w"> </span>This<span class="w"> </span>Data<span class="w"> </span>Set&quot;.
+*<span class="w"> </span>[Predicting<span class="w"> </span>Income<span class="w"> </span>Level,<span class="w"> </span>An<span class="w"> </span>Analytics<span class="w"> </span>Casestudy<span class="w"> </span>in<span class="w"> </span>R](http://www.knowbigdata.com/blog/predicting-income-level-analytics-casestudy-r).
+*<span class="w"> </span>RPubs,<span class="w"> </span>[Predict<span class="w"> </span>Income<span class="w"> </span>Range](https://rpubs.com/Jovin/census_data_income).
+*<span class="w"> </span>Mathematica<span class="w"> </span>for<span class="w"> </span>prediction<span class="w"> </span>algorithms,<span class="w"> </span>[Classification<span class="w"> </span>and<span class="w"> </span>association<span class="w"> </span>rules<span class="w"> </span>for<span class="w"> </span>census<span class="w"> </span>income<span class="w"> </span>data](https://mathematicaforprediction.wordpress.com/2014/03/30/classification-and-association-rules-for-census-income-data/).
+*<span class="w"> </span>[Using<span class="w"> </span>PUMS<span class="w"> </span>Census<span class="w"> </span>data](http://www-rohan.sdsu.edu/~gawron/python_for_ss/course_core/book_draft/data/PUMS_data.html)<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>social<span class="w"> </span>science<span class="w"> </span>perspective.
+</code></pre></div>
 
 <ul>
 <li>Analysis:<ul>
@@ -180,61 +201,31 @@ Data Science Demos            </a>
 </li>
 </ul>
 <h3 id="footnotes">Footnotes</h3>
+<!-- From https://pythonhosted.org/Markdown/extensions/footnotes.html -->
 <div class="footnote">
-<hr />
+<hr>
 <ol>
 <li id="fn:cr-dbs">
-<p>See <a href="http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm">examples of consumer databases</a> from Consumer Reports and how they're used.&#160;<a class="footnote-backref" href="#fnref:cr-dbs" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>See <a href="http://www.consumerreports.org/cro/money/consumer-protection/big-brother-is-watching/overview/index.htm">examples of consumer databases</a> from Consumer Reports and how they're used.&#160;<a class="footnote-backref" href="#fnref:cr-dbs" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:bea-pce">
-<p>The Bureau of Economic Analysis measures <a href="http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm">personal consumption expenditures</a> on a per-household basis.
-<!--## Predicting household income-->&#160;<a class="footnote-backref" href="#fnref:bea-pce" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>The Bureau of Economic Analysis measures <a href="http://www.bea.gov/newsreleases/regional/pce/pce_newsrelease.htm">personal consumption expenditures</a> on a per-household basis.&#160;<a class="footnote-backref" href="#fnref:bea-pce" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:pums">
-<p>See the ACS guidebook <a href="https://www.census.gov/library/publications/2009/acs/pums.html">"What Public Use Microdata Sample Users Need to Know" (2009)</a>.
-<!-- ## Helpful links -->&#160;<a class="footnote-backref" href="#fnref:pums" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p>See the ACS guidebook <a href="https://www.census.gov/library/publications/2009/acs/pums.html">"What Public Use Microdata Sample Users Need to Know" (2009)</a>.&#160;<a class="footnote-backref" href="#fnref:pums" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
 <!-- ## Overview -->
-
 <!-- ## Motivations -->
+<!--## Predicting household income-->
+<!-- ## Helpful links -->
             </div>
             <!-- /.entry-content -->
 <section class="well" id="related-posts">
     <h4>Related Posts:</h4>
     <ul>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1ae960></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1ae068></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1ae8f0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1aec70></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1ae068></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1ae8f0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1ae8f0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1ae068></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2d6538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27c880></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2cd7a0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27c9d0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2d6538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2d63e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27c880></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27a3e8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27c8b8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2cd730></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27c8b8></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2d6538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27c810></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2673b0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2cd7a0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f233b90></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2d6538></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2253b0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f1b82d0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f2cd7a0></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f233b90></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f22aa08></a></li>
-        <li><a href="https://stharrold.github.io/"><built-in method title of str object at 0x7fc19f27a3e8></a></li>
+        <li><a href="https://stharrold.github.io/20160110-etl-census-with-python.html">Extract, transform, and load census data with Python</a></li>
     </ul>
 </section>
     <hr/>
@@ -246,11 +237,11 @@ Data Science Demos            </a>
             /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
             var disqus_shortname = 'stharroldgithubio'; // required: replace example with your forum shortname
 
-                    var disqus_identifier = '20160221-predict-household-income-from-census';
-                var disqus_url = 'https://stharrold.github.io/drafts/20160221-predict-household-income-from-census.html';
-
             var disqus_config = function () {
                 this.language = "en";
+
+                        this.page.identifier = '2016-02-21-20160221-predict-household-income-from-census';
+                        this.page.url = 'https://stharrold.github.io/drafts/20160221-predict-household-income-from-census.html';
             };
 
             /* * * DON'T EDIT BELOW THIS LINE * * */
@@ -273,130 +264,99 @@ Data Science Demos            </a>
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>
-
+<!-- Sidebar -->
 <section class="well well-sm">
-    <ul class="list-group list-group-flush">
+  <ul class="list-group list-group-flush">
 
-            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
-                <ul class="list-group" id="recentposts">
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20160110-etl-census-with-python.html">
-                            Extract, transform, and load census data with Python
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">
-                            Running an IPython Notebook on Google Compute Engine from Chrome
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20151030-test.html">
-                            Test page and template
-                        </a>
-                    </li>
-                </ul>
-            </li>
+<!-- Sidebar/Recent Posts -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
+  <ul class="list-group" id="recentposts">
+    <li class="list-group-item"><a href="https://stharrold.github.io/20160110-etl-census-with-python.html">Extract, transform, and load census data with Python</a></li>
+    <li class="list-group-item"><a href="https://stharrold.github.io/20151208-ipynb-on-gce-from-chrome.html">Running an IPython Notebook on Google Compute Engine from Chrome</a></li>
+    <li class="list-group-item"><a href="https://stharrold.github.io/20151030-test.html">Test page and template</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Recent Posts -->
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                <ul class="list-group" id="categories">
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/devops.html">
-                            <i class="fa fa-folder-open fa-lg"></i> DevOps
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/etl.html">
-                            <i class="fa fa-folder-open fa-lg"></i> ETL
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/test.html">
-                            <i class="fa fa-folder-open fa-lg"></i> Test
-                        </a>
-                    </li>
-                </ul>
-            </li>
+<!-- Sidebar/Categories -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4>
+  <ul class="list-group" id="categories">
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/devops.html"><i class="fa fa-folder-open fa-lg"></i>DevOps</a>
+    </li>
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/etl.html"><i class="fa fa-folder-open fa-lg"></i>ETL</a>
+    </li>
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/test.html"><i class="fa fa-folder-open fa-lg"></i>Test</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Categories -->
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
-                <ul class="list-group list-inline tagcloud" id="tags">
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/census.html">
-                            census
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/chrome.html">
-                            chrome
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud-computing.html">
-                            cloud-computing
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud9.html">
-                            cloud9
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/devops.html">
-                            devops
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/etl.html">
-                            etl
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-1">
-                        <a href="https://stharrold.github.io/tag/how-to.html">
-                            how-to
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/pandas.html">
-                            pandas
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-2">
-                        <a href="https://stharrold.github.io/tag/python.html">
-                            python
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/ssh.html">
-                            ssh
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/template.html">
-                            template
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/test.html">
-                            test
-                        </a>
-                    </li>
-                </ul>
-            </li>
-    </ul>
+<!-- Sidebar/Tag Cloud -->
+<li class="list-group-item">
+  <a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+  <ul class="list-group list-inline tagcloud" id="tags">
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/census.html">census</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/chrome.html">chrome</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/cloud-computing.html">cloud-computing</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/cloud9.html">cloud9</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/devops.html">devops</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/etl.html">etl</a>
+    </li>
+    <li class="list-group-item tag-1">
+      <a href="https://stharrold.github.io/tag/how-to.html">how-to</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/pandas.html">pandas</a>
+    </li>
+    <li class="list-group-item tag-2">
+      <a href="https://stharrold.github.io/tag/python.html">python</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/ssh.html">ssh</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/template.html">template</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/test.html">test</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Tag Cloud -->
+  </ul>
 </section>
-            </aside>
+<!-- End Sidebar -->            </aside>
         </div>
     </div>
 </div>
+<!-- End Content Container -->
+
 <footer>
    <div class="container">
       <hr>
       <div class="row">
          <div class="col-xs-10">&copy; 2016 Samuel Harrold
-            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
     Content
-  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
 </small></p>
          </div>
          <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
@@ -410,6 +370,7 @@ Data Science Demos            </a>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="https://stharrold.github.io/theme/js/respond.min.js"></script>
+
 
     <!-- Disqus -->
     <script type="text/javascript">
@@ -426,23 +387,7 @@ Data Science Demos            </a>
         }());
     </script>
     <!-- End Disqus Code -->
-    <!-- Google Analytics -->
-    <script type="text/javascript">
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-43020842-2']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
-    <!-- End Google Analytics Code -->
 
 </body>
 </html>
