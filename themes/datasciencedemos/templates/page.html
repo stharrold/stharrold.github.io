@@ -24,3 +24,4 @@
     {% if page.comments == 'enabled' %}{% include 'includes/comments.html' %}{% endif %}
 </article>
 {% endblock %}
+{% block scripts %}{% if 'class="arithmatex"' in page.content %}{% include 'includes/math.html' %}{% endif %}{% endblock %}

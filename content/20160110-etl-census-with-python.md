@@ -31,11 +31,15 @@ The [Census Bureau](https://www.census.gov/about/what.html) collects data from p
     * Person/housing records and user verification CSVs: `pandas.read_csv` [^pd-csv] [^pd-py35]
 * Confirm the user verification estimates (see example <a href="#example">below</a>):[^pums-acc]
     * To calculate an estimate $X$ for a specific "characteristic" (e.g. "Age 25-34"), sum the column `'[P]WGTP'` of the filtered data (`'PWGTP'` for person records, `'WGTP'` for housing records).[^filter] `'[P]WGTP'` are the sample weights.
-    * To calculate the estimate's "direct standard error", use the ACS's modified [root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation):  
-    $$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$  
-    where each $X_r$ is the sum of the column `'[P]WGTPr'` of the filtered data. `'[P]WGTP[1-80]'` are the "replicate weights".
-    * To calculate the estimate's margin of error (defined by ACS at the [90%](http://www.wolframalpha.com/input/?i=90%25+confidence+level) [confidence level](https://en.wikipedia.org/wiki/Confidence_interval)):  
-    $$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$
+    * To calculate the estimate's "direct standard error", use the ACS's modified [root-mean-square deviation](https://en.wikipedia.org/wiki/Root-mean-square_deviation):
+
+        $$\mathrm{SE}(X) = \sqrt{\frac{4}{80}\sum_{r=1}^{80}(X_r-X)^2}$$
+
+        where each $X_r$ is the sum of the column `'[P]WGTPr'` of the filtered data. `'[P]WGTP[1-80]'` are the "replicate weights".
+
+    * To calculate the estimate's margin of error (defined by ACS at the [90%](http://www.wolframalpha.com/input/?i=90%25+confidence+level) [confidence level](https://en.wikipedia.org/wiki/Confidence_interval)):
+
+        $$\mathrm{MOE}(X) = 1.645\,\mathrm{SE}(X)$$
 
 <span id="source">**Source code:**</span>
 

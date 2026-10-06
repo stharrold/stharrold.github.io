@@ -36,3 +36,4 @@
     {% include 'includes/comments.html' %}
 </article>
 {% endblock %}
+{% block scripts %}{% if 'class="arithmatex"' in article.content %}{% include 'includes/math.html' %}{% endif %}{% endblock %}

@@ -27,6 +27,9 @@ MARKDOWN = {
         "markdown.extensions.codehilite": {"css_class": "highlight"},
         "markdown.extensions.extra": {},
         "markdown.extensions.toc": {"title": "Contents", "baselevel": 2},
+        # Math as $...$ and $$...$$, rendered by MathJax 4 (theme includes/math.html).
+        #     smart_dollar (default) ignores prices like "$20 per month".
+        "pymdownx.arithmatex": {"generic": True},
     },
     "output_format": "html5",
 }
@@ -59,7 +62,7 @@ DIRECT_TEMPLATES = ["index", "tags", "categories", "archives"]
 # TODO: Add embed_html as plugin
 #     https://github.com/stharrold/stharrold.github.io/issues/5
 PLUGIN_PATHS = ["plugins"]
-PLUGINS = ["related_posts", "tag_cloud", "render_math", "pelican_alias"]
+PLUGINS = ["related_posts", "tag_cloud", "pelican_alias"]
 # For 'related_posts':
 RELATED_POSTS_MAX = 5
 # For 'tag_cloud':
@@ -67,8 +70,6 @@ TAG_CLOUD_SORTING = "alphabetically"
 # Site search: search.html loads the Pagefind index, which is built from
 #     output/ after Pelican runs (`uv run python -m pagefind --site output`).
 DIRECT_TEMPLATES.append("search")
-# For 'render_math':
-MATH_JAX = {"align": "left"}
 
 
 # URL settings
