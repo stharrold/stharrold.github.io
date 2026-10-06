@@ -6,9 +6,11 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', {{ GOOGLE_ANALYTICS }});
+        gtag('config', {{ GOOGLE_ANALYTICS | tojson }});
     </script>
     <!-- End Google Analytics Code -->
+{% endif %}
+{% if GA_GTM_CONTAINER_ID %}
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

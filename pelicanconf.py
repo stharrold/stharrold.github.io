@@ -98,10 +98,9 @@ TRANSLATION_FEED_ATOM = None
 # Vendored from https://github.com/getpelican/pelican-themes (see themes/README.md)
 THEME = 'themes/pelican-bootstrap3'
 DISQUS_SITENAME = 'stharroldgithubio'
-GOOGLE_ANALYTICS = 'UA-43020842-2'
-# TODO: Explore Google Universal Analytics options.
-#GOOGLE_ANALYTICS_UNIVERSAL = ''
-#GOOGLE_ANALYTICS_UNIVERSAL_PROPERTY = ''
+# Google Analytics 4 is set only in publishconf.py so local builds are not tracked.
+#     The Universal Analytics property UA-43020842-2 stopped collecting on 2023-07-01.
+GOOGLE_ANALYTICS = None
 BOOTSTRAP_THEME = 'flatly'
 SHOW_ARTICLE_CATEGORY = True
 SHOW_DATE_MODIFIED = True
