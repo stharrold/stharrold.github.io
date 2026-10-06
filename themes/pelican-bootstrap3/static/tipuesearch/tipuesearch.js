@@ -57,7 +57,13 @@ http://www.tipue.com/search
                     }
                     return searchString || null;
                }
-               
+
+               // Local patch: escape the search query before inserting it as HTML (reflected XSS via ?q=).
+               function escapeHtml(s)
+               {
+                    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+               }
+
                if (getURLP('q'))
                {
                     $('#tipue_search_input').val(getURLP('q'));
@@ -340,7 +346,7 @@ http://www.tipue.com/search
                                                   var r_d = tipuesearch_related.Related[i].related;
                                              }                                             
                                              
-                                             out += '<a class="tipue_search_related_btn" id="' + r_d + '">' + tipuesearch_related.Related[i].related + '</a>';
+                                             out += '<a class="tipue_search_related_btn" id="' + escapeHtml(r_d) + '">' + tipuesearch_related.Related[i].related + '</a>';
                                              f++;         
                                         }
                                    }
@@ -352,7 +358,7 @@ http://www.tipue.com/search
 
                               if (show_replace)
                               {
-                                   out += '<div id="tipue_search_replace">' + tipuesearch_string_2 + ' ' + d + '. ' + tipuesearch_string_3 + ' <a id="tipue_search_replaced">' + d_r + '</a></div>';
+                                   out += '<div id="tipue_search_replace">' + tipuesearch_string_2 + ' ' + escapeHtml(d) + '. ' + tipuesearch_string_3 + ' <a id="tipue_search_replaced">' + escapeHtml(d_r) + '</a></div>';
                               }
                               
                               found.sort(function(a, b) { return b.score - a.score } );

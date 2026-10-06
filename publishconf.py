@@ -27,6 +27,11 @@ from pelicanconf import *
 SITEURL = 'https://stharrold.github.io'
 
 
+# Theme settings
+# Google Analytics 4 measurement ID (public; it appears in every page's HTML).
+GOOGLE_ANALYTICS = 'G-K4PX9089RZ'
+
+
 # Feed settings
 FEED_DOMAIN = SITEURL
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
