@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"
->
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
 <head>
     <title>pandas - Data Science Demos</title>
     <!-- Using the latest rendering mode for IE -->
@@ -22,6 +21,7 @@
         <meta property="og:description" content="Data Science Demos"/>
 
 
+
     <!-- Bootstrap -->
         <link rel="stylesheet" href="https://stharrold.github.io/theme/css/bootstrap.flatly.min.css" type="text/css"/>
     <link href="https://stharrold.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
@@ -32,14 +32,33 @@
 
         <link href="https://stharrold.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
               title="Data Science Demos ATOM Feed"/>
+
         <link href="https://stharrold.github.io/feeds/all.rss.xml" type="application/rss+xml" rel="alternate"
               title="Data Science Demos RSS Feed"/>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-43020842-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', UA-43020842-2);
+    </script>
+    <!-- End Google Analytics Code -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','');</script>
+    <!-- End Google Tag Manager -->
 
 </head>
 <body>
 
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -58,18 +77,20 @@ Data Science Demos            </a>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li><span>
-                <form class="navbar-search" action="/search">
+                <form class="navbar-search" action="/search.html">
                   <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
                 </form></span>
               </li>
-              <li><a href="https://stharrold.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
 </div> <!-- /.navbar -->
+
 <!-- Banner -->
 <!-- End Banner -->
+
+<!-- Content Container -->
 <div class="container">
     <div class="row">
         <div class="col-sm-9">
@@ -78,7 +99,6 @@ Data Science Demos            </a>
         <li><a href="https://stharrold.github.io/tags.html" title="Tags">Tags</a></li>
         <li class="active">pandas</li>
     </ol>
-
             <article>
                 <h2><a href="https://stharrold.github.io/20160110-etl-census-with-python.html">Extract, transform, and load census data with Python</a></h2>
                     <div class="well well-sm">
@@ -87,10 +107,12 @@ Data Science Demos            </a>
     <span class="published">
         <i class="fa fa-calendar"></i><time datetime="2016-01-10T12:00:00+00:00"> Sun 10 January 2016</time>
     </span>
-            <span class="label label-default">Modified</span>
+          <span class="label label-default">Modified</span>
             <span class="modified">
                 <i class="fa fa-calendar"></i><time datetime="2016-02-08T03:50:00+00:00"> Mon 08 February 2016</time>
             </span>
+
+
 
         <span class="label label-default">Category</span>
         <a href="https://stharrold.github.io/category/etl.html">ETL</a>
@@ -117,120 +139,97 @@ Data Science Demos            </a>
         </div>
         <div class="col-sm-3" id="sidebar">
             <aside>
-
+<!-- Sidebar -->
 <section class="well well-sm">
-    <ul class="list-group list-group-flush">
+  <ul class="list-group list-group-flush">
 
-            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
-                <ul class="list-group" id="recentposts">
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/20160110-etl-census-with-python.html">
-                            Extract, transform, and load census data with Python
-                        </a>
-                    </li>
-                </ul>
-            </li>
+<!-- Sidebar/Recent Posts -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
+  <ul class="list-group" id="recentposts">
+    <li class="list-group-item"><a href="https://stharrold.github.io/20160110-etl-census-with-python.html">Extract, transform, and load census data with Python</a></li>
+  </ul>
+</li>
+<!-- End Sidebar/Recent Posts -->
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/categories.html"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
-                <ul class="list-group" id="categories">
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/devops.html">
-                            <i class="fa fa-folder-open fa-lg"></i> DevOps
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/etl.html">
-                            <i class="fa fa-folder-open fa-lg"></i> ETL
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="https://stharrold.github.io/category/test.html">
-                            <i class="fa fa-folder-open fa-lg"></i> Test
-                        </a>
-                    </li>
-                </ul>
-            </li>
+<!-- Sidebar/Categories -->
+<li class="list-group-item">
+  <h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4>
+  <ul class="list-group" id="categories">
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/devops.html"><i class="fa fa-folder-open fa-lg"></i>DevOps</a>
+    </li>
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/etl.html"><i class="fa fa-folder-open fa-lg"></i>ETL</a>
+    </li>
+    <li class="list-group-item">
+      <a href="https://stharrold.github.io/category/test.html"><i class="fa fa-folder-open fa-lg"></i>Test</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Categories -->
 
-            <li class="list-group-item"><a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
-                <ul class="list-group list-inline tagcloud" id="tags">
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/census.html">
-                            census
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/chrome.html">
-                            chrome
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud-computing.html">
-                            cloud-computing
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/cloud9.html">
-                            cloud9
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/devops.html">
-                            devops
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/etl.html">
-                            etl
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-1">
-                        <a href="https://stharrold.github.io/tag/how-to.html">
-                            how-to
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/pandas.html">
-                            pandas
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-2">
-                        <a href="https://stharrold.github.io/tag/python.html">
-                            python
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/ssh.html">
-                            ssh
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/template.html">
-                            template
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="https://stharrold.github.io/tag/test.html">
-                            test
-                        </a>
-                    </li>
-                </ul>
-            </li>
-    </ul>
+<!-- Sidebar/Tag Cloud -->
+<li class="list-group-item">
+  <a href="https://stharrold.github.io/tags.html"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+  <ul class="list-group list-inline tagcloud" id="tags">
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/census.html">census</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/chrome.html">chrome</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/cloud-computing.html">cloud-computing</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/cloud9.html">cloud9</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/devops.html">devops</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/etl.html">etl</a>
+    </li>
+    <li class="list-group-item tag-1">
+      <a href="https://stharrold.github.io/tag/how-to.html">how-to</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/pandas.html">pandas</a>
+    </li>
+    <li class="list-group-item tag-2">
+      <a href="https://stharrold.github.io/tag/python.html">python</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/ssh.html">ssh</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/template.html">template</a>
+    </li>
+    <li class="list-group-item tag-4">
+      <a href="https://stharrold.github.io/tag/test.html">test</a>
+    </li>
+  </ul>
+</li>
+<!-- End Sidebar/Tag Cloud -->
+  </ul>
 </section>
-            </aside>
+<!-- End Sidebar -->            </aside>
         </div>
     </div>
 </div>
+<!-- End Content Container -->
+
 <footer>
    <div class="container">
       <hr>
       <div class="row">
          <div class="col-xs-10">&copy; 2016 Samuel Harrold
-            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            &middot; Powered by <a href="https://github.com/getpelican/pelican-themes/tree/master/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
             <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
-            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>              <p><small>  <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>                <p><small>  <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en"><img alt="Creative Commons License" style="border-width:0" src="//i.creativecommons.org/l/by/4.0/80x15.png" /></a>
     Content
-  licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
+  licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.en">Creative Commons Attribution 4.0 International License</a>, except where indicated otherwise.
 </small></p>
          </div>
          <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
@@ -244,6 +243,7 @@ Data Science Demos            </a>
 
 <!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
 <script src="https://stharrold.github.io/theme/js/respond.min.js"></script>
+
 
     <!-- Disqus -->
     <script type="text/javascript">
@@ -260,23 +260,7 @@ Data Science Demos            </a>
         }());
     </script>
     <!-- End Disqus Code -->
-    <!-- Google Analytics -->
-    <script type="text/javascript">
 
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-43020842-2']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
-    <!-- End Google Analytics Code -->
 
 </body>
 </html>
