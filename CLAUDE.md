@@ -16,6 +16,17 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - **Pin GitHub Actions to commit SHAs** with the version in a comment (`uses: owner/action@<sha>  # vX.Y.Z`).
   Dependabot updates them. Keep jobs that write (issues, pages) separate from jobs that run third-party code.
 - **Dependabot** version PRs target `src_develop`; security PRs target `src_master`, and merging one deploys.
+- **Published 2015-2016 posts are frozen.** Never edit their text or fix their dead links. If a theme or rendering
+  change needs a Markdown edit to an old post, ask first.
+- **Open work lives in GitHub milestones** (one per post, plus "Site maintenance"): `gh issue list --milestone "<name>"`.
+  The household-income demo plan is #68.
+
+## Useful commands
+
+- `gh api repos/<owner>/<repo>/commits/<tag> --jq .sha` - resolve an action tag to a SHA for pinning (setup-uv has no major tags).
+- `gh run list --workflow pages.yml --json databaseId,headSha` then `gh run watch <id>` - match runs by commit; the list lags a few seconds after a push.
+- `curl -s "https://stharrold.github.io/<path>?v=$(date +%s)"` - cache-busted live check after a deploy.
+- `uv run pelican -s pelicanconf.py -o <dir>` then `python3 -m http.server` in `<dir>` - stable preview for Playwright screenshots (not `--autoreload`).
 
 ## Gotchas learned the hard way
 
@@ -39,8 +50,17 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   page views on the live site; verify against a local dev build instead.
 - **Privacy page:** when adding any third-party script or request, update `content/pages/privacy.md`.
 - **Scheduled workflows stop after 60 quiet days** (GitHub disables them in public repos without activity). If the
-  weekly link log has gone stale, run `gh workflow enable links.yml`. Published 2015-2016 posts are frozen: never
-  edit their text or fix their dead links.
+  weekly link log has gone stale, run `gh workflow enable links.yml`.
+- **Shell is zsh:** quote URLs containing `?` and globs like `--include='*.html'`; don't store a command in a variable
+  (`$CMD args` doesn't word-split), use a function.
+- **`articles` is narrowed on tag and category pages,** so site-wide template values (e.g. the copyright year) must
+  come from settings, not from `articles`.
+- **Live-site checks with Playwright:** block `googletagmanager.com|google-analytics.com` with `page.route` so
+  verification adds no GA page views.
+- **Pygments is capped `<2.20` by Pelican 4.12.** Dependabot can't fix capped transitive deps; alert #6 was dismissed
+  as tolerable risk (see #64). Recheck when Pelican releases.
+- **An interrupted tool call may already have run** (e.g. `gh workflow run`); check `gh run list` or the issue list
+  before saying nothing happened.
 
 ## Layout
 
