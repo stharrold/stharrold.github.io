@@ -32,11 +32,17 @@ PATH = 'content'
 SITENAME = 'Data Science Demos'
 # Define SITEURL only when publishing to test relative links.
 SITEURL = ''
-STATIC_PATHS = ['static', 'extra/robots.txt']
+STATIC_PATHS = [
+    'static', 'extra/robots.txt',
+    'extra/favicon.ico', 'extra/favicon.png', 'extra/apple-touch-icon.png']
 # For search engines using `robots.txt`:
 # https://github.com/getpelican/pelican/wiki/Tips-n-Tricks
+# Favicons go at the site root because browsers request `/favicon.ico` directly.
 EXTRA_PATH_METADATA = {
-    'extra/robots.txt': {'path': 'robots.txt'}}
+    'extra/robots.txt': {'path': 'robots.txt'},
+    'extra/favicon.ico': {'path': 'favicon.ico'},
+    'extra/favicon.png': {'path': 'favicon.png'},
+    'extra/apple-touch-icon.png': {'path': 'apple-touch-icon.png'}}
 ARTICLE_EXCLUDES = STATIC_PATHS
 TIMEZONE = 'Etc/UTC'
 DIRECT_TEMPLATES = ['index', 'tags', 'categories', 'archives']
@@ -106,7 +112,10 @@ SHOW_ARTICLE_CATEGORY = True
 SHOW_DATE_MODIFIED = True
 PYGMENTS_STYLE = 'default'
 DISPLAY_BREADCRUMBS = True
-# TODO: Make a FAVICON
+# "DS" monogram in the flatly navbar color (#2C3E50); files are in content/extra/.
+FAVICON = 'favicon.png'
+FAVICON_IE = 'favicon.ico'
+TOUCHICON = 'apple-touch-icon.png'
 DISPLAY_ARTICLE_INFO_ON_INDEX = True
 DISPLAY_TAGS_ON_SIDEBAR = True
 DISPLAY_TAGS_INLINE = True
