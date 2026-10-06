@@ -16,5 +16,29 @@ dependencies = [
     "ghp-import>=2.1",
 ]
 
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6",
+    "pytest>=9.1",
+    "ruff>=0.16",
+]
+
 [tool.uv]
 package = false
+
+[tool.ruff]
+line-length = 170
+target-version = "py312"
+# Published notebooks are historical content; output/ is generated; themes/ is vendored.
+extend-exclude = ["content", "output", "themes"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# Pelican's documented pattern: publishconf.py extends pelicanconf.py with a star import.
+"publishconf.py" = ["F403", "F405"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -119,3 +119,6 @@ target/
 
 # Playwright MCP browser snapshots and logs
 .playwright-mcp/
+
+# Generated site; built and deployed by GitHub Actions (.github/workflows/pages.yml)
+output/
