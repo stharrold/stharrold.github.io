@@ -35,6 +35,16 @@ GOOGLE_ANALYTICS = 'G-K4PX9089RZ'
 GOOGLE_ANALYTICS_CONFIG = {'allow_google_signals': False, 'allow_ad_personalization_signals': False}
 
 
+# URL settings
+# Do not publish drafts (`Status: draft`); pelicanconf.py still renders them
+#     to output/drafts/ for local preview.
+DRAFT_SAVE_AS = ''
+DRAFT_PAGE_SAVE_AS = ''
+# Static files of draft posts are still copied, so exclude them explicitly.
+#     Remove an entry when its post's Status changes to published.
+STATIC_EXCLUDES = ['static/20160221-predict-household-income-from-census']
+
+
 # Feed settings
 FEED_DOMAIN = SITEURL
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
