@@ -6,7 +6,7 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', {{ GOOGLE_ANALYTICS | tojson }});
+        gtag('config', {{ GOOGLE_ANALYTICS | tojson }}{% if GOOGLE_ANALYTICS_CONFIG %}, {{ GOOGLE_ANALYTICS_CONFIG | tojson }}{% endif %});
     </script>
     <!-- End Google Analytics Code -->
 {% endif %}
