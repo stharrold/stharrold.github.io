@@ -1,0 +1,53 @@
+# Lint, test, and build the site on every push and pull request.
+# Deploy to GitHub Pages only from src_master (Settings > Pages > Source: GitHub Actions).
+name: Build and deploy site
+
+on:
+  push:
+    branches: [src_master, src_develop, "src_feature_**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10
+      - name: Install dependencies
+        run: uv sync --locked
+      - name: Lint
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+      - name: Test
+        run: uv run pytest -v
+      - name: Build site
+        run: uv run pelican --settings publishconf.py --fatal warnings
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: output
+
+  deploy:
+    if: github.ref == 'refs/heads/src_master' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
