@@ -188,12 +188,12 @@ actual across these ACOs, after calibration if calibration is applied.
 
 ## 5. Analysis plan
 
-**Approach:** every estimate is Bayesian; significance is measured by resampling. Each confirmatory quantity is
+**Approach:** every confirmatory estimate is Bayesian; significance is measured by resampling. Each confirmatory quantity is
 summarized by its posterior mean, 95% equal-tailed credible interval, and posterior probability of a positive value.
-Its **significance** is a stratified permutation test of the posterior mean: early-renewer labels are shuffled within
+For the group comparisons (H1, H2a, H2b) its **significance** is a stratified permutation test of the posterior mean: early-renewer labels are shuffled within
 cohort (predictors fixed), the same estimation procedure is rerun on each shuffled dataset, and the two-sided p-value is
 (1 + number of shuffles with |posterior mean| >= |observed|) / (1 + number of shuffles), with 10,000 shuffles for every
-test. **The permutation p-value decides** (section 7); when it and the credible interval disagree, both are reported
+test; the core predictors of H3 use direct simulation instead (5.4). **The resampling p-value decides** (section 7); when it and the credible interval disagree, both are reported
 and the disagreement is noted. Seeds are fixed in code and recorded in the output.
 
 ### 5.1 H1: savings rate (descriptive)
@@ -245,16 +245,27 @@ part of own-spending error. If the validation fails, the own-spending predictor 
 target acceptance 0.95, seed fixed in code and recorded. **Convergence:** R-hat <= 1.01 and bulk and tail effective
 sample size >= 400 for every coefficient, and no divergent transitions. If not met, the model is rerun once with 4,000
 retained draws and target acceptance 0.99; if still not met, the Bayesian results are reported as not converged and the
-Firth model (5.5, item 5), with a permutation test of its core coefficients (10,000 shuffles), decides H3 as a
-fallback; that model drops the adjustment factors and the measurement-error
+Firth model (5.5, item 5), with the same direct-simulation test of its core coefficients (10,000 simulations),
+decides H3 as a fallback; that model drops the adjustment factors and the measurement-error
 layer, so it tests the core predictions in a different model, and the write-up says so.
 
-**Significance (core predictors only):** stratified permutation test of each core coefficient's posterior mean, as in
-section 5, 10,000 shuffles. Each shuffled dataset is refit with 2 chains of 1,000 tuning and 1,000 retained draws; the
-observed statistic for the test is computed with the same reduced settings, and the full-settings fit above is the
-reported estimate. The share of shuffled refits failing the convergence checks is reported. A core prediction is
-supported if p < 0.05 with the posterior mean in the predicted direction, contradicted if p < 0.05 in the opposite
-direction, and undetermined otherwise. Adjustment factors are reported as posterior mean, 95% interval and
+**Significance (core predictors only): direct simulation under the reduced model.** Shuffling the labels would test
+the joint null that no predictor matters, not that one predictor does not matter given the others, so each core
+predictor k is tested separately (a parametric bootstrap):
+1. Fit the model without predictor k (same priors and settings; the measurement-error layer is kept unless k is the
+   own-spending component).
+2. 10,000 times: pick a posterior draw of that reduced model at random (with replacement), simulate an early-renewal
+   outcome for every ACO from it, refit the full model to the simulated outcomes, and record the posterior mean of
+   coefficient k.
+3. Two-sided p = (1 + number of simulations with |posterior mean| >= |observed|) / (1 + 10,000).
+
+Refits in step 2 use 2 chains of 1,000 tuning and 1,000 retained draws, and the observed posterior mean in step 3 is
+computed with the same reduced settings on the real data; the full-settings fit above is the reported estimate. Every
+refit's statistic is included whether or not it passes the convergence checks, and the share failing them is
+reported. A core prediction is supported if p < 0.05 with the posterior mean in the predicted direction, contradicted
+if p < 0.05 in the opposite direction, and undetermined otherwise. **Overall test (reported, not used for decisions):**
+early-renewer labels shuffled within cohort, 10,000 refits, statistic = the largest absolute posterior mean among the
+three core coefficients. Adjustment factors are reported as posterior mean, 95% interval and
 P(coefficient > 0), with no test and no claim made.
 
 **Also reported:** prior predictive distribution of the early-renewal share; posterior predictive check (observed
@@ -295,8 +306,8 @@ For H2a and H2b the SD is not available before the variables are built; their MD
 after validation, in percentage points. For H3, with the actual predictor values, outcomes are simulated
 with one core coefficient set to 0.5 (log-odds per 2 SD or per category) and all others 0, the intercept set to match
 the observed early-renewal share, 500 datasets per core predictor; reported: the share of datasets in which the 95%
-credible interval excludes zero in the predicted direction, as an approximation of the permutation test's power
-(running 10,000 MCMC refits per simulated dataset is not feasible), and the median interval width. Results are committed before any confirmatory estimate is computed.
+credible interval excludes zero in the predicted direction, as an approximation of the direct-simulation test's
+power (running 10,000 MCMC refits per simulated dataset is not feasible), and the median interval width. Results are committed before any confirmatory estimate is computed.
 
 ## 7. Decision rules (fixed before seeing results)
 1. **H2b (primary):** p < 0.05 and positive: "early renewers' regions spent more relative to their current
@@ -306,9 +317,10 @@ credible interval excludes zero in the predicted direction, as an approximation 
    counted as separate evidence for the reset motive.
 3. **H1 (descriptive):** the sign and size of the savings-rate difference are reported as context; no motive is
    attributed to the sign.
-4. **H3:** each core predictor's direction is supported, contradicted, or undetermined by its permutation p-value
-   (5.4); adjustment factors are estimates only.
-5. **p-values** in rules 1-4 are the stratified permutation p-values of section 5, two-sided, 10,000 shuffles.
+4. **H3:** each core predictor's direction is supported, contradicted, or undetermined by its direct-simulation
+   p-value (5.4); adjustment factors are estimates only.
+5. **p-values** in rules 1-4 are two-sided resampling p-values with 10,000 resamples: stratified permutation for H1,
+   H2a and H2b (section 5), direct simulation under the reduced model for H3 (5.4).
 6. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b stands,
    and H3 is refit without the own-spending predictor, with its other rules unchanged.
 7. Every result describes who chose to reset and why, not the effect of resetting. No test here can rule the

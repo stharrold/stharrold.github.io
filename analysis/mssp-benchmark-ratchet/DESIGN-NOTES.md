@@ -139,3 +139,20 @@ out, 0 off, 143 in; 2021->2022 = 277 on, 29 out (all early renewers), 111 off, 0
 Open rule for the plan: benchmark-year status should follow the schedule **as known at the start of year t**. The
 2018-start extension was only offered in late 2020, so it cannot have changed incentives in 2018-2019; the current
 code applies it ex post, which creates spurious 2018->2019 "switch-ons". This affects only pre-2021 transitions.
+
+## 5. Methods: Bayesian estimates, resampling significance (2026-10-22)
+
+The author chose Bayesian estimation throughout, with significance measured by resampling, following the approach of
+VanderPlas, "Statistics for Hackers" (PyCon 2016; direct simulation, shuffling, bootstrapping) and the author's own
+2015 work (`stharrold/ARCHIVED_2015_Harrold_SDSSJ1600`: shuffled time series for significance levels in
+`code/utils.py` `calc_sig_levels`, emcee MCMC posteriors for parameters).
+
+- **Group comparisons (H1, H2a, H2b):** Bayesian bootstrap posterior, stratified label shuffle for significance. With
+  one comparison, shuffling labels is exactly the null of interest.
+- **Decision model (H3):** shuffling labels in a multi-predictor model tests the joint null that no predictor matters
+  (Anderson and Legendre 1999), the analogue of the 2015 "any signal vs noise" question. A single predictor's
+  significance therefore uses direct simulation from the model without that predictor (a parametric bootstrap); the
+  label shuffle is kept as an overall test.
+- **Cost:** one reduced-settings fit of the H3 model (n = 263, 9 coefficients, latent own-spending layer; PyMC NUTS,
+  2 chains x 1,000/1,000) took about 3.6 s on simulated data on a 10-core laptop, so 3 x 10,000 refits is about 6 hours
+  at 5 fits in parallel. Measured on simulated data only; no study data were used.
