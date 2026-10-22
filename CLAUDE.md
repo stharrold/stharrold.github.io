@@ -19,7 +19,7 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - **Published 2015-2016 posts are frozen.** Never edit their text or fix their dead links. If a theme or rendering
   change needs a Markdown edit to an old post, ask first.
 - **Open work lives in GitHub milestones** (one per post, plus "Site maintenance"): `gh issue list --milestone "<name>"`.
-  The household-income demo plan is #68.
+  Planned posts, in order: #73 (pre-registered causal study, pinned), #74 (RAG evaluation harness), #68 (income demo).
 
 ## Useful commands
 
