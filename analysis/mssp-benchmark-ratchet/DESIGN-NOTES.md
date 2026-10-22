@@ -1,6 +1,6 @@
 # Design notes (pre-registration stage)
 
-Working notes from the design stage of #73, kept for the record. They use **enrollment data only** (the ACOs files:
+Working notes from the design stage of #73, kept for the record (directory renamed from `analysis/mssp-downside-risk` when the question changed). They use **enrollment data only** (the ACOs files:
 agreement start dates, tracks, BASIC levels, low-revenue flags), never the outcome files. Computed 2026-10-22.
 
 ## 1. The glide path was a default, not a mandate
