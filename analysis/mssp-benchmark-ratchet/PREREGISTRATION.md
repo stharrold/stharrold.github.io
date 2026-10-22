@@ -223,14 +223,18 @@ the priors, not the data alone, keep the estimates stable, so prior sensitivity 
 **Measurement error in the own-spending component:** if the validation (4.4) passes, the own-spending component enters
 as a latent true value: observed = true + error, error ~ Normal(0, sigma_v), with sigma_v fixed at the validation error
 SD (4.4); true values ~ Normal(mu, tau), mu ~ Normal(0, 10), tau ~ HalfNormal(10) (percentage points). The latent value
-is scaled with the observed variable's mean and 2 SD. If the validation fails, the own-spending predictor is dropped
+is scaled with the observed variable's mean and 2 SD, and the latent values use a non-centered parameterization.
+sigma_v measures the error of the whole approximate benchmark (rebased plus regional adjustment), because the rebased
+part alone has no published counterpart; using it for the own-spending component treats regional-adjustment error as
+part of own-spending error. If the validation fails, the own-spending predictor is dropped
 (section 7, rule 5).
 
 **Fitting:** PyMC (version pinned in `uv.lock`), NUTS, 4 chains of 2,000 tuning and 2,000 retained draws,
 target acceptance 0.95, seed fixed in code and recorded. **Convergence:** R-hat <= 1.01 and bulk and tail effective
 sample size >= 400 for every coefficient, and no divergent transitions. If not met, the model is rerun once with 4,000
 retained draws and target acceptance 0.99; if still not met, the Bayesian results are reported as not converged and the
-Firth model (5.5, item 5) decides H3.
+Firth model (5.5, item 5) decides H3 as a fallback; that model drops the adjustment factors and the measurement-error
+layer, so it tests the core predictions in a different model, and the write-up says so.
 
 **Support (core predictors only):** a core prediction is supported if the 95% equal-tailed credible interval of its
 coefficient excludes zero in the predicted direction, contradicted if it excludes zero in the opposite direction, and
@@ -271,9 +275,10 @@ Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 27
 sqrt(1/29 + 1/277), about 0.55 SD of the variable, confirmed by simulating the stratified permutation test. For H1 the
 SD comes from the cross-ACO standard deviation of `Sav_rate` in PY2016-PY2018 (years that play no part in the tests).
 For H2a and H2b the SD is not available before the variables are built; their MDEs are reported in SD units and,
-after validation, in percentage points. For H3 no power figure is computed; the expected width of the core
-coefficients' 95% credible intervals is estimated by simulating data from the prior predictive distribution with the
-actual predictor values, and reported. Results are committed before any confirmatory estimate is computed.
+after validation, in percentage points. For H3, with the actual predictor values, outcomes are simulated
+with one core coefficient set to 0.5 (log-odds per 2 SD or per category) and all others 0, the intercept set to match
+the observed early-renewal share, 500 datasets per core predictor; reported: the share of datasets in which the 95%
+credible interval excludes zero in the predicted direction, and the median interval width. Results are committed before any confirmatory estimate is computed.
 
 ## 7. Decision rules (fixed before seeing results)
 1. **H2b (primary):** p < 0.05 and positive: "early renewers' regions spent more relative to their current
