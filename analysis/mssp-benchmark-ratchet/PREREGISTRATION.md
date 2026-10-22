@@ -3,7 +3,7 @@
 **Status:** DRAFT v0.4 (author decisions of 2026-10-22 applied). Not yet registered. Once registered on OSF Registries, this file is frozen:
 the registration link, OSF timestamp, and this file's sha256 go in `REGISTRATION.md`, and any later change goes in
 `DEVIATIONS.md`. Issue #73. Supersedes drafts v0.1 (a downside-risk question dropped at the design stage), v0.2
-(a single-test version of this plan) and v0.3 (a frequentist decision model); see `DESIGN-NOTES.md`.
+(a single-test version of this plan) and v0.3 (frequentist tests); see `DESIGN-NOTES.md`.
 
 **Author:** Samuel Harrold. **Drafted:** 2026-10-22.
 
@@ -188,20 +188,32 @@ actual across these ACOs, after calibration if calibration is applied.
 
 ## 5. Analysis plan
 
+**Approach:** every estimate is Bayesian; significance is measured by resampling. Each confirmatory quantity is
+summarized by its posterior mean, 95% equal-tailed credible interval, and posterior probability of a positive value.
+Its **significance** is a stratified permutation test of the posterior mean: early-renewer labels are shuffled within
+cohort (predictors fixed), the same estimation procedure is rerun on each shuffled dataset, and the two-sided p-value is
+(1 + number of shuffles with |posterior mean| >= |observed|) / (1 + number of shuffles), with 10,000 shuffles for every
+test. **The permutation p-value decides** (section 7); when it and the credible interval disagree, both are reported
+and the disagreement is noted. Seeds are fixed in code and recorded in the output.
+
 ### 5.1 H1: savings rate (descriptive)
 Difference in mean PY2020 savings rate, early renewers minus stayers, computed within each cohort and averaged with
-weights proportional to the number of early renewers in each cohort. **Test:** stratified permutation test
-(early-renewer labels shuffled within cohort), 100,000 permutations, two-sided p. **Interval:** 95% interval by
-inverting the permutation test over a grid of location shifts in steps of 0.01 percentage points. Seed fixed in code
-and recorded in the output.
+weights proportional to the number of early renewers in each cohort. **Estimate:** Bayesian bootstrap (Rubin 1981):
+in each of 10,000 draws, Dirichlet(1, ..., 1) weights are drawn over the ACOs in each cohort-by-group cell, giving
+weighted cell means and the weighted difference above; the draws form the posterior. Under the Bayesian bootstrap the
+posterior mean of this difference equals the observed difference in means, so each shuffle in the permutation test
+recomputes that difference directly. **Significance:** as above.
 
 ### 5.2 H2b and H2a: regional pull and own-spending component
-Same estimator, test and interval as 5.1, applied separately to the regional pull (H2b, primary) and the
-own-spending component (H2a, secondary). The total expected gain and the regional component (4.3 step 5) are
-reported alongside, descriptively.
+Same estimate and significance as 5.1, applied separately to the regional pull (H2b, primary) and the own-spending
+component (H2a, secondary). Error in the approximation adds noise to the own-spending component as an outcome here but
+does not bias a difference in means, so no measurement-error model is used in H2a. The total expected gain and the
+regional component (4.3 step 5) are reported alongside, descriptively.
 
-### 5.3 Comparison estimates (reported, not used for decisions)
-OLS of each H1, H2a and H2b variable on an early-renewer indicator and a cohort indicator, HC2 robust standard errors.
+### 5.3 Covariate-adjusted estimates (reported, not used for decisions)
+Bayesian linear regression (PyMC, MCMC) of each H1, H2a and H2b variable, standardized, on an early-renewer indicator
+and a cohort indicator: Student-t errors, Normal(0, 1) on the coefficients, Exponential(1) on the scale, Gamma(2, 0.1)
+on the degrees of freedom; same sampler settings and convergence checks as 5.4.
 
 ### 5.4 H3: Bayesian decision model (BASIC-track ACOs)
 **Sample:** ACOs in the BASIC track in PY2021 (27 early renewers; the 2 early renewers already in ENHANCED in PY2021,
@@ -227,19 +239,23 @@ is scaled with the observed variable's mean and 2 SD, and the latent values use 
 sigma_v measures the error of the whole approximate benchmark (rebased plus regional adjustment), because the rebased
 part alone has no published counterpart; using it for the own-spending component treats regional-adjustment error as
 part of own-spending error. If the validation fails, the own-spending predictor is dropped
-(section 7, rule 5).
+(section 7, rule 6).
 
 **Fitting:** PyMC (version pinned in `uv.lock`), NUTS, 4 chains of 2,000 tuning and 2,000 retained draws,
 target acceptance 0.95, seed fixed in code and recorded. **Convergence:** R-hat <= 1.01 and bulk and tail effective
 sample size >= 400 for every coefficient, and no divergent transitions. If not met, the model is rerun once with 4,000
 retained draws and target acceptance 0.99; if still not met, the Bayesian results are reported as not converged and the
-Firth model (5.5, item 5) decides H3 as a fallback; that model drops the adjustment factors and the measurement-error
+Firth model (5.5, item 5), with a permutation test of its core coefficients (10,000 shuffles), decides H3 as a
+fallback; that model drops the adjustment factors and the measurement-error
 layer, so it tests the core predictions in a different model, and the write-up says so.
 
-**Support (core predictors only):** a core prediction is supported if the 95% equal-tailed credible interval of its
-coefficient excludes zero in the predicted direction, contradicted if it excludes zero in the opposite direction, and
-undetermined otherwise. Adjustment factors are reported as posterior mean, 95% interval and P(coefficient > 0), with no
-claim made.
+**Significance (core predictors only):** stratified permutation test of each core coefficient's posterior mean, as in
+section 5, 10,000 shuffles. Each shuffled dataset is refit with 2 chains of 1,000 tuning and 1,000 retained draws; the
+observed statistic for the test is computed with the same reduced settings, and the full-settings fit above is the
+reported estimate. The share of shuffled refits failing the convergence checks is reported. A core prediction is
+supported if p < 0.05 with the posterior mean in the predicted direction, contradicted if p < 0.05 in the opposite
+direction, and undetermined otherwise. Adjustment factors are reported as posterior mean, 95% interval and
+P(coefficient > 0), with no test and no claim made.
 
 **Also reported:** prior predictive distribution of the early-renewal share; posterior predictive check (observed
 number of early renewers against the 95% interval of replicated counts, and observed vs predicted rates by decile of
@@ -249,7 +265,7 @@ that differs between the two priors flagged in the write-up.
 ### 5.5 Robustness (all reported)
 1. H1, H2a and H2b with PY2021 track/level and log assigned beneficiaries (`N_AB`, PY2020) added to the 5.3
    regressions.
-2. Stratified rank test (van Elteren) for H1, H2a and H2b.
+2. H1, H2a and H2b as differences in medians (Bayesian bootstrap and permutation test, as in 5.1).
 3. 2020-01-01 cohort only.
 4. H1 for the PY2021 savings rate.
 5. H3 as a Firth-penalized logistic regression (`firthmodels`, version pinned in `uv.lock`) with the three core
@@ -272,27 +288,30 @@ that differs between the two priors flagged in the write-up.
 
 ## 6. Power analysis (run after registration, before any confirmatory estimate)
 Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 277 ACOs: MDE = 2.80 x SD x
-sqrt(1/29 + 1/277), about 0.55 SD of the variable, confirmed by simulating the stratified permutation test. For H1 the
+sqrt(1/29 + 1/277), about 0.55 SD of the variable, confirmed by simulating the stratified permutation test of 5.1
+(which, for the Bayesian bootstrap, is a permutation test of the difference in means). For H1 the
 SD comes from the cross-ACO standard deviation of `Sav_rate` in PY2016-PY2018 (years that play no part in the tests).
 For H2a and H2b the SD is not available before the variables are built; their MDEs are reported in SD units and,
 after validation, in percentage points. For H3, with the actual predictor values, outcomes are simulated
 with one core coefficient set to 0.5 (log-odds per 2 SD or per category) and all others 0, the intercept set to match
 the observed early-renewal share, 500 datasets per core predictor; reported: the share of datasets in which the 95%
-credible interval excludes zero in the predicted direction, and the median interval width. Results are committed before any confirmatory estimate is computed.
+credible interval excludes zero in the predicted direction, as an approximation of the permutation test's power
+(running 10,000 MCMC refits per simulated dataset is not feasible), and the median interval width. Results are committed before any confirmatory estimate is computed.
 
 ## 7. Decision rules (fixed before seeing results)
 1. **H2b (primary):** p < 0.05 and positive: "early renewers' regions spent more relative to their current
    benchmarks, evidence for the reset motive beyond past savings". p < 0.05 and negative: "their regions spent less
-   relative to their benchmarks, contrary to the reset motive". Otherwise: "no detectable difference; differences larger than the MDE are ruled out".
+   relative to their benchmarks, contrary to the reset motive". Otherwise: "no detectable difference", with the 95% credible interval and the MDE reported.
 2. **H2a (secondary):** same wording for the own-spending component. Because H2a is close to H1 restated, it is not
    counted as separate evidence for the reset motive.
 3. **H1 (descriptive):** the sign and size of the savings-rate difference are reported as context; no motive is
    attributed to the sign.
-4. **H3:** each core predictor's direction is supported, contradicted, or undetermined by its 95% credible interval
+4. **H3:** each core predictor's direction is supported, contradicted, or undetermined by its permutation p-value
    (5.4); adjustment factors are estimates only.
-5. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b stands,
+5. **p-values** in rules 1-4 are the stratified permutation p-values of section 5, two-sided, 10,000 shuffles.
+6. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b stands,
    and H3 is refit without the own-spending predictor, with its other rules unchanged.
-6. Every result describes who chose to reset and why, not the effect of resetting. No test here can rule the
+7. Every result describes who chose to reset and why, not the effect of resetting. No test here can rule the
    sharing-rate motive in or out. Results are reported whatever they show.
 
 ## 8. Deviations
