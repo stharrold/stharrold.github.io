@@ -87,9 +87,10 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
 ## Work tracking
 
 Open work is tracked as GitHub issues grouped in milestones: one per post ("post about predicting income",
-"post about agentic development", ...) plus **Site maintenance** for build, theme, and tooling upkeep. The next
-planned post, an interactive household-income demo built from ACS PUMS data, is specified in #68. Published
-2015-2016 posts are frozen as written.
+"post about agentic development", ...) plus **Site maintenance** for build, theme, and tooling upkeep. Planned
+posts, in order: a pre-registered causal study on CMS Medicare Shared Savings Program data (#73, pinned), an
+evaluation harness for a retrieval-augmented QA agent (#74), and an interactive household-income demo built from ACS
+PUMS data (#68). Published 2015-2016 posts are frozen as written.
 
 ## License
 
