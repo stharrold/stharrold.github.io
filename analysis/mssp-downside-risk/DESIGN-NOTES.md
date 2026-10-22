@@ -29,23 +29,34 @@ BASIC entrants by agreement start and entry level (first performance year of the
 
 No agreement periods started in 2021. Default first two-sided year G: entry A reaches Level C two levels later, entry
 B one level later, with the PY2020 repeat for July 2019 starters. Excluding 55 new low-revenue legal entities, the
-entry-A/B sample is 250 ACOs. Status in the scheduled year and after (enrollment files PY2019-PY2026):
+entry-A/B sample is 250 ACOs. Status in the scheduled year G and after, tracked by `aco_id` across all
+enrollment files PY2019-PY2026. "New agreement" means the ACO re-entered or renewed early under a different agreement
+start date; "left" means it appears in no later file.
 
-| G | ACOs | two-sided at G | at G+1 | at G+2 | exited by G+2 |
-|---|---|---|---|---|---|
-| 2021 | 138 | 19 (14%) | 37 (27%) | 38 (28%) | 47 (34%) |
-| 2022 | 22 | 3 (14%) | 5 (23%) | 2 (9%) | 14 (64%) |
-| 2023 | 76 | 9 (12%) | 5 (7%) | 4 (5%)* | 29 (38%)* |
-| 2024 | 10 | 1 (10%) | 1 (10%)* | 2 (20%)* | 6 (60%)* |
-| 2025 | 4 | 1 (25%)* | 1 (25%)* | - | - |
+| G | ACOs | k | two-sided, same agreement | one-sided, same agreement | new agreement (two-sided / one-sided) | left program |
+|---|---|---|---|---|---|---|
+| 2021 | 138 | 0 | 19 (14%) | 110 (80%) | 0 / 0 | 9 (7%) |
+| | | 1 | 37 (27%) | 76 (55%) | 2 / 0 | 23 (17%) |
+| | | 2 | 38 (28%) | 53 (38%) | 4 / 0 | 43 (31%) |
+| 2022 | 22 | 0 | 3 (14%) | 13 (59%) | 2 / 0 | 4 (18%) |
+| | | 1 | 5 (23%) | 6 (27%) | 3 / 0 | 8 (36%) |
+| | | 2 | 2 (9%) | 6 (27%) | 6 / 0 | 8 (36%) |
+| 2023 | 76 | 0 | 9 (12%) | 56 (74%) | 1 / 0 | 10 (13%) |
+| | | 1 | 5 (7%) | 51 (67%) | 5 / 1 | 14 (18%) |
+| | | 2* | 4 (5%) | 43 (57%) | 6 / 3 | 20 (26%) |
+| 2024 | 10 | 0 | 1 (10%) | 3 (30%) | 4 / 0 | 2 (20%) |
+| 2025* | 4 | 0 | 1 (25%) | 2 (50%) | 0 / 0 | 1 (25%) |
 
-\* After PY2024: no outcome data exist for these years.
+\* After PY2024: no outcome data exist for these years. An earlier version of this table keyed status by
+(ACO, agreement start date) and so counted early renewals as exits; corrected here.
 
 ## 3. Implications
 
 - Take-up of the default was low (about 10-28% two-sided in the scheduled years), so an intent-to-treat estimate of
   the default on spending is diluted by roughly 4-7x, and an instrumental-variables estimate has a weak first stage.
 - ACOs that did take on two-sided risk chose to, so as-treated comparisons are confounded by self-selection.
-- Exits were common (a third or more by G+2). Because exit counts were computed here, **program exit can no longer be
-  a blind pre-registered outcome**; any registered plan must disclose this table and treat exit as descriptive.
+- Leaving the program was common in the largest cohort (31% by G+2 for G = 2021); early renewal into a new agreement
+  was rare there but common in the small 2022 cohort. Because these counts were computed here, **program exit and
+  early renewal can no longer be blind pre-registered outcomes**; any registered plan must disclose this table and
+  treat them as descriptive.
 - Outcome files (Performance Year Financial and Quality Results) have still not been opened.
