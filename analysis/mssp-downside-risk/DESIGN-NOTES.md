@@ -113,3 +113,18 @@ Switchers and stay-out controls by agreement start:
   early-renewal wave (about 140 ACOs) is itself consistent with ratchet behavior and is a descriptive finding.
 - Clean contrasts in published data: 2023->2024 (137 vs 40). Prospective: 2024->2025 (28 vs 108) and 2025->2026.
 - Outcome files have still not been opened.
+
+### 4.4 Collinearity of benchmark-year status and tenure (found 2026-10-22)
+Under 5-year agreements, benchmark-year status is a function of agreement year (years 1-2 off, 3-5 on). The clean
+contrast for 2023->2024 compares switchers in agreement year 2->3 (off->on) with controls in agreement year 1->2
+(off->off), so treatment and tenure are perfectly collinear across arms: the estimate is "ratchet + tenure effect".
+A clean stay-out control is out of benchmark years for at most two years, so no placebo (pre-trend) change exists
+either. No estimator fixes this; it is a property of the design.
+
+Where the two decouple: pre-2019 3-year agreements, where every year was a benchmark year, give tenure profiles with
+BY status constant. Using them to adjust 5-year contrasts requires assuming tenure effects were unchanged across the
+2019 program redesign and COVID-19, an assumption the data cannot test.
+
+What remains testable without that assumption: the timing of early renewal (about 140 ACOs restarted agreements in
+2022, before their benchmark years arrived), a choice the ratchet predicts. Its outcome correlates (e.g. savings
+history before renewing) have not been seen.
