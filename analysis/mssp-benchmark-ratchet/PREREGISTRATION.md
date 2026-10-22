@@ -1,9 +1,9 @@
 # Pre-registration: Why did Medicare ACOs reset their benchmarks early?
 
-**Status:** DRAFT v0.3 for author review. Not yet registered. Once registered on OSF Registries, this file is frozen:
+**Status:** DRAFT v0.4 (author decisions of 2026-10-22 applied). Not yet registered. Once registered on OSF Registries, this file is frozen:
 the registration link, OSF timestamp, and this file's sha256 go in `REGISTRATION.md`, and any later change goes in
-`DEVIATIONS.md`. Issue #73. Supersedes drafts v0.1 (a downside-risk question dropped at the design stage) and v0.2
-(a single-test version of this plan); see `DESIGN-NOTES.md`.
+`DEVIATIONS.md`. Issue #73. Supersedes drafts v0.1 (a downside-risk question dropped at the design stage), v0.2
+(a single-test version of this plan) and v0.3 (a frequentist decision model); see `DESIGN-NOTES.md`.
 
 **Author:** Samuel Harrold. **Drafted:** 2026-10-22.
 
@@ -38,9 +38,10 @@ from a reset because its region spends more; that is the part of the reset motiv
 - **H2b (primary):** Early renewers had a larger **regional pull** than stayers. Predicted sign: positive.
 - **H2a (secondary):** Early renewers had a larger **own-spending component** of the expected gain. Predicted sign:
   positive.
-- **H3 (decision model, BASIC-track ACOs):** The probability of renewing early rises with the regional pull (+),
-  the own-spending component (+), and being at a higher BASIC level in PY2021 (+, a smaller step to two-sided risk
-  under ENHANCED). Section 5.4.
+- **H3 (Bayesian decision model, BASIC-track ACOs):** The probability of renewing early rises with the regional pull
+  (+), the own-spending component (+), and being at a higher BASIC level in PY2021 (+, a smaller step to two-sided risk
+  under ENHANCED), adjusting for cohort, size, revenue category, assignment method and first vs later agreement, which
+  are estimated with no predicted direction. Section 5.4.
 - **H1 (pre-registered, descriptive context):** Difference in PY2020 savings rate, early renewers minus stayers,
   two-sided, with no motive attributed to its sign. Repeated for PY2021, the year of the decision.
 
@@ -173,7 +174,8 @@ that validation does not reveal their actual reset gain before H2a, H2b and H3 a
 (step 6) uses no own-spending data, so it does not depend on validation; it is still reported only after the
 validation step. Reported overall and by phase-in step
 (step 3 of 4.3): Spearman correlation, median absolute percentage error, and the OLS slope and intercept of actual on
-approximate.
+approximate. The **validation error SD** (sigma_v in 5.4) is the standard deviation of 100 x (approximate - actual) /
+actual across these ACOs, after calibration if calibration is applied.
 
 **Pass:** Spearman correlation >= 0.80 and median absolute percentage error <= 5%, overall.
 - If it passes and the slope is within [0.9, 1.1]: the approximation is used as is.
@@ -201,18 +203,44 @@ reported alongside, descriptively.
 ### 5.3 Comparison estimates (reported, not used for decisions)
 OLS of each H1, H2a and H2b variable on an early-renewer indicator and a cohort indicator, HC2 robust standard errors.
 
-### 5.4 H3: decision model (BASIC-track ACOs)
-Sample: ACOs in the BASIC track in PY2021 (27 early renewers; the 2 early renewers already in ENHANCED in PY2021, and
-stayers in ENHANCED, are excluded because they could not be moving to ENHANCED). Firth-penalized logistic regression
-(Python package `firthmodels`, version pinned in `uv.lock`) of early renewal (1 = early renewer, 0 = stayer) on
-exactly these predictors: regional pull (per 1 percentage point), own-spending component (per 1 percentage
-point), higher BASIC level in PY2021 (BASIC C-E vs A-B), and cohort (indicator, control). The number of predictors is
-limited by the 27 events: 4 parameters is about 7 events per parameter, below the common guide of 10, which is why
-the model is Firth-penalized (reducing small-sample bias and separation) and every other characteristic is
-exploratory (5.6) rather than confirmatory. Reported: coefficients, profile-likelihood 95% intervals, and permutation p-values for the
-regional pull and own-spending component (labels shuffled within cohort, 10,000 permutations). The intervals decide
-(rule 4 of section 7); the permutation p-values are reported only. Each H3 prediction is supported if its 95%
-interval excludes zero in the predicted direction.
+### 5.4 H3: Bayesian decision model (BASIC-track ACOs)
+**Sample:** ACOs in the BASIC track in PY2021 (27 early renewers; the 2 early renewers already in ENHANCED in PY2021,
+and stayers in ENHANCED, are excluded because they could not be moving to ENHANCED). ACOs missing any predictor are
+excluded and counted (section 3).
+
+**Model:** logistic regression of early renewal (1 = early renewer, 0 = stayer) on exactly these predictors:
+- *Core, with predicted directions:* regional pull (+), own-spending component (+), higher BASIC level in PY2021
+  (BASIC C-E vs A-B) (+).
+- *Adjustment, estimated with no predicted direction:* cohort (2020-01-01 vs 2019-07-01), log assigned beneficiaries
+  (`N_AB`, PY2020), revenue category (high vs low revenue), assignment method (prospective vs retrospective), and later
+  agreement (agreement period number >= 2 in PY2021 vs 1).
+
+Continuous predictors are centered and divided by 2 standard deviations, binary predictors are centered (Gelman 2008),
+so each coefficient is a log-odds difference per 2 SD or per category. **Priors:** Normal(0, 1) on each coefficient
+(about 95% of prior odds ratios between 1/7 and 7); Normal(0, 2.5) on the intercept. With 27 events and 9 parameters
+the priors, not the data alone, keep the estimates stable, so prior sensitivity is reported (below).
+
+**Measurement error in the own-spending component:** if the validation (4.4) passes, the own-spending component enters
+as a latent true value: observed = true + error, error ~ Normal(0, sigma_v), with sigma_v fixed at the validation error
+SD (4.4); true values ~ Normal(mu, tau), mu ~ Normal(0, 10), tau ~ HalfNormal(10) (percentage points). The latent value
+is scaled with the observed variable's mean and 2 SD. If the validation fails, the own-spending predictor is dropped
+(section 7, rule 5).
+
+**Fitting:** PyMC (version pinned in `uv.lock`), NUTS, 4 chains of 2,000 tuning and 2,000 retained draws,
+target acceptance 0.95, seed fixed in code and recorded. **Convergence:** R-hat <= 1.01 and bulk and tail effective
+sample size >= 400 for every coefficient, and no divergent transitions. If not met, the model is rerun once with 4,000
+retained draws and target acceptance 0.99; if still not met, the Bayesian results are reported as not converged and the
+Firth model (5.5, item 5) decides H3.
+
+**Support (core predictors only):** a core prediction is supported if the 95% equal-tailed credible interval of its
+coefficient excludes zero in the predicted direction, contradicted if it excludes zero in the opposite direction, and
+undetermined otherwise. Adjustment factors are reported as posterior mean, 95% interval and P(coefficient > 0), with no
+claim made.
+
+**Also reported:** prior predictive distribution of the early-renewal share; posterior predictive check (observed
+number of early renewers against the 95% interval of replicated counts, and observed vs predicted rates by decile of
+predicted probability); the same model with Student-t(3, 0, 2.5) priors on the coefficients, with any core conclusion
+that differs between the two priors flagged in the write-up.
 
 ### 5.5 Robustness (all reported)
 1. H1, H2a and H2b with PY2021 track/level and log assigned beneficiaries (`N_AB`, PY2020) added to the 5.3
@@ -220,12 +248,14 @@ interval excludes zero in the predicted direction.
 2. Stratified rank test (van Elteren) for H1, H2a and H2b.
 3. 2020-01-01 cohort only.
 4. H1 for the PY2021 savings rate.
-5. H3 with log assigned beneficiaries added.
+5. H3 as a Firth-penalized logistic regression (`firthmodels`, version pinned in `uv.lock`) with the three core
+   predictors and cohort only (about 7 events per parameter), own-spending component at its observed value;
+   profile-likelihood 95% intervals.
 6. H2a and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3.
+7. The Bayesian H3 model with the own-spending component at its observed value (no measurement-error model).
 
 ### 5.6 Exploratory and descriptive (labeled as such in the write-up)
-- Revenue category, assignment method, agreement period number, and census division added to the decision model, one
-  at a time.
+- Census region (4 levels) added to the decision model.
 - Leavers (28): PY2020 savings rate, regional pull and both gain components, in the same tables.
 - The 2 early renewers already in ENHANCED in PY2021, whose renewal could not change their sharing rate: savings rate,
   regional pull and both gain components, reported individually against the stayer distribution.
@@ -241,7 +271,9 @@ Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 27
 sqrt(1/29 + 1/277), about 0.55 SD of the variable, confirmed by simulating the stratified permutation test. For H1 the
 SD comes from the cross-ACO standard deviation of `Sav_rate` in PY2016-PY2018 (years that play no part in the tests).
 For H2a and H2b the SD is not available before the variables are built; their MDEs are reported in SD units and,
-after validation, in percentage points. Results are committed before any confirmatory estimate is computed.
+after validation, in percentage points. For H3 no power figure is computed; the expected width of the core
+coefficients' 95% credible intervals is estimated by simulating data from the prior predictive distribution with the
+actual predictor values, and reported. Results are committed before any confirmatory estimate is computed.
 
 ## 7. Decision rules (fixed before seeing results)
 1. **H2b (primary):** p < 0.05 and positive: "early renewers' regions spent more relative to their current
@@ -251,9 +283,10 @@ after validation, in percentage points. Results are committed before any confirm
    counted as separate evidence for the reset motive.
 3. **H1 (descriptive):** the sign and size of the savings-rate difference are reported as context; no motive is
    attributed to the sign.
-4. **H3:** each predictor's direction is supported, contradicted, or undetermined by its 95% interval (5.4).
-5. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b and the
-   regional-pull and BASIC-level predictors of H3 stand.
+4. **H3:** each core predictor's direction is supported, contradicted, or undetermined by its 95% credible interval
+   (5.4); adjustment factors are estimates only.
+5. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b stands,
+   and H3 is refit without the own-spending predictor, with its other rules unchanged.
 6. Every result describes who chose to reset and why, not the effect of resetting. No test here can rule the
    sharing-rate motive in or out. Results are reported whatever they show.
 
@@ -263,4 +296,4 @@ deviations from registered analyses.
 
 ## 9. Registration record
 Kept in `REGISTRATION.md` (not here, so this file's hash does not change): the OSF Registries link, the OSF timestamp,
-and the sha256 of this file exactly as registered.
+and the sha256 of this file exactly as registered. The registration is made public immediately, with no embargo.
