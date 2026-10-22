@@ -22,22 +22,27 @@ ACO to enter the ENHANCED track, which shares 75% of savings and losses.
 Among ACOs in agreement periods that began July 1, 2019 or January 1, 2020, why did some renew early into a
 January 1, 2022 agreement while others stayed in their agreement?
 
-### 1.3 Hypotheses (confirmatory)
-Two motives make **opposite** predictions about an early renewer's prior performance:
-- **Reset motive (ratchet):** renew when a reset would raise the benchmark, i.e. when spending is running high
-  relative to the current benchmark, so **lower** prior savings rates.
-- **Sharing-rate motive:** renew to enter ENHANCED and keep 75% of expected savings, i.e. when savings are expected to
-  be large, so **higher** prior savings rates.
+### 1.3 Hypotheses
+Two motives can lead an ACO to renew early: the **reset motive** (a new benchmark would be higher) and the
+**sharing-rate motive** (enter ENHANCED and keep 75% of savings). They are bundled in one choice here (1.4), and they
+need not point to different ACOs: a reset can itself create expected savings that make ENHANCED attractive. The
+expected benchmark gain (section 4.3) has two parts: an **own-spending** part (how the ACO's recent spending compares
+with its current benchmark) and a **regional** part (the regional adjustment). The own-spending part is close to a
+restatement of the savings rate, so a low savings rate and a positive own-spending gain are the same fact. The
+**regional part is not**: an ACO can be beating its own benchmark and still gain from a reset because its region spends
+more. The regional part is therefore the test of the reset motive that the savings rate cannot provide.
 
-- **H1 (primary):** Early renewers' PY2020 savings rate differs from stayers'. Two-sided. A negative difference is
-  read as the reset motive dominating, a positive one as the sharing-rate motive dominating (section 7).
-- **H2 (primary explanatory):** Early renewers had a larger **expected benchmark gain from resetting** (section 4.3)
-  than stayers. Predicted sign: positive.
-- **H3 (decision model):** In a model of the renewal decision (section 5.4), the probability of renewing early rises
-  with the expected benchmark gain (+), with already being at a higher risk level in PY2021 (+, ENHANCED is a smaller
-  step), and with ACO size (+, larger ACOs absorb two-sided risk more easily).
+- **H2b (primary):** Early renewers had a larger **regional component** of the expected gain than stayers.
+  Predicted sign: positive.
+- **H2a (secondary):** Early renewers had a larger **own-spending component** of the expected gain. Predicted sign:
+  positive.
+- **H3 (decision model, BASIC-track ACOs):** The probability of renewing early rises with the regional component (+),
+  the own-spending component (+), and being at a higher BASIC level in PY2021 (+, a smaller step to two-sided risk
+  under ENHANCED). Section 5.4.
+- **H1 (pre-registered, descriptive context):** Difference in PY2020 savings rate, early renewers minus stayers,
+  two-sided, with no motive attributed to its sign. Repeated for PY2021, the year of the decision.
 
-Secondary: H1 repeated for the PY2021 savings rate (the year of the decision). Exploratory: section 5.6.
+Exploratory: section 5.6.
 
 ### 1.4 What this is and is not
 An analysis of **who chose to reset and why**, not of the causal effect of renewing. Associations with pre-decision
@@ -45,7 +50,8 @@ characteristics are interpreted as evidence about motives, not as effects. The q
 ACO's years start counting toward its next benchmark?" is not identifiable in these data (benchmark-year status is
 collinear with agreement tenure; `DESIGN-NOTES.md` 4.4) and is reported only descriptively. In the enrollment files no
 stayer moved to ENHANCED, and 26 of the 27 early renewers that were in BASIC in PY2021 entered ENHANCED, so the reset
-and sharing-rate motives are bundled in one choice; H1's sign and H2 are how they are told apart.
+and sharing-rate motives are bundled in one choice. The regional component (H2b) is the part of the analysis that
+bears on the reset motive independently of past savings; no test here can rule the sharing-rate motive in or out.
 
 ## 2. Data
 
@@ -58,7 +64,8 @@ CMS Medicare Shared Savings Program public use files (data.cms.gov, public data 
 - **County-level Aggregate Expenditure and Risk Score Data on Assignable Beneficiaries**, calendar years 2019, 2020,
   2021, the versions published for 2022-2023 starters (`FFS_Data_for_SSP_CRB_PUF_<year>_01_01_Cal_Year_Assignable_
   2022_2023_Starters.csv`) (regional spending).
-- **Number of ACO Assigned Beneficiaries by County**, 2021 (each ACO's regional service area in BY3).
+- **Number of ACO Assigned Beneficiaries by County**, 2021 (each ACO's regional service area in BY3, and its share s
+  of assignable beneficiaries, section 4.3).
 
 Exact files, sizes, sha256 hashes and URLs: `data-snapshot.tsv` (downloaded 2026-10-22). The manifest also lists files
 not used here, retained from the design stage. The pipeline verifies every hash before reading.
@@ -97,13 +104,15 @@ limitation.
 ### 4.1 Outcomes and characteristics from the results files
 - `Sav_rate` (PY2020 primary, PY2021 secondary): total benchmark expenditures minus assigned-beneficiary expenditures,
   as a percent of total benchmark expenditures. CMS's final PY2020 results reached ACOs around autumn 2021, during the
-  application cycle for 2022 agreements; ACOs also had their own interim data.
+  application cycle for 2022 agreements; each ACO also received CMS quarterly reports during 2020-2021, so its own
+  PY2020 position was broadly known to it before the decision.
 - Size: `N_AB` (assigned beneficiaries), PY2020.
 - In PY2020 and PY2021 all U.S. counties were treated as affected by an extreme and uncontrollable circumstance
   (COVID-19), which reduces shared losses but not the savings-rate calculation.
 
 ### 4.2 Characteristics from the enrollment files
-Cohort (2019-07-01, 2020-01-01); PY2021 risk level, coded **high** (BASIC C-E or ENHANCED) or **low** (BASIC A-B);
+Cohort (2019-07-01, 2020-01-01); PY2021 track and level (BASIC A-E or ENHANCED); for H3, **higher BASIC level**
+= BASIC C-E (two-sided) vs BASIC A-B (one-sided);
 revenue category (high/low revenue), assignment method (prospective/retrospective), agreement period number.
 
 ### 4.3 Expected benchmark gain from resetting (constructed)
@@ -116,95 +125,118 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    used (12-month performance year or July-December period, whichever exists for that `ACO_ID`; never the
    January-June "2019A" file); if the ACO has no
    PY2019 record, BY1 is omitted and the mean uses BY2-BY3. BY1 and BY2 are
-   trended to BY3 (2021) dollars by the growth in regional per-capita expenditure for type e between the
-   benchmark year and 2021. The national-regional blend in 425.601(a)(5)(iv) is approximated by regional growth only,
-   because the ACO's share of assignable beneficiaries is not separately published; this simplification is fixed here.
+   trended to BY3 (2021) dollars with the national-regional blend of 425.601(a)(5)(iv): growth factor =
+   s x national growth + (1 - s) x regional growth for type e from the benchmark year to 2021, where regional growth
+   uses the ACO's regional service area (step 2 weights), national growth uses the assignable-beneficiary-weighted
+   national mean of the county file, and s, the ACO's share of assignable beneficiaries in its regional service area
+   (425.601(a)(5)(v)), = sum over counties of (ACO assigned beneficiaries in county / county assignable beneficiaries),
+   weighted by the ACO's assigned beneficiaries in each county, from the 2021 files.
 2. **Regional service area spending, per type**, for BY3 = 2021: the mean of county per-capita expenditures for
    assignable beneficiaries of type e (county-level file, 2022-2023 starters version), weighted by the ACO's assigned
-   beneficiaries by county in 2021.
-3. **Regional adjustment, per type:** w x (regional - rebased), where w follows 425.601(f): the phase-in step is set by
-   the number of times the ACO's benchmark has already been regionally adjusted, approximated by agreement period
-   number (first agreement under the regional method = step 1, and so on); w = 35%/50%/50%/50% at steps 1-4+ if the
+   beneficiaries by county in 2021 (`Number_Of_ACO_Assigned_Beneficiaries_by_County_PUF_2021_01_01.csv`, the 2021
+   performance-year assignment, used as the BY3 proxy; true BY3 assignment uses the 2022 participant list, which is
+   not published).
+3. **Regional adjustment, per type:** w x (regional - rebased), where w follows 425.601(f): the phase-in step for the
+   2022 reset = 1 + the number of the ACO's earlier agreement periods whose benchmark was regionally adjusted, i.e.
+   renewals starting 2017-01-01 through 2019-01-01 (425.603(c)) and any agreement starting 2019-07-01 or later
+   (425.601), counted from the distinct `current_start_date` values for the `ACO_ID` in the PY2016-PY2021 enrollment
+   files (no regional adjustment existed before 2017); w = 35%/50%/50%/50% at steps 1-4+ if the
    ACO's weighted spending is below its region and 15%/25%/35%/50% if above (425.601(f)(5)). Each type's adjustment is
    capped at +/-5% of the national per-capita expenditure for that type in 2021, approximated by the assignable-
    beneficiary-weighted national mean in the county file.
 4. **Approximate new benchmark** = sum over types of (rebased + adjustment) x the ACO's PY2021 person-year share of
    that type (`N_AB_Year_<e>_PY`).
 5. **Expected gain (%)** = 100 x (approximate new benchmark - current benchmark) / current benchmark, where current
-   benchmark = the PY2021 per-capita updated benchmark (`UpdatedBnchmk`, already per capita in the files).
+   benchmark = the PY2021 per-capita updated benchmark (`UpdatedBnchmk`, already per capita in the files). Both are in
+   2021 dollars. **Components:** own-spending component = 100 x (sum over types of rebased x share - current) /
+   current; regional component = 100 x (sum over types of adjustment x share) / current; they add to the expected
+   gain.
 
 Steps that cannot be reproduced exactly from public data (risk adjustment and truncation details, assignment
 differences between performance and benchmark years, the national-regional growth blend) are approximated as stated;
 section 4.4 measures how good the approximation is before it is used.
 
-### 4.4 Validation of the approximation (run before H2 and H3 are estimated)
+### 4.4 Validation of the approximation (run before H2a, H2b and H3 are estimated)
 Apply steps 1-4 to every **regular renewer** with a January 1, 2022 agreement (agreement period number >= 2 in PY2022,
 benchmark years 2019-2021, not one of the 29 early renewers) and compare the approximate new benchmark with the actual
 per-capita historical benchmark reported for PY2022 (`HistBnchmk`, already per capita). Early renewers are excluded so
-that validation does not reveal their actual reset gain before H2 is estimated. **Pass:** Spearman correlation >= 0.80 and median absolute error <= 5%. If the
-approximation fails, H2 and H3 are reported as exploratory, with the validation result, and conclusions rest on H1.
+that validation does not reveal their actual reset gain before H2a, H2b and H3 are estimated. Reported overall and by phase-in step
+(step 3 of 4.3): Spearman correlation, median absolute percentage error, and the OLS slope and intercept of actual on
+approximate.
+
+**Pass:** Spearman correlation >= 0.80 and median absolute percentage error <= 5%, overall.
+- If it passes and the slope is within [0.9, 1.1]: the approximation is used as is.
+- If it passes and the slope is outside [0.9, 1.1]: the approximate new benchmark is calibrated with the validation
+  regression (actual = intercept + slope x approximate) before computing the gain and its components.
+- If it fails: H2a, H2b and H3 are reported as exploratory with the validation result, and the study reports only the
+  descriptive H1 as pre-registered.
 
 ## 5. Analysis plan
 
-### 5.1 H1: savings rate
+### 5.1 H1: savings rate (descriptive)
 Difference in mean PY2020 savings rate, early renewers minus stayers, computed within each cohort and averaged with
 weights proportional to the number of early renewers in each cohort. **Test:** stratified permutation test
 (early-renewer labels shuffled within cohort), 100,000 permutations, two-sided p. **Interval:** 95% interval by
 inverting the permutation test over a grid of location shifts in steps of 0.01 percentage points. Seed fixed in code
 and recorded in the output.
 
-### 5.2 H2: expected benchmark gain
-Same estimator and test as 5.1 with expected gain (section 4.3) as the variable.
+### 5.2 H2a and H2b: components of the expected gain
+Same estimator, test and interval as 5.1, applied separately to the regional component (H2b, primary) and the
+own-spending component (H2a, secondary). The total expected gain is reported alongside.
 
 ### 5.3 Comparison estimates (reported, not used for decisions)
-OLS of each H1/H2 variable on an early-renewer indicator and a cohort indicator, HC2 robust standard errors.
+OLS of each H1, H2a and H2b variable on an early-renewer indicator and a cohort indicator, HC2 robust standard errors.
 
-### 5.4 H3: decision model
-Firth-penalized logistic regression (Python package `firthmodels`, version pinned in `uv.lock`) of early renewal
-(1 = early renewer, 0 = stayer) on exactly these predictors: expected gain (per 1 percentage point), high PY2021 risk
-level (indicator), log `N_AB` (PY2020), and cohort (indicator, control). The number of predictors is limited by the
-29 early renewers. Reported: coefficients, profile-likelihood 95% intervals, and a permutation p-value for the expected
-gain coefficient (labels shuffled within cohort, 10,000 permutations). Each H3 prediction is supported if its 95%
+### 5.4 H3: decision model (BASIC-track ACOs)
+Sample: ACOs in the BASIC track in PY2021 (27 early renewers; the 2 early renewers already in ENHANCED in PY2021, and
+stayers in ENHANCED, are excluded because they could not be moving to ENHANCED). Firth-penalized logistic regression
+(Python package `firthmodels`, version pinned in `uv.lock`) of early renewal (1 = early renewer, 0 = stayer) on
+exactly these predictors: regional component (per 1 percentage point), own-spending component (per 1 percentage
+point), higher BASIC level in PY2021 (BASIC C-E vs A-B), and cohort (indicator, control). The number of predictors is
+limited by the 27 events: 4 parameters is about 7 events per parameter, below the common guide of 10, which is why
+the model is Firth-penalized (reducing small-sample bias and separation) and every other characteristic is
+exploratory (5.6) rather than confirmatory. Reported: coefficients, profile-likelihood 95% intervals, and permutation p-values for the
+two gain components (labels shuffled within cohort, 10,000 permutations). Each H3 prediction is supported if its 95%
 interval excludes zero in the predicted direction.
 
 ### 5.5 Robustness (all reported)
-1. H1 and H2 with PY2021 risk level and log assigned beneficiaries added to the 5.3 regressions.
-2. Stratified rank test (van Elteren) for H1 and H2.
+1. H1, H2a and H2b with PY2021 track/level and log assigned beneficiaries (`N_AB`, PY2020) added to the 5.3
+   regressions.
+2. Stratified rank test (van Elteren) for H1, H2a and H2b.
 3. 2020-01-01 cohort only.
 4. H1 for the PY2021 savings rate.
-5. H3 with expected gain replaced by the PY2020 savings rate.
-6. H2 and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3.
+5. H3 with log assigned beneficiaries added.
+6. H2a, H2b and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3.
 
 ### 5.6 Exploratory and descriptive (labeled as such in the write-up)
 - Revenue category, assignment method, agreement period number, and census division added to the decision model, one
   at a time.
-- Decomposition of expected gain into the own-spending part (step 1 vs. current benchmark) and the regional part
-  (step 3).
-- Leavers (28): PY2020 savings rate and expected gain, in the same tables.
-- Who renewed early: cohort, prior risk level, new track (from enrollment data, already seen).
+- Leavers (28): PY2020 savings rate and both gain components, in the same tables.
+- Who renewed early: cohort, prior track and level, new track (from enrollment data, already seen).
 - Balance: share of beneficiaries aged 85+ and share female, PY2020.
 - Per-capita spending by agreement year for 5-year agreements, labeled with benchmark-year status, with the caveat
   that benchmark-year status and tenure cannot be separated.
 
 ## 6. Power analysis (run after registration, before any confirmatory estimate)
-Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 277 ACOs, using the cross-ACO standard
-deviation of `Sav_rate` in PY2016-PY2018 (years that play no part in the tests): MDE = 2.80 x SD x
-sqrt(1/29 + 1/277), about 0.55 SD, confirmed by simulating the stratified permutation test. For H2 the SD of expected
-gain is not available before the validation step; its MDE is reported in SD units and, after validation, in percentage
-points. Results are committed before any confirmatory estimate is computed.
+Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 277 ACOs: MDE = 2.80 x SD x
+sqrt(1/29 + 1/277), about 0.55 SD of the variable, confirmed by simulating the stratified permutation test. For H1 the
+SD comes from the cross-ACO standard deviation of `Sav_rate` in PY2016-PY2018 (years that play no part in the tests).
+For H2a and H2b the SD is not available before the validation step (4.4); their MDEs are reported in SD units and,
+after validation, in percentage points. Results are committed before any confirmatory estimate is computed.
 
 ## 7. Decision rules (fixed before seeing results)
-1. **H1:** p < 0.05 and negative: "early renewers had lower savings rates before renewing, consistent with the reset
-   motive dominating". p < 0.05 and positive: "higher savings rates, consistent with the sharing-rate motive
-   dominating". Otherwise: "no detectable difference; differences larger than the MDE are ruled out".
-2. **H2:** p < 0.05 and positive: "early renewers stood to gain more from a reset". p < 0.05 and negative: "they
-   stood to gain less, contrary to the ratchet". Otherwise: no detectable difference, with the MDE. Applies only if
-   the approximation passes validation (4.4).
-3. **Combined reading:** H1 negative and H2 positive: evidence for the reset motive. H1 positive and H2 not positive:
-   evidence for the sharing-rate motive. Other combinations are reported as mixed and described, not resolved.
+1. **H2b (primary):** p < 0.05 and positive: "early renewers stood to gain more from the regional adjustment, evidence
+   for the reset motive beyond past savings". p < 0.05 and negative: "they stood to gain less, contrary to the reset
+   motive". Otherwise: "no detectable difference; differences larger than the MDE are ruled out".
+2. **H2a (secondary):** same wording for the own-spending component. Because H2a is close to H1 restated, it is not
+   counted as separate evidence for the reset motive.
+3. **H1 (descriptive):** the sign and size of the savings-rate difference are reported as context; no motive is
+   attributed to the sign.
 4. **H3:** each predictor's direction is supported, contradicted, or undetermined by its 95% interval (5.4).
-5. Every result describes who chose to reset and why, not the effect of resetting. Results are reported whatever
-   they show.
+5. **If the approximation fails validation (4.4):** H2a, H2b and H3 are exploratory and the study's conclusion is
+   limited to the descriptive H1.
+6. Every result describes who chose to reset and why, not the effect of resetting. No test here can rule the
+   sharing-rate motive in or out. Results are reported whatever they show.
 
 ## 8. Deviations
 Any change after registration is recorded in `DEVIATIONS.md` (date, what changed, why); the write-up separates
