@@ -87,8 +87,8 @@ BY if N-3 <= t <= N-1. Built from the ACOs files PY2016-PY2026 (the PY2014-PY201
 
 | t-1 -> t | switch on (out -> BY) | stay out | switch off (BY -> out) | stay in BY |
 |---|---|---|---|---|
-| 2020->2021 | 0 | 334 | 142 | 1 |
-| 2021->2022 | 277 | 139 | 1 | 0 |
+| 2020->2021 | 0 | 334 | 0 | 143 |
+| 2021->2022 | 277 | 29 | 111 | 0 |
 | 2022->2023 | 0 | 187 | 8 | 223 |
 | 2023->2024 | 137 | 77 | 34 | 163 |
 | 2024->2025* | 28 | 136 | 145 | 112 |
@@ -98,8 +98,8 @@ BY if N-3 <= t <= N-1. Built from the ACOs files PY2016-PY2026 (the PY2014-PY201
 fully prospective.
 
 Switchers and stay-out controls by agreement start:
-- 2021->2022: switch on = 2019-07-01 (159) and 2020-01-01 (118) cohorts; all 139 stay-outs are 2022-01-01 starts
-  that were in years 1-2 of a 2019/2020 agreement in 2021, i.e. **early renewers**.
+- 2021->2022: switch on = 2019-07-01 (159) and 2020-01-01 (118) cohorts; the 29 stay-outs are all **early renewers**
+  (11 from 2019-07-01 and 18 from 2020-01-01 agreements, 28 of them into ENHANCED), so this year has no clean control.
 - 2023->2024: switch on = 2022-01-01 cohort (137); stay out = 2023-01-01 cohort in years 1->2 (40, clean) and
   2024-01-01 starts (37, early renewers).
 - 2024->2025: switch on = 2023-01-01 cohort (28); stay out = 2024-01-01 cohort (108, clean) and 2025-01-01 starts (28).
@@ -110,7 +110,7 @@ Switchers and stay-out controls by agreement start:
   de Chaisemartin and D'Haultfoeuille (switchers vs. stayers with the same prior status, year by year). No maintained
   Python package exists (checked PyPI 2026-10-22); the reference implementation is the R package `DIDmultiplegtDYN`.
 - Early renewal is a choice that also resets the benchmark, so early renewers are excluded as controls; the 2022
-  early-renewal wave (about 140 ACOs) is itself consistent with ratchet behavior and is a descriptive finding.
+  early renewals (29 ACOs, nearly all into ENHANCED) are consistent with ratchet behavior and are a descriptive finding.
 - Clean contrasts in published data: 2023->2024 (137 vs 40). Prospective: 2024->2025 (28 vs 108) and 2025->2026.
 - Outcome files have still not been opened.
 
@@ -125,6 +125,17 @@ Where the two decouple: pre-2019 3-year agreements, where every year was a bench
 BY status constant. Using them to adjust 5-year contrasts requires assuming tenure effects were unchanged across the
 2019 program redesign and COVID-19, an assumption the data cannot test.
 
-What remains testable without that assumption: the timing of early renewal (about 140 ACOs restarted agreements in
-2022, before their benchmark years arrived), a choice the ratchet predicts. Its outcome correlates (e.g. savings
+What remains testable without that assumption: the timing of early renewal (29 ACOs restarted agreements in 2022,
+before their benchmark years arrived), a choice the ratchet predicts. Its outcome correlates (e.g. savings
 history before renewing) have not been seen.
+
+### 4.5 Correction (2026-10-22): agreement extensions
+The first version of the table in 4.2 ignored rule-allowed extensions and so treated the optional extra year of
+2018-start agreements (to Dec 31, 2021; 425.200(b)(3)(ii)(B)) as outside any benchmark window. 142 of the 2018 starters
+took it; for them 2019-2021 are the benchmark years of their 2022 renewal. Corrected rows: 2020->2021 = 0 on, 334
+out, 0 off, 143 in; 2021->2022 = 277 on, 29 out (all early renewers), 111 off, 0 in. The earlier statement that all
+139 stay-outs in 2021->2022 were early renewers was an unverified inference and was wrong; only 29 were.
+
+Open rule for the plan: benchmark-year status should follow the schedule **as known at the start of year t**. The
+2018-start extension was only offered in late 2020, so it cannot have changed incentives in 2018-2019; the current
+code applies it ex post, which creates spurious 2018->2019 "switch-ons". This affects only pre-2021 transitions.
