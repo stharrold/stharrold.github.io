@@ -32,6 +32,13 @@ renewing. The question "does spending change once an ACO's years start counting 
 identifiable in these data (benchmark-year status is collinear with agreement tenure; `DESIGN-NOTES.md` 4.4) and is
 reported only descriptively, with that caveat.
 
+The test also cannot separate two motives for renewing early. A BASIC-track ACO can enter the ENHANCED track (75%
+sharing rate) only by starting a new agreement: in the enrollment files, no stayer moved to ENHANCED within its
+agreement, while 26 of the 27 early renewers that were in BASIC in PY2021 entered ENHANCED in PY2022 (the other two
+early renewers were already in ENHANCED). So a difference between groups may reflect resetting the benchmark, moving to
+a higher sharing rate, or both. The two early renewers already in ENHANCED are the only resets without a track change;
+they are reported individually and are too few to test.
+
 ## 2. Data
 
 ### 2.1 Sources
@@ -39,8 +46,9 @@ CMS Medicare Shared Savings Program public use files (data.cms.gov, public data 
 - **Performance Year Financial and Quality Results**, PY2019-PY2021 (outcomes).
 - **Accountable Care Organizations** enrollment files, PY2021 and PY2022 (group assignment).
 
-Exact files, sizes, sha256 hashes and URLs: `data-snapshot.tsv` (downloaded 2026-10-22). The pipeline verifies every
-hash before reading.
+Exact files, sizes, sha256 hashes and URLs: `data-snapshot.tsv` (downloaded 2026-10-22). The manifest also lists files
+not used here (PY2013-PY2024 results and PY2014-PY2026 enrollment files), retained from the design stage; PY2016-PY2018
+results are used only for the power analysis (section 6). The pipeline verifies every hash before reading.
 
 ### 2.2 What the author has and has not seen (data already exist)
 The data are public and were downloaded before registration solely to record hashes. Before registration the author
@@ -62,6 +70,11 @@ Base population: ACOs whose PY2021 enrollment record shows an agreement start of
 | **Stayers:** same agreement in PY2022 | 159 | 118 | 277 |
 | Left after PY2021 (not in PY2022 file) | 19 | 9 | 28 |
 
+**Why a 2022 start means early renewal:** agreements starting July 1, 2019 run 5 years 6 months and those starting
+January 1, 2020 run 5 years (42 CFR 425.200(b)(4)(ii), (b)(5)), so both end December 31, 2024. An ACO from these cohorts
+in a new agreement on January 1, 2022 therefore terminated its agreement early and renewed (42 CFR 425.20, "renewing
+ACO" (2)).
+
 Early renewers are compared with stayers. Leavers are reported descriptively. ACOs are linked across files by
 `ACO_ID`. An ACO with a missing or suppressed primary outcome is excluded from that analysis and counted; if more than
 10% of either compared group is excluded, this is reported as a limitation.
@@ -69,8 +82,9 @@ Early renewers are compared with stayers. Leavers are reported descriptively. AC
 ## 4. Variables
 - **Primary outcome:** `Sav_rate`, PY2020: total benchmark expenditures minus assigned-beneficiary expenditures, as a
   percent of total benchmark expenditures. PY2020 is the last complete performance year before the renewal decision
-  (agreements starting January 1, 2022 were applied for and executed during 2021).
-- **Secondary outcome:** `Sav_rate`, PY2021.
+  (agreements starting January 1, 2022 were applied for and executed during 2021). CMS's final PY2020 results reached
+  ACOs around autumn 2021, during the application cycle; ACOs also had their own interim data.
+- **Secondary outcome:** `Sav_rate`, PY2021, the year in which the renewal decision was made.
 - **Exploratory:** `Sav_rate` for the July-December 2019 performance period (2019 cohort only); log change in
   `Per_Capita_Exp_TOTAL_PY` PY2020-PY2021; `QualScore` PY2021.
 - **Stratifier:** agreement start cohort (2019-07-01, 2020-01-01).
@@ -85,7 +99,7 @@ Early renewers are compared with stayers. Leavers are reported descriptively. AC
 Difference in mean PY2020 savings rate, early renewers minus stayers, computed within each cohort and averaged with
 weights proportional to the number of early renewers in each cohort. **Test:** stratified permutation test,
 reassigning early-renewer labels within cohort, 100,000 permutations, two-sided p-value. **Interval:** 95% interval by
-inverting the permutation test over a grid of shifts. The random seed is fixed in the code and recorded in the output.
+inverting the permutation test over a grid of location shifts in steps of 0.01 percentage points. The random seed is fixed in the code and recorded in the output.
 
 ### 5.2 Comparison estimate (reported, not used for the decision)
 OLS of PY2020 savings rate on an early-renewer indicator and a cohort indicator, HC2 robust standard errors.
@@ -102,6 +116,8 @@ show comparability. `QualScore` is exploratory, with no ratchet prediction.
 
 ### 5.5 Descriptive (not confirmatory)
 - Who renewed early: cohort, prior risk level, new track (from enrollment data, already seen).
+- Leavers (28 ACOs that left after PY2021): PY2020 savings rate reported in the same table as the two compared
+  groups, as the third route out of an agreement.
 - Per-capita spending by agreement year for 5-year agreements, labeled with benchmark-year status, with the explicit
   caveat that benchmark-year status and tenure cannot be separated.
 
