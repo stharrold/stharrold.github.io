@@ -131,7 +131,9 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    (`Per_Capita_Exp_ALL_<e>_PY`, annualized in the files). For PY2019 the ACO's record in the PY2019 results file is
    used (12-month performance year or July-December period, whichever exists for that `ACO_ID`; never the
    January-June "2019A" file); if the ACO has no
-   PY2019 record, BY1 is omitted and the mean uses BY2-BY3. BY1 and BY2 are
+   PY2019 record, BY1 is omitted and the mean uses BY2-BY3 (a PY2019 record with a suppressed value for a type
+   counts as missing, section 3; a type with zero PY2021 share does not enter the benchmark, so its missing values do
+   not exclude the ACO). BY1 and BY2 are
    trended to BY3 (2021) dollars with the national-regional blend of 425.601(a)(5)(iv): growth factor =
    s x national growth + (1 - s) x regional growth for type e from the benchmark year to 2021, where regional growth
    uses the ACO's regional service area (step 2 weights), national growth uses the assignable-beneficiary-weighted
@@ -150,7 +152,8 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    renewals starting 2017-01-01 through 2019-01-01 (425.603(c)) and any agreement starting 2019-07-01 or later
    (425.601), counted from the distinct `current_start_date` values for the `ACO_ID` in the PY2016-PY2021 enrollment
    files (no regional adjustment existed before 2017); w = 35%/50%/50%/50% at steps 1-4+ if the
-   ACO's weighted spending is below its region and 15%/25%/35%/50% if above (425.601(f)(5)). Each type's adjustment is
+   ACO's share-weighted rebased spending (sum over types of rebased x PY2021 share) is below its share-weighted
+   regional spending (step 2) and 15%/25%/35%/50% if above (425.601(f)(5)). Each type's adjustment is
    capped at +/-5% of the national per-capita expenditure for that type in 2021, approximated by the assignable-
    beneficiary-weighted national mean in the county file.
 4. **Approximate new benchmark** = sum over types of (rebased + adjustment) x the ACO's PY2021 person-year share of
@@ -180,15 +183,16 @@ reset gain before H2a, H2b and H3 are estimated: the code reads PY2022 results o
 as the file is loaded, because its `Per_Capita_Exp_ALL_<e>_BY1`-`BY3` columns would show early renewers' actual
 rebased spending. The regional pull
 (step 6) uses no own-spending data, so it does not depend on validation; it is still reported only after the
-validation step. Reported overall and by phase-in step
-(step 3 of 4.3): Spearman correlation, median absolute percentage error, and the OLS slope and intercept of actual on
+validation step. Reported overall and by phase-in step (step 3 of 4.3; steps with at least 3 ACOs): Spearman correlation, median absolute percentage error, and the OLS slope and intercept of actual on
 approximate. The **validation error SD** (sigma_v in 5.4) is the standard deviation of 100 x (approximate - actual) /
 actual across these ACOs, after calibration if calibration is applied.
 
 **Pass:** Spearman correlation >= 0.80 and median absolute percentage error <= 5%, overall.
 - If it passes and the slope is within [0.9, 1.1]: the approximation is used as is.
 - If it passes and the slope is outside [0.9, 1.1]: the approximate new benchmark is calibrated with the validation
-  regression (actual = intercept + slope x approximate) before computing the gain and its components.
+  regression (actual = intercept + slope x approximate) before computing the gain and its components: the
+  intercept is assigned to the own-spending component and both components are multiplied by the slope, so they still
+  add to the gain; the regional pull is unchanged.
 - If it fails: H2a and the own-spending predictor in H3 are reported as exploratory with the validation result; H2b
   and H3 without the own-spending predictor remain confirmatory, since the regional pull does not use the
   approximation of the rebased benchmark. If the county-weighted regional spending itself cannot be checked (it has no
@@ -250,7 +254,9 @@ part of own-spending error. If the validation fails, the own-spending predictor 
 (section 7, rule 6).
 
 **Fitting:** PyMC (version pinned in `uv.lock`), NUTS, 4 chains of 2,000 tuning and 2,000 retained draws,
-target acceptance 0.95, seed fixed in code and recorded. **Convergence:** R-hat <= 1.01 and bulk and tail effective
+target acceptance 0.95, seed fixed in code and recorded; every refit below has its own seed from a fixed seed
+sequence, so results do not depend on the number of parallel processes. BASIC-track ACOs with no recorded BASIC level
+are excluded and counted. **Convergence:** R-hat <= 1.01 and bulk and tail effective
 sample size >= 400 for every coefficient, and no divergent transitions. If not met, the model is rerun once with 4,000
 retained draws and target acceptance 0.99; if still not met, the Bayesian results are reported as not converged and the
 Firth model (5.5, item 5), with the same direct-simulation test of its core coefficients (10,000 simulations),
@@ -284,7 +290,8 @@ that differs between the two priors flagged in the write-up.
 ### 5.5 Robustness (all reported)
 1. H1, H2a and H2b with PY2021 track/level and log assigned beneficiaries (`N_AB`, PY2020) added to the 5.3
    regressions.
-2. H1, H2a and H2b as differences in medians (Bayesian bootstrap and permutation test, as in 5.1).
+2. H1, H2a and H2b as differences in medians (Bayesian bootstrap for the interval; the permutation test uses the
+   observed difference in medians).
 3. 2020-01-01 cohort only.
 4. H1 for the PY2021 savings rate.
 5. H3 as a Firth-penalized logistic regression (`firthmodels`, version pinned in `uv.lock`) with the three core
@@ -307,13 +314,15 @@ that differs between the two priors flagged in the write-up.
 
 ## 6. Power analysis (run after registration, before any confirmatory estimate)
 Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 277 ACOs: MDE = 2.80 x SD x
-sqrt(1/29 + 1/277), about 0.55 SD of the variable, confirmed by simulating the stratified permutation test of 5.1
-(which, for the Bayesian bootstrap, is a permutation test of the difference in means). For H1 the
-SD comes from the cross-ACO standard deviation of `Sav_rate` in PY2016-PY2018 (years that play no part in the tests).
-For H2a and H2b the SD is not available before the variables are built; their MDEs are reported in SD units and,
-after validation, in percentage points. For H3, with the actual predictor values, outcomes are simulated
+sqrt(1/29 + 1/277), about 0.55 SD of the variable, with the group sizes as analyzed. For H1 the SD is the mean of the
+three yearly cross-ACO standard deviations of `Sav_rate` in PY2016-PY2018 (years that play no part in the tests), and
+the MDE is confirmed by simulating the stratified permutation test of 5.1 (which, for the Bayesian bootstrap, is a
+permutation test of the difference in means) on 1,000 normal datasets with 999 permutations each. For H2a and H2b
+the SD is not available before the variables are built; their MDEs are reported in SD units and, after validation,
+in percentage points using the SD among stayers. For H3, with the actual predictor values, outcomes are simulated
 with one core coefficient set to 0.5 (log-odds per 2 SD or per category) and all others 0, the intercept set to match
-the observed early-renewal share, 500 datasets per core predictor; reported: the share of datasets in which the 95%
+the observed early-renewal share, 500 datasets per core predictor, each fit with the reduced settings of 5.4;
+reported: the share of datasets in which the 95%
 credible interval excludes zero in the predicted direction, as an approximation of the direct-simulation test's
 power (running 10,000 MCMC refits per simulated dataset is not feasible), and the median interval width. Results are committed before any confirmatory estimate is computed.
 
