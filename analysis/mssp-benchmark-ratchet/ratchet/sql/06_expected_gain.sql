@@ -83,6 +83,8 @@ with acos as (
 )
 select
     a.aco_id, a.step, a.w,
+    case when a.ok then a.rebased_w end as rebased_w,
+    case when a.ok then a.adjustment_w end as adjustment_w,
     case when a.ok then a.rebased_w + a.adjustment_w end as new_bnchmk,
     r.updated_bnchmk as current_bnchmk,
     case when a.ok then 100 * (a.rebased_w + a.adjustment_w - r.updated_bnchmk) / r.updated_bnchmk end as gain,
