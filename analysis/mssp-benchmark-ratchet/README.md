@@ -50,5 +50,5 @@ workers, so roughly 19 hours; `--workers` sets the number of processes (default:
 
 ## Not yet implemented
 
-Section 5.3 covariate-adjusted Bayesian regressions; section 5.5 robustness items 1-4 and 6-8 (item 5, the Firth
+Section 5.3 covariate-adjusted Bayesian regressions; section 5.5 robustness items 1-4 and 6-9 (item 5, the Firth
 model, is implemented as the convergence fallback); section 5.6 exploratory analyses; the write-up figures.

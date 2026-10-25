@@ -10,16 +10,16 @@ wide as (
         year,
         cast(num(state_id) as integer) as state_id,
         cast(num(county_id) as integer) as county_id,
-        num(per_capita_exp_esrd) as pc_esrd, num(person_years_esrd) as py_esrd,
-        num(per_capita_exp_dis) as pc_dis, num(person_years_dis) as py_dis,
-        num(per_capita_exp_agdu) as pc_agdu, num(person_years_agdu) as py_agdu,
-        num(per_capita_exp_agnd) as pc_agnd, num(person_years_agnd) as py_agnd
+        num(per_capita_exp_esrd) as pc_esrd, num(person_years_esrd) as py_esrd, num(avg_risk_score_esrd) as rs_esrd,
+        num(per_capita_exp_dis) as pc_dis, num(person_years_dis) as py_dis, num(avg_risk_score_dis) as rs_dis,
+        num(per_capita_exp_agdu) as pc_agdu, num(person_years_agdu) as py_agdu, num(avg_risk_score_agdu) as rs_agdu,
+        num(per_capita_exp_agnd) as pc_agnd, num(person_years_agnd) as py_agnd, num(avg_risk_score_agnd) as rs_agnd
     from raw
 )
-select year, state_id, county_id, 'ESRD' as type, pc_esrd as pc, py_esrd as person_years from wide
-union all select year, state_id, county_id, 'DIS', pc_dis, py_dis from wide
-union all select year, state_id, county_id, 'AGDU', pc_agdu, py_agdu from wide
-union all select year, state_id, county_id, 'AGND', pc_agnd, py_agnd from wide;
+select year, state_id, county_id, 'ESRD' as type, pc_esrd as pc, py_esrd as person_years, rs_esrd as risk from wide
+union all select year, state_id, county_id, 'DIS', pc_dis, py_dis, rs_dis from wide
+union all select year, state_id, county_id, 'AGDU', pc_agdu, py_agdu, rs_agdu from wide
+union all select year, state_id, county_id, 'AGND', pc_agnd, py_agnd, rs_agnd from wide;
 
 -- National per-capita spending: assignable person-year weighted mean over counties with both values.
 create or replace table national as
@@ -44,12 +44,18 @@ union all select aco_id, state_id, county_id, tot_ab_psn_yrs, 'DIS', dis from wi
 union all select aco_id, state_id, county_id, tot_ab_psn_yrs, 'AGDU', agdu from wide
 union all select aco_id, state_id, county_id, tot_ab_psn_yrs, 'AGND', agnd from wide;
 
--- Regional service area spending by ACO, year and type: county spending weighted by the ACO's 2021 person-years of that type.
-create or replace table region as
-select a.aco_id, c.year, a.type, sum(a.ab_person_years * c.pc) / sum(a.ab_person_years) as pc
+-- Regional service area spending by ACO, year and type, weighting counties by the ACO's 2021 person-years of that type
+-- (425.601(d)): risk-standardized county spending, county spending / county mean risk score (425.601(c)(4)); the
+-- weighted mean county risk score (fallback when the ACO's own score is hidden); and unadjusted spending (robustness).
+create or replace table region_std as
+select
+    a.aco_id, c.year, a.type,
+    sum(a.ab_person_years * c.pc / c.risk) / sum(a.ab_person_years) as pc_std,
+    sum(a.ab_person_years * c.risk) / sum(a.ab_person_years) as risk,
+    sum(a.ab_person_years * c.pc) / sum(a.ab_person_years) as pc_unadjusted
 from assign as a
 join county as c using (state_id, county_id, type)
-where a.ab_person_years > 0 and c.pc is not null
+where a.ab_person_years > 0 and c.pc is not null and c.risk > 0
 group by a.aco_id, c.year, a.type;
 
 -- Share s of assignable beneficiaries (425.601(a)(5)(v)): sum over counties of (ACO person-years / county assignable

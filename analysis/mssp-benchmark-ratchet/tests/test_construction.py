@@ -15,7 +15,7 @@ def built(tmp_path_factory):
     return con, truth, merged
 
 
-@pytest.mark.parametrize("column", ["new_bnchmk", "gain", "own", "regional_comp", "pull", "w", "step"])
+@pytest.mark.parametrize("column", ["new_bnchmk", "gain", "own", "regional_comp", "pull", "pull_unadjusted", "w", "step"])
 def test_sql_matches_numpy(built, column):
     _, _, m = built
     sql, ref = m[f"{column}_sql"].astype(float), m[f"{column}_np"].astype(float)
@@ -86,3 +86,10 @@ def test_step1_error_recovered_and_used_for_model(tmp_path):
     result = validate.validate(build.connect(tmp_path, stage="full").sql("select * from validation").df())
     assert result["sigma_v_model_source"] == "step-1 check"
     assert 0.3 < result["sigma_v_model"] < 4.0 and result["sigma_v_model"] == result["step1"]["sigma_own"]
+
+
+def test_risk_adjustment_changes_pull(built):
+    """Regional spending is adjusted to the ACO's case mix (425.601(a)(8)(i)(C)), so pull differs from the unadjusted value."""
+    _, _, m = built
+    ok = m.pull_sql.notna()
+    assert np.mean(np.abs(m.pull_sql[ok] - m.pull_unadjusted_sql[ok])) > 1.0

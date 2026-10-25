@@ -24,15 +24,19 @@ select
     num(n_ab_year_dis_py) as py_dis,
     num(n_ab_year_aged_dual_py) as py_agdu,
     num(n_ab_year_aged_nondual_py) as py_agnd,
-    num(n_ab_year_py) as py_total
+    num(n_ab_year_py) as py_total,
+    num(cms_hcc_riskscore_esrd_py) as rs_esrd,
+    num(cms_hcc_riskscore_dis_py) as rs_dis,
+    num(cms_hcc_riskscore_agdu_py) as rs_agdu,
+    num(cms_hcc_riskscore_agnd_py) as rs_agnd
 from raw;
 
--- Per-capita expenditure by type (long), PY2019-PY2021 only (BY1-BY3 of a 2022 reset).
+-- Per-capita expenditure and mean prospective CMS-HCC risk score by type (long), PY2019-PY2021 (BY1-BY3 of a 2022 reset).
 create or replace table res_pc as
-select py, aco_id, 'ESRD' as type, pc_esrd as pc from res where py between 2019 and 2021
-union all select py, aco_id, 'DIS', pc_dis from res where py between 2019 and 2021
-union all select py, aco_id, 'AGDU', pc_agdu from res where py between 2019 and 2021
-union all select py, aco_id, 'AGND', pc_agnd from res where py between 2019 and 2021;
+select py, aco_id, 'ESRD' as type, pc_esrd as pc, rs_esrd as risk from res where py between 2019 and 2021
+union all select py, aco_id, 'DIS', pc_dis, rs_dis from res where py between 2019 and 2021
+union all select py, aco_id, 'AGDU', pc_agdu, rs_agdu from res where py between 2019 and 2021
+union all select py, aco_id, 'AGND', pc_agnd, rs_agnd from res where py between 2019 and 2021;
 
 -- PY2021 person-year share of each type (section 4.3 step 4). A single hidden type is recovered exactly as the total
 -- (N_AB_Year_PY) minus the other three; with two or more hidden, the shares are unknown and the ACO is excluded.
@@ -66,10 +70,14 @@ with wide as (
         num(per_capita_exp_all_esrd_by1) as esrd_1, num(per_capita_exp_all_esrd_by2) as esrd_2, num(per_capita_exp_all_esrd_by3) as esrd_3,
         num(per_capita_exp_all_dis_by1) as dis_1, num(per_capita_exp_all_dis_by2) as dis_2, num(per_capita_exp_all_dis_by3) as dis_3,
         num(per_capita_exp_all_agdu_by1) as agdu_1, num(per_capita_exp_all_agdu_by2) as agdu_2, num(per_capita_exp_all_agdu_by3) as agdu_3,
-        num(per_capita_exp_all_agnd_by1) as agnd_1, num(per_capita_exp_all_agnd_by2) as agnd_2, num(per_capita_exp_all_agnd_by3) as agnd_3
+        num(per_capita_exp_all_agnd_by1) as agnd_1, num(per_capita_exp_all_agnd_by2) as agnd_2, num(per_capita_exp_all_agnd_by3) as agnd_3,
+        num(cms_hcc_riskscore_esrd_by1) as rs_esrd_1, num(cms_hcc_riskscore_esrd_by2) as rs_esrd_2, num(cms_hcc_riskscore_esrd_by3) as rs_esrd_3,
+        num(cms_hcc_riskscore_dis_by1) as rs_dis_1, num(cms_hcc_riskscore_dis_by2) as rs_dis_2, num(cms_hcc_riskscore_dis_by3) as rs_dis_3,
+        num(cms_hcc_riskscore_agdu_by1) as rs_agdu_1, num(cms_hcc_riskscore_agdu_by2) as rs_agdu_2, num(cms_hcc_riskscore_agdu_by3) as rs_agdu_3,
+        num(cms_hcc_riskscore_agnd_by1) as rs_agnd_1, num(cms_hcc_riskscore_agnd_by2) as rs_agnd_2, num(cms_hcc_riskscore_agnd_by3) as rs_agnd_3
     from raw_results_2022
 )
-select aco_id, 'ESRD' as type, esrd_1 as by1, esrd_2 as by2, esrd_3 as by3 from wide
-union all select aco_id, 'DIS', dis_1, dis_2, dis_3 from wide
-union all select aco_id, 'AGDU', agdu_1, agdu_2, agdu_3 from wide
-union all select aco_id, 'AGND', agnd_1, agnd_2, agnd_3 from wide;
+select aco_id, 'ESRD' as type, esrd_1 as by1, esrd_2 as by2, esrd_3 as by3, rs_esrd_1 as rs1, rs_esrd_2 as rs2, rs_esrd_3 as rs3 from wide
+union all select aco_id, 'DIS', dis_1, dis_2, dis_3, rs_dis_1, rs_dis_2, rs_dis_3 from wide
+union all select aco_id, 'AGDU', agdu_1, agdu_2, agdu_3, rs_agdu_1, rs_agdu_2, rs_agdu_3 from wide
+union all select aco_id, 'AGND', agnd_1, agnd_2, agnd_3, rs_agnd_1, rs_agnd_2, rs_agnd_3 from wide;

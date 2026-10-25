@@ -31,8 +31,9 @@ with its current benchmark) and a **regional** part (the regional adjustment). T
 restatement of the savings rate, so a low savings rate and a positive own-spending gain are the same fact. The
 regional part, as an adjustment of the rebased benchmark toward the region, also contains the own-spending part with a
 negative sign (it equals w x regional pull - w x own-spending part, section 4.3 step 6), so it too is mechanically tied
-to the savings rate. The primary test therefore uses the **regional pull**: how far the region's spending sits above
-the ACO's current benchmark, with no own-spending term. An ACO can be beating its own benchmark and still stand to gain
+to the savings rate. The primary test therefore uses the **regional pull**: how far the region's spending, adjusted
+to the ACO's case mix as CMS adjusts it (4.3 step 2), sits above the ACO's current benchmark, with no own-spending
+term. An ACO can be beating its own benchmark and still stand to gain
 from a reset because its region spends more; that is the part of the reset motive the savings rate cannot show.
 
 - **H2b (primary):** Early renewers had a larger **regional pull** than stayers. Predicted sign: positive.
@@ -108,8 +109,9 @@ flagged as imputed: (1) a single hidden PY2021 person-year count for a type = th
 other three types (exact); (2) a type's per-capita spending hidden in some benchmark years = the mean of that type's
 trended spending over the years in which it is shown; (3) a type's spending hidden in every benchmark year = for each
 year, the region's spending for that type (4.3 step 2) times the ACO's own-to-region spending ratio that year over its
-types with positive share and spending shown, then trended and averaged as in step 1. A type with zero PY2021 share
-does not enter the benchmark, so its hidden values need no filling. Any ACO still missing a variable needed for an
+types with positive share and spending shown, then trended and averaged as in step 1; (4) a hidden ACO risk score
+for a type and year = no restatement of that year (4.3 step 1) and, in step 2, the region's weighted mean county risk
+score for that type in place of the ACO's. A type with zero PY2021 share does not enter the benchmark, so its hidden values need no filling. Any ACO still missing a variable needed for an
 analysis (for example, two or more hidden person-year counts) is excluded from that analysis and counted. The number
 of imputed ACOs is reported by group. If more than 10% of either compared group is excluded from the primary
 analysis, this is reported as a limitation.
@@ -140,20 +142,26 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    used (12-month performance year or July-December period, whichever exists for that `ACO_ID`; never the
    January-June "2019A" file); if the ACO has no
    PY2019 record, BY1 is omitted and the mean uses BY2-BY3 (PY2020 and PY2021 records are required; hidden values
-   within a record follow section 3). BY1 and BY2 are
+   within a record follow section 3). BY1 and BY2 are restated to BY3 case mix by multiplying by the ratio of the
+   ACO's PY2021 to that year's mean prospective CMS-HCC risk score for the type (`CMS_HCC_RiskScore_<e>_PY`;
+   425.601(a)(3)), and
    trended to BY3 (2021) dollars with the national-regional blend of 425.601(a)(5)(iv): growth factor =
    s x national growth + (1 - s) x regional growth for type e from the benchmark year to 2021, where regional growth
-   uses the ACO's regional service area (step 2 weights), national growth uses the assignable-beneficiary-weighted
+   uses the ACO's risk-standardized regional spending (step 2, before the case-mix adjustment), national growth uses the assignable-beneficiary-weighted
    national mean of the county file (`PER_CAPITA_EXP_<e>` weighted by `PERSON_YEARS_<e>`), and s, the ACO's share of
    assignable beneficiaries in its regional service area (425.601(a)(5)(v)), = sum over counties of (ACO assigned
    person-years in county, `Tot_AB_Psn_Yrs` / county assignable person-years, the sum over types of
    `PERSON_YEARS_<e>`), weighted by the ACO's share of its `Tot_AB_Psn_Yrs` in each county, from the 2021 files.
-2. **Regional service area spending, per type**, for BY3 = 2021: the mean of county per-capita expenditures for
-   assignable beneficiaries of type e (`PER_CAPITA_EXP_<e>`, county-level file, 2022-2023 starters version), weighted
-   by the ACO's assigned person-years of type e by county in 2021 (`AB_Psn_Yrs_<e>` in
+2. **Regional service area spending, per type**, for BY3 = 2021: county per-capita expenditures for assignable
+   beneficiaries of type e are risk-standardized by dividing by the county's mean risk score (`PER_CAPITA_EXP_<e>` /
+   `AVG_RISK_SCORE_<e>`, county-level file, 2022-2023 starters version; 425.601(c)(4)), averaged with weights equal to
+   the ACO's assigned person-years of type e by county in 2021 (`AB_Psn_Yrs_<e>` in
    `Number_Of_ACO_Assigned_Beneficiaries_by_County_PUF_2021_01_01.csv`, the 2021
    performance-year assignment, used as the BY3 proxy; true BY3 assignment uses the 2022 participant list, which is
-   not published).
+   not published; 425.601(d)), and multiplied by the ACO's PY2021 mean prospective CMS-HCC risk score for the type
+   (`CMS_HCC_RiskScore_<e>_PY`), adjusting the region to the ACO's case mix (425.601(a)(8)(i)(C)). The same
+   calculation for 2019 and 2020 (with that year's county file and the ACO's risk score for that year) is used only
+   in section 3, rule 3.
 3. **Regional adjustment, per type:** w x (regional - rebased), where w follows 425.601(f): the phase-in step for the
    2022 reset = 1 + the number of the ACO's earlier agreement periods whose benchmark was regionally adjusted, i.e.
    renewals starting 2017-01-01 through 2019-01-01 (425.603(c)) and any agreement starting 2019-07-01 or later
@@ -175,8 +183,9 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    the current benchmark but not on the ACO's own BY1-BY3 spending. Before capping and with one weight w for all
    types, regional component = w x regional pull - w x own-spending component.
 
-Steps that cannot be reproduced exactly from public data (risk adjustment and truncation details, assignment
-differences between performance and benchmark years, the national-regional growth blend) are approximated as stated;
+Steps that cannot be reproduced exactly from public data (risk-score renormalization and the exact case-mix
+adjustment, truncation details, assignment differences between performance and benchmark years, the national-regional
+growth blend) are approximated as stated;
 section 4.4 measures how good the approximation is before it is used.
 
 ### 4.4 Validation of the approximation (run before H2a, H2b and H3 are estimated)
@@ -195,8 +204,9 @@ approximate. The **validation error SD** is the standard deviation of 100 x (app
 these ACOs, after calibration if calibration is applied.
 
 **Step-1 check (own-spending part).** The PY2022 results file also reports, for these ACOs, CMS's own benchmark-year
-spending by type (`Per_Capita_Exp_ALL_<e>_BY1`-`BY3`, raw annualized per-capita spending under the 2022 participant
-list). Step 1 of 4.3 is recomputed from those values with the same trend factors and PY2021 shares (step 4), and compared with
+spending and risk scores by type (`Per_Capita_Exp_ALL_<e>_BY1`-`BY3`, raw annualized per-capita spending under the
+2022 participant list, and `CMS_HCC_RiskScore_<e>_BY1`-`BY3`). Step 1 of 4.3 is recomputed from those values with the
+same restatement (BY3 to BYx risk ratio), trend factors and PY2021 shares (step 4), and compared with
 the approximate rebased benchmark (after calibration, if applied): Spearman correlation, median absolute percentage
 error, OLS slope and intercept, and the **own-spending error SD** = the standard deviation of 100 x (approximate
 rebased - CMS rebased) / current benchmark, in percentage points of the current benchmark like the own-spending
@@ -317,6 +327,8 @@ that differs between the two priors flagged in the write-up.
 6. H2a and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3.
 7. The Bayesian H3 model with the own-spending component at its observed value (no measurement-error model).
 8. Complete cases: H2a, H3, the total gain and the regional component without the ACOs imputed under section 3.
+9. H2b and H3 with the regional pull computed from unadjusted county spending (no risk standardization or case-mix
+   adjustment), to show how much the case-mix adjustment matters.
 
 ### 5.6 Exploratory and descriptive (labeled as such in the write-up)
 - Census region (4 levels) added to the decision model.

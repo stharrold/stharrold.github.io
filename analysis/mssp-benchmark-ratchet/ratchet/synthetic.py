@@ -32,11 +32,14 @@ REQUIRED_COLUMNS = {
         "high_revenue_aco",
         "prospective_assignment",
     ],
-    "results_2022_by": [f"Per_Capita_Exp_ALL_{t}_BY{b}" for t in TYPES for b in (1, 2, 3)],
-    "results": ["ACO_ID", "Sav_rate", "N_AB", "UpdatedBnchmk", "HistBnchmk"] + [f"Per_Capita_Exp_ALL_{t}_PY" for t in TYPES] + list(RESULTS_SHARE_COLUMNS.values()),
+    "results_2022_by": [f"{c}_{t}_BY{b}" for c in ("Per_Capita_Exp_ALL", "CMS_HCC_RiskScore") for t in TYPES for b in (1, 2, 3)],
+    "results": ["ACO_ID", "Sav_rate", "N_AB", "UpdatedBnchmk", "HistBnchmk"]
+    + [f"Per_Capita_Exp_ALL_{t}_PY" for t in TYPES]
+    + [f"CMS_HCC_RiskScore_{t}_PY" for t in TYPES]
+    + list(RESULTS_SHARE_COLUMNS.values()),
     "results_aco_num": ["ACO_Num", "Sav_rate"],
     "results_2018": ["ACO_ID", "Sav_rate"],
-    "county": ["STATE_ID", "COUNTY_ID"] + [f"PER_CAPITA_EXP_{t}" for t in TYPES] + [f"PERSON_YEARS_{t}" for t in TYPES],
+    "county": ["STATE_ID", "COUNTY_ID"] + [f"PER_CAPITA_EXP_{t}" for t in TYPES] + [f"PERSON_YEARS_{t}" for t in TYPES] + [f"AVG_RISK_SCORE_{t}" for t in TYPES],
     "assignment": ["ACO_ID", "State_ID", "County_ID", "Tot_AB_Psn_Yrs"] + [f"AB_Psn_Yrs_{t}" for t in TYPES],
 }
 
@@ -75,6 +78,8 @@ def generate(
     county_py = {y: {t: TYPE_BASE_PY[t] * rng.lognormal(0, 0.4, n_c) for t in TYPES} for y in YEARS}
     county_ok = {y: {t: np.ones(n_c, bool) for t in TYPES} for y in YEARS}
     county_ok[2020]["ESRD"][7] = False  # one suppressed county cell
+    # County mean risk scores: higher-spending counties are somewhat sicker.
+    county_risk = {y: {t: np.sqrt(level) * rng.lognormal(0, 0.06, n_c) for t in TYPES} for y in YEARS}
 
     # ACOs.
     n19, n20 = n_base
@@ -103,17 +108,26 @@ def generate(
     py_hidden[unrecoverable, :2] = True
     shares_py[zero_share, 0] = 0.0
     ab[zero_share, :, 0] = 0.0
+    # Hidden ACO risk scores: 6 ESRD in PY2020 (that year unrestated); 7 ESRD in PY2021 (regional risk used instead).
+    aco_risk = rng.lognormal(0, 0.1, (n, len(YEARS), len(TYPES)))
+    risk_hidden = np.zeros((n, len(YEARS), len(TYPES)), bool)
+    risk_hidden[6, 1, 0] = True
+    risk_hidden[7, 2, 0] = True
 
-    # Own spending per year and type, relative to the region.
+    # Regional spending (425.601(c)-(d)): risk-standardized, the weighted county risk, and unadjusted.
     eff = rng.lognormal(-0.03, 0.08, n)
-    region = np.full((n, len(YEARS), len(TYPES)), np.nan)
+    region_std, reg_risk, region_raw = (np.full((n, len(YEARS), len(TYPES)), np.nan) for _ in range(3))
     for y_i, y in enumerate(YEARS):
         for k, t in enumerate(TYPES):
             ok = county_ok[y][t]
             wts = ab[:, :, k] * ok
             with np.errstate(invalid="ignore", divide="ignore"):
-                region[:, y_i, k] = (wts * np.where(ok, county_pc[y][t], 0)).sum(1) / wts.sum(1)
-    own = region * eff[:, None, None] * rng.lognormal(0, 0.03, region.shape)
+                region_std[:, y_i, k] = (wts * np.where(ok, county_pc[y][t] / county_risk[y][t], 0)).sum(1) / wts.sum(1)
+                reg_risk[:, y_i, k] = (wts * county_risk[y][t]).sum(1) / wts.sum(1)
+                region_raw[:, y_i, k] = (wts * np.where(ok, county_pc[y][t], 0)).sum(1) / wts.sum(1)
+    # Regional spending at the ACO's case mix (425.601(a)(8)(i)(C)); a hidden ACO score falls back to the regional score.
+    region = region_std * np.where(risk_hidden, reg_risk, aco_risk)
+    own = region_std * aco_risk * eff[:, None, None] * rng.lognormal(0, 0.03, region_std.shape)
     own[zero_share, :, 0] = np.nan  # suppressed, share zero
     own[some_hidden, 1, 0] = np.nan
     own[all_hidden, :, 0] = np.nan
@@ -136,7 +150,7 @@ def generate(
     factor = np.empty((n, len(YEARS), len(TYPES)))
     for k, t in enumerate(TYPES):
         for y_i, y in enumerate(YEARS):
-            factor[:, y_i, k] = s * national[2021][t] / national[y][t] + (1 - s) * region[:, 2, k] / region[:, y_i, k]
+            factor[:, y_i, k] = s * national[2021][t] / national[y][t] + (1 - s) * region_std[:, 2, k] / region_std[:, y_i, k]
     record = np.ones((n, len(YEARS)), bool)
     record[~has_py2019, 0] = False
     pos = share > 0
@@ -147,14 +161,19 @@ def generate(
         ratio = np.where(valid, share[:, None, :] * np.nan_to_num(own), 0).sum(2) / np.where(valid, share[:, None, :] * np.nan_to_num(region), 0).sum(2)
     n_shown = shown.sum(1)
     filled = np.where(n_shown[:, None, :] > 0, own, region * ratio[:, :, None])
-    trended = np.where(record[:, :, None], filled * factor, np.nan)
+    # BY1-BY2 restated to BY3 case mix (425.601(a)(3)); a hidden score in that year or PY2021 leaves the year unrestated.
+    restate_missing = risk_hidden | risk_hidden[:, 2:3, :]
+    restate = np.where(restate_missing, 1.0, aco_risk[:, 2:3, :] / aco_risk)
+    trended = np.where(record[:, :, None], filled * factor * restate, np.nan)
     with np.errstate(invalid="ignore"), warnings.catch_warnings():
         warnings.simplefilter("ignore", RuntimeWarning)
         rebased = np.nanmean(trended, axis=1)
-    imputed = (pos & ((n_shown == 0) | (record[:, :, None] & np.isnan(own)).any(1))).any(1) | py_hidden.any(1)
+    hidden_own = (record[:, :, None] & (np.isnan(own) | restate_missing)).any(1)
+    imputed = (pos & ((n_shown == 0) | hidden_own | risk_hidden[:, 2, :])).any(1) | py_hidden.any(1)
     nat21 = np.array([national[2021][t] for t in TYPES])
     reb_w = np.where(pos, share * np.nan_to_num(rebased), 0).sum(1)
     reg_w = np.where(pos, share * np.nan_to_num(region[:, 2, :]), 0).sum(1)
+    reg_raw_w = np.where(pos, share * np.nan_to_num(region_raw[:, 2, :]), 0).sum(1)
     w_below = np.where(step == 1, 0.35, 0.50)
     w_above = np.select([step == 1, step == 2, step == 3], [0.15, 0.25, 0.35], 0.50)
     w = np.where(reb_w < reg_w, w_below, w_above)
@@ -179,6 +198,7 @@ def generate(
             "own": np.where(ok_all, 100 * (reb_w - current) / current, np.nan),
             "regional_comp": np.where(ok_all, 100 * adj_w / current, np.nan),
             "pull": np.where(shares_known, 100 * (reg_w - current) / current, np.nan),
+            "pull_unadjusted": np.where(shares_known, 100 * (reg_raw_w - current) / current, np.nan),
             "imputed": imputed & shares_known,
             "any_cap": capped.any(1),
             "has_py2019": has_py2019,
@@ -204,14 +224,14 @@ def generate(
 
     _write_enrollment(out_dir, acos)
     cms_by = own * rng.lognormal(0.0, by_noise, own.shape) if by_noise > 0 else own
-    _write_results(out_dir, acos, own, cms_by, shares_py, py_hidden, current, hist_2022, rng)
-    _write_county(out_dir, states, counties, county_pc, county_py, county_ok)
+    _write_results(out_dir, acos, own, cms_by, shares_py, py_hidden, aco_risk, risk_hidden, current, hist_2022, rng)
+    _write_county(out_dir, states, counties, county_pc, county_py, county_ok, county_risk)
     _write_assignment(out_dir, ids, states, counties, ab)
     return Truth(
         acos=acos,
         unrecoverable=ids[unrecoverable],
         zero_share=ids[zero_share],
-        imputed_ids=[ids[some_hidden], ids[all_hidden], ids[share_hidden]],
+        imputed_ids=[ids[some_hidden], ids[all_hidden], ids[share_hidden], ids[6], ids[7]],
         early_ids=list(acos.aco_id[early]),
     )
 
@@ -270,7 +290,7 @@ def _write_enrollment(out_dir: Path, acos: pd.DataFrame) -> None:
         pd.DataFrame(rows).to_csv(out_dir / config.ENROLLMENT_FILES[f], index=False, encoding="latin-1")
 
 
-def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py_hidden, current, hist_2022, rng) -> None:
+def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py_hidden, aco_risk, risk_hidden, current, hist_2022, rng) -> None:
     def fmt(x: float) -> str:
         return "*" if np.isnan(x) else f"{x:.6f}"
 
@@ -296,25 +316,28 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py
                 for k, t in enumerate(TYPES):
                     for b in (1, 2, 3):
                         row[f"Per_Capita_Exp_ALL_{t}_BY{b}"] = "-999999" if a.kind != "valid" else fmt(cms_by[i, b - 1, k])
+                        row[f"CMS_HCC_RiskScore_{t}_BY{b}"] = "-999999" if a.kind != "valid" else fmt(aco_risk[i, b - 1, k])
             else:
                 row["HistBnchmk"] = fmt(current[i] * 0.95)
             y_i = year - 2019
             for k, t in enumerate(TYPES):
                 row[f"Per_Capita_Exp_ALL_{t}_PY"] = fmt(own[i, y_i, k]) if 0 <= y_i <= 2 else "1000"
+                hidden = 0 <= y_i <= 2 and risk_hidden[i, y_i, k]
+                row[f"CMS_HCC_RiskScore_{t}_PY"] = "*" if hidden else fmt(aco_risk[i, y_i, k]) if 0 <= y_i <= 2 else "1.0"
                 row[RESULTS_SHARE_COLUMNS[t]] = "*" if year == 2021 and py_hidden[i, k] else f"{shares_py[i, k]:.1f}"
             row["N_AB_Year_PY"] = f"{np.round(shares_py[i], 1).sum():.1f}"
             rows.append(row)
         pd.DataFrame(rows).to_csv(out_dir / name, index=False, encoding="latin-1")
 
 
-def _write_county(out_dir: Path, states, counties, county_pc, county_py, county_ok) -> None:
+def _write_county(out_dir: Path, states, counties, county_pc, county_py, county_ok, county_risk) -> None:
     for year, name in config.COUNTY_FILES.items():
         df = pd.DataFrame(
             {"YEAR": year, "STATE_NAME": [f"State {s}" for s in states], "COUNTY_NAME": [f"County {c}" for c in counties], "STATE_ID": states, "COUNTY_ID": counties}
         )
         for t in TYPES:
             df[f"PER_CAPITA_EXP_{t}"] = [f"{v:.4f}" if ok else "*" for v, ok in zip(county_pc[year][t], county_ok[year][t], strict=True)]
-            df[f"AVG_RISK_SCORE_{t}"] = "1.0"
+            df[f"AVG_RISK_SCORE_{t}"] = [f"{v:.6f}" for v in county_risk[year][t]]
             df[f"PERSON_YEARS_{t}"] = [f"{v:.2f}" for v in county_py[year][t]]
         df.to_csv(out_dir / name, index=False, encoding="latin-1")
 
