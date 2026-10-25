@@ -1,6 +1,8 @@
 """Command-line runner. Stages run in the order the plan fixes, enforced by the files each stage needs:
 
     enrollment -> validate (results/validation.json) -> power (results/power.json) -> confirm (results/confirm.json)
+    robustness (results/robustness.json; after power) and exploratory (results/exploratory.json; after confirm, because
+    it reads the full PY2022 file)
 
 Usage (from the repository root):
     uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py <stage> [--data-dir DIR] [--out-dir DIR]
@@ -23,7 +25,7 @@ if __package__ in (None, ""):
 
 import numpy as np  # noqa: E402
 
-from ratchet import build, config, decision, power, resample, snapshot, validate  # noqa: E402
+from ratchet import build, config, decision, exploratory, power, resample, robustness, snapshot, validate  # noqa: E402
 
 QUICK = {
     "n_resamples": 50,
@@ -44,7 +46,7 @@ def _metadata(data_dir: Path, settings: dict) -> dict:
         "git_commit": commit,
         "synthetic": snapshot.is_synthetic(data_dir),
         "seed": config.SEED,
-        "settings": {k: (v.__dict__ if isinstance(v, decision.Settings) else v) for k, v in settings.items()},
+        "settings": {k: (v.__dict__ if isinstance(v, decision.Settings) else str(v) if isinstance(v, Path) else v) for k, v in settings.items()},
         "versions": {p: version(p) for p in ("duckdb", "pymc", "numpy", "pandas", "scipy", "firthmodels")},
     }
 
@@ -136,7 +138,34 @@ def stage_confirm(con, out_dir, settings, meta):
     _write(out_dir, "confirm.json", {**meta, "validation_passed": validation["passed"], "imputed_by_group": imputed, "groups": groups, "h3": h3})
 
 
-STAGES = {"enrollment": stage_enrollment, "validate": stage_validate, "power": stage_power, "confirm": stage_confirm}
+def stage_robustness(con, out_dir, settings, meta):
+    validation = _read(out_dir, "validation.json")
+    frame = _frames(con, validation)
+    by23 = _frames(build.connect(settings["data_dir"], stage="full", by_first=2020), validation)
+    _write(out_dir, "robustness.json", {**meta, **robustness.run_all(frame, by23, validation, settings, config.SEED)})
+
+
+def stage_exploratory(con, out_dir, settings, meta):
+    validation = _read(out_dir, "validation.json")
+    spending = con.sql("select * from spending_by_agreement_year").df()
+    _write(out_dir, "exploratory.json", {**meta, **exploratory.run_all(_frames(con, validation), spending, validation, settings, config.SEED)})
+
+
+STAGES = {
+    "enrollment": stage_enrollment,
+    "validate": stage_validate,
+    "power": stage_power,
+    "confirm": stage_confirm,
+    "robustness": stage_robustness,
+    "exploratory": stage_exploratory,
+}
+# Files each stage needs, checked before any data are loaded (the plan fixes the order).
+REQUIRES = {
+    "power": ("validation.json",),
+    "confirm": ("validation.json", "power.json"),
+    "robustness": ("validation.json", "power.json"),
+    "exploratory": ("validation.json", "power.json", "confirm.json"),
+}
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -152,8 +181,10 @@ def main(argv: list[str] | None = None) -> None:
         raise SystemExit("--quick is allowed only for synthetic data; real data use the registered settings")
     if synthetic and args.out_dir == config.RESULTS_DIR:
         raise SystemExit("synthetic runs must write elsewhere than results/ (pass --out-dir)")
-    settings = dict(QUICK if args.quick else REGISTERED, workers=args.workers, quick=args.quick)
-    con = build.connect(args.data_dir, stage="enrollment" if args.stage == "enrollment" else "full")
+    settings = dict(QUICK if args.quick else REGISTERED, workers=args.workers, quick=args.quick, data_dir=args.data_dir)
+    for name in REQUIRES.get(args.stage, ()):
+        _read(args.out_dir, name)
+    con = build.connect(args.data_dir, stage="enrollment" if args.stage == "enrollment" else "full", descriptive=args.stage == "exploratory")
     np.seterr(all="ignore")
     STAGES[args.stage](con, args.out_dir, settings, _metadata(args.data_dir, settings))
     print(f"{args.stage}: wrote {args.out_dir}")

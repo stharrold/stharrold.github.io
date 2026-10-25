@@ -24,6 +24,8 @@ Stages run in the order the plan fixes, and each refuses to start until the prev
 
 ```text
 enrollment -> validate (results/validation.json) -> power (results/power.json) -> confirm (results/confirm.json)
+robustness (results/robustness.json, section 5.5; after power)
+exploratory (results/exploratory.json, section 5.6; after confirm, because it reads the full PY2022 file)
 ```
 
 **Outcome lock.** Every file is hashed before it is read. A results, county-spending or county-assignment file that
@@ -36,7 +38,7 @@ computes the constructed variables independently in numpy so the SQL can be chec
 ```bash
 uv run --group analysis python -c "import sys; sys.path.insert(0, 'analysis/mssp-benchmark-ratchet'); \
   from pathlib import Path; from ratchet import synthetic; synthetic.generate(Path('/tmp/ratchet-syn'), seed=7)"
-for stage in validate power confirm; do
+for stage in validate power confirm robustness exploratory; do
   uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py $stage \
     --data-dir /tmp/ratchet-syn --out-dir /tmp/ratchet-syn-out --quick
 done
@@ -46,9 +48,9 @@ done
 
 **Runtime with registered settings.** The confirm stage runs about 40,000 MCMC refits (10,000 per core predictor in
 H3, plus 10,000 for the overall test). Measured on synthetic data of the same size: about 1.7 s per refit with 5
-workers, so roughly 19 hours; `--workers` sets the number of processes (default: half the cores).
+workers, so roughly 19 hours; `--workers` sets the number of processes (default: half the cores). The robustness and
+exploratory stages fit about a dozen models each and take minutes.
 
 ## Not yet implemented
 
-Section 5.3 covariate-adjusted Bayesian regressions; section 5.5 robustness items 1-4 and 6-9 (item 5, the Firth
-model, is implemented as the convergence fallback); section 5.6 exploratory analyses; the write-up figures.
+The write-up figures. Every analysis in sections 4-6 of the plan is implemented and tested on synthetic data.

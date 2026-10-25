@@ -346,7 +346,7 @@ Exploratory analyses use the same estimators as above (Bayesian bootstrap and pe
 H3 posterior summaries only).
 - Census region (4 levels: the region with the largest share of the ACO's 2021 assigned person-years, from
   `State_Name` in the county assignment file) added to the decision model as 3 centered indicators with Normal(0, 1)
-  priors.
+  priors, Northeast as the reference; ACOs with no region (territories) are excluded from this model and counted.
 - Leavers (28): PY2020 savings rate, regional pull and both gain components, in the same tables.
 - The 2 early renewers already in ENHANCED in PY2021, whose renewal could not change their sharing rate: savings rate,
   regional pull and both gain components, reported individually against the stayer distribution.

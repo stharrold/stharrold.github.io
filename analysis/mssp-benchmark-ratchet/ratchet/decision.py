@@ -55,11 +55,12 @@ class Design:
     excluded: dict = field(default_factory=dict)
 
 
-def make_design(frame: pd.DataFrame, sigma_v: float | None, include_own: bool = True) -> Design:
+def make_design(frame: pd.DataFrame, sigma_v: float | None, include_own: bool = True, exclude: tuple[str, ...] = (), extra: tuple[str, ...] = ()) -> Design:
     """BASIC-track early renewers and stayers with every predictor present (section 5.4). Continuous predictors are
     centered and divided by 2 SD; binary predictors are centered (Gelman 2008). sigma_v=None uses own spending as
-    observed (no measurement-error layer)."""
-    predictors = tuple(p for p in CORE + ADJUSTMENT if include_own or p != "own")
+    observed (no measurement-error layer). `exclude` drops predictors (e.g. cohort in a one-cohort sample); `extra`
+    adds binary columns of `frame` as further adjustment predictors (e.g. census region indicators)."""
+    predictors = tuple(p for p in CORE + ADJUSTMENT + extra if (include_own or p != "own") and p not in exclude)
     sample = frame[frame.basic.astype(bool) & frame.grp.isin(["early", "stayer"])].copy()
     sample["cohort_2020"] = (sample.cohort == "2020-01").astype(float)
     needed = [p for p in predictors]
