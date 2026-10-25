@@ -86,11 +86,12 @@ def make_design(frame: pd.DataFrame, sigma_v: float | None, include_own: bool = 
 
 
 def build_model(design: Design, drop: str | None = None, prior: str = "normal", keep_eta: bool = False) -> pm.Model:
-    """Logistic regression with Normal(0, 1) (or Student-t(3, 0, 2.5)) coefficient priors and Normal(0, 2.5) intercept."""
+    """Logistic regression with Normal(0, 1) (or Student-t(3, 0, 2.5)) coefficient priors and a Normal(-2.2, 1) intercept."""
     n = design.y.size
     with pm.Model() as model:
         y = pm.Data("y", design.y)
-        eta = pm.Normal("intercept", 0, 2.5)
+        # Centered predictors: the intercept is the log-odds at average values; prior centered at a 10% share.
+        eta = pm.Normal("intercept", -2.2, 1)
         for name in design.predictors:
             if name == drop:
                 continue

@@ -67,3 +67,19 @@ def test_analysis_frame(built):
     assert len(frame) == truth.acos.grp.notna().sum()
     assert frame.sav_rate_2021.notna().all()  # PY2021 spells Sav_Rate
     assert build.scalar(con, "select count(*) from res where py between 2016 and 2018 and aco_id is null") == 0  # ACO_Num years
+
+
+def test_step1_check_matches_when_cms_values_equal_ours(built):
+    con, _, _ = built
+    v = con.sql("select * from validation").df()
+    np.testing.assert_allclose(v.rebased_cms, v.rebased_approximate, rtol=1e-6)
+    assert build.scalar(con, "select count(*) from cms_by where by1 < 0 or by2 < 0 or by3 < 0") == 0  # early renewers' rows never loaded
+
+
+def test_step1_error_recovered_and_used_for_model(tmp_path):
+    from ratchet import validate
+
+    synthetic.generate(tmp_path, seed=2, by_noise=0.03, hist_noise=0.02)
+    result = validate.validate(build.connect(tmp_path, stage="full").sql("select * from validation").df())
+    assert result["sigma_v_model_source"] == "step-1 check"
+    assert 0.3 < result["sigma_v_model"] < 4.0 and result["sigma_v_model"] == result["step1"]["sigma_own"]

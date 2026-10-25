@@ -18,7 +18,9 @@ left join expected_gain as e using (aco_id);
 
 -- Validation (section 4.4): approximate new benchmark vs PY2022 HistBnchmk, regular renewers only.
 create or replace table validation as
-select v.aco_id, e.step, e.new_bnchmk as approximate, r.hist_bnchmk as actual
+select v.aco_id, e.step, e.new_bnchmk as approximate, r.hist_bnchmk as actual,
+    e.rebased_w as rebased_approximate, c.rebased_w as rebased_cms, e.current_bnchmk
 from validation_sample as v
 left join expected_gain as e using (aco_id)
+left join rebased_cms as c using (aco_id)
 left join (select aco_id, hist_bnchmk from res where py = 2022) as r using (aco_id);

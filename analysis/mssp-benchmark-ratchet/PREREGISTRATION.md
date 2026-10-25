@@ -184,8 +184,17 @@ as the file is loaded, because its `Per_Capita_Exp_ALL_<e>_BY1`-`BY3` columns wo
 rebased spending. The regional pull
 (step 6) uses no own-spending data, so it does not depend on validation; it is still reported only after the
 validation step. Reported overall and by phase-in step (step 3 of 4.3; steps with at least 3 ACOs): Spearman correlation, median absolute percentage error, and the OLS slope and intercept of actual on
-approximate. The **validation error SD** (sigma_v in 5.4) is the standard deviation of 100 x (approximate - actual) /
-actual across these ACOs, after calibration if calibration is applied.
+approximate. The **validation error SD** is the standard deviation of 100 x (approximate - actual) / actual across
+these ACOs, after calibration if calibration is applied.
+
+**Step-1 check (own-spending part).** The PY2022 results file also reports, for these ACOs, CMS's own benchmark-year
+spending by type (`Per_Capita_Exp_ALL_<e>_BY1`-`BY3`, raw annualized per-capita spending under the 2022 participant
+list). Step 1 of 4.3 is recomputed from those values with the same trend factors and PY2021 shares (step 4), and compared with
+the approximate rebased benchmark (after calibration, if applied): Spearman correlation, median absolute percentage
+error, OLS slope and intercept, and the **own-spending error SD** = the standard deviation of 100 x (approximate
+rebased - CMS rebased) / current benchmark, in percentage points of the current benchmark like the own-spending
+component. This check is reported and does not change the pass rule above. sigma_v in 5.4 is the own-spending error
+SD if at least 30 ACOs have complete values for this check, and otherwise the validation error SD.
 
 **Pass:** Spearman correlation >= 0.80 and median absolute percentage error <= 5%, overall.
 - If it passes and the slope is within [0.9, 1.1]: the approximation is used as is.
@@ -241,16 +250,17 @@ excluded and counted (section 3).
 
 Continuous predictors are centered and divided by 2 standard deviations, binary predictors are centered (Gelman 2008),
 so each coefficient is a log-odds difference per 2 SD or per category. **Priors:** Normal(0, 1) on each coefficient
-(about 95% of prior odds ratios between 1/7 and 7); Normal(0, 2.5) on the intercept. With 27 events and 9 parameters
+(about 95% of prior odds ratios between 1/7 and 7); Normal(-2.2, 1) on the intercept, which, with centered
+predictors, is the log-odds of early renewal at average predictor values, centered at a 10% share (29 of 306 compared
+ACOs renewed early, known from the enrollment data). With 27 events and 9 parameters
 the priors, not the data alone, keep the estimates stable, so prior sensitivity is reported (below).
 
 **Measurement error in the own-spending component:** if the validation (4.4) passes, the own-spending component enters
-as a latent true value: observed = true + error, error ~ Normal(0, sigma_v), with sigma_v fixed at the validation error
-SD (4.4); true values ~ Normal(mu, tau), mu ~ Normal(0, 10), tau ~ HalfNormal(10) (percentage points). The latent value
+as a latent true value: observed = true + error, error ~ Normal(0, sigma_v), with sigma_v fixed as stated in 4.4
+(the own-spending error SD from the step-1 check); true values ~ Normal(mu, tau), mu ~ Normal(0, 10), tau ~ HalfNormal(10) (percentage points). The latent value
 is scaled with the observed variable's mean and 2 SD, and the latent values use a non-centered parameterization.
-sigma_v measures the error of the whole approximate benchmark (rebased plus regional adjustment), because the rebased
-part alone has no published counterpart; using it for the own-spending component treats regional-adjustment error as
-part of own-spending error. If the validation fails, the own-spending predictor is dropped
+If the step-1 check falls back to the validation error SD (4.4), that SD covers the whole approximate benchmark, so it
+treats regional-adjustment error as part of own-spending error; the write-up says so. If the validation fails, the own-spending predictor is dropped
 (section 7, rule 6).
 
 **Fitting:** PyMC (version pinned in `uv.lock`), NUTS, 4 chains of 2,000 tuning and 2,000 retained draws,
@@ -350,3 +360,6 @@ deviations from registered analyses.
 ## 9. Registration record
 Kept in `REGISTRATION.md` (not here, so this file's hash does not change): the OSF Registries link, the OSF timestamp,
 and the sha256 of this file exactly as registered. The registration is made public immediately, with no embargo.
+The analysis code (`ratchet/`, `tests/`, tested on synthetic data before registration) is attached to the
+registration as a zip of this directory at the registered git commit; `REGISTRATION.md` records the commit and the
+zip's sha256, and any later change to the code is a deviation.

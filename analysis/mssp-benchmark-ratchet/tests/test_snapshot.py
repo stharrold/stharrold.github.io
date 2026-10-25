@@ -48,6 +48,7 @@ def test_real_headers_have_every_column_the_sql_reads():
         "results": [config.RESULTS_FILES[y] for y in (2019, 2020, 2021, 2022)],
         "results_aco_num": [config.RESULTS_FILES[2016], config.RESULTS_FILES[2017]],
         "results_2018": [config.RESULTS_FILES[2018]],
+        "results_2022_by": [config.RESULTS_FILES[2022]],
         "county": list(config.COUNTY_FILES.values()),
         "assignment": [config.ASSIGNMENT_FILE],
         "enrollment_2021": [config.ENROLLMENT_FILES["2021"], config.ENROLLMENT_FILES["2022"]],

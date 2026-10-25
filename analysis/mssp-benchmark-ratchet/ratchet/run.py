@@ -92,7 +92,7 @@ def stage_power(con, out_dir, settings, meta):
     for name in ("pull", "own"):
         sd = float(stayers[name].std())
         out["h2"][name] = {"sd_stayers": sd, "mde_sd_units": power.mde(1.0, early.sum(), (~early).sum()), "mde": power.mde(sd, early.sum(), (~early).sum())}
-    design = decision.make_design(frame, validation["sigma_v"] if validation["passed"] else None, include_own=validation["passed"])
+    design = decision.make_design(frame, validation["sigma_v_model"] if validation["passed"] else None, include_own=validation["passed"])
     out["h3"] = power.h3_precision(design, settings["power_datasets"], config.SEED, settings=settings["reduced"], workers=settings["workers"])
     _write(out_dir, "power.json", {**meta, **out})
 
@@ -115,7 +115,7 @@ def stage_confirm(con, out_dir, settings, meta):
     ):
         groups[label] = resample.compare(compared[column].to_numpy(), early, cohort, n, config.SEED)
     groups["H2a_own"]["exploratory"] = not validation["passed"]
-    design = decision.make_design(frame, validation["sigma_v"] if validation["passed"] else None, include_own=validation["passed"])
+    design = decision.make_design(frame, validation["sigma_v_model"] if validation["passed"] else None, include_own=validation["passed"])
     idata, checks = decision.fit_checked(design, config.SEED, full=settings["full"], retry=settings["retry"], cores=min(4, settings["workers"]))
     names = decision.coefficient_names(design)
     h3 = {"sample": {"n": int(design.y.size), "early": int(design.y.sum()), "excluded": design.excluded}, "convergence": checks}

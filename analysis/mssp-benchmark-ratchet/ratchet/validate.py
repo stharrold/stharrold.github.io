@@ -5,6 +5,7 @@ import pandas as pd
 from scipy import stats
 
 SPEARMAN_MIN, MAPE_MAX, SLOPE_RANGE = 0.80, 5.0, (0.9, 1.1)
+STEP1_MIN_N = 30  # below this, the model uses the whole-benchmark error SD (section 4.4)
 
 
 def _metrics(approximate: np.ndarray, actual: np.ndarray) -> dict:
@@ -19,7 +20,8 @@ def _metrics(approximate: np.ndarray, actual: np.ndarray) -> dict:
 
 
 def validate(frame: pd.DataFrame) -> dict:
-    """`frame` has columns approximate, actual, step (the `validation` table). Rows missing either value are dropped."""
+    """`frame` is the `validation` table: approximate, actual, step, and for the step-1 check rebased_approximate and
+    rebased_cms. Rows missing a needed value are dropped from that check and counted."""
     ok = frame.dropna(subset=["approximate", "actual"])
     overall = _metrics(ok.approximate.to_numpy(), ok.actual.to_numpy())
     by_step = {int(s): _metrics(g.approximate.to_numpy(), g.actual.to_numpy()) for s, g in ok.groupby("step") if len(g) >= 3}
@@ -28,6 +30,15 @@ def validate(frame: pd.DataFrame) -> dict:
     a, b = (overall["intercept"], overall["slope"]) if calibrate else (0.0, 1.0)
     approx_cal = a + b * ok.approximate.to_numpy()
     sigma_v = float(np.std(100 * (approx_cal - ok.actual.to_numpy()) / ok.actual.to_numpy(), ddof=1))
+    # Step-1 check: own-spending part against CMS's benchmark-year spending, after the same calibration.
+    # Error in percentage points of the current benchmark, the scale of the own-spending component.
+    s1 = frame.dropna(subset=["rebased_approximate", "rebased_cms", "current_bnchmk"]) if "rebased_cms" in frame else frame.iloc[:0]
+    step1 = None
+    if len(s1) >= 3:
+        reb_cal = a + b * s1.rebased_approximate.to_numpy()
+        step1 = _metrics(s1.rebased_approximate.to_numpy(), s1.rebased_cms.to_numpy())
+        step1["sigma_own"] = float(np.std(100 * (reb_cal - s1.rebased_cms.to_numpy()) / s1.current_bnchmk.to_numpy(), ddof=1))
+    use_step1 = step1 is not None and step1["n"] >= STEP1_MIN_N
     return {
         "excluded": int(len(frame) - len(ok)),
         "overall": overall,
@@ -36,6 +47,10 @@ def validate(frame: pd.DataFrame) -> dict:
         "calibrated": bool(calibrate),
         "calibration": {"intercept": a, "slope": b},
         "sigma_v": sigma_v,
+        "step1": step1,
+        "step1_excluded": int(len(frame) - len(s1)),
+        "sigma_v_model": step1["sigma_own"] if use_step1 else sigma_v,
+        "sigma_v_model_source": "step-1 check" if use_step1 else "whole-benchmark check",
     }
 
 
