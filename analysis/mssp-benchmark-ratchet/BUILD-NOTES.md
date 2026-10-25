@@ -98,3 +98,11 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   any post-period spending is seen. Threats stated up front: selection on recent spending (mean reversion), few
   COVID-era pre-periods, and a bundled treatment (reset + ENHANCED + a change in which years count as benchmark years).
 - Registration paused with a private OSF draft until H4 is specified, coded and tested.
+- Scope review against what the post should demonstrate: methods and tools are added only where they are the right
+  tool for the question. For #73: difference-in-differences with propensity weighting (H4), dbt for the SQL pipeline
+  (before registering, since the code is registered), and an interactive dashboard in the write-up (after results).
+  Fine-tuning and A/B testing of configurations went to #74 instead, where they fit; synthetic DiD was left out
+  (no maintained Python implementation, only two pre-periods).
+- Enrollment check for the DiD control group (enrollment data only): of 277 stayers, 42 renewed into 2023 or 2024
+  agreements and 72 left by 2024; of 29 early renewers, 3 renewed again in 2024 and 1 left. Design choice:
+  "not-yet-renewed" comparison ACOs, censored at any later renewal (Callaway and Sant'Anna's not-yet-treated idea).
