@@ -102,9 +102,17 @@ January 1, 2020 run 5 years (42 CFR 425.200(b)(4)(ii), (b)(5)), so both end Dece
 these cohorts is an early renewal (425.20, "renewing ACO" (2)).
 
 Early renewers are compared with stayers; leavers are reported descriptively. ACOs are linked across files by
-`ACO_ID`. An ACO missing a variable needed for an analysis (including suppressed values) is excluded from that analysis
-and counted; non-numeric cells (such as suppression markers) are read as missing. If more than 10% of either compared
-group is excluded from the primary analysis, this is reported as a limitation.
+`ACO_ID`. Non-numeric cells (such as suppression markers; the results files are CMS's suppressed versions) are read
+as missing. **Hidden values in the expected-gain construction (4.3)** are filled, in this order, and the ACO is
+flagged as imputed: (1) a single hidden PY2021 person-year count for a type = the total (`N_AB_Year_PY`) minus the
+other three types (exact); (2) a type's per-capita spending hidden in some benchmark years = the mean of that type's
+trended spending over the years in which it is shown; (3) a type's spending hidden in every benchmark year = for each
+year, the region's spending for that type (4.3 step 2) times the ACO's own-to-region spending ratio that year over its
+types with positive share and spending shown, then trended and averaged as in step 1. A type with zero PY2021 share
+does not enter the benchmark, so its hidden values need no filling. Any ACO still missing a variable needed for an
+analysis (for example, two or more hidden person-year counts) is excluded from that analysis and counted. The number
+of imputed ACOs is reported by group. If more than 10% of either compared group is excluded from the primary
+analysis, this is reported as a limitation.
 
 ## 4. Variables
 
@@ -131,9 +139,8 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    (`Per_Capita_Exp_ALL_<e>_PY`, annualized in the files). For PY2019 the ACO's record in the PY2019 results file is
    used (12-month performance year or July-December period, whichever exists for that `ACO_ID`; never the
    January-June "2019A" file); if the ACO has no
-   PY2019 record, BY1 is omitted and the mean uses BY2-BY3 (a PY2019 record with a suppressed value for a type
-   counts as missing, section 3; a type with zero PY2021 share does not enter the benchmark, so its missing values do
-   not exclude the ACO). BY1 and BY2 are
+   PY2019 record, BY1 is omitted and the mean uses BY2-BY3 (PY2020 and PY2021 records are required; hidden values
+   within a record follow section 3). BY1 and BY2 are
    trended to BY3 (2021) dollars with the national-regional blend of 425.601(a)(5)(iv): growth factor =
    s x national growth + (1 - s) x regional growth for type e from the benchmark year to 2021, where regional growth
    uses the ACO's regional service area (step 2 weights), national growth uses the assignable-beneficiary-weighted
@@ -157,7 +164,7 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    capped at +/-5% of the national per-capita expenditure for that type in 2021, approximated by the assignable-
    beneficiary-weighted national mean in the county file.
 4. **Approximate new benchmark** = sum over types of (rebased + adjustment) x the ACO's PY2021 person-year share of
-   that type (`N_AB_Year_<e>_PY`).
+   that type (`N_AB_Year_<e>_PY`, with a single hidden count recovered as in section 3).
 5. **Expected gain (%)** = 100 x (approximate new benchmark - current benchmark) / current benchmark, where current
    benchmark = the PY2021 per-capita updated benchmark (`UpdatedBnchmk`, already per capita in the files). Both are in
    2021 dollars. **Components:** own-spending component = 100 x (sum over types of rebased x share - current) /
@@ -309,6 +316,7 @@ that differs between the two priors flagged in the write-up.
    profile-likelihood 95% intervals.
 6. H2a and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3.
 7. The Bayesian H3 model with the own-spending component at its observed value (no measurement-error model).
+8. Complete cases: H2a, H3, the total gain and the regional component without the ACOs imputed under section 3.
 
 ### 5.6 Exploratory and descriptive (labeled as such in the write-up)
 - Census region (4 levels) added to the decision model.

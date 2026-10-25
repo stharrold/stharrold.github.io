@@ -8,6 +8,7 @@ early-renewer rows in the PY2022 results file that the loader must drop.
 `generate` also computes section 4.3 independently in numpy, so tests can compare the SQL against it.
 """
 
+import warnings
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -49,8 +50,9 @@ class Truth:
     """Ground truth for the synthetic snapshot."""
 
     acos: pd.DataFrame  # one row per ACO: kind, cohort, group, step, and the section 4.3 quantities
-    excluded_suppressed: str  # ACO whose ESRD spending is suppressed while its ESRD share is positive
+    unrecoverable: str  # ACO with two hidden person-year types: shares unknown, so it is excluded
     zero_share: str  # ACO with zero ESRD share and suppressed ESRD spending (must still be constructed)
+    imputed_ids: list[str] = field(default_factory=list)  # hidden values filled by the section 3 rules
     early_ids: list[str] = field(default_factory=list)
 
 
@@ -93,7 +95,12 @@ def generate(
         for k, t in enumerate(TYPES):
             ab[i, chosen, k] = np.round(TYPE_BASE_PY[t] * 0.2 * rng.lognormal(0, 0.5, len(chosen)), 1)
     shares_py = ab.sum(axis=1)  # PY2021 person-years by type, consistent with assignment
-    zero_share, excluded_suppressed = 1, 2
+    # Suppression cases (section 3): 1 zero ESRD share; 2 ESRD hidden in PY2020 only (rule 2); 3 ESRD hidden in every
+    # year (rule 3); 4 ESRD person-years hidden (recovered from the total); 5 two person-year types hidden (excluded).
+    zero_share, some_hidden, all_hidden, share_hidden, unrecoverable = 1, 2, 3, 4, 5
+    py_hidden = np.zeros((n, len(TYPES)), bool)
+    py_hidden[share_hidden, 0] = True
+    py_hidden[unrecoverable, :2] = True
     shares_py[zero_share, 0] = 0.0
     ab[zero_share, :, 0] = 0.0
 
@@ -108,7 +115,8 @@ def generate(
                 region[:, y_i, k] = (wts * np.where(ok, county_pc[y][t], 0)).sum(1) / wts.sum(1)
     own = region * eff[:, None, None] * rng.lognormal(0, 0.03, region.shape)
     own[zero_share, :, 0] = np.nan  # suppressed, share zero
-    own[excluded_suppressed, 2, 0] = np.nan  # suppressed in PY2021, share positive -> excluded
+    own[some_hidden, 1, 0] = np.nan
+    own[all_hidden, :, 0] = np.nan
     has_py2019 = ~((kind == "base20") & (prior == "new")) & (kind != "other")
 
     # Current (PY2021 updated) benchmark: own spending shifted by the ACO's ratchet position.
@@ -125,16 +133,26 @@ def generate(
     tot = ab.sum(2)
     county_total_2021 = sum(county_py[2021][t] for t in TYPES)
     s = (tot * (tot / county_total_2021)).sum(1) / tot.sum(1)
-    rebased = np.full((n, len(TYPES)), np.nan)
+    factor = np.empty((n, len(YEARS), len(TYPES)))
     for k, t in enumerate(TYPES):
-        trended = []
         for y_i, y in enumerate(YEARS):
-            factor = s * national[2021][t] / national[y][t] + (1 - s) * region[:, 2, k] / region[:, y_i, k]
-            trended.append(own[:, y_i, k] * factor)
-        trended = np.array(trended)
-        rebased[:, k] = np.where(has_py2019, trended.mean(0), trended[1:].mean(0))
-    nat21 = np.array([national[2021][t] for t in TYPES])
+            factor[:, y_i, k] = s * national[2021][t] / national[y][t] + (1 - s) * region[:, 2, k] / region[:, y_i, k]
+    record = np.ones((n, len(YEARS)), bool)
+    record[~has_py2019, 0] = False
     pos = share > 0
+    shown = ~np.isnan(own) & record[:, :, None]
+    # Rule 3 ratio: own-to-region over shown types with positive share, per ACO and year.
+    valid = shown & pos[:, None, :] & ~np.isnan(region)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        ratio = np.where(valid, share[:, None, :] * np.nan_to_num(own), 0).sum(2) / np.where(valid, share[:, None, :] * np.nan_to_num(region), 0).sum(2)
+    n_shown = shown.sum(1)
+    filled = np.where(n_shown[:, None, :] > 0, own, region * ratio[:, :, None])
+    trended = np.where(record[:, :, None], filled * factor, np.nan)
+    with np.errstate(invalid="ignore"), warnings.catch_warnings():
+        warnings.simplefilter("ignore", RuntimeWarning)
+        rebased = np.nanmean(trended, axis=1)
+    imputed = (pos & ((n_shown == 0) | (record[:, :, None] & np.isnan(own)).any(1))).any(1) | py_hidden.any(1)
+    nat21 = np.array([national[2021][t] for t in TYPES])
     reb_w = np.where(pos, share * np.nan_to_num(rebased), 0).sum(1)
     reg_w = np.where(pos, share * np.nan_to_num(region[:, 2, :]), 0).sum(1)
     w_below = np.where(step == 1, 0.35, 0.50)
@@ -143,7 +161,8 @@ def generate(
     raw_adj = w[:, None] * (region[:, 2, :] - rebased)
     adj = np.clip(raw_adj, -0.05 * nat21, 0.05 * nat21)
     capped = (np.abs(raw_adj) > 0.05 * nat21) & pos
-    ok_all = np.all(~pos | (~np.isnan(rebased) & ~np.isnan(region[:, 2, :])), axis=1)
+    shares_known = py_hidden.sum(1) <= 1
+    ok_all = np.all(~pos | (~np.isnan(rebased) & ~np.isnan(region[:, 2, :])), axis=1) & shares_known
     adj_w = np.where(pos, share * np.nan_to_num(adj), 0).sum(1)
     new = np.where(ok_all, reb_w + adj_w, np.nan)
     acos = pd.DataFrame(
@@ -159,7 +178,8 @@ def generate(
             "gain": np.where(ok_all, 100 * (new - current) / current, np.nan),
             "own": np.where(ok_all, 100 * (reb_w - current) / current, np.nan),
             "regional_comp": np.where(ok_all, 100 * adj_w / current, np.nan),
-            "pull": 100 * (reg_w - current) / current,
+            "pull": np.where(shares_known, 100 * (reg_w - current) / current, np.nan),
+            "imputed": imputed & shares_known,
             "any_cap": capped.any(1),
             "has_py2019": has_py2019,
         }
@@ -184,10 +204,16 @@ def generate(
 
     _write_enrollment(out_dir, acos)
     cms_by = own * rng.lognormal(0.0, by_noise, own.shape) if by_noise > 0 else own
-    _write_results(out_dir, acos, own, cms_by, shares_py, current, hist_2022, rng)
+    _write_results(out_dir, acos, own, cms_by, shares_py, py_hidden, current, hist_2022, rng)
     _write_county(out_dir, states, counties, county_pc, county_py, county_ok)
     _write_assignment(out_dir, ids, states, counties, ab)
-    return Truth(acos=acos, excluded_suppressed=ids[excluded_suppressed], zero_share=ids[zero_share], early_ids=list(acos.aco_id[early]))
+    return Truth(
+        acos=acos,
+        unrecoverable=ids[unrecoverable],
+        zero_share=ids[zero_share],
+        imputed_ids=[ids[some_hidden], ids[all_hidden], ids[share_hidden]],
+        early_ids=list(acos.aco_id[early]),
+    )
 
 
 def _enrollment_rows(a: pd.Series) -> dict[str, tuple[int, int]]:
@@ -244,7 +270,7 @@ def _write_enrollment(out_dir: Path, acos: pd.DataFrame) -> None:
         pd.DataFrame(rows).to_csv(out_dir / config.ENROLLMENT_FILES[f], index=False, encoding="latin-1")
 
 
-def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, current, hist_2022, rng) -> None:
+def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py_hidden, current, hist_2022, rng) -> None:
     def fmt(x: float) -> str:
         return "*" if np.isnan(x) else f"{x:.6f}"
 
@@ -275,8 +301,8 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, cu
             y_i = year - 2019
             for k, t in enumerate(TYPES):
                 row[f"Per_Capita_Exp_ALL_{t}_PY"] = fmt(own[i, y_i, k]) if 0 <= y_i <= 2 else "1000"
-                row[RESULTS_SHARE_COLUMNS[t]] = f"{shares_py[i, k]:.1f}"
-            row["N_AB_Year_PY"] = f"{shares_py[i].sum():.1f}"
+                row[RESULTS_SHARE_COLUMNS[t]] = "*" if year == 2021 and py_hidden[i, k] else f"{shares_py[i, k]:.1f}"
+            row["N_AB_Year_PY"] = f"{np.round(shares_py[i], 1).sum():.1f}"
             rows.append(row)
         pd.DataFrame(rows).to_csv(out_dir / name, index=False, encoding="latin-1")
 

@@ -132,7 +132,8 @@ def stage_confirm(con, out_dir, settings, meta):
         h3["overall_test"] = decision.overall_test(design, n, config.SEED, reduced=settings["reduced"], workers=settings["workers"])
     else:
         h3["fallback_firth"] = decision.firth_fallback(frame, n, config.SEED)
-    _write(out_dir, "confirm.json", {**meta, "validation_passed": validation["passed"], "groups": groups, "h3": h3})
+    imputed = compared.groupby("grp").imputed.apply(lambda x: int(x.fillna(False).astype(bool).sum())).to_dict()
+    _write(out_dir, "confirm.json", {**meta, "validation_passed": validation["passed"], "imputed_by_group": imputed, "groups": groups, "h3": h3})
 
 
 STAGES = {"enrollment": stage_enrollment, "validate": stage_validate, "power": stage_power, "confirm": stage_confirm}

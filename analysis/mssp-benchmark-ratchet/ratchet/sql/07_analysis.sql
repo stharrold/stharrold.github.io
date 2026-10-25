@@ -10,7 +10,7 @@ select
     r21.sav_rate as sav_rate_2021,
     ln(r20.n_ab) as log_n_ab_2020,
     e.step, e.w, e.gain, e.own, e.regional_comp, e.pull,
-    e.rebased_w, e.adjustment_w, e.current_bnchmk
+    e.rebased_w, e.adjustment_w, e.current_bnchmk, e.imputed
 from groups as g
 left join (select * from res where py = 2020) as r20 using (aco_id)
 left join (select * from res where py = 2021) as r21 using (aco_id)

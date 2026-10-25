@@ -38,12 +38,15 @@ def test_regional_component_identity_before_caps(built):
     np.testing.assert_allclose(m.regional_comp_sql[free], (m.w_sql * (m.pull_sql - m.own_sql))[free], atol=1e-6)
 
 
-def test_missing_rules(built):
+def test_suppression_rules(built):
+    """Section 3: hidden values are filled by the fallback rules and flagged; unknown shares exclude the ACO."""
     _, truth, m = built
     row = m.set_index("aco_id")
-    assert np.isnan(row.loc[truth.excluded_suppressed, "gain_sql"])  # positive share, suppressed spending
-    assert not np.isnan(row.loc[truth.excluded_suppressed, "pull_sql"])  # pull does not use own spending
-    assert not np.isnan(row.loc[truth.zero_share, "gain_sql"])  # zero share: suppressed spending is irrelevant
+    for aco in truth.imputed_ids:
+        assert not np.isnan(row.loc[aco, "gain_sql"]) and row.loc[aco, "imputed_sql"]
+    assert np.isnan(row.loc[truth.unrecoverable, "gain_sql"]) and np.isnan(row.loc[truth.unrecoverable, "pull_sql"])
+    assert not np.isnan(row.loc[truth.zero_share, "gain_sql"]) and not row.loc[truth.zero_share, "imputed_sql"]
+    assert (m.imputed_sql.fillna(False) == m.imputed_np).all()
 
 
 def test_early_renewers_never_loaded_from_py2022(built):
