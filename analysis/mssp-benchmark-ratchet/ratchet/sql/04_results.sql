@@ -25,6 +25,7 @@ select
     num(n_ab_year_aged_dual_py) as py_agdu,
     num(n_ab_year_aged_nondual_py) as py_agnd,
     num(n_ab_year_py) as py_total,
+    num(per_capita_exp_total_py) as pc_total,
     num(cms_hcc_riskscore_esrd_py) as rs_esrd,
     num(cms_hcc_riskscore_dis_py) as rs_dis,
     num(cms_hcc_riskscore_agdu_py) as rs_agdu,

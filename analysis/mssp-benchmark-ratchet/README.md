@@ -25,7 +25,9 @@ Stages run in the order the plan fixes, and each refuses to start until the prev
 ```text
 enrollment -> validate (results/validation.json) -> power (results/power.json) -> confirm (results/confirm.json)
 robustness (results/robustness.json, section 5.5; after power)
-exploratory (results/exploratory.json, section 5.6; after confirm, because it reads the full PY2022 file)
+did (results/did.json, H4 and its checks, section 5.8; after confirm, because it reads the full PY2022 file)
+conventional (results/conventional.json, section 5.7; after did)
+exploratory (results/exploratory.json, section 5.6; after confirm)
 ```
 
 **Outcome lock.** Every file is hashed before it is read. A results, county-spending or county-assignment file that
@@ -38,7 +40,7 @@ computes the constructed variables independently in numpy so the SQL can be chec
 ```bash
 uv run --group analysis python -c "import sys; sys.path.insert(0, 'analysis/mssp-benchmark-ratchet'); \
   from pathlib import Path; from ratchet import synthetic; synthetic.generate(Path('/tmp/ratchet-syn'), seed=7)"
-for stage in validate power confirm robustness exploratory; do
+for stage in validate power confirm robustness did conventional exploratory; do
   uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py $stage \
     --data-dir /tmp/ratchet-syn --out-dir /tmp/ratchet-syn-out --quick
 done

@@ -12,6 +12,8 @@ STAGES = {
     "power": ["h1", "h2", "h3"],
     "confirm": ["groups", "h3", "imputed_by_group"],
     "robustness": [f"{i}_" for i in range(1, 10)],
+    "did": ["H4", "pre_trend_check", "attrition", "robustness", "conventional"],
+    "conventional": ["H1", "H2a", "H2b", "H3_logit", "agreement"],
     "exploratory": [
         "census_region_in_h3",
         "leavers",

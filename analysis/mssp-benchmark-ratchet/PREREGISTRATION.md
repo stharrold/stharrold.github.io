@@ -19,9 +19,11 @@ benchmark; the further below, the more a reset lowers it. ACOs may end an agreem
 one (a "renewing ACO", 42 CFR 425.20), which resets the benchmark early. Renewing is also the only way for a BASIC-track
 ACO to enter the ENHANCED track, which shares 75% of savings and losses.
 
-### 1.2 Research question
-Among ACOs in agreement periods that began July 1, 2019 or January 1, 2020, why did some renew early into a
-January 1, 2022 agreement while others stayed in their agreement?
+### 1.2 Research questions
+Among ACOs in agreement periods that began July 1, 2019 or January 1, 2020:
+1. Why did some renew early into a January 1, 2022 agreement while others stayed in their agreement (H1-H3)?
+2. Did renewing early change the early renewers' per-capita spending in PY2022-PY2024, relative to ACOs that had not
+   yet renewed (H4)?
 
 ### 1.3 Hypotheses
 Two motives can lead an ACO to renew early: the **reset motive** (a new benchmark would be higher) and the
@@ -46,14 +48,29 @@ from a reset because its region spends more; that is the part of the reset motiv
   are estimated with no predicted direction. Section 5.4.
 - **H1 (pre-registered, descriptive context):** Difference in PY2020 savings rate, early renewers minus stayers,
   two-sided, with no motive attributed to its sign. Repeated for PY2021, the year of the decision.
+- **H4 (effect of early renewal, difference-in-differences):** The change in log per-capita spending from PY2020-PY2021
+  to PY2022-PY2024 differs between early renewers and ACOs that had not yet renewed. Two-sided, with no predicted sign:
+  the stronger incentives of ENHANCED would lower spending, but mean reversion after high recent spending would also
+  lower it without any effect of renewal, and the change in which years count toward the next benchmark (1.4) has no
+  clear direction. H4 is interpreted as an effect only if the pre-trend check passes (section 7). Section 5.8.
 
-Exploratory: section 5.6.
+Comparison with conventional methods: section 5.7. Exploratory: section 5.6.
 
 ### 1.4 What this is and is not
-An analysis of **who chose to reset and why**, not of the causal effect of renewing. Associations with pre-decision
-characteristics are interpreted as evidence about motives, not as effects. The question "does spending change once an
+H1-H3 analyze **who chose to reset and why**: associations with pre-decision characteristics are interpreted as
+evidence about motives, not as effects. H4 estimates the **effect of the early-renewal package** on spending under the
+difference-in-differences assumption that, absent renewal, early renewers' log spending would have changed like that
+of ACOs not yet renewed. The package is bundled: a new benchmark, for almost all a move to ENHANCED, and a change in
+which years count toward the next benchmark (for early renewers PY2022-PY2024 are the first years of a new
+agreement; for the comparison ACOs they are the last years of the old one, which become benchmark years of the next).
+H4 cannot separate these parts. Assignment-method changes happen with and without renewal (2 of 29 early renewers and
+14 of 277 stayers changed at PY2022 in the enrollment files) and are not treated as part of the package. The main
+threat to H4 is selection on the outcome's own path: if early renewers renewed after unusually high spending (H2a),
+their spending could fall afterwards by mean reversion alone; the pre-trend check (5.8) is the defense, and it rests
+on one pre-period change (PY2020 to PY2021, both COVID-affected years). The question "does spending change once an
 ACO's years start counting toward its next benchmark?" is not identifiable in these data (benchmark-year status is
-collinear with agreement tenure; `DESIGN-NOTES.md` 4.4) and is reported only descriptively. In the enrollment files no
+collinear with agreement tenure; `DESIGN-NOTES.md` 4.4) and is reported only descriptively; H4 compares ACOs of the
+same tenure, so this collinearity does not apply to it. In the enrollment files no
 stayer moved to ENHANCED, and 26 of the 27 early renewers that were in BASIC in PY2021 entered ENHANCED, so the reset
 and sharing-rate motives are bundled in one choice. The regional pull (H2b) is the part of the analysis that
 bears on the reset motive without being a mechanical function of past savings; no test here can rule the sharing-rate motive in or out.
@@ -63,17 +80,17 @@ bears on the reset motive without being a mechanical function of past savings; n
 ### 2.1 Sources
 CMS Medicare Shared Savings Program public use files (data.cms.gov, public data only):
 - **Performance Year Financial and Quality Results:** PY2019 (July-December period), PY2020, PY2021 (outcomes and
-  benchmark inputs); PY2022 (validation of the benchmark approximation, section 4.4); PY2016-PY2018 (power analysis
-  only).
+  benchmark inputs); PY2022 (validation of the benchmark approximation, section 4.4, and, read in full only after
+  the H1-H3 results are written, the H4 outcome); PY2023 and PY2024 (H4 outcome and the descriptive table of 5.6);
+  PY2016-PY2018 (power analysis only).
 - **Accountable Care Organizations** enrollment files, PY2021 and PY2022 (groups, risk levels, validation sample);
-  PY2016-PY2020, including both PY2019 files (agreement history for the phase-in step, section 4.3 step 3).
+  PY2016-PY2020, including both PY2019 files (agreement history for the phase-in step, section 4.3 step 3); PY2023
+  and PY2024 (agreement status in the H4 post-period, section 4.5).
 - **County-level Aggregate Expenditure and Risk Score Data on Assignable Beneficiaries**, calendar years 2019, 2020,
   2021, the versions published for 2022-2023 starters (`FFS_Data_for_SSP_CRB_PUF_<year>_01_01_Cal_Year_Assignable_
   2022_2023_Starters.csv`) (regional spending).
 - **Number of ACO Assigned Beneficiaries by County**, 2021 (each ACO's regional service area in BY3, and its share s
   of assignable beneficiaries, section 4.3; census region, section 5.6).
-- **Performance Year Financial and Quality Results**, PY2023 and PY2024: only for the descriptive spending-by-
-  agreement-year table (section 5.6).
 
 Exact files, sizes, sha256 hashes and URLs: `data-snapshot.tsv` (downloaded 2026-10-22). The manifest also lists files
 not used here, retained from the design stage. The pipeline verifies every hash before reading.
@@ -228,11 +245,31 @@ SD if at least 30 ACOs have complete values for this check, and otherwise the va
   approximation of the rebased benchmark. If the county-weighted regional spending itself cannot be checked (it has no
   published counterpart), this is stated as a limitation.
 
+### 4.5 Spending panel for H4
+For early renewers and stayers (section 3), the outcome is y = ln(`Per_Capita_Exp_TOTAL_PY`) (annualized, truncated
+per-capita expenditures of assigned beneficiaries) in PY2020-PY2024. PY2019 is not used: it is a July-December period
+for the 2019-07-01 cohort and absent for ACOs new in 2020. A year is **included** if the ACO has a results record for
+it and, by that year's enrollment file, is in the agreement that defines its group: the original 2019-07-01 or
+2020-01-01 agreement in PY2020-PY2021 for everyone; in PY2022-PY2024 the 2022-01-01 agreement for early renewers and
+the original agreement for stayers. A stayer's years after it renews into a 2023 or 2024 agreement, and an early
+renewer's years after a second renewal, are excluded (comparison ACOs are those **not yet renewed**). By the
+enrollment files, 42 stayers renewed into 2023 or 2024 agreements and 72 left the program during PY2022-PY2024, and 3
+early renewers renewed again in 2024 and 1 left; attrition is reported by group and year.
+
+- **Change:** Delta = mean of y over the included post years (PY2022-PY2024, at least one) - mean of y in PY2020 and
+  PY2021 (both required).
+- **Pre-trend change:** Delta_pre = y(PY2021) - y(PY2020).
+- **Risk-adjusted variant:** per-capita spending divided by the ACO's mean prospective risk score for that year,
+  weighted by its person-year shares (`N_AB_Year_<e>_PY` / `N_AB_Year_PY` times `CMS_HCC_RiskScore_<e>_PY`, summed over
+  types); a year with a hidden value for a type with positive share is not included in this variant.
+- **Balanced variant:** ACOs with all five years included.
+
 ## 5. Analysis plan
 
 **Approach:** every confirmatory estimate is Bayesian; significance is measured by resampling. Each confirmatory quantity is
 summarized by its posterior mean, 95% equal-tailed credible interval, and posterior probability of a positive value.
-For the group comparisons (H1, H2a, H2b) its **significance** is a stratified permutation test of the posterior mean: early-renewer labels are shuffled within
+For the group comparisons (H1, H2a, H2b, H4 and its pre-trend check) its **significance** is a stratified
+permutation test of the posterior mean: early-renewer labels are shuffled within
 cohort (predictors fixed), the same estimation procedure is rerun on each shuffled dataset, and the two-sided p-value is
 (1 + number of shuffles with |posterior mean| >= |observed|) / (1 + number of shuffles), with 10,000 shuffles for every
 test; the core predictors of H3 use direct simulation instead (5.4). **The resampling p-value decides** (section 7); when it and the credible interval disagree, both are reported
@@ -284,7 +321,7 @@ as a latent true value: observed = true + error, error ~ Normal(0, sigma_v), wit
 is scaled with the observed variable's mean and 2 SD, and the latent values use a non-centered parameterization.
 If the step-1 check falls back to the validation error SD (4.4), that SD covers the whole approximate benchmark, so it
 treats regional-adjustment error as part of own-spending error; the write-up says so. If the validation fails, the own-spending predictor is dropped
-(section 7, rule 6).
+(section 7, rule 7).
 
 **Fitting:** PyMC (version pinned in `uv.lock`), NUTS, 4 chains of 2,000 tuning and 2,000 retained draws,
 target acceptance 0.95, seed fixed in code and recorded; every refit below has its own seed from a fixed seed
@@ -335,7 +372,7 @@ confirmatory model (5.4) and the Firth model (item 5). Robustness results do not
    predictors and cohort only (about 7 events per parameter), own-spending component at its observed value;
    profile-likelihood 95% intervals and the direct-simulation test of 5.4 (10,000 simulations). Its complete-case
    sample uses only these predictors; if the validation fails, the own-spending predictor is dropped here too (section
-   7, rule 6). Always run; it also serves as the convergence fallback of 5.4.
+   7, rule 7). Always run; it also serves as the convergence fallback of 5.4.
 6. H2a and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3, with the main validation's calibration and
    sigma_v (not re-validated).
 7. The Bayesian H3 model with the own-spending component at its observed value (no measurement-error model).
@@ -365,6 +402,38 @@ H3 posterior summaries only).
   out of a 2020 agreement are shown separately. This table reads the full PY2022 results file, so it is computed only after the
   confirmatory results (5.1-5.4) have been written.
 
+### 5.7 Comparison with conventional methods (reported, not used for decisions)
+- **H1, H2a, H2b:** Welch two-sample t-test (difference, 95% CI, p); OLS of the variable on early-renewer and cohort
+  indicators with HC2 robust standard errors; the same OLS adding PY2021 track/level indicators and log assigned
+  beneficiaries (as in 5.5 item 1).
+- **H3:** maximum-likelihood logistic regression with the 5.4 predictors and scaling, own-spending component as
+  observed (dropped if validation fails); odds ratios with Wald 95% CIs and p-values. With about 27 events it may not
+  converge or may separate; that is reported, not repaired.
+- **H4:** two-way fixed-effects OLS of y on early renewer x post (PY2022-PY2024) with ACO and cohort-by-year fixed
+  effects on the included panel (4.5), standard errors clustered by ACO; and an event study replacing early renewer x
+  post with early renewer x year for PY2020, PY2022, PY2023 and PY2024 (PY2021 reference).
+- **Agreement table:** for each confirmatory claim (H2b, H2a, the three H3 core predictors, H4), the section 7 verdict
+  next to the conventional one (OLS with HC2 errors for H2a and H2b, maximum-likelihood logistic for H3, two-way fixed
+  effects for H4: p < 0.05 in a direction, or undetermined). Disagreements are reported and discussed; they do not
+  change the decisions.
+
+### 5.8 H4: effect of early renewal on spending (difference-in-differences)
+**Estimate and significance:** as 5.1 applied to Delta (4.5): within-cohort difference in mean Delta, early renewers
+minus comparison ACOs, weighted by early renewers per cohort; Bayesian bootstrap posterior; stratified permutation
+test, 10,000 shuffles. Because y is a log, 100 x (exp(estimate) - 1) is reported as the percent difference in spending
+growth. **Pre-trend check:** the same estimator and test applied to Delta_pre. **Robustness (reported):**
+1. Risk-adjusted outcome (4.5).
+2. Balanced panel (4.5).
+3. Propensity-score-weighted difference-in-differences: logistic regression of early renewal on cohort, y(PY2021),
+   Delta_pre, log assigned beneficiaries (PY2020) and PY2021 track/level indicators; comparison ACOs weighted by
+   p / (1 - p), early renewers by 1; estimate = mean Delta of early renewers - weighted mean Delta of comparison ACOs;
+   significance by stratified permutation with the propensity model refit on each shuffle (10,000). The largest
+   weight is reported.
+4. 2020-01-01 cohort only.
+
+H4 reads the full PY2022 results file and the PY2023-PY2024 files, so it is computed only after the 5.1-5.4 results
+are written; its MDE (section 6) is computed before, from pre-period data.
+
 ## 6. Power analysis (run after registration, before any confirmatory estimate)
 Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 277 ACOs: MDE = 2.80 x SD x
 sqrt(1/29 + 1/277), about 0.55 SD of the variable, with the group sizes as analyzed. For H1 the SD is the mean of the
@@ -377,7 +446,10 @@ with one core coefficient set to 0.5 (log-odds per 2 SD or per category) and all
 the observed early-renewal share, 500 datasets per core predictor, each fit with the reduced settings of 5.4;
 reported: the share of datasets in which the 95%
 credible interval excludes zero in the predicted direction, as an approximation of the direct-simulation test's
-power (running 10,000 MCMC refits per simulated dataset is not feasible), and the median interval width. Results are committed before any confirmatory estimate is computed.
+power (running 10,000 MCMC refits per simulated dataset is not feasible), and the median interval width. For H4
+the SD is the standard deviation of Delta_pre (4.5) among the compared ACOs, pre-period data only, with the group
+sizes of ACOs having both pre-period years included. Results are committed before any confirmatory estimate is
+computed.
 
 ## 7. Decision rules (fixed before seeing results)
 1. **H2b (primary):** p < 0.05 and positive: "early renewers' regions spent more relative to their current
@@ -389,12 +461,18 @@ power (running 10,000 MCMC refits per simulated dataset is not feasible), and th
    attributed to the sign.
 4. **H3:** each core predictor's direction is supported, contradicted, or undetermined by its direct-simulation
    p-value (5.4); adjustment factors are estimates only.
-5. **p-values** in rules 1-4 are two-sided resampling p-values with 10,000 resamples: stratified permutation for H1,
-   H2a and H2b (section 5), direct simulation under the reduced model for H3 (5.4).
-6. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b stands,
+5. **H4:** p < 0.05 and negative: "early renewers' spending grew less after renewing than that of ACOs not yet
+   renewed"; p < 0.05 and positive: "grew more"; otherwise "no detectable difference", with the 95% credible interval
+   and the MDE. It is interpreted as an effect of the early-renewal package (1.4) only if the pre-trend check gives
+   p >= 0.05; if the check gives p < 0.05, H4 is reported as a difference in spending changes, not an effect. H4 does
+   not change the conclusions of H1-H3.
+6. **p-values** in rules 1-5 are two-sided resampling p-values with 10,000 resamples: stratified permutation for H1,
+   H2a, H2b, H4 and its pre-trend check (section 5), direct simulation under the reduced model for H3 (5.4).
+7. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b stands,
    and H3 is refit without the own-spending predictor, with its other rules unchanged.
-7. Every result describes who chose to reset and why, not the effect of resetting. No test here can rule the
-   sharing-rate motive in or out. Results are reported whatever they show.
+8. H1-H3 describe who chose to reset and why, not the effect of resetting; H4 estimates the effect of the bundled
+   early-renewal package under the assumption stated in 1.4. No test here can rule the sharing-rate motive in or out.
+   Results are reported whatever they show.
 
 ## 8. Deviations
 Any change after registration is recorded in `DEVIATIONS.md` (date, what changed, why); the write-up separates

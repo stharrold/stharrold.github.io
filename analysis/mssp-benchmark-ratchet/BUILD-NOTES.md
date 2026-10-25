@@ -106,3 +106,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Enrollment check for the DiD control group (enrollment data only): of 277 stayers, 42 renewed into 2023 or 2024
   agreements and 72 left by 2024; of 29 early renewers, 3 renewed again in 2024 and 1 left. Design choice:
   "not-yet-renewed" comparison ACOs, censored at any later renewal (Callaway and Sant'Anna's not-yet-treated idea).
+- H4 implemented: SQL builds a PY2020-PY2024 panel with each ACO-year's status (included, later renewal, absent);
+  the confirmatory estimate collapses it to one change per ACO and reuses the 5.1 estimator, so the DiD test is the
+  same stratified permutation as the other group comparisons. Conventional two-way fixed effects and an event study
+  sit beside it. On synthetic data with a planted -4% effect the estimate was -3.1% (95% interval -3.9 to -2.3) and
+  the TWFE estimate -3.7%. A first TWFE version was rank-deficient (cohort-by-year dummies collinear with ACO
+  effects); fixed by dropping PY2020 within each cohort.

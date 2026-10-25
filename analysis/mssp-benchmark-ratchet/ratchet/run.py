@@ -1,8 +1,9 @@
 """Command-line runner. Stages run in the order the plan fixes, enforced by the files each stage needs:
 
     enrollment -> validate (results/validation.json) -> power (results/power.json) -> confirm (results/confirm.json)
-    robustness (results/robustness.json; after power) and exploratory (results/exploratory.json; after confirm, because
-    it reads the full PY2022 file)
+    robustness (results/robustness.json; after power); did (results/did.json, H4) and exploratory
+    (results/exploratory.json), after confirm because they read the full PY2022 file; conventional
+    (results/conventional.json, section 5.7) after did
 
 Usage (from the repository root):
     uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py <stage> [--data-dir DIR] [--out-dir DIR]
@@ -25,7 +26,7 @@ if __package__ in (None, ""):
 
 import numpy as np  # noqa: E402
 
-from ratchet import build, config, decision, exploratory, power, resample, robustness, snapshot, validate  # noqa: E402
+from ratchet import build, config, conventional, decision, did, exploratory, power, resample, robustness, snapshot, validate  # noqa: E402
 
 QUICK = {
     "n_resamples": 50,
@@ -95,6 +96,8 @@ def stage_power(con, out_dir, settings, meta):
         sd = float(stayers[name].std())
         out["h2"][name] = {"sd_stayers": sd, "mde_sd_units": power.mde(1.0, early.sum(), (~early).sum()), "mde": power.mde(sd, early.sum(), (~early).sum())}
     design = decision.make_design(frame, validation["sigma_v_model"] if validation["passed"] else None, include_own=validation["passed"])
+    h4 = did.mde_inputs(con.sql("select * from did_pre").df())
+    out["h4"] = {**h4, "mde_log": power.mde(h4["sd_delta_pre"], max(h4["n_early"], 1), max(h4["n_comparison"], 1))}
     out["h3"] = power.h3_precision(design, settings["power_datasets"], config.SEED, settings=settings["reduced"], workers=settings["workers"])
     _write(out_dir, "power.json", {**meta, **out})
 
@@ -145,6 +148,18 @@ def stage_robustness(con, out_dir, settings, meta):
     _write(out_dir, "robustness.json", {**meta, **robustness.run_all(frame, by23, validation, settings, config.SEED)})
 
 
+def stage_did(con, out_dir, settings, meta):
+    validation = _read(out_dir, "validation.json")
+    panel = con.sql("select * from did_panel").df()
+    _write(out_dir, "did.json", {**meta, **did.run_all(panel, _frames(con, validation), settings["n_resamples"], config.SEED)})
+
+
+def stage_conventional(con, out_dir, settings, meta):
+    validation = _read(out_dir, "validation.json")
+    result = conventional.run_all(_frames(con, validation), _read(out_dir, "confirm.json"), _read(out_dir, "did.json"), validation)
+    _write(out_dir, "conventional.json", {**meta, **result})
+
+
 def stage_exploratory(con, out_dir, settings, meta):
     validation = _read(out_dir, "validation.json")
     spending = con.sql("select * from spending_by_agreement_year").df()
@@ -157,6 +172,8 @@ STAGES = {
     "power": stage_power,
     "confirm": stage_confirm,
     "robustness": stage_robustness,
+    "did": stage_did,
+    "conventional": stage_conventional,
     "exploratory": stage_exploratory,
 }
 # Files each stage needs, checked before any data are loaded (the plan fixes the order).
@@ -164,6 +181,8 @@ REQUIRES = {
     "power": ("validation.json",),
     "confirm": ("validation.json", "power.json"),
     "robustness": ("validation.json", "power.json"),
+    "did": ("validation.json", "power.json", "confirm.json"),
+    "conventional": ("validation.json", "power.json", "confirm.json", "did.json"),
     "exploratory": ("validation.json", "power.json", "confirm.json"),
 }
 
@@ -184,7 +203,8 @@ def main(argv: list[str] | None = None) -> None:
     settings = dict(QUICK if args.quick else REGISTERED, workers=args.workers, quick=args.quick, data_dir=args.data_dir)
     for name in REQUIRES.get(args.stage, ()):
         _read(args.out_dir, name)
-    con = build.connect(args.data_dir, stage="enrollment" if args.stage == "enrollment" else "full", descriptive=args.stage == "exploratory")
+    descriptive = args.stage in ("exploratory", "did")
+    con = build.connect(args.data_dir, stage="enrollment" if args.stage == "enrollment" else "full", descriptive=descriptive)
     np.seterr(all="ignore")
     STAGES[args.stage](con, args.out_dir, settings, _metadata(args.data_dir, settings))
     print(f"{args.stage}: wrote {args.out_dir}")

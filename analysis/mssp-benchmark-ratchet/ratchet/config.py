@@ -22,6 +22,9 @@ ENROLLMENT_FILES = {
     "2020": "SSP_ACOs_2020_01_07.csv",
     "2021": "SSP_ACOs_2021_01_01.csv",
     "2022": "SSP_ACOs_2022_01_01.csv",
+    # PY2023-PY2024: agreement status in the H4 post-period (section 4.5).
+    "2023": "SSP_ACOs_2023_01_01.csv",
+    "2024": "PY2024_Medicare_Shared_Savings_Program_Organizations.csv",
 }
 
 # Outcome files: locked until REGISTRATION.md exists (ratchet.snapshot). PY2019 is the 12-month / July-December file, never 2019A.

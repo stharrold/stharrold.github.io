@@ -131,7 +131,8 @@ def test_spending_by_agreement_year(tmp_path):
     assert int(row.n_acos.iloc[0]) == early20
     # 2020 stayers reach agreement year 5 (PY2024); scheduled benchmark years are agreement years 3-5.
     stay = table[(table.start_year == 2020) & ~table.early_renewer_from_2020].set_index("agreement_year")
-    assert int(stay.loc[5, "n_acos"]) == ((acos.kind == "base20") & (acos.grp == "stayer")).sum()
+    still_in = (acos.kind == "base20") & (acos.grp == "stayer") & (acos.later == "none")
+    assert int(stay.loc[5, "n_acos"]) == still_in.sum()  # later renewers and leavers are gone by PY2024
     assert set(table.loc[table.scheduled_benchmark_year, "agreement_year"]) == {3, 4, 5}
     # Early renewers out of 2020 agreements appear in their 2022 agreement too, still labeled.
     assert int(table[(table.start_year == 2022) & table.early_renewer_from_2020 & (table.agreement_year == 1)].n_acos.iloc[0]) == early20

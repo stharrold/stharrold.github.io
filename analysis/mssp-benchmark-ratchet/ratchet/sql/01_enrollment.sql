@@ -9,6 +9,8 @@ with raw as (
     union all by name select 2020 as py, * from raw_enroll_2020
     union all by name select 2021 as py, * from raw_enroll_2021
     union all by name select 2022 as py, * from raw_enroll_2022
+    union all by name select 2023 as py, * from raw_enroll_2023
+    union all by name select 2024 as py, * from raw_enroll_2024
 )
 select
     py,

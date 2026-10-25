@@ -67,7 +67,15 @@ def _mdy(year: int, month: int = 1, day: int = 1, suffix: str = "") -> str:
 
 
 def generate(
-    out_dir: Path, seed: int = 0, n_base=(150, 120), n_validation: int = 80, hist_noise: float = 0.0, by_noise: float = 0.0, beta_pull: float = 1.0, beta_own: float = 0.6
+    out_dir: Path,
+    seed: int = 0,
+    n_base=(150, 120),
+    n_validation: int = 80,
+    hist_noise: float = 0.0,
+    by_noise: float = 0.0,
+    beta_pull: float = 1.0,
+    beta_own: float = 0.6,
+    did_effect: float = -0.04,
 ) -> Truth:
     rng = np.random.default_rng(seed)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -227,6 +235,18 @@ def generate(
     leaver = base & ~early & (rng.random(n) < 0.08)
     acos["grp"] = np.where(~base, None, np.where(early, "early", np.where(leaver, "leaver", "stayer")))
     acos["cohort"] = np.where(kind == "base19", "2019-07", np.where(kind == "base20", "2020-01", None))
+    # PY2023-PY2024 histories (section 4.5): later renewals and exits, as seen in the real enrollment files.
+    u, later = rng.random(n), np.full(n, "none", dtype=object)
+    stay, renewed = (acos.grp == "stayer").to_numpy(), (acos.grp == "early").to_numpy()
+    later[stay & (u < 0.05)] = "renew2023"
+    later[stay & (u >= 0.05) & (u < 0.15)] = "renew2024"
+    later[stay & (u >= 0.15) & (u < 0.25)] = "leave2023"
+    later[stay & (u >= 0.25) & (u < 0.32)] = "leave2024"
+    later[renewed & (u < 0.1)] = "renew2024"
+    acos["later"] = later
+    # Per-capita spending: ACO level x common growth x the planted effect of early renewal from PY2022 (H4).
+    acos["pc_level"] = 12_000 * rng.lognormal(0, 0.15, n)
+    acos["did_effect"] = did_effect
     acos["basic"] = rng.random(n) < 0.8
     acos["basic_level"] = np.where(acos.basic, rng.choice(list("ABCDE"), n, p=[0.1, 0.5, 0.15, 0.05, 0.2]), None)
     acos["high_revenue"] = rng.random(n) < 0.35
@@ -264,19 +284,35 @@ def _enrollment_rows(a: pd.Series) -> dict[str, tuple[int, int]]:
         start = (2019, 7) if a.kind == "base19" else (2020, 1)
         for f in (["2019b"] if a.kind == "base19" else []) + ["2020", "2021"]:
             rows[f] = (start, period)
-        if a.grp == "early":
-            rows["2022"] = ((2022, 1), period + 1)
-        elif a.grp == "stayer":
-            rows["2022"] = (start, period)
+        if a.grp in ("early", "stayer"):
+            for year in (2022, 2023, 2024):
+                agreement = _post_agreement(a, year, start, period)
+                if agreement is not None:
+                    rows[str(year)] = agreement
     elif a.kind == "valid":
         period = 2 if a.prior == "renewal2018" else 1
         for f in ("2018", "2019a", "2019b", "2020", "2021"):
             rows[f] = ((2018, 1), period)
-        rows["2022"] = ((2022, 1), period + 1)
+        for f in ("2022", "2023", "2024"):
+            rows[f] = ((2022, 1), period + 1)
     else:
-        for f in ("2021", "2022"):
+        for f in ("2021", "2022", "2023", "2024"):
             rows[f] = ((2021, 1), 1)
     return rows
+
+
+def _post_agreement(a: pd.Series, year: int, start: tuple[int, int], period: int):
+    """Agreement (start, period) of an early renewer or stayer in PY2022-PY2024, or None once it has left."""
+    later = a.later
+    if later == "leave2023" and year >= 2023 or later == "leave2024" and year >= 2024:
+        return None
+    if a.grp == "early":
+        return ((2024, 1), period + 2) if later == "renew2024" and year >= 2024 else ((2022, 1), period + 1)
+    if later == "renew2023" and year >= 2023:
+        return ((2023, 1), period + 1)
+    if later == "renew2024" and year >= 2024:
+        return ((2024, 1), period + 1)
+    return (start, period)
 
 
 def _write_enrollment(out_dir: Path, acos: pd.DataFrame) -> None:
@@ -317,16 +353,17 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py
                 2019: a.has_py2019 and a.kind != "other",
                 2020: True,
                 2021: True,
-                2022: a.kind in ("valid", "other") or a.grp in ("early", "stayer"),
-                2023: a.kind in ("valid", "other") or a.grp in ("early", "stayer"),
-                2024: a.kind in ("valid", "other") or a.grp in ("early", "stayer"),
+                2022: str(2022) in _enrollment_rows(a),
+                2023: str(2023) in _enrollment_rows(a),
+                2024: str(2024) in _enrollment_rows(a),
             }.get(year, a.kind in ("valid",) or a.prior != "new")
             if not active:
                 continue
             row = {id_col: a.aco_id, "ACO_Name": f"Synthetic ACO {a.aco_id}", "N_AB": int(a.n_ab_2020)}
             # Results files' date format cannot be checked before registration; synthetic uses ISO dates here.
             row["Current_Start_Date"] = _results_start(a, year)
-            row["Per_Capita_Exp_TOTAL_PY"] = f"{12_000 * 1.03 ** (year - 2019) * rng.lognormal(0, 0.08):.2f}"
+            treated = a.grp == "early" and year >= 2022
+            row["Per_Capita_Exp_TOTAL_PY"] = f"{a.pc_level * 1.03 ** (year - 2019) * np.exp(a.did_effect * treated) * rng.lognormal(0, 0.03):.2f}"
             ages = rng.integers(500, 5_000, 4)
             row.update(N_Ben_Age_0_64=ages[0], N_Ben_Age_65_74=ages[1], N_Ben_Age_75_84=ages[2], N_Ben_Age_85plus=ages[3])
             female = int(ages.sum() * rng.uniform(0.5, 0.6))
@@ -354,11 +391,13 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py
 
 
 def _results_start(a: pd.Series, year: int) -> str:
+    rows = _enrollment_rows(a)
+    if str(year) in rows:
+        (y, m), _ = rows[str(year)]
+        return f"{y}-{m:02d}-01"
     if a.kind in ("base19", "base20"):
-        return "2022-01-01" if a.grp == "early" and year >= 2022 else ("2019-07-01" if a.kind == "base19" else "2020-01-01")
-    if a.kind == "valid":
-        return "2022-01-01" if year >= 2022 else "2018-01-01"
-    return "2021-01-01"
+        return "2019-07-01" if a.kind == "base19" else "2020-01-01"
+    return "2018-01-01" if a.kind == "valid" else "2021-01-01"
 
 
 def _write_county(out_dir: Path, states, counties, county_pc, county_py, county_ok, county_risk) -> None:

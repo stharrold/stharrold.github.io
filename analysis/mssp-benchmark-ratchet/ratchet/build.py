@@ -14,7 +14,7 @@ from ratchet.snapshot import checked_path
 
 ENROLLMENT_SQL = ("00_macros.sql", "01_enrollment.sql", "02_groups.sql", "03_phase_in.sql")
 FULL_SQL = ("04_results.sql", "05_regional.sql", "06_expected_gain.sql", "07_analysis.sql")
-DESCRIPTIVE_SQL = ("08_descriptive.sql",)
+DESCRIPTIVE_SQL = ("08_descriptive.sql", "09_did.sql")
 
 
 def _read_csv(path: Path) -> str:
