@@ -1,11 +1,12 @@
 # Pre-registration: Why did Medicare ACOs reset their benchmarks early?
 
-**Status:** DRAFT v0.4 (author decisions of 2026-10-22 applied). Not yet registered. Once registered on OSF Registries, this file is frozen:
+**Status:** DRAFT v0.5 (author decisions of 2026-10-22 and 2026-10-25 applied; analysis code written and tested on
+synthetic data). Not yet registered. Once registered on OSF Registries, this file is frozen:
 the registration link, OSF timestamp, and this file's sha256 go in `REGISTRATION.md`, and any later change goes in
 `DEVIATIONS.md`. Issue #73. Supersedes drafts v0.1 (a downside-risk question dropped at the design stage), v0.2
-(a single-test version of this plan) and v0.3 (frequentist tests); see `DESIGN-NOTES.md`.
+(a single-test version of this plan) and v0.3 (frequentist tests) and v0.4 (before the code); see `DESIGN-NOTES.md`.
 
-**Author:** Samuel Harrold. **Drafted:** 2026-10-22.
+**Author:** Samuel Harrold. **Drafted:** 2026-10-22. **Revised:** 2026-10-25.
 
 ## 1. Study information
 
@@ -332,8 +333,9 @@ confirmatory model (5.4) and the Firth model (item 5). Robustness results do not
 4. H1 for the PY2021 savings rate.
 5. H3 as a Firth-penalized logistic regression (`firthmodels`, version pinned in `uv.lock`) with the three core
    predictors and cohort only (about 7 events per parameter), own-spending component at its observed value;
-   profile-likelihood 95% intervals and the direct-simulation test of 5.4 (10,000 simulations). Always run; it also
-   serves as the convergence fallback of 5.4.
+   profile-likelihood 95% intervals and the direct-simulation test of 5.4 (10,000 simulations). Its complete-case
+   sample uses only these predictors; if the validation fails, the own-spending predictor is dropped here too (section
+   7, rule 6). Always run; it also serves as the convergence fallback of 5.4.
 6. H2a and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3, with the main validation's calibration and
    sigma_v (not re-validated).
 7. The Bayesian H3 model with the own-spending component at its observed value (no measurement-error model).

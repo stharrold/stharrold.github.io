@@ -59,7 +59,7 @@ def run_all(frame: pd.DataFrame, frame_by23: pd.DataFrame, validation: dict, set
     # 4. H1 for the PY2021 savings rate.
     out["4_h1_py2021"] = compare(frame, "sav_rate_2021", n, seed)
     # 5. Firth logistic regression with direct-simulation tests.
-    out["5_firth"] = decision.firth_fallback(frame, n, seed)
+    out["5_firth"] = decision.firth_fallback(frame, n, seed, include_own=passed)
     # 6. Benchmark years 2020-2021 only (main validation's calibration and sigma_v).
     out["6_by2_by3"] = {"H2a": compare(frame_by23, "own", n, seed), "H3": h3_posterior(frame_by23, sigma_v, passed, settings, seed)}
     # 7. H3 without the measurement-error layer.

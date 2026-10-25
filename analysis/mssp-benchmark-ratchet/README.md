@@ -15,7 +15,7 @@ Pre-registered analysis of why Medicare Shared Savings Program ACOs renewed earl
 From the repository root (the `analysis` dependency group is not installed by the site build):
 
 ```bash
-uv run --group analysis pytest analysis/mssp-benchmark-ratchet/tests          # tests (about 1-2 minutes)
+uv run --group analysis pytest analysis/mssp-benchmark-ratchet/tests          # tests (about 6 minutes)
 uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py enrollment   # groups (real data, allowed now)
 ```
 

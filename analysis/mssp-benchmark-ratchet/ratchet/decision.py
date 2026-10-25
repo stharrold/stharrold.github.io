@@ -129,6 +129,8 @@ def fit(model: pm.Model, settings: Settings, seed: int, cores: int = 1):
             random_seed=int(seed),
             progressbar=False,
             compute_convergence_checks=False,
+            # Chain processes start from a clean server process: forking a multi-threaded process can deadlock.
+            **({"mp_ctx": "forkserver"} if cores > 1 else {}),
         )
 
 
@@ -278,23 +280,27 @@ def predictive_checks(design: Design, idata, seed: int) -> dict:
     }
 
 
-def firth_fallback(frame: pd.DataFrame, n_sims: int, seed: int) -> dict:
-    """Section 5.5 item 5: Firth logistic regression, core predictors + cohort, own spending as observed; each core
+def firth_fallback(frame: pd.DataFrame, n_sims: int, seed: int, include_own: bool = True) -> dict:
+    """Section 5.5 item 5: Firth logistic regression, core predictors + cohort only (the complete-case sample uses these
+    columns only), own spending as observed and dropped if validation failed (section 7, rule 6); each core
     coefficient tested by direct simulation from the reduced Firth fit."""
-    design = make_design(frame, sigma_v=None)
-    cols = list(CORE) + ["cohort_2020"]
+    design = make_design(frame, sigma_v=None, include_own=include_own, exclude=tuple(a for a in ADJUSTMENT if a != "cohort_2020"))
+    cols = [c for c in CORE if c in design.predictors] + ["cohort_2020"]
 
     def matrix(drop=None):
         names = [c for c in cols if c != drop]
-        own = (design.own_obs - design.own_center) / design.own_scale
-        return names, np.column_stack([own if c == "own" else design.x[c] for c in names])
+        return names, np.column_stack([(design.own_obs - design.own_center) / design.own_scale if c == "own" else design.x[c] for c in names])
 
     names, design_matrix = matrix()
     model = FirthLogisticRegression().fit(design_matrix, design.y)
     ci = model.conf_int(method="pl")
-    out = {"coefficients": {n: {"estimate": float(b), "pl95": [float(ci[i, 0]), float(ci[i, 1])]} for i, (n, b) in enumerate(zip(names, model.coef_, strict=True))}}
+    out = {
+        "sample": {"n": int(design.y.size), "early": int(design.y.sum()), "excluded": design.excluded},
+        "coefficients": {n: {"estimate": float(b), "pl95": [float(ci[i, 0]), float(ci[i, 1])]} for i, (n, b) in enumerate(zip(names, model.coef_, strict=True))},
+    }
     rng = np.random.default_rng([seed, 7])
-    for k, predictor in enumerate(CORE):
+    for predictor in [c for c in CORE if c in cols]:
+        k = names.index(predictor)
         _, reduced_matrix = matrix(drop=predictor)
         p_hat = FirthLogisticRegression().fit(reduced_matrix, design.y).predict_proba(reduced_matrix)[:, 1]
         null = np.array([FirthLogisticRegression().fit(design_matrix, rng.binomial(1, p_hat)).coef_[k] for _ in range(n_sims)])

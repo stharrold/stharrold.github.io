@@ -153,6 +153,8 @@ VanderPlas, "Statistics for Hackers" (PyCon 2016; direct simulation, shuffling, 
   (Anderson and Legendre 1999), the analogue of the 2015 "any signal vs noise" question. A single predictor's
   significance therefore uses direct simulation from the model without that predictor (a parametric bootstrap); the
   label shuffle is kept as an overall test.
-- **Cost:** one reduced-settings fit of the H3 model (n = 263, 9 coefficients, latent own-spending layer; PyMC NUTS,
-  2 chains x 1,000/1,000) took about 3.6 s on simulated data on a 10-core laptop, so 3 x 10,000 refits is about 6 hours
-  at 5 fits in parallel. Measured on simulated data only; no study data were used.
+- **Cost:** a first benchmark (n = 263, 9 coefficients, latent own-spending layer; PyMC NUTS, 2 chains x
+  1,000/1,000) took about 3.6 s per fit on simulated data on a 10-core laptop. Measured later with the pipeline
+  (2026-10-25, synthetic data): about 1.7 s of wall time per refit with 5 worker processes, all refits converging at
+  the registered settings. The confirm stage runs about 40,000 refits (3 x 10,000 direct simulations plus 10,000 for
+  the overall test), so roughly 19 hours; more workers shorten it. No study data were used for either measurement.
