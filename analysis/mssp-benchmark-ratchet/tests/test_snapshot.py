@@ -50,9 +50,9 @@ def test_real_headers_have_every_column_the_sql_reads():
         "results_2018": [config.RESULTS_FILES[2018]],
         "results_2022_by": [config.RESULTS_FILES[2022]],
         "results_2023_2024": list(config.DESCRIPTIVE_RESULTS_FILES.values()),
+        "enrollment_2021": [config.ENROLLMENT_FILES[k] for k in ("2021", "2022", "2023", "2024")],
         "county": list(config.COUNTY_FILES.values()),
         "assignment": [config.ASSIGNMENT_FILE],
-        "enrollment_2021": [config.ENROLLMENT_FILES["2021"], config.ENROLLMENT_FILES["2022"]],
     }
     for group, names in groups.items():
         for name in names:

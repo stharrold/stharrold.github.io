@@ -84,6 +84,13 @@ def _verdict(estimate: float, p: float, sign: int = 1) -> str:
     return "supported" if np.sign(estimate) == sign else "contradicted"
 
 
+def _direction(estimate: float, p: float) -> str:
+    """Two-sided verdict with no predicted sign (H4, section 7 rule 5)."""
+    if p >= 0.05:
+        return "undetermined"
+    return "negative" if estimate < 0 else "positive"
+
+
 def agreement(confirm: dict, conventional: dict) -> list[dict]:
     """Confirmatory verdict (section 7) next to the conventional one: OLS-HC2 for H2b and H2a, ML logistic for H3."""
     rows = []
@@ -115,7 +122,7 @@ def run_all(frame: pd.DataFrame, confirm: dict, did: dict, validation: dict) -> 
     out["H3_logit"] = logit_ml(frame, include_own=validation["passed"])
     rows = agreement(confirm, out)
     h4, twfe = did["H4"], did["conventional"]["twfe"]["pooled"]
-    rows.append({"claim": "H4", "confirmatory": _verdict(h4["observed"], h4["p_value"]), "conventional": _verdict(twfe["estimate"], twfe["p_value"])})
+    rows.append({"claim": "H4", "confirmatory": _direction(h4["observed"], h4["p_value"]), "conventional": _direction(twfe["estimate"], twfe["p_value"])})
     rows[-1]["agree"] = rows[-1]["confirmatory"] == rows[-1]["conventional"]
     out["agreement"] = rows
     return out

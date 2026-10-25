@@ -6,6 +6,11 @@ import pytest
 from ratchet import build, conventional, did, synthetic
 
 
+def test_h4_agreement_uses_direction_labels():
+    assert conventional._direction(-0.03, 0.01) == "negative" and conventional._direction(0.03, 0.01) == "positive"
+    assert conventional._direction(-0.03, 0.2) == "undetermined"
+
+
 def _build(tmp_path, effect):
     truth = synthetic.generate(tmp_path, seed=3, did_effect=effect)
     con = build.connect(tmp_path, stage="full", descriptive=True)
