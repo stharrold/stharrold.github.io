@@ -86,3 +86,15 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - The author asked why register at all; answer recorded: proof the plan predates the results, a credible
   confirmatory/exploratory line, and it unlocks the pipeline. Alternatives considered: AsPredicted, OpenTimestamps.
 - Before submitting, the author asked whether conventional methods should be reported side by side for credibility.
+
+## Before registering: conventional methods and an effect question (2026-10-25)
+
+- The author asked whether conventional methods should sit beside the Bayesian and resampling results for
+  credibility. Decision: a reported-only comparison section (Welch t, OLS with HC2 errors, maximum-likelihood
+  logistic regression) and a table of where the two approaches agree. Adds `statsmodels`.
+- The author then asked whether the study should also use difference-in-differences. The plan so far asked only who
+  chose to reset and why, not what renewing did. Decision: add H4, the effect of early renewal on per-capita spending
+  (PY2022-2024 vs PY2019-2021, early renewers vs stayers from the same cohorts), pre-registered in the same plan before
+  any post-period spending is seen. Threats stated up front: selection on recent spending (mean reversion), few
+  COVID-era pre-periods, and a bundled treatment (reset + ENHANCED + a change in which years count as benchmark years).
+- Registration paused with a private OSF draft until H4 is specified, coded and tested.
