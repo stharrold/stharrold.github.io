@@ -79,7 +79,10 @@ The data are public and were downloaded before registration solely to record has
 used: the CMS data dictionaries, the regulation (42 CFR 425.20, 425.200, 425.600, 425.601, 425.603), and the
 **enrollment** files, from which the groups below, risk levels, take-up of an earlier candidate design, and program
 exits were counted (`DESIGN-NOTES.md`). **No values from the results files or the county-level files (spending,
-savings, benchmarks, quality, regional expenditures) have been viewed.** The hypotheses were formed from the
+savings, benchmarks, quality, regional expenditures) have been viewed.** On 2026-10-25, to write the analysis code, the
+first row (column names only) of the PY2016 and PY2019-PY2022 results files, the 2021 county-level expenditure file
+and the 2021 county assignment file was read; no data rows. The analysis code was tested on synthetic data with made-up
+values. The hypotheses were formed from the
 regulation and the existence of the early-renewal group. The author is aware of published research on MSSP savings in
 general.
 
@@ -100,8 +103,8 @@ these cohorts is an early renewal (425.20, "renewing ACO" (2)).
 
 Early renewers are compared with stayers; leavers are reported descriptively. ACOs are linked across files by
 `ACO_ID`. An ACO missing a variable needed for an analysis (including suppressed values) is excluded from that analysis
-and counted; if more than 10% of either compared group is excluded from the primary analysis, this is reported as a
-limitation.
+and counted; non-numeric cells (such as suppression markers) are read as missing. If more than 10% of either compared
+group is excluded from the primary analysis, this is reported as a limitation.
 
 ## 4. Variables
 
@@ -132,12 +135,14 @@ following 42 CFR 425.601 as in force on 2022-01-01. For each ACO:
    trended to BY3 (2021) dollars with the national-regional blend of 425.601(a)(5)(iv): growth factor =
    s x national growth + (1 - s) x regional growth for type e from the benchmark year to 2021, where regional growth
    uses the ACO's regional service area (step 2 weights), national growth uses the assignable-beneficiary-weighted
-   national mean of the county file, and s, the ACO's share of assignable beneficiaries in its regional service area
-   (425.601(a)(5)(v)), = sum over counties of (ACO assigned beneficiaries in county / county assignable beneficiaries),
-   weighted by the ACO's assigned beneficiaries in each county, from the 2021 files.
+   national mean of the county file (`PER_CAPITA_EXP_<e>` weighted by `PERSON_YEARS_<e>`), and s, the ACO's share of
+   assignable beneficiaries in its regional service area (425.601(a)(5)(v)), = sum over counties of (ACO assigned
+   person-years in county, `Tot_AB_Psn_Yrs` / county assignable person-years, the sum over types of
+   `PERSON_YEARS_<e>`), weighted by the ACO's share of its `Tot_AB_Psn_Yrs` in each county, from the 2021 files.
 2. **Regional service area spending, per type**, for BY3 = 2021: the mean of county per-capita expenditures for
-   assignable beneficiaries of type e (county-level file, 2022-2023 starters version), weighted by the ACO's assigned
-   beneficiaries by county in 2021 (`Number_Of_ACO_Assigned_Beneficiaries_by_County_PUF_2021_01_01.csv`, the 2021
+   assignable beneficiaries of type e (`PER_CAPITA_EXP_<e>`, county-level file, 2022-2023 starters version), weighted
+   by the ACO's assigned person-years of type e by county in 2021 (`AB_Psn_Yrs_<e>` in
+   `Number_Of_ACO_Assigned_Beneficiaries_by_County_PUF_2021_01_01.csv`, the 2021
    performance-year assignment, used as the BY3 proxy; true BY3 assignment uses the 2022 participant list, which is
    not published).
 3. **Regional adjustment, per type:** w x (regional - rebased), where w follows 425.601(f): the phase-in step for the
@@ -169,8 +174,11 @@ Apply steps 1-4 to every **regular renewer** with a January 1, 2022 agreement (a
 benchmark years 2019-2021, not one of the 29 early renewers, and with a PY2021 enrollment record under the same
 `ACO_ID`; 111 ACOs by the enrollment files, 110 of them in agreements that began 2018-01-01; 20 re-entering ACOs
 without a PY2021 record are excluded) and compare the approximate new benchmark with the actual
-per-capita historical benchmark reported for PY2022 (`HistBnchmk`, already per capita). Early renewers are excluded so
-that validation does not reveal their actual reset gain before H2a, H2b and H3 are estimated. The regional pull
+per-capita historical benchmark reported for PY2022 (`HistBnchmk`, already per capita); the validation n is the number
+of these ACOs with `HistBnchmk` present. Early renewers are excluded so that validation does not reveal their actual
+reset gain before H2a, H2b and H3 are estimated: the code reads PY2022 results only for the validation sample, filtered
+as the file is loaded, because its `Per_Capita_Exp_ALL_<e>_BY1`-`BY3` columns would show early renewers' actual
+rebased spending. The regional pull
 (step 6) uses no own-spending data, so it does not depend on validation; it is still reported only after the
 validation step. Reported overall and by phase-in step
 (step 3 of 4.3): Spearman correlation, median absolute percentage error, and the OLS slope and intercept of actual on
