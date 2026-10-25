@@ -362,4 +362,5 @@ Kept in `REGISTRATION.md` (not here, so this file's hash does not change): the O
 and the sha256 of this file exactly as registered. The registration is made public immediately, with no embargo.
 The analysis code (`ratchet/`, `tests/`, tested on synthetic data before registration) is attached to the
 registration as a zip of this directory at the registered git commit; `REGISTRATION.md` records the commit and the
-zip's sha256, and any later change to the code is a deviation.
+zip's sha256. Code added after registration to implement analyses not yet coded at registration (listed in the
+directory's README) and any change to registered code are recorded in `DEVIATIONS.md` with the commit.
