@@ -33,17 +33,20 @@ REQUIRED_COLUMNS = {
         "prospective_assignment",
     ],
     "results_2022_by": [f"{c}_{t}_BY{b}" for c in ("Per_Capita_Exp_ALL", "CMS_HCC_RiskScore") for t in TYPES for b in (1, 2, 3)],
-    "results": ["ACO_ID", "Sav_rate", "N_AB", "UpdatedBnchmk", "HistBnchmk"]
+    "results_2023_2024": ["ACO_ID", "Agreement_Period_Num", "Current_Start_Date", "Per_Capita_Exp_TOTAL_PY"],
+    "results": ["ACO_ID", "Sav_rate", "N_AB", "UpdatedBnchmk", "HistBnchmk", "Current_Start_Date", "Per_Capita_Exp_TOTAL_PY", "N_Ben_Female", "N_Ben_Male"]
+    + [f"N_Ben_Age_{b}" for b in ("0_64", "65_74", "75_84", "85plus")]
     + [f"Per_Capita_Exp_ALL_{t}_PY" for t in TYPES]
     + [f"CMS_HCC_RiskScore_{t}_PY" for t in TYPES]
     + list(RESULTS_SHARE_COLUMNS.values()),
     "results_aco_num": ["ACO_Num", "Sav_rate"],
     "results_2018": ["ACO_ID", "Sav_rate"],
     "county": ["STATE_ID", "COUNTY_ID"] + [f"PER_CAPITA_EXP_{t}" for t in TYPES] + [f"PERSON_YEARS_{t}" for t in TYPES] + [f"AVG_RISK_SCORE_{t}" for t in TYPES],
-    "assignment": ["ACO_ID", "State_ID", "County_ID", "Tot_AB_Psn_Yrs"] + [f"AB_Psn_Yrs_{t}" for t in TYPES],
+    "assignment": ["ACO_ID", "State_Name", "State_ID", "County_ID", "Tot_AB_Psn_Yrs"] + [f"AB_Psn_Yrs_{t}" for t in TYPES],
 }
 
 YEARS = (2019, 2020, 2021)
+STATE_NAMES = {1: "Texas", 2: "Ohio", 3: "California"}  # South, Midwest, West
 TYPE_BASE_PC = {"ESRD": 85_000.0, "DIS": 12_000.0, "AGDU": 20_000.0, "AGND": 11_000.0}
 TYPE_BASE_PY = {"ESRD": 60.0, "DIS": 900.0, "AGDU": 800.0, "AGND": 6_000.0}
 
@@ -94,8 +97,9 @@ def generate(
 
     # Assignment: each ACO in 3-6 counties of one state, person-years by type (ESRD present in every county).
     ab = np.zeros((n, n_c, len(TYPES)))
+    home_state = np.empty(n, int)
     for i in range(n):
-        home = rng.integers(1, 4)
+        home = home_state[i] = rng.integers(1, 4)
         chosen = rng.choice(np.flatnonzero(states == home), size=rng.integers(3, 7), replace=False)
         for k, t in enumerate(TYPES):
             ab[i, chosen, k] = np.round(TYPE_BASE_PY[t] * 0.2 * rng.lognormal(0, 0.5, len(chosen)), 1)
@@ -151,39 +155,46 @@ def generate(
     for k, t in enumerate(TYPES):
         for y_i, y in enumerate(YEARS):
             factor[:, y_i, k] = s * national[2021][t] / national[y][t] + (1 - s) * region_std[:, 2, k] / region_std[:, y_i, k]
-    record = np.ones((n, len(YEARS)), bool)
-    record[~has_py2019, 0] = False
     pos = share > 0
-    shown = ~np.isnan(own) & record[:, :, None]
-    # Rule 3 ratio: own-to-region over shown types with positive share, per ACO and year.
-    valid = shown & pos[:, None, :] & ~np.isnan(region)
-    with np.errstate(invalid="ignore", divide="ignore"):
-        ratio = np.where(valid, share[:, None, :] * np.nan_to_num(own), 0).sum(2) / np.where(valid, share[:, None, :] * np.nan_to_num(region), 0).sum(2)
-    n_shown = shown.sum(1)
-    filled = np.where(n_shown[:, None, :] > 0, own, region * ratio[:, :, None])
-    # BY1-BY2 restated to BY3 case mix (425.601(a)(3)); a hidden score in that year or PY2021 leaves the year unrestated.
-    restate_missing = risk_hidden | risk_hidden[:, 2:3, :]
-    restate = np.where(restate_missing, 1.0, aco_risk[:, 2:3, :] / aco_risk)
-    trended = np.where(record[:, :, None], filled * factor * restate, np.nan)
-    with np.errstate(invalid="ignore"), warnings.catch_warnings():
-        warnings.simplefilter("ignore", RuntimeWarning)
-        rebased = np.nanmean(trended, axis=1)
-    hidden_own = (record[:, :, None] & (np.isnan(own) | restate_missing)).any(1)
-    imputed = (pos & ((n_shown == 0) | hidden_own | risk_hidden[:, 2, :])).any(1) | py_hidden.any(1)
     nat21 = np.array([national[2021][t] for t in TYPES])
-    reb_w = np.where(pos, share * np.nan_to_num(rebased), 0).sum(1)
-    reg_w = np.where(pos, share * np.nan_to_num(region[:, 2, :]), 0).sum(1)
-    reg_raw_w = np.where(pos, share * np.nan_to_num(region_raw[:, 2, :]), 0).sum(1)
+    shares_known = py_hidden.sum(1) <= 1
     w_below = np.where(step == 1, 0.35, 0.50)
     w_above = np.select([step == 1, step == 2, step == 3], [0.15, 0.25, 0.35], 0.50)
-    w = np.where(reb_w < reg_w, w_below, w_above)
-    raw_adj = w[:, None] * (region[:, 2, :] - rebased)
-    adj = np.clip(raw_adj, -0.05 * nat21, 0.05 * nat21)
-    capped = (np.abs(raw_adj) > 0.05 * nat21) & pos
-    shares_known = py_hidden.sum(1) <= 1
-    ok_all = np.all(~pos | (~np.isnan(rebased) & ~np.isnan(region[:, 2, :])), axis=1) & shares_known
-    adj_w = np.where(pos, share * np.nan_to_num(adj), 0).sum(1)
-    new = np.where(ok_all, reb_w + adj_w, np.nan)
+    reg_w = np.where(pos, share * np.nan_to_num(region[:, 2, :]), 0).sum(1)
+    reg_raw_w = np.where(pos, share * np.nan_to_num(region_raw[:, 2, :]), 0).sum(1)
+
+    def construct(by_first: int) -> dict:
+        """Steps 1-5 for benchmark years by_first-2021 (2019 for the main analysis, 2020 for robustness item 6)."""
+        record = np.ones((n, len(YEARS)), bool)
+        record[~has_py2019, 0] = False
+        record[:, : by_first - 2019] = False
+        shown = ~np.isnan(own) & record[:, :, None]
+        # Rule 3 ratio: own-to-region over shown types with positive share, per ACO and year.
+        valid = shown & pos[:, None, :] & ~np.isnan(region)
+        with np.errstate(invalid="ignore", divide="ignore"):
+            ratio = np.where(valid, share[:, None, :] * np.nan_to_num(own), 0).sum(2) / np.where(valid, share[:, None, :] * np.nan_to_num(region), 0).sum(2)
+        n_shown = shown.sum(1)
+        filled = np.where(n_shown[:, None, :] > 0, own, region * ratio[:, :, None])
+        # BY1-BY2 restated to BY3 case mix (425.601(a)(3)); a hidden score in that year or PY2021 leaves the year unrestated.
+        restate_missing = risk_hidden | risk_hidden[:, 2:3, :]
+        restate = np.where(restate_missing, 1.0, aco_risk[:, 2:3, :] / aco_risk)
+        trended = np.where(record[:, :, None], filled * factor * restate, np.nan)
+        with np.errstate(invalid="ignore"), warnings.catch_warnings():
+            warnings.simplefilter("ignore", RuntimeWarning)
+            rebased = np.nanmean(trended, axis=1)
+        hidden_own = (record[:, :, None] & (np.isnan(own) | restate_missing)).any(1)
+        imputed = (pos & ((n_shown == 0) | hidden_own | risk_hidden[:, 2, :])).any(1) | py_hidden.any(1)
+        reb_w = np.where(pos, share * np.nan_to_num(rebased), 0).sum(1)
+        w = np.where(reb_w < reg_w, w_below, w_above)
+        raw_adj = w[:, None] * (region[:, 2, :] - rebased)
+        adj = np.clip(raw_adj, -0.05 * nat21, 0.05 * nat21)
+        ok_all = np.all(~pos | (~np.isnan(rebased) & ~np.isnan(region[:, 2, :])), axis=1) & shares_known
+        adj_w = np.where(pos, share * np.nan_to_num(adj), 0).sum(1)
+        new = np.where(ok_all, reb_w + adj_w, np.nan)
+        return {"reb_w": reb_w, "w": w, "capped": (np.abs(raw_adj) > 0.05 * nat21) & pos, "ok_all": ok_all, "adj_w": adj_w, "new": new, "imputed": imputed}
+
+    main, by23 = construct(2019), construct(2020)
+    reb_w, w, capped, ok_all, adj_w, new, imputed = (main[k] for k in ("reb_w", "w", "capped", "ok_all", "adj_w", "new", "imputed"))
     acos = pd.DataFrame(
         {
             "aco_id": ids,
@@ -202,6 +213,9 @@ def generate(
             "imputed": imputed & shares_known,
             "any_cap": capped.any(1),
             "has_py2019": has_py2019,
+            "census_region": [{1: "South", 2: "Midwest", 3: "West"}[h] for h in home_state],
+            "own_by23": np.where(by23["ok_all"], 100 * (by23["reb_w"] - current) / current, np.nan),
+            "gain_by23": np.where(by23["ok_all"], 100 * (by23["new"] - current) / current, np.nan),
         }
     )
 
@@ -294,7 +308,7 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py
     def fmt(x: float) -> str:
         return "*" if np.isnan(x) else f"{x:.6f}"
 
-    for year, name in config.RESULTS_FILES.items():
+    for year, name in {**config.RESULTS_FILES, **config.DESCRIPTIVE_RESULTS_FILES}.items():
         id_col = "ACO_Num" if year in (2016, 2017) else "ACO_ID"
         sav_col = "Sav_Rate" if year == 2021 else "Sav_rate"
         rows = []
@@ -303,11 +317,20 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py
                 2019: a.has_py2019 and a.kind != "other",
                 2020: True,
                 2021: True,
-                2022: a.kind == "valid" or a.grp in ("early", "stayer"),
+                2022: a.kind in ("valid", "other") or a.grp in ("early", "stayer"),
+                2023: a.kind in ("valid", "other") or a.grp in ("early", "stayer"),
+                2024: a.kind in ("valid", "other") or a.grp in ("early", "stayer"),
             }.get(year, a.kind in ("valid",) or a.prior != "new")
             if not active:
                 continue
             row = {id_col: a.aco_id, "ACO_Name": f"Synthetic ACO {a.aco_id}", "N_AB": int(a.n_ab_2020)}
+            # Results files' date format cannot be checked before registration; synthetic uses ISO dates here.
+            row["Current_Start_Date"] = _results_start(a, year)
+            row["Per_Capita_Exp_TOTAL_PY"] = f"{12_000 * 1.03 ** (year - 2019) * rng.lognormal(0, 0.08):.2f}"
+            ages = rng.integers(500, 5_000, 4)
+            row.update(N_Ben_Age_0_64=ages[0], N_Ben_Age_65_74=ages[1], N_Ben_Age_75_84=ages[2], N_Ben_Age_85plus=ages[3])
+            female = int(ages.sum() * rng.uniform(0.5, 0.6))
+            row.update(N_Ben_Female=female, N_Ben_Male=int(ages.sum()) - female)
             row[sav_col] = f"{a.sav_rate_2020 if year == 2020 else a.sav_rate_2021 if year == 2021 else rng.normal(1.5, 4.0):.4f}"
             row["UpdatedBnchmk"] = fmt(current[i] if year == 2021 else current[i] * 0.97)
             if year == 2022:
@@ -330,10 +353,18 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, cms_by, shares_py, py
         pd.DataFrame(rows).to_csv(out_dir / name, index=False, encoding="latin-1")
 
 
+def _results_start(a: pd.Series, year: int) -> str:
+    if a.kind in ("base19", "base20"):
+        return "2022-01-01" if a.grp == "early" and year >= 2022 else ("2019-07-01" if a.kind == "base19" else "2020-01-01")
+    if a.kind == "valid":
+        return "2022-01-01" if year >= 2022 else "2018-01-01"
+    return "2021-01-01"
+
+
 def _write_county(out_dir: Path, states, counties, county_pc, county_py, county_ok, county_risk) -> None:
     for year, name in config.COUNTY_FILES.items():
         df = pd.DataFrame(
-            {"YEAR": year, "STATE_NAME": [f"State {s}" for s in states], "COUNTY_NAME": [f"County {c}" for c in counties], "STATE_ID": states, "COUNTY_ID": counties}
+            {"YEAR": year, "STATE_NAME": [STATE_NAMES[s] for s in states], "COUNTY_NAME": [f"County {c}" for c in counties], "STATE_ID": states, "COUNTY_ID": counties}
         )
         for t in TYPES:
             df[f"PER_CAPITA_EXP_{t}"] = [f"{v:.4f}" if ok else "*" for v, ok in zip(county_pc[year][t], county_ok[year][t], strict=True)]
@@ -349,7 +380,7 @@ def _write_assignment(out_dir: Path, ids, states, counties, ab) -> None:
             row = {
                 "Year": 2021,
                 "ACO_ID": aco_id,
-                "State_Name": f"State {states[c]}",
+                "State_Name": STATE_NAMES[states[c]],
                 "County_Name": f"County {counties[c]}",
                 "State_ID": states[c],
                 "County_ID": counties[c],

@@ -27,14 +27,15 @@ from region_std as r
 left join res_pc as p on p.aco_id = r.aco_id and p.py = r.year and p.type = r.type;
 
 -- Step 1: rebased benchmark per type, equal weights over the benchmark years with a results record (BY1 is omitted
--- only when the ACO has no PY2019 record; PY2020 and PY2021 records are required). BY1 and BY2 are restated to BY3
+-- only when the ACO has no PY2019 record; PY2020 and PY2021 records are required). Benchmark years start at
+-- getvariable('by_first'): 2019, or 2020 for robustness item 6 (section 5.5). BY1 and BY2 are restated to BY3
 -- case mix by the ratio of the ACO's PY2021 to that year's risk score (425.601(a)(3)); a hidden score leaves the year
 -- unrestated and is flagged. Hidden spending (section 3): rule 2, a type shown in some years uses the mean of those
 -- years; rule 3, a type hidden in every year uses the region's spending for that type and year times the ACO's
 -- own-to-region ratio over its shown types that year.
 create or replace table rebased as
 with recs as (
-    select distinct aco_id, py from res where py between 2019 and 2021
+    select distinct aco_id, py from res where py between getvariable('by_first') and 2021
 ),
 cells as (
     select

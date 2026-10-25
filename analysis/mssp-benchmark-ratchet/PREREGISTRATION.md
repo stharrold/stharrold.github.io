@@ -70,7 +70,9 @@ CMS Medicare Shared Savings Program public use files (data.cms.gov, public data 
   2021, the versions published for 2022-2023 starters (`FFS_Data_for_SSP_CRB_PUF_<year>_01_01_Cal_Year_Assignable_
   2022_2023_Starters.csv`) (regional spending).
 - **Number of ACO Assigned Beneficiaries by County**, 2021 (each ACO's regional service area in BY3, and its share s
-  of assignable beneficiaries, section 4.3).
+  of assignable beneficiaries, section 4.3; census region, section 5.6).
+- **Performance Year Financial and Quality Results**, PY2023 and PY2024: only for the descriptive spending-by-
+  agreement-year table (section 5.6).
 
 Exact files, sizes, sha256 hashes and URLs: `data-snapshot.tsv` (downloaded 2026-10-22). The manifest also lists files
 not used here, retained from the design stage. The pipeline verifies every hash before reading.
@@ -82,7 +84,8 @@ used: the CMS data dictionaries, the regulation (42 CFR 425.20, 425.200, 425.600
 exits were counted (`DESIGN-NOTES.md`). **No values from the results files or the county-level files (spending,
 savings, benchmarks, quality, regional expenditures) have been viewed.** On 2026-10-25, to write the analysis code, the
 first row (column names only) of the PY2016-PY2022 results files, the 2019-2021 county-level expenditure files
-and the 2021 county assignment file was read; no data rows. The analysis code was tested on synthetic data with made-up
+and the 2021 county assignment file was read, and on 2026-10-25 also of the PY2023 and PY2024 results files; no data
+rows. The analysis code was tested on synthetic data with made-up
 values. The hypotheses were formed from the
 regulation and the existence of the early-renewal group. The author is aware of published research on MSSP savings in
 general.
@@ -249,9 +252,11 @@ does not bias a difference in means, so no measurement-error model is used in H2
 regional component (4.3 step 5) are reported alongside, descriptively.
 
 ### 5.3 Covariate-adjusted estimates (reported, not used for decisions)
-Bayesian linear regression (PyMC, MCMC) of each H1, H2a and H2b variable, standardized, on an early-renewer indicator
-and a cohort indicator: Student-t errors, Normal(0, 1) on the coefficients, Exponential(1) on the scale, Gamma(2, 0.1)
-on the degrees of freedom; same sampler settings and convergence checks as 5.4.
+Bayesian linear regression (PyMC, MCMC) of each H1, H2a and H2b variable, standardized over the compared ACOs, on an
+early-renewer indicator and a 2020-01-01 cohort indicator (both 0/1): Student-t errors, Normal(0, 1) on the intercept
+and coefficients, Exponential(1) on the scale, Gamma(2, 0.1) on the degrees of freedom; same sampler settings,
+convergence checks and single rerun as 5.4. Reported: the early-renewer coefficient's posterior mean and 95% interval,
+in SD units and in the variable's units.
 
 ### 5.4 H3: Bayesian decision model (BASIC-track ACOs)
 **Sample:** ACOs in the BASIC track in PY2021 (27 early renewers; the 2 early renewers already in ENHANCED in PY2021,
@@ -315,32 +320,48 @@ predicted probability); the same model with Student-t(3, 0, 2.5) priors on the c
 that differs between the two priors flagged in the write-up.
 
 ### 5.5 Robustness (all reported)
-1. H1, H2a and H2b with PY2021 track/level and log assigned beneficiaries (`N_AB`, PY2020) added to the 5.3
-   regressions.
+Each item is reported as estimates: for H1, H2a and H2b the Bayesian bootstrap posterior and the stratified permutation
+p-value (as in 5.1, 10,000 resamples); for H3 the posterior summaries of the 5.4 model (means and 95% intervals,
+full settings, same convergence checks and rerun), without the direct-simulation test, which is run only for the
+confirmatory model (5.4) and the Firth model (item 5). Robustness results do not change the section 7 decisions.
+1. H1, H2a and H2b with PY2021 track/level (indicators for BASIC C-E and ENHANCED; BASIC A-B reference) and
+   standardized log assigned beneficiaries (`N_AB`, PY2020) added to the 5.3 regressions.
 2. H1, H2a and H2b as differences in medians (Bayesian bootstrap for the interval; the permutation test uses the
    observed difference in medians).
-3. 2020-01-01 cohort only.
+3. 2020-01-01 cohort only: H1, H2a and H2b, and H3 with the cohort predictor dropped.
 4. H1 for the PY2021 savings rate.
 5. H3 as a Firth-penalized logistic regression (`firthmodels`, version pinned in `uv.lock`) with the three core
    predictors and cohort only (about 7 events per parameter), own-spending component at its observed value;
-   profile-likelihood 95% intervals.
-6. H2a and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3.
+   profile-likelihood 95% intervals and the direct-simulation test of 5.4 (10,000 simulations). Always run; it also
+   serves as the convergence fallback of 5.4.
+6. H2a and H3 using only BY2-BY3 (PY2020-PY2021) in step 1 of 4.3, with the main validation's calibration and
+   sigma_v (not re-validated).
 7. The Bayesian H3 model with the own-spending component at its observed value (no measurement-error model).
 8. Complete cases: H2a, H3, the total gain and the regional component without the ACOs imputed under section 3.
 9. H2b and H3 with the regional pull computed from unadjusted county spending (no risk standardization or case-mix
    adjustment), to show how much the case-mix adjustment matters.
 
 ### 5.6 Exploratory and descriptive (labeled as such in the write-up)
-- Census region (4 levels) added to the decision model.
+Exploratory analyses use the same estimators as above (Bayesian bootstrap and permutation p for group comparisons;
+H3 posterior summaries only).
+- Census region (4 levels: the region with the largest share of the ACO's 2021 assigned person-years, from
+  `State_Name` in the county assignment file) added to the decision model as 3 centered indicators with Normal(0, 1)
+  priors.
 - Leavers (28): PY2020 savings rate, regional pull and both gain components, in the same tables.
 - The 2 early renewers already in ENHANCED in PY2021, whose renewal could not change their sharing rate: savings rate,
   regional pull and both gain components, reported individually against the stayer distribution.
 - Regional pull weighted by the phase-in weight w, and the capped regional component, in place of the regional pull in
   H2b and H3.
 - Who renewed early: cohort, prior track and level, new track (from enrollment data, already seen).
-- Balance: share of beneficiaries aged 85+ and share female, PY2020.
+- Balance: share of beneficiaries aged 85+ (`N_Ben_Age_85plus` / sum of the `N_Ben_Age_*` bins) and share female
+  (`N_Ben_Female` / (`N_Ben_Female` + `N_Ben_Male`)), PY2020; means by group.
 - Per-capita spending by agreement year for 5-year agreements, labeled with benchmark-year status, with the caveat
-  that benchmark-year status and tenure cannot be separated.
+  that benchmark-year status and tenure cannot be separated: agreements starting 2020-01-01, 2021-01-01 and
+  2022-01-01, `Per_Capita_Exp_TOTAL_PY` from the PY2020-PY2024 results files (ACO and start date from
+  `Current_Start_Date` in each file), agreement year = performance year - start year + 1; agreement years 3-5 are the
+  scheduled benchmark years of the next agreement. Mean and ACO count by start year and agreement year; early renewers
+  out of a 2020 agreement are shown separately. This table reads the full PY2022 results file, so it is computed only after the
+  confirmatory results (5.1-5.4) have been written.
 
 ## 6. Power analysis (run after registration, before any confirmatory estimate)
 Minimum detectable difference at 80% power, two-sided alpha = 0.05, for 29 vs 277 ACOs: MDE = 2.80 x SD x

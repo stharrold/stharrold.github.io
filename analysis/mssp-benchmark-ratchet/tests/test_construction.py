@@ -93,3 +93,45 @@ def test_risk_adjustment_changes_pull(built):
     _, _, m = built
     ok = m.pull_sql.notna()
     assert np.mean(np.abs(m.pull_sql[ok] - m.pull_unadjusted_sql[ok])) > 1.0
+
+
+def test_date_macro_accepts_both_formats():
+    import duckdb
+
+    con = duckdb.connect()
+    con.execute((build.config.SQL_DIR / "00_macros.sql").read_text())
+    got = con.sql("select mdy('7/1/2019'), mdy('1/1/2019 0:00'), mdy('2022-01-01'), mdy('*')").fetchall()[0]
+    assert [str(d) for d in got[:3]] == ["2019-07-01", "2019-01-01", "2022-01-01"] and got[3] is None
+
+
+def test_by2_by3_variant_matches_numpy(tmp_path):
+    """Robustness item 6: benchmark years 2020-2021 only."""
+    truth = synthetic.generate(tmp_path, seed=1)
+    frame = build.connect(tmp_path, stage="full", by_first=2020).sql("select aco_id, own, gain from expected_gain").df()
+    m = frame.merge(truth.acos[["aco_id", "own_by23", "gain_by23"]], on="aco_id")
+    assert (m.own.isna() == m.own_by23.isna()).all()
+    np.testing.assert_allclose(m.own[m.own.notna()], m.own_by23[m.own.notna()], rtol=1e-6, atol=1e-3)
+    np.testing.assert_allclose(m.gain[m.gain.notna()], m.gain_by23[m.gain.notna()], rtol=1e-6, atol=1e-3)
+
+
+def test_census_region_and_balance(built):
+    con, truth, _ = built
+    frame = con.sql("select aco_id, census_region, share_85plus_2020, share_female_2020 from analysis").df()
+    m = frame.merge(truth.acos[["aco_id", "census_region"]], on="aco_id", suffixes=("", "_np"))
+    assert (m.census_region == m.census_region_np).all()
+    assert frame.share_85plus_2020.between(0, 1).all() and frame.share_female_2020.between(0.4, 0.7).all()
+
+
+def test_spending_by_agreement_year(tmp_path):
+    truth = synthetic.generate(tmp_path, seed=1)
+    table = build.connect(tmp_path, stage="full", descriptive=True).sql("select * from spending_by_agreement_year").df()
+    acos = truth.acos
+    early20 = ((acos.kind == "base20") & (acos.grp == "early")).sum()
+    row = table[(table.start_year == 2020) & (table.agreement_year == 1) & table.early_renewer_from_2020]
+    assert int(row.n_acos.iloc[0]) == early20
+    # 2020 stayers reach agreement year 5 (PY2024); scheduled benchmark years are agreement years 3-5.
+    stay = table[(table.start_year == 2020) & ~table.early_renewer_from_2020].set_index("agreement_year")
+    assert int(stay.loc[5, "n_acos"]) == ((acos.kind == "base20") & (acos.grp == "stayer")).sum()
+    assert set(table.loc[table.scheduled_benchmark_year, "agreement_year"]) == {3, 4, 5}
+    # Early renewers out of 2020 agreements appear in their 2022 agreement too, still labeled.
+    assert int(table[(table.start_year == 2022) & table.early_renewer_from_2020 & (table.agreement_year == 1)].n_acos.iloc[0]) == early20

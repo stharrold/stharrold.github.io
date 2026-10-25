@@ -16,7 +16,7 @@ def test_real_enrollment_file_loads():
 
 
 @needs_real
-@pytest.mark.parametrize("name", [*config.RESULTS_FILES.values(), *config.COUNTY_FILES.values(), config.ASSIGNMENT_FILE])
+@pytest.mark.parametrize("name", [*config.RESULTS_FILES.values(), *config.DESCRIPTIVE_RESULTS_FILES.values(), *config.COUNTY_FILES.values(), config.ASSIGNMENT_FILE])
 def test_real_outcome_files_locked_before_registration(name, tmp_path):
     with pytest.raises(snapshot.OutcomeLockedError):
         snapshot.checked_path(REAL, name, registration=tmp_path / "REGISTRATION.md")
@@ -49,6 +49,7 @@ def test_real_headers_have_every_column_the_sql_reads():
         "results_aco_num": [config.RESULTS_FILES[2016], config.RESULTS_FILES[2017]],
         "results_2018": [config.RESULTS_FILES[2018]],
         "results_2022_by": [config.RESULTS_FILES[2022]],
+        "results_2023_2024": list(config.DESCRIPTIVE_RESULTS_FILES.values()),
         "county": list(config.COUNTY_FILES.values()),
         "assignment": [config.ASSIGNMENT_FILE],
         "enrollment_2021": [config.ENROLLMENT_FILES["2021"], config.ENROLLMENT_FILES["2022"]],

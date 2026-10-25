@@ -28,7 +28,10 @@ select
     num(cms_hcc_riskscore_esrd_py) as rs_esrd,
     num(cms_hcc_riskscore_dis_py) as rs_dis,
     num(cms_hcc_riskscore_agdu_py) as rs_agdu,
-    num(cms_hcc_riskscore_agnd_py) as rs_agnd
+    num(cms_hcc_riskscore_agnd_py) as rs_agnd,
+    -- Balance (section 5.6): share aged 85+ over the age bins, share female over female + male.
+    num(n_ben_age_85plus) / (num(n_ben_age_0_64) + num(n_ben_age_65_74) + num(n_ben_age_75_84) + num(n_ben_age_85plus)) as share_85plus,
+    num(n_ben_female) / (num(n_ben_female) + num(n_ben_male)) as share_female
 from raw;
 
 -- Per-capita expenditure and mean prospective CMS-HCC risk score by type (long), PY2019-PY2021 (BY1-BY3 of a 2022 reset).

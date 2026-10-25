@@ -6,6 +6,10 @@ select
     g.basic_level in ('C', 'D', 'E') as basic_high,
     g.high_revenue, g.prospective,
     g.period_2021 >= 2 as later_agreement,
+    cr.region as census_region,
+    r20.share_85plus as share_85plus_2020,
+    r20.share_female as share_female_2020,
+    g.enhanced_2022,
     r20.sav_rate as sav_rate_2020,
     r21.sav_rate as sav_rate_2021,
     ln(r20.n_ab) as log_n_ab_2020,
@@ -14,7 +18,8 @@ select
 from groups as g
 left join (select * from res where py = 2020) as r20 using (aco_id)
 left join (select * from res where py = 2021) as r21 using (aco_id)
-left join expected_gain as e using (aco_id);
+left join expected_gain as e using (aco_id)
+left join census_region as cr using (aco_id);
 
 -- Validation (section 4.4): approximate new benchmark vs PY2022 HistBnchmk, regular renewers only.
 create or replace table validation as

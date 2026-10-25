@@ -33,16 +33,17 @@ create or replace table assign as
 with wide as (
     select
         trim(aco_id) as aco_id,
+        trim(state_name) as state_name,
         cast(num(state_id) as integer) as state_id,
         cast(num(county_id) as integer) as county_id,
         num(ab_psn_yrs_esrd) as esrd, num(ab_psn_yrs_dis) as dis, num(ab_psn_yrs_agdu) as agdu, num(ab_psn_yrs_agnd) as agnd,
         num(tot_ab_psn_yrs) as tot_ab_psn_yrs
     from raw_assign_2021
 )
-select aco_id, state_id, county_id, tot_ab_psn_yrs, 'ESRD' as type, esrd as ab_person_years from wide
-union all select aco_id, state_id, county_id, tot_ab_psn_yrs, 'DIS', dis from wide
-union all select aco_id, state_id, county_id, tot_ab_psn_yrs, 'AGDU', agdu from wide
-union all select aco_id, state_id, county_id, tot_ab_psn_yrs, 'AGND', agnd from wide;
+select aco_id, state_name, state_id, county_id, tot_ab_psn_yrs, 'ESRD' as type, esrd as ab_person_years from wide
+union all select aco_id, state_name, state_id, county_id, tot_ab_psn_yrs, 'DIS', dis from wide
+union all select aco_id, state_name, state_id, county_id, tot_ab_psn_yrs, 'AGDU', agdu from wide
+union all select aco_id, state_name, state_id, county_id, tot_ab_psn_yrs, 'AGND', agnd from wide;
 
 -- Regional service area spending by ACO, year and type, weighting counties by the ACO's 2021 person-years of that type
 -- (425.601(d)): risk-standardized county spending, county spending / county mean risk score (425.601(c)(4)); the
@@ -73,3 +74,29 @@ from aco_county as a
 join county_total as t using (state_id, county_id)
 where t.person_years > 0
 group by a.aco_id;
+
+-- Census region of each ACO (section 5.6): the region with the largest share of its 2021 assigned person-years.
+-- States are matched by name; territories and unmatched names have no region.
+create or replace table census_region as
+with states(state_name, region) as (values
+    ('Connecticut', 'Northeast'), ('Maine', 'Northeast'), ('Massachusetts', 'Northeast'), ('New Hampshire', 'Northeast'),
+    ('Rhode Island', 'Northeast'), ('Vermont', 'Northeast'), ('New Jersey', 'Northeast'), ('New York', 'Northeast'),
+    ('Pennsylvania', 'Northeast'),
+    ('Illinois', 'Midwest'), ('Indiana', 'Midwest'), ('Michigan', 'Midwest'), ('Ohio', 'Midwest'), ('Wisconsin', 'Midwest'),
+    ('Iowa', 'Midwest'), ('Kansas', 'Midwest'), ('Minnesota', 'Midwest'), ('Missouri', 'Midwest'), ('Nebraska', 'Midwest'),
+    ('North Dakota', 'Midwest'), ('South Dakota', 'Midwest'),
+    ('Delaware', 'South'), ('District of Columbia', 'South'), ('Florida', 'South'), ('Georgia', 'South'),
+    ('Maryland', 'South'), ('North Carolina', 'South'), ('South Carolina', 'South'), ('Virginia', 'South'),
+    ('West Virginia', 'South'), ('Alabama', 'South'), ('Kentucky', 'South'), ('Mississippi', 'South'),
+    ('Tennessee', 'South'), ('Arkansas', 'South'), ('Louisiana', 'South'), ('Oklahoma', 'South'), ('Texas', 'South'),
+    ('Arizona', 'West'), ('Colorado', 'West'), ('Idaho', 'West'), ('Montana', 'West'), ('Nevada', 'West'),
+    ('New Mexico', 'West'), ('Utah', 'West'), ('Wyoming', 'West'), ('Alaska', 'West'), ('California', 'West'),
+    ('Hawaii', 'West'), ('Oregon', 'West'), ('Washington', 'West')
+),
+by_region as (
+    select a.aco_id, s.region, sum(a.tot_ab_psn_yrs) as person_years
+    from (select distinct aco_id, state_name, state_id, county_id, tot_ab_psn_yrs from assign where tot_ab_psn_yrs > 0) as a
+    join states as s on lower(s.state_name) = lower(a.state_name)
+    group by a.aco_id, s.region
+)
+select aco_id, arg_max(region, person_years) as region from by_region group by aco_id;

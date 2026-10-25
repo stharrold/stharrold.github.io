@@ -34,6 +34,8 @@ RESULTS_FILES = {
     2021: "Performance_Year_Financial_and_Quality_Results_2021_suppress.csv",
     2022: "Performance_Year_Financial_and_Quality_Results_PUF_2022_01_01.csv",
 }
+# Only for the descriptive spending-by-agreement-year table (section 5.6).
+DESCRIPTIVE_RESULTS_FILES = {2023: "PY 2023 ACO Results PUF.csv", 2024: "PY_Financial_and_Quality_Results_2024_revised 2026_07_17.csv"}
 COUNTY_FILES = {year: f"FFS_Data_for_SSP_CRB_PUF_{year}_01_01_Cal_Year_Assignable_2022_2023_Starters.csv" for year in (2019, 2020, 2021)}
 ASSIGNMENT_FILE = "Number_Of_ACO_Assigned_Beneficiaries_by_County_PUF_2021_01_01.csv"
 OUTCOME_PREFIXES = ("Performance_Year_Financial", "PY_Financial", "PY 2023", "FFS_Data_for_SSP", "Number_Of_ACO_Assigned")
