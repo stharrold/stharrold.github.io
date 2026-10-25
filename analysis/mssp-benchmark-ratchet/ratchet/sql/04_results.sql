@@ -1,8 +1,8 @@
--- ACO results by performance year (section 4.1). PY2016 uses ACO_Num; PY2021 spells Sav_Rate (names are case-insensitive).
+-- ACO results by performance year (section 4.1). PY2016-PY2017 use ACO_Num; PY2021 spells Sav_Rate (names are case-insensitive).
 create or replace table res as
 with raw as (
     select 2016 as py, aco_num as aco_id, * exclude (aco_num) from raw_results_2016
-    union all by name select 2017 as py, * from raw_results_2017
+    union all by name select 2017 as py, aco_num as aco_id, * exclude (aco_num) from raw_results_2017
     union all by name select 2018 as py, * from raw_results_2018
     union all by name select 2019 as py, * from raw_results_2019
     union all by name select 2020 as py, * from raw_results_2020

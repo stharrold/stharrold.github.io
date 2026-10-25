@@ -1,7 +1,7 @@
 """Synthetic stand-in for the CMS snapshot, for testing the pipeline before registration.
 
 Values are made up (no CMS values were viewed). File names and the column names the pipeline reads mirror the real
-files, including their quirks: M/D/YYYY dates (with " 0:00" in the PY2019 January enrollment file), ACO_Num in PY2016,
+files, including their quirks: M/D/YYYY dates (with " 0:00" in the PY2019 January enrollment file), ACO_Num in PY2016-17,
 Sav_Rate in PY2021, AGDU/AGND vs AGED_Dual/AGED_NonDual, "*" suppression markers, ACOs with no PY2019 record, and
 early-renewer rows in the PY2022 results file that the loader must drop.
 
@@ -32,7 +32,8 @@ REQUIRED_COLUMNS = {
         "prospective_assignment",
     ],
     "results": ["ACO_ID", "Sav_rate", "N_AB", "UpdatedBnchmk", "HistBnchmk"] + [f"Per_Capita_Exp_ALL_{t}_PY" for t in TYPES] + list(RESULTS_SHARE_COLUMNS.values()),
-    "results_2016": ["ACO_Num", "Sav_rate"],
+    "results_aco_num": ["ACO_Num", "Sav_rate"],
+    "results_2018": ["ACO_ID", "Sav_rate"],
     "county": ["STATE_ID", "COUNTY_ID"] + [f"PER_CAPITA_EXP_{t}" for t in TYPES] + [f"PERSON_YEARS_{t}" for t in TYPES],
     "assignment": ["ACO_ID", "State_ID", "County_ID", "Tot_AB_Psn_Yrs"] + [f"AB_Psn_Yrs_{t}" for t in TYPES],
 }
@@ -244,7 +245,7 @@ def _write_results(out_dir: Path, acos: pd.DataFrame, own, shares_py, current, h
         return "*" if np.isnan(x) else f"{x:.6f}"
 
     for year, name in config.RESULTS_FILES.items():
-        id_col = "ACO_Num" if year == 2016 else "ACO_ID"
+        id_col = "ACO_Num" if year in (2016, 2017) else "ACO_ID"
         sav_col = "Sav_Rate" if year == 2021 else "Sav_rate"
         rows = []
         for i, a in acos.iterrows():

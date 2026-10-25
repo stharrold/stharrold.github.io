@@ -66,3 +66,4 @@ def test_analysis_frame(built):
     frame = con.sql("select * from analysis").df()
     assert len(frame) == truth.acos.grp.notna().sum()
     assert frame.sav_rate_2021.notna().all()  # PY2021 spells Sav_Rate
+    assert build.scalar(con, "select count(*) from res where py between 2016 and 2018 and aco_id is null") == 0  # ACO_Num years

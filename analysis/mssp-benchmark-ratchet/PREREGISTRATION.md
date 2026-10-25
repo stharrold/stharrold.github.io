@@ -80,7 +80,7 @@ used: the CMS data dictionaries, the regulation (42 CFR 425.20, 425.200, 425.600
 **enrollment** files, from which the groups below, risk levels, take-up of an earlier candidate design, and program
 exits were counted (`DESIGN-NOTES.md`). **No values from the results files or the county-level files (spending,
 savings, benchmarks, quality, regional expenditures) have been viewed.** On 2026-10-25, to write the analysis code, the
-first row (column names only) of the PY2016 and PY2019-PY2022 results files, the 2021 county-level expenditure file
+first row (column names only) of the PY2016-PY2022 results files, the 2019-2021 county-level expenditure files
 and the 2021 county assignment file was read; no data rows. The analysis code was tested on synthetic data with made-up
 values. The hypotheses were formed from the
 regulation and the existence of the early-renewal group. The author is aware of published research on MSSP savings in
