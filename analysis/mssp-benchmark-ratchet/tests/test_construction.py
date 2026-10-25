@@ -95,13 +95,11 @@ def test_risk_adjustment_changes_pull(built):
     assert np.mean(np.abs(m.pull_sql[ok] - m.pull_unadjusted_sql[ok])) > 1.0
 
 
-def test_date_macro_accepts_both_formats():
-    import duckdb
-
-    con = duckdb.connect()
-    con.execute((build.config.SQL_DIR / "00_macros.sql").read_text())
-    got = con.sql("select mdy('7/1/2019'), mdy('1/1/2019 0:00'), mdy('2022-01-01'), mdy('*')").fetchall()[0]
-    assert [str(d) for d in got[:3]] == ["2019-07-01", "2019-01-01", "2022-01-01"] and got[3] is None
+def test_dates_parse_in_both_formats(built):
+    """Enrollment dates are M/D/YYYY (with " 0:00" in PY2019 January); synthetic results use YYYY-MM-DD."""
+    con, _, _ = built
+    assert build.scalar(con, "select count(*) from enroll where start is null") == 0
+    assert build.scalar(con, "select count(*) from enroll where py = 2019 and start is not null") > 0
 
 
 def test_by2_by3_variant_matches_numpy(tmp_path):

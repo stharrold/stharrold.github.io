@@ -28,8 +28,12 @@ def deltas(panel: pd.DataFrame, outcome: str = "y", balanced: bool = False) -> p
     post = wide[list(POST)]
     if balanced:
         wide, post = wide[post.notna().all(axis=1)], post[post.notna().all(axis=1)]
-    wide = wide.assign(delta=post.mean(axis=1) - wide[list(PRE)].mean(axis=1), delta_pre=wide[2021] - wide[2020], y_2021=wide[2021], n_post=post.notna().sum(axis=1))
-    return wide[wide.n_post > 0].reset_index(drop=True)
+    years = np.where(post.notna(), np.array(POST, dtype=float), np.nan)
+    with np.errstate(invalid="ignore"):
+        c = np.nanmean(years, axis=1) - np.mean(PRE)  # distance between the post and pre-period midpoints (5.8)
+    wide = wide.assign(delta=post.mean(axis=1) - wide[list(PRE)].mean(axis=1), delta_pre=wide[2021] - wide[2020], y_2021=wide[2021], n_post=post.notna().sum(axis=1), c=c)
+    wide = wide[wide.n_post > 0].reset_index(drop=True)
+    return wide.assign(delta_trend_adjusted=wide.delta - wide.c * wide.delta_pre)
 
 
 def estimate(d: pd.DataFrame, column: str, n: int, seed: int) -> dict:
@@ -130,12 +134,17 @@ def run_all(panel: pd.DataFrame, frame: pd.DataFrame, n: int, seed: int) -> dict
         "H4": estimate(d, "delta", n, seed),
         "pre_trend_check": estimate(d, "delta_pre", n, seed),
     }
-    out["H4"]["interpretable_as_effect"] = out["pre_trend_check"]["p_value"] >= 0.05
+    # Equivalence condition (5.8): a linear trend difference large enough to produce the H4 estimate is ruled out.
+    c_bar = float(d.loc[d.grp == "early", "c"].mean())
+    bound = c_bar * max(abs(v) for v in out["pre_trend_check"]["eti95"])
+    out["pre_trend_check"]["equivalence"] = {"c_bar": c_bar, "scaled_bound": bound, "abs_h4": abs(out["H4"]["observed"]), "holds": bound < abs(out["H4"]["observed"])}
+    out["H4"]["interpretable_as_effect"] = out["pre_trend_check"]["equivalence"]["holds"]
     out["robustness"] = {
         "1_risk_adjusted": estimate(deltas(panel, "y_risk"), "delta", n, seed),
         "2_balanced": estimate(deltas(panel, balanced=True), "delta", n, seed),
         "3_propensity_weighted": ps_weighted(d, frame, n, seed),
         "4_cohort_2020": estimate(d[d.cohort == "2020-01"], "delta", n, seed),
+        "5_trend_adjusted": estimate(d, "delta_trend_adjusted", n, seed),
     }
     out["conventional"] = {"twfe": twfe(panel), "twfe_risk_adjusted": twfe(panel, "y_risk")}
     return out

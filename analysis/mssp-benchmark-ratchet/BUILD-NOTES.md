@@ -112,3 +112,16 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   sit beside it. On synthetic data with a planted -4% effect the estimate was -3.1% (95% interval -3.9 to -2.3) and
   the TWFE estimate -3.7%. A first TWFE version was rank-deficient (cohort-by-year dummies collinear with ACO
   effects); fixed by dropping PY2020 within each cohort.
+- Pre-trend rule changed before registration after a side agent cited Roth (2022), "Pretest with Caution": with one
+  COVID-era pre-period change and ~29 treated ACOs, "pre-trend not significant" proves little. H4 is now called an
+  effect only if the pre-trend interval, scaled to the gap between period midpoints, rules out a trend difference big
+  enough to produce the estimate (an equivalence condition), and a trend-adjusted estimate (pre-period slope carried
+  forward, in the spirit of Rambachan and Roth 2023) is reported beside it.
+- dbt: the SQL pipeline became a dbt-duckdb project, one model per derived table (28 models in three tagged stages),
+  Jinja macros for parsing, a `by_first` variable for the BY2-BY3 variant, and schema plus singular data tests (unique
+  keys, accepted values, components adding to the gain, shares summing to one, no early renewer in the PY2022 load).
+  Python still loads every raw table after its hash check and lock, so dbt never reads a file. dbt runs twice per
+  build so the PY2022 file is filtered by the dbt-built validation sample. Before deleting the old SQL, every one of
+  the 28 tables was compared between the old and new pipelines on the same synthetic data, for both variants:
+  identical. Two dbt gotchas: `log-path` in dbt_project.yml is not templated (it created a directory literally named
+  with the Jinja expression), and dbt sends anonymous usage events by default (disabled in the project).

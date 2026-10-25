@@ -421,7 +421,14 @@ H3 posterior summaries only).
 **Estimate and significance:** as 5.1 applied to Delta (4.5): within-cohort difference in mean Delta, early renewers
 minus comparison ACOs, weighted by early renewers per cohort; Bayesian bootstrap posterior; stratified permutation
 test, 10,000 shuffles. Because y is a log, 100 x (exp(estimate) - 1) is reported as the percent difference in spending
-growth. **Pre-trend check:** the same estimator and test applied to Delta_pre. **Robustness (reported):**
+growth. **Pre-trend check:** the same estimator and test applied to Delta_pre. With one pre-period change and about
+29 early renewers, a non-significant pre-trend test is weak evidence of parallel trends (Roth 2022, "Pretest with
+Caution"), so the check is an equivalence condition rather than a significance test: let c be, for each ACO, the
+distance in years between the midpoint of its included post years and the pre-period midpoint (2020.5), and c_bar its
+mean among early renewers (2.5 when all post years are included). The condition holds if c_bar times the larger
+absolute bound of Delta_pre's 95% credible interval is smaller than the absolute H4 estimate, that is, a linear
+difference in trends large enough to produce the H4 estimate is ruled out. The pre-trend estimate, its interval and
+p-value are reported next to H4. **Robustness (reported):**
 1. Risk-adjusted outcome (4.5).
 2. Balanced panel (4.5).
 3. Propensity-score-weighted difference-in-differences: logistic regression of early renewal on cohort, y(PY2021),
@@ -430,6 +437,9 @@ growth. **Pre-trend check:** the same estimator and test applied to Delta_pre. *
    significance by stratified permutation with the propensity model refit on each shuffle (10,000). The largest
    weight is reported.
 4. 2020-01-01 cohort only.
+5. Trend-adjusted estimate: the same estimator applied to Delta - c x Delta_pre for each ACO, which removes a linear
+   continuation of the pre-period difference in trends (a sensitivity analysis in the spirit of Rambachan and Roth
+   2023, with the pre-period slope carried forward once).
 
 H4 reads the full PY2022 results file and the PY2023-PY2024 files, so it is computed only after the 5.1-5.4 results
 are written; its MDE (section 6) is computed before, from pre-period data.
@@ -463,9 +473,11 @@ computed.
    p-value (5.4); adjustment factors are estimates only.
 5. **H4:** p < 0.05 and negative: "early renewers' spending grew less after renewing than that of ACOs not yet
    renewed"; p < 0.05 and positive: "grew more"; otherwise "no detectable difference", with the 95% credible interval
-   and the MDE. It is interpreted as an effect of the early-renewal package (1.4) only if the pre-trend check gives
-   p >= 0.05; if the check gives p < 0.05, H4 is reported as a difference in spending changes, not an effect. H4 does
-   not change the conclusions of H1-H3.
+   and the MDE. It is interpreted as an effect of the early-renewal package (1.4) only if the equivalence condition
+   of the pre-trend check (5.8) holds; otherwise H4 is reported as a difference in spending changes that cannot be
+   told apart from a continuation of a pre-period difference in trends, with the trend-adjusted estimate (5.8,
+   robustness 5) beside it. A significant pre-trend test (p < 0.05) is reported as evidence against parallel trends.
+   H4 does not change the conclusions of H1-H3.
 6. **p-values** in rules 1-5 are two-sided resampling p-values with 10,000 resamples: stratified permutation for H1,
    H2a, H2b, H4 and its pre-trend check (section 5), direct simulation under the reduced model for H3 (5.4).
 7. **If the approximation fails validation (4.4):** H2a and the own-spending predictor are exploratory; H2b stands,
@@ -481,7 +493,8 @@ deviations from registered analyses.
 ## 9. Registration record
 Kept in `REGISTRATION.md` (not here, so this file's hash does not change): the OSF Registries link, the OSF timestamp,
 and the sha256 of this file exactly as registered. The registration is made public immediately, with no embargo.
-The analysis code (`ratchet/`, `tests/`, tested on synthetic data before registration) is attached to the
+The analysis code (`ratchet/` in Python, `dbt/` with the SQL models and data tests, and `tests/`, tested on synthetic
+data before registration) is attached to the
 registration as a zip of this directory at the registered git commit; `REGISTRATION.md` records the commit and the
 zip's sha256. Code added after registration to implement analyses not yet coded at registration (listed in the
 directory's README) and any change to registered code are recorded in `DEVIATIONS.md` with the commit.

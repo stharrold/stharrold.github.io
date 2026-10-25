@@ -65,3 +65,15 @@ def test_conventional_group_and_logit(planted):
     logit = conventional.logit_ml(frame, include_own=True)
     assert "pull" in logit["coefficients"] and logit["coefficients"]["pull"]["odds_ratio"] > 1
     assert np.isfinite(logit["coefficients"]["own"]["p_value"])
+
+
+def test_pre_trend_equivalence_and_trend_adjustment(planted):
+    _, _, panel, frame = planted
+    d = did.deltas(panel)
+    full = d[d.n_post == 3]
+    assert np.allclose(full.c, 2.5)
+    np.testing.assert_allclose(d.delta_trend_adjusted, d.delta - d.c * d.delta_pre)
+    out = did.run_all(panel, frame, 200, 1)
+    eq = out["pre_trend_check"]["equivalence"]
+    assert eq["holds"] == (eq["scaled_bound"] < eq["abs_h4"]) and out["H4"]["interpretable_as_effect"] == eq["holds"]
+    assert "5_trend_adjusted" in out["robustness"]

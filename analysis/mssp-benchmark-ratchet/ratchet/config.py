@@ -6,7 +6,6 @@ STUDY_DIR = Path(__file__).resolve().parents[1]
 MANIFEST = STUDY_DIR / "data-snapshot.tsv"
 REGISTRATION = STUDY_DIR / "REGISTRATION.md"
 RESULTS_DIR = STUDY_DIR / "results"
-SQL_DIR = Path(__file__).resolve().parent / "sql"
 DEFAULT_DATA_DIR = Path.home() / ".cache" / "stharrold-github-io" / "mssp-snapshot-2026-10-22"
 
 # Marker written by ratchet.synthetic; a data directory without it must hash-match the manifest.

@@ -22,6 +22,7 @@ dev = [
 ]
 # Pre-registered MSSP study (analysis/mssp-benchmark-ratchet/); not installed by the site build.
 analysis = [
+    "dbt-duckdb>=1.11",
     "duckdb>=2.0",
     "firthmodels>=0.8.2",
     "numpy>=2.5",
