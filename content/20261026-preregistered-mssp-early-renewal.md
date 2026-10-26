@@ -364,6 +364,12 @@ uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py va
 The CMS files are listed in `data-snapshot.tsv` with their URLs and hashes; the runner checks every hash before
 reading. `ratchet/synthetic.py` writes a synthetic snapshot for a dry run without CMS data.
 
+## Use of AI tools
+
+The author chose the question, hypotheses and decision rules, approved and registered the plan, ran the analysis, and
+is responsible for the results. Claude Code (Claude Opus 5.5; Anthropic) drafted the analysis code and parts of this
+post under the author's direction, and separate instances reviewed the plan and code before registration.
+
 ## References
 
 * 42 CFR Part 425, Medicare Shared Savings Program, as in force on 2022-01-01 (eCFR).
