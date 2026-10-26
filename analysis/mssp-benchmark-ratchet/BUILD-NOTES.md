@@ -125,3 +125,18 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   the 28 tables was compared between the old and new pipelines on the same synthetic data, for both variants:
   identical. Two dbt gotchas: `log-path` in dbt_project.yml is not templated (it created a directory literally named
   with the Jinja expression), and dbt sends anonymous usage events by default (disabled in the project).
+
+## Registration draft completed (2026-10-26)
+
+- Code zip remade at the final pre-registration commit 4358df5 with `git archive` (83 files; `pyproject.toml` and
+  `uv.lock` included, no data files). Because `git archive` stamps files with the commit time, the zip is
+  reproducible from the commit: sha256 f4ef63bf...4727. Plan v0.6 sha256 675de568...ecf7.
+- OSF draft updated: description rewritten to cover H4 and the conventional comparison and to cite the new zip, hash
+  and commit; three subjects; seven tags. Summary step: a two-sentence lead-in with both hashes, then the full plan
+  text, with the plan file and the zip attached as supplemental files. OSF's stored sha256 for both attachments was
+  checked against the local files through the OSF API: both match.
+- Two form gotchas: a password manager's inline menu attached to the page and the draft's title and description were
+  found blank on the server after a reload (tags, subjects and license were intact); and the metadata page saves
+  title and description only when Next is clicked, not on blur. Checking the saved draft through the API, not the
+  page, caught both.
+- Stopped at Review; the author clicks Register (public, permanent).
