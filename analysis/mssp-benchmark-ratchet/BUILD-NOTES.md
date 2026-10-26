@@ -158,3 +158,8 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   resets an unsaved Summary box to its last autosave; and after a reload the Metadata step showed a "!" (invalid)
   although the server copy was complete, cleared by saving the step with Next.
 - Stopped at Review; the author clicks Register (public, permanent).
+- Registered 2026-10-26 13:22:16 UTC: https://osf.io/c53w9/ (DOI 10.17605/OSF.IO/C53W9). OSF holds a new
+  registration as "pending approval" (not public) until every admin approves by email, or for 48 hours; the author
+  approved it, and it was confirmed visible to a signed-out request before `REGISTRATION.md` was written, since
+  that file unlocks the outcome data. The archived copies' sha256 match the plan and the zip. The page the author
+  landed on, osf.io/z4an5, is the editable project OSF creates for the draft's files, not the registration.
