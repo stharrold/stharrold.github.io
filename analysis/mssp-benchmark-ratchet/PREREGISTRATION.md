@@ -1,9 +1,9 @@
 # Pre-registration: Why did Medicare ACOs reset their benchmarks early?
 
-**Status:** v0.6, the version submitted for registration on OSF Registries on 2026-10-26 (author decisions of
-2026-10-22 and 2026-10-25 applied, including H4 and the conventional comparison; analysis code, with dbt models,
-written and tested on synthetic data). This file is frozen from registration: the registration link, OSF timestamp,
-and this file's sha256 are in `REGISTRATION.md`, and any later change is in `DEVIATIONS.md`. Issue #73. Supersedes
+**Status:** v0.6, the version submitted for registration on OSF Registries (author decisions of 2026-10-22 and
+2026-10-25 applied, including H4 and the conventional comparison; analysis code, with dbt models, written and tested
+on synthetic data). This file is frozen from registration: the registration link, OSF timestamp (the registration
+date), and this file's sha256 are in `REGISTRATION.md`, and any later change is in `DEVIATIONS.md`. Issue #73. Supersedes
 drafts v0.1 (a downside-risk question dropped at the design stage), v0.2 (a single-test version of this plan), v0.3
 (frequentist tests), v0.4 (before the code) and v0.5 (before H4); see `DESIGN-NOTES.md`.
 
