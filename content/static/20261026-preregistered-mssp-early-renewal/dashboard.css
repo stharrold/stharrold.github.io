@@ -1,0 +1,85 @@
+/* Interactive results (dashboard.js). Light only, like the site theme; colors are roles, set once here. */
+.mssp-dash {
+    --mssp-surface: #fcfcfb;
+    --mssp-ink: #0b0b0b;
+    --mssp-ink-2: #52514e;
+    --mssp-muted: #898781;
+    --mssp-grid: #e1e0d9;
+    --mssp-axis: #c3c2b7;
+    --mssp-series: #2a78d6;
+    --mssp-band: rgba(42, 120, 214, 0.1);
+    --mssp-border: rgba(11, 11, 11, 0.1);
+    position: relative;
+    margin: 1.5rem 0;
+    color: var(--mssp-ink);
+}
+.mssp-card {
+    background: var(--mssp-surface);
+    border: 1px solid var(--mssp-border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+.mssp-card h4 { font-size: 1.1rem; margin: 0 0 0.25rem; }
+.mssp-card h5 { font-size: 1rem; margin: 1rem 0 0.25rem; }
+.mssp-intro, .mssp-note { color: var(--mssp-ink-2); font-size: 0.875rem; }
+.mssp-note { margin: 0.5rem 0 0; }
+.mssp-pending { color: var(--mssp-ink-2); font-style: italic; margin: 0; }
+.mssp-banner {
+    border-left: 4px solid var(--mssp-muted);
+    background: #f0efec;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.75rem;
+}
+.mssp-stages { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; list-style: none; padding: 0; margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--mssp-muted); }
+.mssp-stages .is-done { color: var(--mssp-ink-2); }
+.mssp-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 0.25rem; margin-bottom: 0.75rem; font-size: 0.875rem; }
+.mssp-control-label { color: var(--mssp-ink-2); margin-right: 0.25rem; }
+.mssp-seg {
+    border: 1px solid var(--mssp-axis);
+    background: var(--mssp-surface);
+    color: var(--mssp-ink);
+    border-radius: 4px;
+    padding: 0.15rem 0.6rem;
+}
+.mssp-seg[aria-pressed="true"] { border-color: var(--mssp-series); box-shadow: inset 0 0 0 1px var(--mssp-series); font-weight: 600; }
+.mssp-chart { display: block; max-width: 100%; overflow: visible; }
+.mssp-chart text { font-family: inherit; }
+.mssp-grid { stroke: var(--mssp-grid); stroke-width: 1; }
+.mssp-zero { stroke: var(--mssp-axis); stroke-width: 1; }
+.mssp-divider { stroke: var(--mssp-axis); stroke-width: 1; }
+.mssp-tick { fill: var(--mssp-muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.mssp-label { fill: var(--mssp-ink); font-size: 13px; }
+.mssp-sublabel { fill: var(--mssp-muted); font-size: 11px; }
+.mssp-band { fill: var(--mssp-band); }
+.mssp-hit { fill: transparent; }
+.mssp-interval { stroke: var(--mssp-series); stroke-width: 2; stroke-linecap: round; }
+.mssp-dot { fill: var(--mssp-series); stroke: var(--mssp-surface); stroke-width: 2; }
+.mssp-row.is-muted .mssp-interval { stroke: var(--mssp-muted); }
+.mssp-row.is-muted .mssp-dot { fill: var(--mssp-muted); }
+.mssp-row.is-emphasis .mssp-label { font-weight: 600; }
+.mssp-row:hover .mssp-hit, .mssp-row:focus .mssp-hit { fill: rgba(11, 11, 11, 0.04); }
+.mssp-row:focus { outline: none; }
+.mssp-row:focus-visible .mssp-hit { stroke: var(--mssp-series); stroke-width: 1; }
+.mssp-multiples .mssp-chart + .mssp-chart { margin-top: 0.25rem; }
+.mssp-table { margin-top: 0.5rem; font-size: 0.875rem; }
+.mssp-table summary { color: var(--mssp-ink-2); cursor: pointer; }
+.mssp-table table, .mssp-agree { margin: 0.5rem 0 0; font-variant-numeric: tabular-nums; }
+.mssp-tip {
+    position: absolute;
+    z-index: 10;
+    max-width: 320px;
+    background: var(--mssp-surface);
+    border: 1px solid var(--mssp-border);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(11, 11, 11, 0.12);
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8125rem;
+    pointer-events: none;
+}
+.mssp-tip-value { font-weight: 600; color: var(--mssp-ink); }
+.mssp-tip-label { color: var(--mssp-ink-2); }
+@media (forced-colors: active) {
+    .mssp-interval, .mssp-zero { stroke: CanvasText; }
+    .mssp-dot { fill: CanvasText; }
+}

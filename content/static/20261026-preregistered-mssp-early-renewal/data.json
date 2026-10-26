@@ -1,0 +1,518 @@
+{
+ "synthetic": true,
+ "built": "2026-10-26 16:41 UTC",
+ "commit": "8c05b79",
+ "stages": [
+  {
+   "name": "validation",
+   "done": true
+  },
+  {
+   "name": "power",
+   "done": true
+  },
+  {
+   "name": "confirm",
+   "done": true
+  },
+  {
+   "name": "robustness",
+   "done": true
+  },
+  {
+   "name": "did",
+   "done": true
+  },
+  {
+   "name": "conventional",
+   "done": true
+  },
+  {
+   "name": "exploratory",
+   "done": true
+  }
+ ],
+ "validation": {
+  "passed": true,
+  "calibrated": false,
+  "sigma_v_model": 0.7282653990080419
+ },
+ "comparisons": {
+  "rows": [
+   {
+    "key": "H2b_pull",
+    "label": "H2b regional pull",
+    "role": "primary",
+    "unit": "pp of benchmark",
+    "mean": 12.865782981920235,
+    "lo": 10.391532250188348,
+    "hi": 15.381963366766938,
+    "p": 0.0196078431372549,
+    "p_positive": 1.0,
+    "mde": 3.666075036341399,
+    "n_early": 48,
+    "n_stayer": 202,
+    "verdict": "positive"
+   },
+   {
+    "key": "H2a_own",
+    "label": "H2a own-spending component",
+    "role": "secondary",
+    "unit": "pp of benchmark",
+    "mean": 4.76408009988299,
+    "lo": 2.4936659151557192,
+    "hi": 6.230466218906839,
+    "p": 0.0196078431372549,
+    "p_positive": 1.0,
+    "mde": 2.223325283902669,
+    "n_early": 48,
+    "n_stayer": 202,
+    "verdict": "positive"
+   },
+   {
+    "key": "H1_sav_rate_2020",
+    "label": "H1 savings rate, PY2020",
+    "role": "descriptive",
+    "unit": "pp",
+    "mean": -0.2191493478901032,
+    "lo": -1.768007230087649,
+    "hi": 1.083375097837102,
+    "p": 0.8823529411764706,
+    "p_positive": 0.36,
+    "mde": 1.7988702915889534,
+    "n_early": 48,
+    "n_stayer": 203,
+    "verdict": null
+   },
+   {
+    "key": "H1_sav_rate_2021",
+    "label": "H1 savings rate, PY2021",
+    "role": "descriptive",
+    "unit": "pp",
+    "mean": 0.23734670023074642,
+    "lo": -1.1462625300788154,
+    "hi": 1.538404395738496,
+    "p": 1.0,
+    "p_positive": 0.58,
+    "mde": 1.7988702915889534,
+    "n_early": 48,
+    "n_stayer": 203,
+    "verdict": null
+   },
+   {
+    "key": "gain",
+    "label": "Total expected gain",
+    "role": "descriptive",
+    "unit": "pp of benchmark",
+    "mean": 7.188959210527156,
+    "lo": 5.38355061577358,
+    "hi": 8.536133808873975,
+    "p": 0.0196078431372549,
+    "p_positive": 1.0,
+    "mde": null,
+    "n_early": 48,
+    "n_stayer": 202,
+    "verdict": null
+   },
+   {
+    "key": "regional_comp",
+    "label": "Regional component",
+    "role": "descriptive",
+    "unit": "pp of benchmark",
+    "mean": 2.424879110644167,
+    "lo": 1.4912768348156793,
+    "hi": 3.3201549919633915,
+    "p": 0.0196078431372549,
+    "p_positive": 1.0,
+    "mde": null,
+    "n_early": 48,
+    "n_stayer": 202,
+    "verdict": null
+   }
+  ],
+  "imputed_by_group": {
+   "early": 2,
+   "stayer": 3
+  }
+ },
+ "h3": {
+  "sample": {
+   "n": 211,
+   "early": 42,
+   "excluded": {
+    "stayer": 1
+   }
+  },
+  "converged": true,
+  "posterior": {
+   "normal": [
+    {
+     "name": "b_pull",
+     "label": "Regional pull",
+     "core": true,
+     "predicted": "+",
+     "mean": 2.2595344834412936,
+     "lo": 1.4370606379420858,
+     "hi": 3.0907058210269134,
+     "p_positive": 1.0,
+     "test": {
+      "p": 0.0196078431372549,
+      "decision": "supported",
+      "by": "direct simulation"
+     }
+    },
+    {
+     "name": "b_own",
+     "label": "Own-spending component",
+     "core": true,
+     "predicted": "+",
+     "mean": 0.8487386846577344,
+     "lo": 0.08835020696004572,
+     "hi": 1.669724997485726,
+     "p_positive": 0.9825,
+     "test": {
+      "p": 0.0196078431372549,
+      "decision": "supported",
+      "by": "direct simulation"
+     }
+    },
+    {
+     "name": "b_basic_high",
+     "label": "Higher BASIC level (C-E)",
+     "core": true,
+     "predicted": "+",
+     "mean": -0.1881656460618379,
+     "lo": -0.9199789937235563,
+     "hi": 0.620552535749902,
+     "p_positive": 0.3175,
+     "test": {
+      "p": 0.5490196078431373,
+      "decision": "undetermined",
+      "by": "direct simulation"
+     }
+    },
+    {
+     "name": "b_cohort_2020",
+     "label": "2020-01-01 cohort",
+     "core": false,
+     "predicted": null,
+     "mean": -0.029103027881695994,
+     "lo": -0.7966409016787002,
+     "hi": 0.7069131379458506,
+     "p_positive": 0.475,
+     "test": null
+    },
+    {
+     "name": "b_log_n_ab_2020",
+     "label": "Log assigned beneficiaries",
+     "core": false,
+     "predicted": null,
+     "mean": 0.08624805573413181,
+     "lo": -0.6855173790213279,
+     "hi": 0.8457943035932589,
+     "p_positive": 0.5883333333333334,
+     "test": null
+    },
+    {
+     "name": "b_high_revenue",
+     "label": "High revenue",
+     "core": false,
+     "predicted": null,
+     "mean": 0.17411348563091067,
+     "lo": -0.6485048528989127,
+     "hi": 0.9464116572879258,
+     "p_positive": 0.6675,
+     "test": null
+    },
+    {
+     "name": "b_prospective",
+     "label": "Prospective assignment",
+     "core": false,
+     "predicted": null,
+     "mean": -0.3025185390872226,
+     "lo": -1.0951829505573272,
+     "hi": 0.4714540550419912,
+     "p_positive": 0.22083333333333333,
+     "test": null
+    },
+    {
+     "name": "b_later_agreement",
+     "label": "Later agreement",
+     "core": false,
+     "predicted": null,
+     "mean": 0.14778872950442615,
+     "lo": -0.6873564094181237,
+     "hi": 0.9130172823676473,
+     "p_positive": 0.6425,
+     "test": null
+    }
+   ],
+   "student_t": [
+    {
+     "name": "b_pull",
+     "label": "Regional pull",
+     "core": true,
+     "predicted": "+",
+     "mean": 2.7577476657105953,
+     "lo": 1.7296258751995661,
+     "hi": 3.8724285132740848,
+     "p_positive": 1.0,
+     "test": {
+      "p": 0.0196078431372549,
+      "decision": "supported",
+      "by": "direct simulation"
+     }
+    },
+    {
+     "name": "b_own",
+     "label": "Own-spending component",
+     "core": true,
+     "predicted": "+",
+     "mean": 0.9124367879850941,
+     "lo": -0.028843575785395374,
+     "hi": 1.8638032130225208,
+     "p_positive": 0.97,
+     "test": {
+      "p": 0.0196078431372549,
+      "decision": "supported",
+      "by": "direct simulation"
+     }
+    },
+    {
+     "name": "b_basic_high",
+     "label": "Higher BASIC level (C-E)",
+     "core": true,
+     "predicted": "+",
+     "mean": -0.20825569159461535,
+     "lo": -1.057252031159969,
+     "hi": 0.6216786107283095,
+     "p_positive": 0.3175,
+     "test": {
+      "p": 0.5490196078431373,
+      "decision": "undetermined",
+      "by": "direct simulation"
+     }
+    },
+    {
+     "name": "b_cohort_2020",
+     "label": "2020-01-01 cohort",
+     "core": false,
+     "predicted": null,
+     "mean": -0.008010341685664281,
+     "lo": -0.8322453531337763,
+     "hi": 0.8679030237461546,
+     "p_positive": 0.4925,
+     "test": null
+    },
+    {
+     "name": "b_log_n_ab_2020",
+     "label": "Log assigned beneficiaries",
+     "core": false,
+     "predicted": null,
+     "mean": 0.0786118386513729,
+     "lo": -0.7260489010814042,
+     "hi": 0.9196614152713488,
+     "p_positive": 0.5783333333333334,
+     "test": null
+    },
+    {
+     "name": "b_high_revenue",
+     "label": "High revenue",
+     "core": false,
+     "predicted": null,
+     "mean": 0.20738468774462257,
+     "lo": -0.6691284888543575,
+     "hi": 1.107428588967334,
+     "p_positive": 0.6691666666666667,
+     "test": null
+    },
+    {
+     "name": "b_prospective",
+     "label": "Prospective assignment",
+     "core": false,
+     "predicted": null,
+     "mean": -0.3623430368401512,
+     "lo": -1.2091855436568588,
+     "hi": 0.4710052407066838,
+     "p_positive": 0.21333333333333335,
+     "test": null
+    },
+    {
+     "name": "b_later_agreement",
+     "label": "Later agreement",
+     "core": false,
+     "predicted": null,
+     "mean": 0.13576128571164076,
+     "lo": -0.6864858828572478,
+     "hi": 0.9186226324923946,
+     "p_positive": 0.6375,
+     "test": null
+    }
+   ]
+  },
+  "prior_band": {
+   "normal": 1.959964,
+   "student_t": 7.9561150000000005
+  },
+  "overall_test": {
+   "statistic": "max |posterior mean| of core coefficients",
+   "observed": 2.250326536544835,
+   "p_value": 0.0196078431372549,
+   "n_shuffles": 50
+  },
+  "power_note": "40% (pull), 40% (own), 20% (BASIC level)"
+ },
+ "h4": {
+  "sample": {
+   "early": 48,
+   "comparison": 203
+  },
+  "verdict": "negative",
+  "estimates": [
+   {
+    "label": "H4 difference-in-differences",
+    "role": "confirmatory",
+    "mean": -3.5322324247990857,
+    "lo": -4.309565630066067,
+    "hi": -2.764037008770506,
+    "p": 0.0196078431372549
+   },
+   {
+    "label": "Trend-adjusted",
+    "role": "robustness",
+    "mean": -3.391529662206404,
+    "lo": -6.340006499720936,
+    "hi": -0.6356291549762246,
+    "p": 0.058823529411764705
+   },
+   {
+    "label": "Propensity-weighted",
+    "role": "robustness",
+    "mean": -3.5609437134263837,
+    "lo": null,
+    "hi": null,
+    "p": 0.0196078431372549
+   },
+   {
+    "label": "Risk-adjusted outcome",
+    "role": "robustness",
+    "mean": -3.8472181555576896,
+    "lo": -5.475125612143305,
+    "hi": -2.07503892572041,
+    "p": 0.0196078431372549
+   },
+   {
+    "label": "Balanced panel",
+    "role": "robustness",
+    "mean": -3.937389431848383,
+    "lo": -4.418453482409832,
+    "hi": -3.4316277351019964,
+    "p": 0.0196078431372549
+   },
+   {
+    "label": "2020-01-01 cohort only",
+    "role": "robustness",
+    "mean": -4.270404358469533,
+    "lo": -5.334414830675984,
+    "hi": -3.006230903205172,
+    "p": 0.0196078431372549
+   },
+   {
+    "label": "Two-way fixed effects",
+    "role": "conventional",
+    "mean": -4.010709366594805,
+    "lo": -4.835813257579796,
+    "hi": -3.17845156136725,
+    "p": 1.4962271829222675e-20
+   }
+  ],
+  "pre_trend": {
+   "mean": -0.0038508588276770688,
+   "lo": -0.014865386387067444,
+   "hi": 0.008392917497880025,
+   "p": 0.6274509803921569
+  },
+  "equivalence": {
+   "c_bar": 2.4583333333333335,
+   "scaled_bound": 0.03654407486820747,
+   "abs_h4": 0.03541732078258784,
+   "holds": false
+  },
+  "mde_percent": 1.712374276770598,
+  "event_study": [
+   {
+    "year": 2020,
+    "mean": 0.309179784105058,
+    "lo": -1.04511145214083,
+    "hi": 1.6820057767383008,
+    "reference": false
+   },
+   {
+    "year": 2021,
+    "mean": 0.0,
+    "lo": 0.0,
+    "hi": 0.0,
+    "reference": true
+   },
+   {
+    "year": 2022,
+    "mean": -4.184442516197228,
+    "lo": -5.481849223580042,
+    "hi": -2.8692269102003944,
+    "reference": false
+   },
+   {
+    "year": 2023,
+    "mean": -4.280628421745781,
+    "lo": -5.60594480955352,
+    "hi": -2.9367042569520017,
+    "reference": false
+   },
+   {
+    "year": 2024,
+    "mean": -2.984859260410331,
+    "lo": -4.362750639861998,
+    "hi": -1.5871159439124845,
+    "reference": false
+   }
+  ]
+ },
+ "agreement": [
+  {
+   "claim": "H2b",
+   "confirmatory": "supported",
+   "conventional": "supported",
+   "agree": true
+  },
+  {
+   "claim": "H2a",
+   "confirmatory": "supported",
+   "conventional": "supported",
+   "agree": true
+  },
+  {
+   "claim": "H3 regional pull",
+   "confirmatory": "supported",
+   "conventional": "supported",
+   "agree": true
+  },
+  {
+   "claim": "H3 own-spending component",
+   "confirmatory": "supported",
+   "conventional": "undetermined",
+   "agree": false
+  },
+  {
+   "claim": "H3 higher BASIC level",
+   "confirmatory": "undetermined",
+   "conventional": "undetermined",
+   "agree": true
+  },
+  {
+   "claim": "H4",
+   "confirmatory": "negative",
+   "conventional": "negative",
+   "agree": true
+  }
+ ]
+}

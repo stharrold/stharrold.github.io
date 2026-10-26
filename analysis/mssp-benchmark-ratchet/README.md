@@ -10,6 +10,7 @@ Pre-registered analysis of why Medicare Shared Savings Program ACOs renewed earl
 | `ratchet/` | Python: hash-checked loading, statistics (Bayesian bootstrap, PyMC, resampling, DiD), staged runner. |
 | `dbt/` | dbt project (dbt-duckdb): one SQL model per derived table, with schema and data tests; `dbt docs` gives the lineage. |
 | `tests/` | Tests on real enrollment data and on synthetic data (no CMS outcome values). |
+| `report/` | Reporting only: `dashboard_data.py` builds the post's dashboard data from `results/`. Not part of the registered analysis. |
 
 ## Running
 

@@ -171,7 +171,7 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   the registered code trees (git tree hashes of `ratchet/`, `dbt/`, `tests/`, the manifest, the plan) were checked
   identical to a4064f5.
 - validate (11 s): the reconstruction of 2022 benchmarks passed (Spearman 0.94, median absolute percentage error
-  1.6%, 101 ACOs), so the own-spending term enters H3 with measurement error sigma_v = 4.37.
+  1.6%, 101 ACOs), so the own-spending term enters H3 with measurement error sigma_v = 4.38 (4.375).
 - power (about 40 min), committed before any confirmatory estimate as the plan requires: MDE for H1 2.7 percentage
   points of savings rate (simulated power 80.4%), H2b 2.5 and H2a 1.8 points (0.55 SD), H4 3.8% (log 0.038). H3
   is underpowered at a log-odds of 0.5 per 2 SD: the 95% interval excludes zero in 17% (pull), 0% (own) and 14%
@@ -181,3 +181,22 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   once confirm had finished its dbt build (the two share the dbt target directory), in 8 minutes; 4 of about 30,000
   Firth refits in its simulated null distributions stopped at the iteration limit (kept as fitted, as the registered
   code does). Robustness results are read only together with the confirmatory ones, primary first.
+
+## Write-up started while confirm runs (2026-10-26)
+
+- Post drafted as `content/20261026-preregistered-mssp-early-renewal.md` (`Status: draft`): question, why
+  pre-register, how the question was chosen, design, methods, pipeline, what review caught, registration and power,
+  with the results, robustness, exploratory and deviations sections marked pending. Deviations get their own section,
+  as the plan (section 8) and issue #73 require.
+- Dashboard frame: `content/static/<slug>/dashboard.js` and `.css`, plain JavaScript and inline SVG (no library,
+  font or third-party request, so the privacy page needs no change). It reads `data.json`, which
+  `report/dashboard_data.py` (standard library only, outside the registered paths) builds from `results/`. Stages not
+  yet run show as pending, and the synthetic-data banner comes from the results files' own `synthetic` field. Built
+  and checked on a full quick-mode synthetic run at the registered code.
+- Gotcha: Pelican copies any file a post links with `{static}` into the output even when `STATIC_EXCLUDES` lists its
+  folder, so a draft's `{static}` links leak its files into the published site. `test_drafts_are_not_published`
+  caught it; the draft links the dashboard root-relative until it is published.
+- Units: the CMS files store savings rates as fractions (the power analysis's PY2016-PY2018 SD is 0.049), while the
+  synthetic generator writes percents. The decision rules do not depend on the unit; the dashboard shows H1 in
+  percentage points, and the H1 write-up checks the confirm output's scale against the power file's before comparing
+  the estimate with the MDE.
