@@ -177,4 +177,7 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   is underpowered at a log-odds of 0.5 per 2 SD: the 95% interval excludes zero in 17% (pull), 0% (own) and 14%
   (BASIC level) of 500 simulated datasets, so an "undetermined" H3 verdict is the expected outcome, and the
   write-up says so.
-- confirm started 2026-10-26 10:08 EDT under `caffeinate -i` (about 19 hours expected).
+- confirm started 2026-10-26 10:08 EDT under `caffeinate -i` (about 19 hours expected). robustness ran alongside it
+  once confirm had finished its dbt build (the two share the dbt target directory), in 8 minutes; 4 of about 30,000
+  Firth refits in its simulated null distributions stopped at the iteration limit (kept as fitted, as the registered
+  code does). Robustness results are read only together with the confirmatory ones, primary first.

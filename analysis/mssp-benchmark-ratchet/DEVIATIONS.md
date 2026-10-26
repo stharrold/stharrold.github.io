@@ -20,4 +20,5 @@ git diff --stat a4064f5 <git_commit> -- analysis/mssp-benchmark-ratchet/ratchet 
 
 ## Log
 
-None so far. Stages run with the registered code: validate (2026-10-26, commit `fd1920f`, code identical to `a4064f5`).
+None so far. Stages run with the registered code (code identical to `a4064f5`): validate and power (commit `fd1920f`),
+robustness (`1debc2c`), confirm (started at `3e5cb9b`).
