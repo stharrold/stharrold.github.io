@@ -139,4 +139,13 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   found blank on the server after a reload (tags, subjects and license were intact); and the metadata page saves
   title and description only when Next is clicked, not on blur. Checking the saved draft through the API, not the
   page, caught both.
+- The Summary box does not render Markdown, so the pasted plan showed raw `**` and `#`. It was replaced with a
+  plain-text copy made by a short script: headings kept, inline marks stripped, line wraps joined, the one table
+  turned into list items (a proportional font breaks aligned columns), and a word-for-word check against the
+  Markdown (6,636 words outside the table, identical). The attached `.md` stays the authoritative version.
+- A second OSF gotcha: the form deletes anything that looks like an HTML tag, so column-name placeholders such as
+  `CMS_HCC_RiskScore_<e>_PY` were saved as `CMS_HCC_RiskScore__PY` (16 placeholders), while `p < 0.05` is stored
+  escaped and displays correctly. Placeholders are written `{e}` and `{year}` in the summary, said in its lead-in.
+  Found by hashing the saved text in 2,000-character chunks against the local file; after the fix the saved text,
+  unescaped, matches the local copy byte for byte.
 - Stopped at Review; the author clicks Register (public, permanent).
