@@ -163,3 +163,18 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   approved it, and it was confirmed visible to a signed-out request before `REGISTRATION.md` was written, since
   that file unlocks the outcome data. The archived copies' sha256 match the plan and the zip. The page the author
   landed on, osf.io/z4an5, is the editable project OSF creates for the draft's files, not the registration.
+
+## Running the registered pipeline (2026-10-26)
+
+- `DEVIATIONS.md` started before the first real-data stage, on a side agent's reminder: after registration even a
+  crash fix to the code is a deviation, logged before its results are used. Each results file records its commit;
+  the registered code trees (git tree hashes of `ratchet/`, `dbt/`, `tests/`, the manifest, the plan) were checked
+  identical to a4064f5.
+- validate (11 s): the reconstruction of 2022 benchmarks passed (Spearman 0.94, median absolute percentage error
+  1.6%, 101 ACOs), so the own-spending term enters H3 with measurement error sigma_v = 4.37.
+- power (about 40 min), committed before any confirmatory estimate as the plan requires: MDE for H1 2.7 percentage
+  points of savings rate (simulated power 80.4%), H2b 2.5 and H2a 1.8 points (0.55 SD), H4 3.8% (log 0.038). H3
+  is underpowered at a log-odds of 0.5 per 2 SD: the 95% interval excludes zero in 17% (pull), 0% (own) and 14%
+  (BASIC level) of 500 simulated datasets, so an "undetermined" H3 verdict is the expected outcome, and the
+  write-up says so.
+- confirm started 2026-10-26 10:08 EDT under `caffeinate -i` (about 19 hours expected).
