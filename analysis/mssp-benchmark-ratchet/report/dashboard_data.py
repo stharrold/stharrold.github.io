@@ -60,6 +60,32 @@ H4_ROBUSTNESS = (
     ("2_balanced", "Balanced panel"),
     ("4_cohort_2020", "2020-01-01 cohort only"),
 )
+# Robustness (plan 5.5) by results key: label, and the confirm-stage group keys of the comparisons it repeats.
+GROUP_KEYS = {"H1": "H1_sav_rate_2020", "H2a": "H2a_own", "H2b": "H2b_pull", "gain": "gain", "regional_comp": "regional_comp"}
+GROUP_ROBUSTNESS = (
+    ("2_medians", "Difference in medians (item 2)"),
+    ("3_cohort_2020", "2020-01-01 cohort only (item 3)"),
+    ("6_by2_by3", "BY2-BY3 only in step 1 (item 6)"),
+    ("8_complete_cases", "Complete cases (item 8)"),
+    ("9_unadjusted_pull", "Unadjusted county spending (item 9)"),
+)
+H3_ROBUSTNESS = (
+    ("3_cohort_2020", "2020-01-01 cohort only (item 3)"),
+    ("6_by2_by3", "BY2-BY3 only in step 1 (item 6)"),
+    ("7_no_measurement_error", "No measurement-error model (item 7)"),
+    ("8_complete_cases", "Complete cases (item 8)"),
+    ("9_unadjusted_pull", "Unadjusted county spending (item 9)"),
+)
+CORE_COEFFICIENTS = ("b_pull", "b_own", "b_basic_high")
+# Exploratory (plan 5.6): other measures of the regional pull, in place of it in H2b and H3.
+ALT_EXPOSURES = (("pull_times_w", "Pull weighted by phase-in weight w"), ("capped_regional_component", "Capped regional component"))
+DESCRIBED = {
+    "sav_rate_2020": "Savings rate, PY2020 (pp)",
+    "pull": "Regional pull (pp of benchmark)",
+    "own": "Own-spending component (pp of benchmark)",
+    "regional_comp": "Regional component (pp of benchmark)",
+}
+BALANCE = {"share_85plus_2020": "Share aged 85+, PY2020", "share_female_2020": "Share female, PY2020"}
 
 
 def load(results: Path) -> dict:
@@ -88,13 +114,115 @@ def pct(log_value: float) -> float:
     return 100 * math.expm1(log_value)
 
 
-def comparisons(confirm: dict, power: dict | None) -> dict:
+def h1_scale(power: dict | None) -> float:
     # Savings rates are fractions in the CMS files (the power SD is about 0.05); shown in percentage points.
-    h1_scale = 100.0 if power and power["h1"]["sd"] < 1 else 1.0
+    return 100.0 if power and power["h1"]["sd"] < 1 else 1.0
+
+
+def estimate_row(label: str, g: dict, scale: float = 1.0, role: str = "robustness") -> dict:
+    """One interval row from a bootstrap comparison, a posterior summary, a regression coefficient or a Firth fit."""
+    if "b_early_units" in g:  # 5.3 regression: the early-renewer coefficient in the variable's units, no test
+        g = g["b_early_units"]
+    mean = g.get("posterior_mean", g.get("mean", g.get("estimate")))
+    lo, hi = g.get("eti95", g.get("pl95"))
+    return {"label": label, "role": role, "mean": mean * scale, "lo": lo * scale, "hi": hi * scale, "p": g.get("p_value")}
+
+
+def robustness(rob: dict, confirm: dict, power: dict | None) -> dict:
+    """Plan 5.5, estimates only: each confirmatory row followed by the robustness items that repeat it."""
+    scale = h1_scale(power)
+    groups = []
+    for key, label, *_ in COMPARISONS:
+        if key == "H1_sav_rate_2021":  # item 4 is this comparison; it is already in the group comparisons
+            continue
+        s = scale if key.startswith("H1") else 1.0
+        name = next(k for k, v in GROUP_KEYS.items() if v == key)
+        rows = [estimate_row("Confirmatory", confirm["groups"][key], s, "confirmatory")]
+        regressions = rob.get("1_adjusted_regressions", {}).get(name, {})
+        if "unadjusted_5_3" in regressions:
+            rows.append(estimate_row("Regression, cohort only (5.3)", regressions["unadjusted_5_3"], s, "reported"))
+        if "adjusted" in regressions:
+            rows.append(estimate_row("Regression + track, level and size (item 1)", regressions["adjusted"], s))
+        rows += [estimate_row(item_label, rob[item][name], s) for item, item_label in GROUP_ROBUSTNESS if name in rob.get(item, {})]
+        if len(rows) > 1:
+            groups.append({"key": key, "label": label, "unit": next(u for k, _, _, u, _ in COMPARISONS if k == key), "rows": rows})
+
+    h3 = []
+    confirm_post = confirm["h3"]["posterior"]
+    for coef in CORE_COEFFICIENTS:
+        if coef not in confirm_post:  # own spending dropped when the validation fails (section 7)
+            continue
+        rows = [estimate_row("Confirmatory", confirm_post[coef], role="confirmatory")]
+        firth = rob.get("5_firth", {}).get("coefficients", {}).get(coef[2:])
+        if firth:
+            rows.append(estimate_row("Firth logistic regression (item 5)", firth))
+        for item, item_label in H3_ROBUSTNESS:
+            fit = rob.get(item, {})
+            fit = fit.get("H3", fit)
+            if coef in fit.get("posterior", {}):
+                row = estimate_row(item_label, fit["posterior"][coef])
+                row["converged"] = fit["convergence"]["converged"]
+                rows.append(row)
+        h3.append({"key": coef, "label": COEFFICIENTS[coef][0], "unit": "log-odds", "rows": rows})
+    return {"groups": groups, "h3": h3}
+
+
+def exploratory(exp: dict, confirm: dict, power: dict | None) -> dict:
+    """Plan 5.6: labeled exploratory; no verdicts."""
+    scale = h1_scale(power)
+
+    def scaled(variable: str, value: float | None) -> float | None:
+        return value * scale if value is not None and variable == "sav_rate_2020" else value
+
+    h2b = [estimate_row("Regional pull (confirmatory)", confirm["groups"]["H2b_pull"], role="confirmatory")]
+    pull = [estimate_row("Regional pull (confirmatory)", confirm["h3"]["posterior"]["b_pull"], role="confirmatory")]
+    for key, label in ALT_EXPOSURES:
+        if key in exp:
+            h2b.append(estimate_row(label, exp[key]["H2b"], role="exploratory"))
+            pull.append(estimate_row(label, exp[key]["H3"]["posterior"]["b_pull"], role="exploratory"))
+    region = exp.get("census_region_in_h3")
+    if region:
+        pull.append(estimate_row("Census region added", region["posterior"]["b_pull"], role="exploratory"))
+    groups = {grp: {v: {**s, "mean": scaled(v, s["mean"]), "median": scaled(v, s["median"])} for v, s in table.items()} for grp, table in exp["leavers"].items()}
+    return {
+        "alternative_exposures": [
+            {"key": "H2b", "label": "H2b, early renewers minus stayers", "unit": "pp of benchmark", "rows": h2b},
+            {"key": "H3", "label": "H3 coefficient on the pull measure", "unit": "log-odds", "rows": pull},
+        ],
+        "region": {
+            "excluded_no_region": region["excluded_no_region"],
+            "rows": [estimate_row(f"{k[9:].capitalize()} vs Northeast", v, role="exploratory") for k, v in region["posterior"].items() if k.startswith("b_region_")],
+        }
+        if region
+        else None,
+        "described": DESCRIBED,
+        "groups": groups,
+        "enhanced": [
+            {"aco_id": r["aco_id"], "cohort": r["cohort"], **{v: {"value": scaled(v, r[v]["value"]), "percentile": r[v]["stayer_percentile"]} for v in DESCRIBED}}
+            for r in exp["enhanced_early_renewers"]
+        ],
+        "who_renewed": exp["who_renewed"],
+        "balance": {"labels": BALANCE, "groups": exp["balance"]},
+        "spending": [
+            {
+                "start_year": r["start_year"],
+                "agreement_year": r["agreement_year"],
+                "scheduled": r["scheduled_benchmark_year"],
+                "early": r["early_renewer_from_2020"],
+                "n": r["n_acos"],
+                "mean": r["mean_pc"],
+            }
+            for r in exp["spending_by_agreement_year"]
+        ],
+    }
+
+
+def comparisons(confirm: dict, power: dict | None) -> dict:
+    h1 = h1_scale(power)
     rows = []
     for key, label, role, unit, mde_path in COMPARISONS:
         g = confirm["groups"][key]
-        scale = h1_scale if key.startswith("H1") else 1.0
+        scale = h1 if key.startswith("H1") else 1.0
         mde = None
         if power and mde_path:
             node = power
@@ -223,6 +351,8 @@ def build(results: Path) -> dict:
         "h3": decision_model(r["confirm"], power) if r["confirm"] else None,
         "h4": effect(r["did"], power) if r["did"] else None,
         "agreement": [{**row, "claim": CLAIMS.get(row["claim"], row["claim"])} for row in r["conventional"]["agreement"]] if r["conventional"] else None,
+        "robustness": robustness(r["robustness"], r["confirm"], power) if r["robustness"] and r["confirm"] else None,
+        "exploratory": exploratory(r["exploratory"], r["confirm"], power) if r["exploratory"] and r["confirm"] else None,
     }
 
 

@@ -62,6 +62,16 @@
 .mssp-row:focus { outline: none; }
 .mssp-row:focus-visible .mssp-hit { stroke: var(--mssp-series); stroke-width: 1; }
 .mssp-multiples .mssp-chart + .mssp-chart { margin-top: 0.25rem; }
+.mssp-shade { fill: #f0efec; }
+.mssp-line { fill: none; stroke: var(--mssp-series); stroke-width: 2; stroke-linejoin: round; }
+.mssp-series.is-muted .mssp-line { stroke: var(--mssp-muted); }
+.mssp-panels.is-side { display: flex; gap: 16px; }
+.mssp-legend { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; list-style: none; padding: 0; margin: 0 0 0.5rem; font-size: 0.875rem; color: var(--mssp-ink-2); }
+.mssp-swatch { display: inline-block; width: 14px; height: 2px; margin-right: 0.4rem; vertical-align: middle; background: var(--mssp-series); }
+.mssp-swatch.is-muted { background: var(--mssp-muted); }
+.mssp-swatch.is-shade { height: 10px; background: #f0efec; border: 1px solid var(--mssp-grid); }
+.mssp-card td { white-space: nowrap; }
+.mssp-card table { display: block; overflow-x: auto; }
 .mssp-table { margin-top: 0.5rem; font-size: 0.875rem; }
 .mssp-table summary { color: var(--mssp-ink-2); cursor: pointer; }
 .mssp-table table, .mssp-agree { margin: 0.5rem 0 0; font-variant-numeric: tabular-nums; }
@@ -80,6 +90,6 @@
 .mssp-tip-value { font-weight: 600; color: var(--mssp-ink); }
 .mssp-tip-label { color: var(--mssp-ink-2); }
 @media (forced-colors: active) {
-    .mssp-interval, .mssp-zero { stroke: CanvasText; }
+    .mssp-interval, .mssp-zero, .mssp-line { stroke: CanvasText; }
     .mssp-dot { fill: CanvasText; }
 }

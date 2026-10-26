@@ -106,9 +106,10 @@ compares with its current benchmark) and a **regional** part (the adjustment tow
 part is close to a restatement of the savings rate. Writing out the regional adjustment shows that it contains the
 own-spending part too, with a negative sign. With phase-in weight $w$, before capping,
 
-$$\text{regional component} = w \times \text{regional pull} - w \times \text{own-spending component}$$
+$$\text{regional component} = w \times (\text{pull} - \text{own})$$
 
-so it is also tied to past savings. The primary test therefore uses the **regional pull**: how far the region's
+where "pull" is the regional pull defined below and "own" the own-spending component, so the regional part is also
+tied to past savings. The primary test therefore uses the **regional pull**: how far the region's
 spending, adjusted to the ACO's case mix the way CMS adjusts it, sits above the ACO's current benchmark,
 
 $$\text{regional pull} = 100 \times \frac{\sum_e s_e\, R_e - B}{B}$$
@@ -247,8 +248,8 @@ parts, how "below its region" is compared, and the per-refit seeds.
 
 ## What review caught before registration
 
-Reviews of the plan and code, some by independent AI agents given only the files, found problems that would have
-been permanent once registered:
+Independent reviews of the plan and code, each given only the files, found problems that would have been permanent
+once registered:
 
 * **The first primary test was mechanically tied to past savings.** The "regional component" contains the
   own-spending part with a negative sign; the primary test became the regional pull.

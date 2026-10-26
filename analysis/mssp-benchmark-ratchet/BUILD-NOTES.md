@@ -200,3 +200,17 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   synthetic generator writes percents. The decision rules do not depend on the unit; the dashboard shows H1 in
   percentage points, and the H1 write-up checks the confirm output's scale against the power file's before comparing
   the estimate with the MDE.
+- Robustness and exploratory views added to the dashboard (2026-10-26). Robustness repeats each confirmatory
+  estimate with the section 5.5 items that rerun it, on one axis per estimate, with no verdicts (5.5: they do not
+  change the decisions). The Firth fit shares the Bayesian H3 axis because both use `make_design`'s scaling
+  (continuous predictors per 2 SD, binary centered). Robustness item 4 is the same estimate as the confirm stage's
+  PY2021 savings-rate row, so it is not repeated. Exploratory shows the other pull measures, census region, leavers,
+  the ENHANCED early renewers, who renewed, balance, and per-capita spending by agreement year (one panel per start
+  year, scheduled benchmark years shaded, with the plan's caveat that benchmark-year status and tenure cannot be
+  separated).
+- Phone-width check found the page scrolling sideways by 282px, from the 64-character hashes in the post's
+  registration table, not the dashboard. Fixed in the theme (`overflow-wrap: anywhere` for code in table cells; no
+  other post has code in a table). Charts are now sized to the card's content width, which also fixed a clipped
+  third panel.
+- A marimo static HTML export is a 33 KB page that loads marimo's front end from `cdn.jsdelivr.net` (checked with
+  marimo 0.25.2), so hosting one on the site would add a third-party request.

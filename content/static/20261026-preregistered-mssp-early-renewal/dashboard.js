@@ -8,6 +8,7 @@
     var SVGNS = "http://www.w3.org/2000/svg";
     var ROW_H = 36;
     var AXIS_H = 40;
+    var CARD_INSET = 34; // .mssp-card: 1rem padding and a 1px border on each side
 
     function el(tag, attrs, children) {
         var node = document.createElement(tag);
@@ -69,8 +70,9 @@
         return ticks;
     }
 
-    function domainOf(values) {
-        var vs = values.filter(num).concat([0]);
+    // Intervals are read against zero, so their domain includes it; levels (spending) pass withoutZero.
+    function domainOf(values, withoutZero) {
+        var vs = values.filter(num).concat(withoutZero ? [] : [0]);
         var lo = Math.min.apply(null, vs);
         var hi = Math.max.apply(null, vs);
         var pad = (hi - lo || 1) * 0.08;
@@ -187,14 +189,73 @@
         return svg;
     }
 
-    function table(caption, head, body) {
-        return el("details", { class: "mssp-table" }, [
-            el("summary", {}, "Table: " + caption),
-            el("table", { class: "table table-sm" }, [
-                el("thead", {}, el("tr", {}, head.map(function (h) { return el("th", { scope: "col" }, h); }))),
-                el("tbody", {}, body.map(function (row) { return el("tr", {}, row.map(function (c) { return el("td", {}, c); })); }))
-            ])
+    /* Spending by agreement year: one panel per agreement start year on a shared dollar axis, early renewers in the
+       series color and all other ACOs in muted gray, the next agreement's scheduled benchmark years shaded. */
+    function spendingChart(points, opts) {
+        var years = [];
+        points.forEach(function (p) { if (years.indexOf(p.start_year) < 0) years.push(p.start_year); });
+        years.sort();
+        var side = opts.width >= 640;
+        var gap = 16;
+        var panelW = side ? Math.floor((opts.width - gap * (years.length - 1)) / years.length) : opts.width;
+        var plotH = 150;
+        var top = 34;
+        var dom = domainOf(points.map(function (p) { return p.mean; }), true);
+        var ticks = niceTicks(dom[0], dom[1], 4);
+        var kDigits = Math.max(0, -Math.floor(Math.log10((ticks[1] - ticks[0]) / 1000) + 1e-9));
+        var wrap = el("div", { class: "mssp-panels" + (side ? " is-side" : "") });
+        years.forEach(function (year) {
+            var left = 52;
+            var right = panelW - 8;
+            var x = scale([0.5, 5.5], [left, right]);
+            var y = scale(dom, [top + plotH, top]);
+            var svg = sv("svg", { class: "mssp-chart", width: panelW, height: top + plotH + AXIS_H, viewBox: "0 0 " + panelW + " " + (top + plotH + AXIS_H), role: "img", "aria-label": opts.aria + ", agreements starting " + year });
+            svg.appendChild(sv("text", { class: "mssp-label", x: 0, y: 14 }, "Agreements starting " + year));
+            svg.appendChild(sv("rect", { class: "mssp-shade", x: x(2.5), y: top, width: x(5.5) - x(2.5), height: plotH }));
+            ticks.forEach(function (t) {
+                svg.appendChild(sv("line", { class: "mssp-grid", x1: left, x2: right, y1: y(t), y2: y(t) }));
+                svg.appendChild(sv("text", { class: "mssp-tick", x: left - 6, y: y(t) + 4, "text-anchor": "end" }, "$" + fmt(t / 1000, kDigits) + "k"));
+            });
+            [1, 2, 3, 4, 5].forEach(function (a) {
+                svg.appendChild(sv("text", { class: "mssp-tick", x: x(a), y: top + plotH + 16, "text-anchor": "middle" }, String(a)));
+            });
+            svg.appendChild(sv("text", { class: "mssp-tick", x: right, y: top + plotH + 34, "text-anchor": "end" }, "agreement year"));
+            // Muted series first, so the early renewers draw on top.
+            [false, true].forEach(function (early) {
+                var series = points.filter(function (p) { return p.start_year === year && p.early === early; }).sort(function (a, b) { return a.agreement_year - b.agreement_year; });
+                if (!series.length) return;
+                var g = sv("g", { class: "mssp-series" + (early ? "" : " is-muted") });
+                g.appendChild(sv("polyline", { class: "mssp-line", points: series.map(function (p) { return x(p.agreement_year) + "," + y(p.mean); }).join(" ") }));
+                series.forEach(function (p) {
+                    var pt = sv("g", { class: "mssp-row" + (early ? "" : " is-muted"), role: "listitem", "aria-label": p.tip.join(", ") });
+                    pt.appendChild(sv("rect", { class: "mssp-hit", x: x(p.agreement_year) - 12, y: y(p.mean) - 12, width: 24, height: 24 }));
+                    pt.appendChild(sv("circle", { class: "mssp-dot", cx: x(p.agreement_year), cy: y(p.mean), r: 5 }));
+                    bindTip(pt, opts.tip, p.tip);
+                    g.appendChild(pt);
+                });
+                svg.appendChild(g);
+            });
+            wrap.appendChild(svg);
+        });
+        return wrap;
+    }
+
+    function legend(items) {
+        return el("ul", { class: "mssp-legend" }, items.map(function (it) {
+            return el("li", {}, [el("span", { class: "mssp-swatch" + (it.muted ? " is-muted" : "") + (it.shade ? " is-shade" : ""), "aria-hidden": "true" }), it.label]);
+        }));
+    }
+
+    function dataTable(head, body, cls) {
+        return el("table", { class: "table table-sm" + (cls ? " " + cls : "") }, [
+            el("thead", {}, el("tr", {}, head.map(function (h) { return el("th", { scope: "col" }, h); }))),
+            el("tbody", {}, body.map(function (row) { return el("tr", {}, row.map(function (c) { return el("td", {}, c); })); }))
         ]);
+    }
+
+    // A chart's table view, collapsed under the chart.
+    function table(caption, head, body) {
+        return el("details", { class: "mssp-table" }, [el("summary", {}, "Table: " + caption), dataTable(head, body)]);
     }
 
     function card(title, intro, body) {
@@ -339,12 +400,121 @@
         return card(
             "Registered vs conventional methods",
             "Each confirmatory verdict next to the conventional one (OLS with HC2 errors, maximum-likelihood logistic regression, two-way fixed effects). Reported only; disagreements do not change the decisions.",
-            [el("table", { class: "table table-sm mssp-agree" }, [
-                el("thead", {}, el("tr", {}, ["Claim", "Registered", "Conventional", "Agree"].map(function (h) { return el("th", { scope: "col" }, h); }))),
-                el("tbody", {}, data.agreement.map(function (r) {
-                    return el("tr", {}, [r.claim, r.confirmatory, r.conventional, r.agree ? "yes" : "no"].map(function (c) { return el("td", {}, c); }));
-                }))
-            ])]
+            [dataTable(["Claim", "Registered", "Conventional", "Agree"], data.agreement.map(function (r) {
+                return [r.claim, r.confirmatory, r.conventional, r.agree ? "yes" : "no"];
+            }), "mssp-agree")]
+        );
+    }
+
+    /* Robustness and exploratory rows: the confirmatory estimate in the series color, the others muted, no verdicts. */
+    function estimateRows(rows, unit) {
+        return rows.map(function (r) {
+            var sub = r.role + (r.converged === false ? ", did not converge" : "") + (num(r.p) ? ", " + pText(r.p) : "");
+            return {
+                label: r.label,
+                sub: sub,
+                mean: r.mean,
+                lo: r.lo,
+                hi: r.hi,
+                emphasis: r.role === "confirmatory",
+                muted: r.role !== "confirmatory",
+                tip: [fmt(r.mean) + " " + unit + " (95% interval " + fmt(r.lo) + " to " + fmt(r.hi) + ")", r.label + ", " + sub]
+            };
+        });
+    }
+
+    function multiples(blocks, width, tip) {
+        var out = [];
+        blocks.forEach(function (b) {
+            out.push(el("h5", {}, b.label));
+            out.push(el("div", { role: "list" }, intervalChart(estimateRows(b.rows, b.unit), { width: width, tip: tip, unit: b.unit, aria: b.label })));
+        });
+        return out;
+    }
+
+    function blocksTable(caption, blocks) {
+        var body = [];
+        blocks.forEach(function (b) {
+            b.rows.forEach(function (r) {
+                body.push([b.label, r.label, fmt(r.mean), fmt(r.lo) + " to " + fmt(r.hi), num(r.p) ? fmtP(r.p) : "", b.unit]);
+            });
+        });
+        return table(caption, ["Estimate of", "Analysis", "Estimate", "95% interval", "p", "Unit"], body);
+    }
+
+    function robustnessSection(data, width, tip) {
+        var r = data.robustness;
+        if (!r) return pending("Robustness", "the robustness stage");
+        return card(
+            "Robustness (reported, not used for decisions)",
+            "Each confirmatory estimate (blue) followed by the analyses in plan section 5.5 that repeat it (gray), on the same axis. They do not change the section 7 decisions, so none has a verdict. The regressions report intervals only; the Firth fit has its own direct-simulation p. Item 4 (H1 for PY2021) is the PY2021 row of the group comparisons.",
+            [
+                multiples(r.groups, width, tip),
+                blocksTable("robustness, group comparisons", r.groups),
+                el("h5", {}, "H3 core coefficients"),
+                el("p", { class: "mssp-note" }, "Log-odds per 2 SD (per category for the BASIC level). The Firth model uses the same predictor scaling with the core predictors and cohort only."),
+                multiples(r.h3, width, tip),
+                blocksTable("robustness, H3", r.h3)
+            ]
+        );
+    }
+
+    var GROUP_NAMES = { early: "Early renewers", leaver: "Leavers", stayer: "Stayers" };
+
+    function money(v) {
+        return "$" + Math.round(v).toLocaleString("en-US");
+    }
+
+    function exploratorySection(data, width, tip) {
+        var x = data.exploratory;
+        if (!x) return pending("Exploratory and descriptive", "the exploratory stage");
+        var groups = ["early", "leaver", "stayer"].filter(function (g) { return x.groups[g]; });
+        var body = [multiples(x.alternative_exposures, width, tip), blocksTable("other measures of the regional pull", x.alternative_exposures)];
+        if (x.region) {
+            body.push(el("h5", {}, "Census region in the decision model"));
+            body.push(el("div", { role: "list" }, intervalChart(estimateRows(x.region.rows, "log-odds"), { width: width, tip: tip, unit: "log-odds", aria: "Census region coefficients" })));
+            body.push(el("p", { class: "mssp-note" }, "Region with the largest share of 2021 assigned person-years; Northeast is the reference. ACOs with no region (territories) excluded: " + x.region.excluded_no_region + "."));
+        }
+        body.push(el("h5", {}, "Leavers alongside early renewers and stayers"));
+        body.push(dataTable(["Variable"].concat(groups.map(function (g) { return GROUP_NAMES[g] + ": mean (median), n"; })), Object.keys(x.described).map(function (v) {
+            return [x.described[v]].concat(groups.map(function (g) { var s = x.groups[g][v]; return fmt(s.mean) + " (" + fmt(s.median) + "), " + s.n; }));
+        })));
+        if (x.enhanced.length) {
+            body.push(el("h5", {}, "Early renewers already in ENHANCED in PY2021"));
+            body.push(el("p", { class: "mssp-note" }, "Renewing could not raise their sharing rate. Each value with its percentile among stayers."));
+            body.push(dataTable(["ACO", "Cohort"].concat(Object.keys(x.described).map(function (v) { return x.described[v]; })), x.enhanced.map(function (r) {
+                return [r.aco_id, r.cohort].concat(Object.keys(x.described).map(function (v) { return fmt(r[v].value) + " (" + Math.round(r[v].percentile) + "th)"; }));
+            })));
+        }
+        body.push(el("h5", {}, "Who renewed early"));
+        body.push(table("ACOs by group, cohort, PY2021 track and 2022 track", ["Group", "Cohort", "PY2021 track", "2022 track", "ACOs"], x.who_renewed.map(function (r) {
+            return [GROUP_NAMES[r.grp] || r.grp, r.cohort, r.track_2021, r.track_2022, r.n];
+        })));
+        body.push(el("h5", {}, "Balance"));
+        var bal = x.balance;
+        var balGroups = ["early", "leaver", "stayer"].filter(function (g) { return bal.groups[g]; });
+        body.push(dataTable(["Characteristic"].concat(balGroups.map(function (g) { return GROUP_NAMES[g] + ": mean, n"; })), Object.keys(bal.labels).map(function (k) {
+            return [bal.labels[k]].concat(balGroups.map(function (g) { var s = bal.groups[g][k]; return fmt(100 * s.mean, 1) + "%, " + s.n; }));
+        })));
+        if (x.spending.length) {
+            var pts = x.spending.map(function (p) {
+                var py = p.start_year + p.agreement_year - 1;
+                return Object.assign({}, p, {
+                    tip: [money(p.mean) + " per capita", (p.early ? "Early renewers from 2020 agreements" : "Other ACOs") + ", agreement starting " + p.start_year + ", year " + p.agreement_year + " (PY" + py + ")" + (p.scheduled ? ", scheduled benchmark year" : "") + ", " + p.n + " ACOs"]
+                });
+            });
+            body.push(el("h5", {}, "Per-capita spending by agreement year (5-year agreements)"));
+            body.push(legend([{ label: "Early renewers out of a 2020 agreement" }, { label: "Other ACOs", muted: true }, { label: "Scheduled benchmark years (shaded)", shade: true }]));
+            body.push(el("div", { role: "list" }, spendingChart(pts, { width: width, tip: tip, aria: "Mean per-capita spending by agreement year" })));
+            body.push(el("p", { class: "mssp-note" }, "Agreement years 3-5 are the scheduled benchmark years of the next agreement. Benchmark-year status and tenure cannot be separated here: every ACO reaches its benchmark years in the same agreement years."));
+            body.push(table("per-capita spending by agreement year", ["Agreement start", "Agreement year", "Group", "Scheduled benchmark year", "ACOs", "Mean per capita"], x.spending.map(function (p) {
+                return [p.start_year, p.agreement_year, p.early ? "Early renewers from 2020" : "Other ACOs", p.scheduled ? "yes" : "no", p.n, money(p.mean)];
+            })));
+        }
+        return card(
+            "Exploratory and descriptive",
+            "Labeled exploratory in plan section 5.6: the same estimators as above, no predictions and no verdicts. Top: other measures of the regional pull in place of it in H2b and H3 (blue: the confirmatory measure).",
+            body
         );
     }
 
@@ -370,8 +540,13 @@
         var state = { prior: "normal" };
         var width;
 
+        // Charts sit inside a card, so they get the card's content width (its padding and border subtracted).
+        function chartWidth() {
+            return Math.max(280, Math.floor(root.clientWidth) - CARD_INSET);
+        }
+
         function draw() {
-            width = Math.max(280, Math.floor(root.clientWidth));
+            width = chartWidth();
             root.textContent = "";
             root.classList.toggle("is-synthetic", !!data.synthetic);
             var tip;
@@ -386,7 +561,7 @@
             append(root, header(data));
             root.appendChild(controls);
             tip = makeTooltip(root);
-            append(root, [comparisons(data, width, tip), decision(data, width, tip, state.prior), effect(data, width, tip), agreement(data)]);
+            append(root, [comparisons(data, width, tip), decision(data, width, tip, state.prior), effect(data, width, tip), agreement(data), robustnessSection(data, width, tip), exploratorySection(data, width, tip)]);
             root.appendChild(el("p", { class: "mssp-note" }, "Built " + data.built + " from results at commit " + data.commit + "."));
         }
 
@@ -394,7 +569,7 @@
         if (window.ResizeObserver) {
             var last = width;
             new ResizeObserver(function () {
-                var w = Math.max(280, Math.floor(root.clientWidth));
+                var w = chartWidth();
                 if (Math.abs(w - last) > 8) { last = w; draw(); }
             }).observe(root);
         }
