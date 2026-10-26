@@ -1,6 +1,6 @@
 {
  "synthetic": true,
- "built": "2026-10-26 16:41 UTC",
+ "built": "2026-10-26 16:46 UTC",
  "commit": "8c05b79",
  "stages": [
   {
@@ -52,7 +52,7 @@
     "mde": 3.666075036341399,
     "n_early": 48,
     "n_stayer": 202,
-    "verdict": "positive"
+    "verdict": "supported"
    },
    {
     "key": "H2a_own",
@@ -67,7 +67,7 @@
     "mde": 2.223325283902669,
     "n_early": 48,
     "n_stayer": 202,
-    "verdict": "positive"
+    "verdict": "supported"
    },
    {
     "key": "H1_sav_rate_2020",

@@ -13,7 +13,9 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
      section (plan section 8). Before publishing: set Date and the slug's date prefix, rename content/static/<slug>/,
      remove the slug from STATIC_EXCLUDES in publishconf.py, and change the dashboard's root-relative /static/ links
      to {static} (Pelican copies {static}-linked files even when STATIC_EXCLUDES lists them, so a draft must not use
-     them; once published, {static} makes the build check that the files exist). -->
+     them; once published, {static} makes the build check that the files exist). Check H1's units (fraction or percent
+     in the PY2020-PY2021 files) against power.json's before comparing H1 with its MDE. Finally delete this comment
+     and every "pending" comment: HTML comments are published in the page source. -->
 
 [TOC]
 
@@ -22,8 +24,8 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
 In the Medicare Shared Savings Program (MSSP), an accountable care organization (ACO) earns a share of the savings
 when its patients' spending comes in below a benchmark. The benchmark is reset at the start of each agreement period
 from the ACO's own recent spending, pulled toward its region's. An ACO can end its agreement early and start a new
-one, which resets the benchmark early. For the 2022 agreement cycle, 29 of the 306 ACOs that could have stayed in
-their 2019-2020 agreements did so.
+one, which resets the benchmark early. For the 2022 agreement cycle, 29 of the 306 ACOs in agreements that began in
+2019 or 2020 ended them early and started new ones.
 
 This post asks why they did, and what renewing changed:
 
@@ -44,7 +46,7 @@ shows; changes made after registration are listed separately under [Deviations](
 
 ## Why pre-register
 
-The CMS public use files used here have been public for years. Anyone analyzing them can try many specifications and
+The CMS public use files used here are public. Anyone analyzing them can try many specifications and
 report the one that works, often without meaning to. A pre-registration fixes the question, the variables, the tests
 and the decision rules before the outcomes are seen, so a reader can tell confirmatory results from exploration.
 

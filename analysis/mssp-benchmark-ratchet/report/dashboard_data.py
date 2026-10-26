@@ -71,9 +71,17 @@ def load(results: Path) -> dict:
 
 
 def direction(estimate: float, p: float, null_text: str = "no detectable difference") -> str:
+    """Two-sided verdict with no predicted sign (H4)."""
     if p is None or p >= 0.05:
         return null_text
     return "positive" if estimate > 0 else "negative"
+
+
+def prediction(estimate: float, p: float) -> str:
+    """Verdict for a predicted-positive difference (H2b, H2a), in the agreement table's words."""
+    if p is None or p >= 0.05:
+        return "no detectable difference"
+    return "supported" if estimate > 0 else "contradicted"
 
 
 def pct(log_value: float) -> float:
@@ -95,7 +103,7 @@ def comparisons(confirm: dict, power: dict | None) -> dict:
             mde = node["mde"] * scale
         if key == "H2a_own" and g.get("exploratory"):
             role = "secondary, exploratory (validation failed)"
-        verdict = direction(g["posterior_mean"], g["p_value"]) if key in ("H2b_pull", "H2a_own") else None
+        verdict = prediction(g["posterior_mean"], g["p_value"]) if key in ("H2b_pull", "H2a_own") else None
         rows.append(
             {
                 "key": key,
