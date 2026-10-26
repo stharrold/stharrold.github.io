@@ -148,4 +148,13 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   escaped and displays correctly. Placeholders are written `{e}` and `{year}` in the summary, said in its lead-in.
   Found by hashing the saved text in 2,000-character chunks against the local file; after the fix the saved text,
   unescaped, matches the local copy byte for byte.
+- Two side-agent catches before Register: the plan's status line still said "DRAFT ... Not yet registered", which
+  would have been frozen into the public record; the first fix dated it ("submitted ... on 2026-10-26"), which would
+  be wrong if Register were clicked another day. Final wording names no date and points to the OSF timestamp in
+  `REGISTRATION.md`. Code unchanged; final commit a4064f5, plan sha256 d0e374c8...e8f2, zip sha256 4c98d76a...9cd4.
+- OSF gotchas in the swap: an upload whose name matches a file already in the draft's storage is silently dropped,
+  so the old `PREREGISTRATION.md` had to be deleted first (the author deleted the stale files; detaching a file
+  from the question leaves it in storage, which becomes part of the registration's project); uploading a file
+  resets an unsaved Summary box to its last autosave; and after a reload the Metadata step showed a "!" (invalid)
+  although the server copy was complete, cleared by saving the step with Next.
 - Stopped at Review; the author clicks Register (public, permanent).
