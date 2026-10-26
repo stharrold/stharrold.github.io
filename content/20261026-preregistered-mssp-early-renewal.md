@@ -14,7 +14,11 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
      remove the slug from STATIC_EXCLUDES in publishconf.py, and change the dashboard's root-relative /static/ links
      to {static} (Pelican copies {static}-linked files even when STATIC_EXCLUDES lists them, so a draft must not use
      them; once published, {static} makes the build check that the files exist). Check H1's units (fraction or percent
-     in the PY2020-PY2021 files) against power.json's before comparing H1 with its MDE. Finally delete this comment
+     in the PY2020-PY2021 files) against power.json's before comparing H1 with its MDE. Results notebook (marimo,
+     reporting only: reads results/*.json, recomputes nothing): static HTML export in content/static/<slug>/ linked
+     from the post, with the privacy page's "Notebook exports" bullet updated for jsDelivr; on OSF the same HTML plus
+     a PDF and an .ipynb with outputs (marimo export ipynb --include-outputs; needs nbformat) as the copies that needs no CDN; record each OSF file's sha256 in
+     the post. Run marimo with uv run --no-sync --with, so uv.lock is untouched. Finally delete this comment
      and every "pending" comment: HTML comments are published in the page source. -->
 
 [TOC]

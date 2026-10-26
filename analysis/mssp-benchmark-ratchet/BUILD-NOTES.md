@@ -214,3 +214,7 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   third panel.
 - A marimo static HTML export is a 33 KB page that loads marimo's front end from `cdn.jsdelivr.net` (checked with
   marimo 0.25.2), so hosting one on the site would add a third-party request.
+- Results notebook hosting, decided 2026-10-26: a marimo notebook that only reads `results/*.json`, exported as static
+  HTML for the site (readers) and uploaded to OSF with a PDF export and an `.ipynb` with outputs. The PDF and `.ipynb`
+  are the copies that survive if jsDelivr stops serving marimo's front end; the site and OSF HTML both depend on it.
+  Built after the real results, run with `uv run --no-sync --with marimo==0.25.2 --with nbformat` so `uv.lock` does not change.
