@@ -71,6 +71,13 @@ a:hover {
 .entry-content table td code {
   overflow-wrap: anywhere;
 }
+/* Tables with many columns scroll inside their own box on phones instead of widening the page. */
+@media (max-width: 575.98px) {
+  .entry-content table {
+    display: block;
+    overflow-x: auto;
+  }
+}
 .entry-content blockquote {
   border-left: 0.25rem solid var(--bs-border-color);
   padding-left: 1rem;

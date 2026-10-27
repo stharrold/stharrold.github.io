@@ -198,6 +198,19 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   p-value do not depend on the unit), so this is a reporting matter, not a deviation. The dashboard had scaled every H1
   value by 100; `report/dashboard_data.py` now leaves the PY2021 comparison as it is.
 - Dashboard data rebuilt from the real results; checked at desktop and phone width (no overflow, no synthetic banner).
+- Exclusions: the expected-gain variables are missing for 3 of 29 early renewers (10.3%) and 36 of 277 stayers
+  (13.0%), over the plan's 10% reporting line (section 3), so the post lists it as a limitation. A diagnostic run
+  (outside the repository, reading the same dbt tables) traced every one to the 2021 county assignment file: each of
+  the 39 has its assigned ESRD person-years hidden in every county, so `region_std` has no county weights for ESRD
+  (15 also lack aged/dual weights). The registered fill rules cover hidden results-file cells, not county weights, so
+  the registered rule (exclude and count) applied. Excluded ACOs are smaller (median 6,702 and 8,578 assigned
+  beneficiaries vs 10,757 and 15,649 included). The draft had said 27 events in H3; the fitted model has 24.
+- Results written into the post 2026-10-27 in the plan's order, with each verdict in the section 7 wording. Two points
+  the numbers forced into the text: the total expected gain does not differ (its two parts offset), and H3's
+  supported coefficients come from a test with 14-17% power, so their size is probably exaggerated (type M error).
+  The H3 own-spending coefficient's interval equals the prior's because sigma_v (4.38) exceeds the variable's SD.
+- Five-column result tables overflowed phones by 97 px; the theme now scrolls post tables inside their box below
+  576 px (CSS only, so the frozen posts' Markdown is untouched; their pages were checked too).
 
 ## Write-up started while confirm runs (2026-10-26)
 
