@@ -362,3 +362,15 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   (`Image:` and `Image_alt:` metadata become og:image, og:image:alt and a large Twitter card); posts without them
   are unchanged, and a test checks that a published post's image exists and is the og:image.
 - Visual abstract uploaded to OSF z4an5/results-notebook (2026-10-27): visual-abstract.png (sha256 82beb2d7...) and visual-abstract.svg (sha256 1a4c54e0...), matching the committed files. If the image is redrawn, replace both on OSF.
+- medRxiv preprint (2026-10-27): drafted in a separate public repository,
+  [stharrold/mssp-preprint-2026](https://github.com/stharrold/mssp-preprint-2026), with the yuimedi-paper build
+  (pandoc, Eisvogel 3.3.0, tectonic). Tables and figures are generated from copies of `results/*.json` (hashes
+  recorded), and `scripts/check_numbers.py` checks the prose: single numbers match some results value by chance about
+  90% of the time at 1 decimal, so the real check is that each interval's bounds (and its estimate, where adjacent)
+  come from one results record. A PubMed pass added the core MSSP savings and selection papers (McWilliams 2016,
+  2018 and 2020; Markovitz 2019; Bond 2025; Srivastava 2026). A fresh-agent review traced about 250 numbers and found
+  no wrong value, but found "log points" used on two scales, Crossref subtitles that were Health Affairs teasers, a
+  PDF text layer with every hyphen as U+2011 (Source Sans Pro; fixed with Latin Modern by file name), plan-required
+  reporting left out (Pr(>0), P/CrI disagreements, two exploratory tables) and caveats lost in condensing the post.
+  All applied except the title (kept as registered) and the affiliation's location (the author's call); see the
+  repository's `reviews/`.
