@@ -14,10 +14,10 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
      to {static} (Pelican copies {static}-linked files even when STATIC_EXCLUDES lists them, so a draft must not use
      them; once published, {static} makes the build check that the files exist). Results notebook: built and
      exported (HTML in content/static/<slug>/, .ipynb and PDF in analysis/mssp-benchmark-ratchet/report/exports/,
-     hashes in the post); change its root-relative link to {static} too. Upload the three committed files to the OSF
-     project (osf.io/z4an5) as they are, without re-exporting, and check that OSF's hashes match the post. When
-     src_master is merged into the study branch, log its uv.lock change in DEVIATIONS.md as made after the analysis. Finally delete this comment:
-     HTML comments are published in the page source. -->
+     hashes in the post); change its root-relative link to {static} too. Uploaded to OSF z4an5/results-notebook
+     2026-10-27 and hashes checked; never re-export, since that changes every hash. When src_master is merged into
+     the study branch, log its uv.lock change in DEVIATIONS.md as made after the analysis. Finally delete this
+     comment: HTML comments are published in the page source. -->
 
 [TOC]
 
@@ -432,14 +432,14 @@ The conventional p-values are mostly larger than the resampling ones, but no ver
 
 The same results are in a [marimo notebook](/static/20261026-preregistered-mssp-early-renewal/results.html)
 (`report/results_notebook.py`), which reads the results files through the dashboard's data builder and recomputes
-nothing. That page loads marimo's front end from jsDelivr, so the [OSF project](https://osf.io/z4an5/) also holds a
-PDF and a Jupyter notebook with its outputs saved, which need no CDN. The files as exported and uploaded:
+nothing. That page loads marimo's front end from jsDelivr, so the [OSF project](https://osf.io/z4an5/) also holds a PDF and a
+Jupyter notebook with its outputs saved, which need no CDN. The files as exported and uploaded:
 
-| File | sha256 |
+| File (on OSF) | sha256 |
 |---|---|
-| `results.html` | `1d82430cce7f132df059c463a3eb1afc2e41ff48292231817fce1577719ca734` |
-| `results.ipynb` | `a85a70d78678685f9ba77b3c298f1e2e6deca5aa428e4b02db7aa0984ce4810b` |
-| `results.pdf` | `312e643c83e25e058da9bd1bc5797171cadb66dbff67d53b6a6c346b3055dfb9` |
+| [`results.html`](https://osf.io/m5qkx/) | `1d82430cce7f132df059c463a3eb1afc2e41ff48292231817fce1577719ca734` |
+| [`results.ipynb`](https://osf.io/aczts/) | `a85a70d78678685f9ba77b3c298f1e2e6deca5aa428e4b02db7aa0984ce4810b` |
+| [`results.pdf`](https://osf.io/247qu/) | `312e643c83e25e058da9bd1bc5797171cadb66dbff67d53b6a6c346b3055dfb9` |
 
 ## Robustness
 

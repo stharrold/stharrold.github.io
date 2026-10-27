@@ -270,3 +270,6 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   config records the file name without a path and the editor's default settings. The privacy page's notebook bullet
   now covers marimo exports. Where the page's "Run or Edit" button leads was not checked; it acts only when a reader
   clicks it, so it is not a request the page makes on load.
+- Notebook exports uploaded by the author to OSF z4an5, folder `results-notebook`, 2026-10-27: results.html
+  (osf.io/m5qkx), results.ipynb (osf.io/aczts), results.pdf (osf.io/247qu). OSF's sha256 for each, checked by the
+  author in the OSF interface and again through the public API, matches the post and the committed files.
