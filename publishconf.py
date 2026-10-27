@@ -41,7 +41,7 @@ DRAFT_SAVE_AS = ""
 DRAFT_PAGE_SAVE_AS = ""
 # Static files of draft posts are still copied, so exclude them explicitly.
 #     Remove an entry when its post's Status changes to published.
-STATIC_EXCLUDES = ["static/20160221-predict-household-income-from-census", "static/20261026-preregistered-mssp-early-renewal"]
+STATIC_EXCLUDES = ["static/20160221-predict-household-income-from-census"]
 
 
 # Feed settings

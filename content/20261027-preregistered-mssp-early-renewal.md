@@ -1,26 +1,13 @@
 Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study
-Status: draft
-Date: 2026-10-26T12:00:00Z
-Modified: 2026-10-26T12:00:00Z
+Date: 2026-10-27T17:30:00Z
+Modified: 2026-10-27T17:30:00Z
 Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-differences, healthcare, medicare, dbt, duckdb, python
 Category: Causal Inference
-Slug: 20261026-preregistered-mssp-early-renewal
+Slug: 20261027-preregistered-mssp-early-renewal
 Authors: Samuel Harrold
-Image: static/20261026-preregistered-mssp-early-renewal/visual-abstract.png
+Image: static/20261027-preregistered-mssp-early-renewal/visual-abstract.png
 Image_alt: Visual abstract: early renewers' regions spent 3.4 points of benchmark more than stayers' regions; a reset's regional gain and own-spending loss roughly cancel; spending growth afterward showed no detectable difference.
 Summary: A study of Medicare Shared Savings Program ACOs that ended their agreements early to reset their benchmarks, registered on OSF before any outcome data were read: the plan, the methods, the pipeline and the results.
-
-<!-- DRAFT. Results filled from analysis/mssp-benchmark-ratchet/results/ (every stage run, 2026-10-27). Before
-     publishing: set Date and the slug's date prefix, rename content/static/<slug>/,
-     remove the slug from STATIC_EXCLUDES in publishconf.py, and change the dashboard's root-relative /static/ links
-     to {static} (Pelican copies {static}-linked files even when STATIC_EXCLUDES lists them, so a draft must not use
-     them; once published, {static} makes the build check that the files exist). Results notebook: built and
-     exported (HTML in content/static/<slug>/, .ipynb and PDF in analysis/mssp-benchmark-ratchet/report/exports/,
-     hashes in the post); change its root-relative link to {static} too. Re-exported 2026-10-27 after the critical
-     assessment (H4 wording), uploaded to OSF z4an5/results-notebook as new versions, and OSF's sha256 checked
-     against the post. Never re-export again, since that changes every hash. src_master was merged into the
-     study branch 2026-10-27 (uv.lock change logged in DEVIATIONS.md). Finally delete this comment: HTML
-     comments are published in the page source. -->
 
 [TOC]
 
@@ -36,10 +23,10 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
 | Finding | Early renewers' regions spent more relative to their benchmarks, but they were also beating their benchmarks, so on average a reset would not have raised them; no detectable change in spending afterward |
 | Reproduce | About 10 minutes to download the data and run the tests; about 18 hours to rerun every stage ([Reproduce](#reproduce)) |
 
-[![Visual abstract. Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study of Shared Savings Program ACOs: 29 renewed early in 2022, 277 stayed. The question: did ACOs renew early to get a higher benchmark, and did renewing change their spending? The design: public CMS data, 2019-2024; plan registered on OSF before any outcome was read; decision rules fixed in advance. Who renewed early, early renewers minus stayers in percent of benchmark with 95% intervals: region spends more than benchmark +3.4 (+1.7 to +5.4); regional part of a reset +1.6 (+0.9 to +2.2); own-spending part of a reset -2.1 (-3.8 to -0.5); total expected gain from a reset -0.5 (-2.0 to +0.8). Spending after renewal: change in spending growth -0.4% (-4.0 to +2.5), no detectable difference, and not read as an effect because a pre-existing trend could hide a small one. Takeaway: early renewers were positioned to gain from the regional adjustment and a higher sharing rate, but a reset would not have raised their benchmarks on average; associations, not effects; 2022 rules.](/static/20261026-preregistered-mssp-early-renewal/visual-abstract.png)](/static/20261026-preregistered-mssp-early-renewal/visual-abstract.png)
+[![Visual abstract. Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study of Shared Savings Program ACOs: 29 renewed early in 2022, 277 stayed. The question: did ACOs renew early to get a higher benchmark, and did renewing change their spending? The design: public CMS data, 2019-2024; plan registered on OSF before any outcome was read; decision rules fixed in advance. Who renewed early, early renewers minus stayers in percent of benchmark with 95% intervals: region spends more than benchmark +3.4 (+1.7 to +5.4); regional part of a reset +1.6 (+0.9 to +2.2); own-spending part of a reset -2.1 (-3.8 to -0.5); total expected gain from a reset -0.5 (-2.0 to +0.8). Spending after renewal: change in spending growth -0.4% (-4.0 to +2.5), no detectable difference, and not read as an effect because a pre-existing trend could hide a small one. Takeaway: early renewers were positioned to gain from the regional adjustment and a higher sharing rate, but a reset would not have raised their benchmarks on average; associations, not effects; 2022 rules.]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)
 
 The visual abstract (select it for the full-size image) is drawn from the same results files as the dashboard
-([`report/visual_abstract.py`][visual-abstract-src]; [SVG](/static/20261026-preregistered-mssp-early-renewal/visual-abstract.svg)).
+([`report/visual_abstract.py`][visual-abstract-src]; [SVG]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.svg)).
 
 In the [Medicare Shared Savings Program][mssp][^cms-mssp] (MSSP), an [accountable care organization][aco-cms][^cms-aco] (ACO) earns a
 share of the savings when its patients' spending comes in below a benchmark. The benchmark is
@@ -734,14 +721,14 @@ agree too: H2b +3.2 (1.1 to 5.3), p = 0.004; H2a -2.1 (-3.9 to -0.2), p = 0.028.
 
 ### Interactive results
 
-<link rel="stylesheet" href="/static/20261026-preregistered-mssp-early-renewal/dashboard.css">
+<link rel="stylesheet" href="{static}/static/20261027-preregistered-mssp-early-renewal/dashboard.css">
 <div id="mssp-dashboard" class="mssp-dash" aria-live="polite"><p>Loading the interactive results...</p></div>
-<script src="/static/20261026-preregistered-mssp-early-renewal/dashboard.js" defer></script>
+<script src="{static}/static/20261027-preregistered-mssp-early-renewal/dashboard.js" defer></script>
 
 ### Results notebook
 
 The main results tables and figures are also in a [marimo][marimo][^sw-marimo]
-[notebook](/static/20261026-preregistered-mssp-early-renewal/results.html)
+[notebook]({static}/static/20261027-preregistered-mssp-early-renewal/results.html)
 ([`report/results_notebook.py`][notebook-src][^results]). It reads the results files through the dashboard's data
 builder and recomputes nothing: provenance (each results file's commit and sha256), validation, the group
 comparisons, H3, H4, the agreement table, robustness and exploratory results. This post is the authoritative report;

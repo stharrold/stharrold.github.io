@@ -26,7 +26,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-SLUG = "20261026-preregistered-mssp-early-renewal"
+SLUG = "20261027-preregistered-mssp-early-renewal"
 DEFAULT_RESULTS = HERE.parent / "results"
 DEFAULT_OUT = ROOT / "content" / "static" / SLUG / "data.json"
 STAGES = ("validation", "power", "confirm", "robustness", "did", "conventional", "exploratory")
