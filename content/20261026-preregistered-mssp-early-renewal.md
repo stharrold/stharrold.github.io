@@ -14,8 +14,9 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
      to {static} (Pelican copies {static}-linked files even when STATIC_EXCLUDES lists them, so a draft must not use
      them; once published, {static} makes the build check that the files exist). Results notebook: built and
      exported (HTML in content/static/<slug>/, .ipynb and PDF in analysis/mssp-benchmark-ratchet/report/exports/,
-     hashes in the post); change its root-relative link to {static} too. Uploaded to OSF z4an5/results-notebook
-     2026-10-27 and hashes checked; never re-export, since that changes every hash. src_master was merged into the
+     hashes in the post); change its root-relative link to {static} too. Re-exported 2026-10-27 after the critical
+     assessment (H4 wording): upload the three committed files to OSF z4an5/results-notebook as new versions of the
+     existing files and check OSF's sha256 against the post. Never re-export again, since that changes every hash. src_master was merged into the
      study branch 2026-10-27 (uv.lock change logged in DEVIATIONS.md). Finally delete this comment: HTML
      comments are published in the page source. -->
 
@@ -515,9 +516,9 @@ Jupyter notebook with its outputs saved, which need no CDN. The files as exporte
 
 | File (on OSF) | sha256 |
 |---|---|
-| [`results.html`](https://osf.io/m5qkx/) | `1d82430cce7f132df059c463a3eb1afc2e41ff48292231817fce1577719ca734` |
-| [`results.ipynb`](https://osf.io/aczts/) | `a85a70d78678685f9ba77b3c298f1e2e6deca5aa428e4b02db7aa0984ce4810b` |
-| [`results.pdf`](https://osf.io/247qu/) | `312e643c83e25e058da9bd1bc5797171cadb66dbff67d53b6a6c346b3055dfb9` |
+| [`results.html`](https://osf.io/m5qkx/) | `65fe501e57ceae5eba3fc76533f81a1047771c3ef7ff87db20f72559b93c877a` |
+| [`results.ipynb`](https://osf.io/aczts/) | `761f0306fa2b4a5a3ab373b72a71da4f510192810e2b198e6687fbc9f6ee228f` |
+| [`results.pdf`](https://osf.io/247qu/) | `32bc555e591b253d7b7aa142a4946bc69e2566fd402a88c5cd9686c69f341630` |
 
 ## Robustness
 

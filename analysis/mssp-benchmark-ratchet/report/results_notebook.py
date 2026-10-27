@@ -243,7 +243,7 @@ def _(data, interval, mo, num, pval, table):
     mo.md(
         "\n\n".join(
             [
-                "## H4: what renewing did to spending",
+                "## H4: spending after renewal",
                 f"Difference-in-differences in per-capita spending, in percent; {_h4['sample']['early']} early renewers and "
                 f"{_h4['sample']['comparison']} comparison ACOs. Verdict: **{_h4['verdict']}** (MDE {num(_h4['mde_percent'])}%).",
                 table(["Estimate", "Role", "Percent", "95% interval", "p"], _rows),
@@ -260,7 +260,7 @@ def _(data, interval, mo, num, pval, table):
 def _(data, figure, forest):
     _rows = data["h4"]["estimates"]
     _fig, _ax = figure(len(_rows))
-    forest(_ax, _rows, "Effect of renewing early on per-capita spending (%)")
+    forest(_ax, _rows, "Early renewers minus comparison: change in per-capita spending growth (%)")
     _fig
     return
 

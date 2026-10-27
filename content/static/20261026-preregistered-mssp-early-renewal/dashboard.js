@@ -347,7 +347,7 @@
 
     function effect(data, width, tip) {
         var d = data.h4;
-        if (!d) return pending("H4: effect of early renewal on spending", "the difference-in-differences stage");
+        if (!d) return pending("H4: spending after early renewal", "the difference-in-differences stage");
         var rows = d.estimates.map(function (r) {
             return {
                 label: r.label,
@@ -389,7 +389,7 @@
             return [r.label, r.role, fmt(r.mean), num(r.lo) ? fmt(r.lo) + " to " + fmt(r.hi) : "none (point estimate)", fmtP(r.p)];
         })));
         return card(
-            "H4: effect of early renewal on spending",
+            "H4: spending after early renewal",
             "Change in log per-capita spending from PY2020-21 to PY2022-24, early renewers minus ACOs not yet renewed, shown as a percent difference in spending growth. Shaded band: the minimum detectable effect.",
             body
         );

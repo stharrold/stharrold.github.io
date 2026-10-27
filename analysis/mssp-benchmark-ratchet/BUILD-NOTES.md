@@ -328,3 +328,8 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   source; the overview counts; a short glossary; further design threats; and two citation fixes (425.601(a)(2) for
   the enrollment types, (d)(3) for their shares). "What review caught before registration" moved after Reproduce,
   and the OSF summary-field and Playwright details were trimmed (both remain in these notes).
+- Notebook re-exported (2026-10-27) so the archived copies follow the review's wording: H4 heading "spending after
+  renewal" and the H4 chart axis "Early renewers minus comparison: change in per-capita spending growth (%)" (it
+  said "Effect of renewing early"). The dashboard's H4 title changed the same way. New sha256 values are in the
+  post; the three files go to OSF z4an5/results-notebook as new versions of the earlier uploads, which stay in each
+  file's OSF history.
