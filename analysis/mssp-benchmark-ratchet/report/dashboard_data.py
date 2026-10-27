@@ -115,8 +115,13 @@ def pct(log_value: float) -> float:
 
 
 def h1_scale(power: dict | None) -> float:
-    # Savings rates are fractions in the CMS files (the power SD is about 0.05); shown in percentage points.
+    # Savings rates are fractions in the PY2016-PY2020 CMS files (the power SD is about 0.05); shown in percentage points.
     return 100.0 if power and power["h1"]["sd"] < 1 else 1.0
+
+
+def value_scale(key: str, h1: float) -> float:
+    # The PY2021 file writes savings rates as percents ("3.14%"), so its comparison is already in percentage points.
+    return 1.0 if key == "H1_sav_rate_2021" else h1 if key.startswith("H1") else 1.0
 
 
 def estimate_row(label: str, g: dict, scale: float = 1.0, role: str = "robustness") -> dict:
@@ -222,13 +227,13 @@ def comparisons(confirm: dict, power: dict | None) -> dict:
     rows = []
     for key, label, role, unit, mde_path in COMPARISONS:
         g = confirm["groups"][key]
-        scale = h1 if key.startswith("H1") else 1.0
+        scale = value_scale(key, h1)
         mde = None
         if power and mde_path:
             node = power
             for part in mde_path:
                 node = node[part]
-            mde = node["mde"] * scale
+            mde = node["mde"] * (h1 if key.startswith("H1") else 1.0)
         if key == "H2a_own" and g.get("exploratory"):
             role = "secondary, exploratory (validation failed)"
         verdict = prediction(g["posterior_mean"], g["p_value"]) if key in ("H2b_pull", "H2a_own") else None

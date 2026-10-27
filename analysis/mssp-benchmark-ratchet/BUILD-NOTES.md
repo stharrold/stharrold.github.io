@@ -191,6 +191,13 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - conventional (8 s, commit acc8b0e): no warnings.
 - exploratory (83 s, commit ff6e64b): no warnings. All seven stages have now run with the registered code and no
   deviations; every results file was committed before its estimates were read.
+- H1 units, checked as the draft's checklist asks: the PY2020 file stores savings rates as fractions (`0.0382`, SD
+  0.046, like the PY2016-PY2018 files behind the power analysis), the PY2021 file as percents with a sign (`3.14%`, all
+  475 rows). So H1 PY2020 is 0.0188 = 1.9 percentage points and H1 PY2021 is 1.57 points, both against an MDE of
+  0.0265 = 2.7 points. Nothing in the registered analysis mixes the two years (H1 is descriptive and its sign and
+  p-value do not depend on the unit), so this is a reporting matter, not a deviation. The dashboard had scaled every H1
+  value by 100; `report/dashboard_data.py` now leaves the PY2021 comparison as it is.
+- Dashboard data rebuilt from the real results; checked at desktop and phone width (no overflow, no synthetic banner).
 
 ## Write-up started while confirm runs (2026-10-26)
 
