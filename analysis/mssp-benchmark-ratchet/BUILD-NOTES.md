@@ -361,3 +361,4 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   full alt text, linked to the full-size PNG for phones. The theme gained optional per-post preview images
   (`Image:` and `Image_alt:` metadata become og:image, og:image:alt and a large Twitter card); posts without them
   are unchanged, and a test checks that a published post's image exists and is the og:image.
+- Visual abstract uploaded to OSF z4an5/results-notebook (2026-10-27): visual-abstract.png (sha256 82beb2d7...) and visual-abstract.svg (sha256 1a4c54e0...), matching the committed files. If the image is redrawn, replace both on OSF.
