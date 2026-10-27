@@ -269,7 +269,8 @@ studies early renewal itself.
   reset rather than whether to join or leave.
 * **The 2019 rules changed participation decisions.** Under Pathways to Success, for the first time more ACOs left the
   program than joined it: 73 exits against 65 entrants in 2019 ([Ying et al. 2023][ying2023][^ying2023]). ACOs that
-  had achieved savings were more likely to stay, and so were ACOs with higher spending, which the authors read as a
+  had achieved savings were more likely to stay, a borderline result (odds ratio 1.76, 95% interval 0.99 to 3.09), and
+  so were ACOs with higher spending, which the authors read as a
   sign that administrators "needed to see enough room" to make their savings target, the same consideration as the
   reset motive here. ACO leaders described reassessing potential savings against losses in light of the benchmark
   changes ([Ying et al. 2024][ying2024][^ying2024]). Of the Track 1 ACOs facing renewal in 2019, 40% left, at a
@@ -282,8 +283,8 @@ studies early renewal itself.
   formula favored them (Lyu and colleagues), and they left when their benchmark fell (Chen and McWilliams). This
   study finds the same behavior in a new choice, when to reset: early renewers were the ACOs whose regions spent more
   relative to their benchmarks.
-* **Agrees with, and adds detail to:** after the 2019 rules, ACOs that were already saving money were more likely to
-  stay in the program (Ying and colleagues). Early renewers here were also savers, beating their benchmarks by more
+* **Fits with, though that evidence is weak:** after the 2019 rules, ACOs that were already saving money were more
+  likely to stay in the program, a borderline result whose interval includes no effect (Ying and colleagues). Early renewers here were also savers, beating their benchmarks by more
   than other ACOs. But that same success meant a reset would have cut the own-spending part of their benchmark, so
   the simple story "ACOs reset to get a higher benchmark" does not fit them on average.
 * **Consistent with:** earlier work showed that comparing an ACO with its region depends heavily on how patients'
