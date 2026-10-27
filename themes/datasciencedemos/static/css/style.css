@@ -67,6 +67,19 @@ a:hover {
   padding: 0.25rem 0.5rem;
   border: 1px solid var(--bs-border-color);
 }
+/* Hashes and commit SHAs in table cells would otherwise widen the page past a phone screen. */
+.entry-content table td code {
+  overflow-wrap: anywhere;
+}
+/* Tables with many columns scroll inside their own box on phones instead of widening the page. */
+@media (max-width: 575.98px) {
+  .entry-content table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
 .entry-content blockquote {
   border-left: 0.25rem solid var(--bs-border-color);
   padding-left: 1rem;

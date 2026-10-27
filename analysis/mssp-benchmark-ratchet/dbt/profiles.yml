@@ -1,0 +1,7 @@
+ratchet:
+  target: study
+  outputs:
+    study:
+      type: duckdb
+      path: "{{ env_var('RATCHET_DUCKDB_PATH') }}"
+      threads: 1

@@ -1,0 +1,44 @@
+version: 2
+
+# Data tests run with every build (`dbt build`); a failure stops the pipeline before any analysis reads the tables.
+models:
+  - name: groups
+    description: Base ACOs (PY2021 agreements starting 2019-07-01 or 2020-01-01) and their group from PY2022 enrollment (section 3).
+    columns:
+      - name: aco_id
+        data_tests: [unique, not_null]
+      - name: grp
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["early", "stayer", "leaver", "other"]
+  - name: validation_sample
+    description: Regular renewers into 2022 agreements with a PY2021 record (section 4.4); never contains early renewers.
+    columns:
+      - name: aco_id
+        data_tests: [unique, not_null]
+  - name: phase_in
+    description: Phase-in step and regional weights for a 2022 reset (section 4.3 step 3).
+    columns:
+      - name: aco_id
+        data_tests: [unique, not_null]
+      - name: step
+        data_tests: [not_null]
+  - name: expected_gain
+    description: Expected benchmark gain, its components and regional pull (section 4.3 steps 1-6).
+    columns:
+      - name: aco_id
+        data_tests: [unique, not_null]
+  - name: analysis
+    description: One row per base ACO with every variable used in sections 5.1-5.4.
+    columns:
+      - name: aco_id
+        data_tests: [unique, not_null]
+  - name: did_panel
+    description: PY2020-PY2024 log per-capita spending with inclusion status for H4 (section 4.5).
+    columns:
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["included", "later renewal", "absent", "no spending value"]

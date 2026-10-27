@@ -1,0 +1,287 @@
+{
+  "generated": "2026-10-27T07:13:04+00:00",
+  "git_commit": "acc8b0e7c7b8f3e2a77d2dbdfda73caa85fdb6da",
+  "synthetic": false,
+  "seed": 20261022,
+  "settings": {
+    "n_resamples": 10000,
+    "full": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 2000,
+      "target_accept": 0.95
+    },
+    "retry": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 4000,
+      "target_accept": 0.99
+    },
+    "reduced": {
+      "chains": 2,
+      "tune": 1000,
+      "draws": 1000,
+      "target_accept": 0.95
+    },
+    "power_datasets": 500,
+    "power_perm": 999,
+    "workers": 5,
+    "quick": false,
+    "data_dir": "/Users/stharrold/.cache/stharrold-github-io/mssp-snapshot-2026-10-22"
+  },
+  "versions": {
+    "duckdb": "2.0.0",
+    "pymc": "6.3.2",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scipy": "1.18.1",
+    "firthmodels": "0.8.2"
+  },
+  "H1": {
+    "welch": {
+      "difference": 0.01821668119009088,
+      "ci95": [
+        0.003785190504392742,
+        0.032648171875789014
+      ],
+      "p_value": 0.014835062605460197,
+      "n_early": 29,
+      "n_stayer": 277
+    },
+    "ols_hc2": {
+      "difference": 0.018846798365122586,
+      "ci95": [
+        0.004717151341915278,
+        0.032976445388329896
+      ],
+      "p_value": 0.008941216101997888,
+      "n": 306,
+      "covariates": [
+        "early",
+        "cohort_2020"
+      ]
+    },
+    "ols_hc2_adjusted": {
+      "difference": 0.013600072014791988,
+      "ci95": [
+        -0.0005795450122648843,
+        0.02777968904184886
+      ],
+      "p_value": 0.06012757911520227,
+      "n": 306,
+      "covariates": [
+        "early",
+        "cohort_2020",
+        "basic_c_e",
+        "enhanced",
+        "log_n_ab_2020"
+      ]
+    }
+  },
+  "H2a": {
+    "welch": {
+      "difference": -2.058645057732807,
+      "ci95": [
+        -3.878447088815203,
+        -0.23884302665041046
+      ],
+      "p_value": 0.028012204185233782,
+      "n_early": 26,
+      "n_stayer": 241
+    },
+    "ols_hc2": {
+      "difference": -2.0834619470171543,
+      "ci95": [
+        -3.8105777901063878,
+        -0.35634610392792077
+      ],
+      "p_value": 0.018061625962067854,
+      "n": 267,
+      "covariates": [
+        "early",
+        "cohort_2020"
+      ]
+    },
+    "ols_hc2_adjusted": {
+      "difference": -1.6233660771051808,
+      "ci95": [
+        -3.31850588324012,
+        0.07177372902975865
+      ],
+      "p_value": 0.060521196365438644,
+      "n": 267,
+      "covariates": [
+        "early",
+        "cohort_2020",
+        "basic_c_e",
+        "enhanced",
+        "log_n_ab_2020"
+      ]
+    }
+  },
+  "H2b": {
+    "welch": {
+      "difference": 3.2172555574171193,
+      "ci95": [
+        1.1384833783645436,
+        5.296027736469695
+      ],
+      "p_value": 0.0035945063262701016,
+      "n_early": 26,
+      "n_stayer": 241
+    },
+    "ols_hc2": {
+      "difference": 3.348656371004391,
+      "ci95": [
+        1.3020906264797194,
+        5.395222115529062
+      ],
+      "p_value": 0.0013414760546054836,
+      "n": 267,
+      "covariates": [
+        "early",
+        "cohort_2020"
+      ]
+    },
+    "ols_hc2_adjusted": {
+      "difference": 3.0175482135391065,
+      "ci95": [
+        0.9353864534814722,
+        5.099709973596741
+      ],
+      "p_value": 0.004504929359179805,
+      "n": 267,
+      "covariates": [
+        "early",
+        "cohort_2020",
+        "basic_c_e",
+        "enhanced",
+        "log_n_ab_2020"
+      ]
+    }
+  },
+  "H3_logit": {
+    "sample": {
+      "n": 206,
+      "early": 24,
+      "excluded": {
+        "stayer": 27,
+        "early": 3
+      }
+    },
+    "converged": true,
+    "warnings": [],
+    "coefficients": {
+      "pull": {
+        "log_odds": 1.38981590153813,
+        "odds_ratio": 4.01411099330677,
+        "or_ci95": [
+          1.202064323130008,
+          13.404513183312876
+        ],
+        "p_value": 0.02387605320861247
+      },
+      "own": {
+        "log_odds": -0.6370800793752263,
+        "odds_ratio": 0.5288343260875763,
+        "or_ci95": [
+          0.19378706859287584,
+          1.4431599924556695
+        ],
+        "p_value": 0.21357895580544395
+      },
+      "basic_high": {
+        "log_odds": 1.5657214817221257,
+        "odds_ratio": 4.786126793520743,
+        "or_ci95": [
+          1.4696938629353018,
+          15.586245721885785
+        ],
+        "p_value": 0.009344889685738602
+      },
+      "cohort_2020": {
+        "log_odds": 0.6790420306512228,
+        "odds_ratio": 1.971987723294591,
+        "or_ci95": [
+          0.708015785509954,
+          5.49244192066098
+        ],
+        "p_value": 0.19384609852616408
+      },
+      "log_n_ab_2020": {
+        "log_odds": 0.694664285003951,
+        "odds_ratio": 2.0030365116582725,
+        "or_ci95": [
+          0.6527960155761037,
+          6.146108694452348
+        ],
+        "p_value": 0.2245996068308761
+      },
+      "high_revenue": {
+        "log_odds": -0.46770030575903015,
+        "odds_ratio": 0.626441236358786,
+        "or_ci95": [
+          0.13579434352645423,
+          2.88987458843803
+        ],
+        "p_value": 0.5487993245477748
+      },
+      "prospective": {
+        "log_odds": -0.982940276067047,
+        "odds_ratio": 0.37420920134502855,
+        "or_ci95": [
+          0.10716063046544597,
+          1.3067534761886057
+        ],
+        "p_value": 0.12340858010026204
+      },
+      "later_agreement": {
+        "log_odds": -0.9687997702995714,
+        "odds_ratio": 0.3795382979782187,
+        "or_ci95": [
+          0.12100106837302056,
+          1.1904797335187962
+        ],
+        "p_value": 0.09670811994397473
+      }
+    }
+  },
+  "agreement": [
+    {
+      "claim": "H2b",
+      "confirmatory": "supported",
+      "conventional": "supported",
+      "agree": true
+    },
+    {
+      "claim": "H2a",
+      "confirmatory": "contradicted",
+      "conventional": "contradicted",
+      "agree": true
+    },
+    {
+      "claim": "H3 pull",
+      "confirmatory": "supported",
+      "conventional": "supported",
+      "agree": true
+    },
+    {
+      "claim": "H3 own",
+      "confirmatory": "undetermined",
+      "conventional": "undetermined",
+      "agree": true
+    },
+    {
+      "claim": "H3 basic_high",
+      "confirmatory": "supported",
+      "conventional": "supported",
+      "agree": true
+    },
+    {
+      "claim": "H4",
+      "confirmatory": "undetermined",
+      "conventional": "undetermined",
+      "agree": true
+    }
+  ]
+}

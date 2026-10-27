@@ -1,0 +1,27 @@
+# dbt project for the derived tables of the pre-registered MSSP study. ratchet.build loads the raw CMS tables (after
+# checking each file's sha256 and the outcome lock), then runs `dbt build` on the models for the requested stage.
+name: ratchet
+version: "1.0"
+config-version: 2
+profile: ratchet
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+
+# No anonymous usage events to dbt Labs.
+flags:
+  send_anonymous_usage_stats: false
+
+vars:
+  by_first: 2019  # first benchmark year in step 1 of 4.3; 2020 for robustness item 6 (section 5.5)
+
+models:
+  ratchet:
+    +materialized: table
+    enrollment:
+      +tags: ["enrollment"]
+    full:
+      +tags: ["full"]
+    descriptive:
+      +tags: ["descriptive"]

@@ -1,0 +1,31 @@
+version: 2
+
+# Raw CMS tables, loaded by ratchet.build after their sha256 is checked (outcome files only after registration).
+sources:
+  - name: cms
+    schema: main
+    tables:
+      - name: raw_assign_2021
+      - name: raw_county_2019
+      - name: raw_county_2020
+      - name: raw_county_2021
+      - name: raw_enroll_2016
+      - name: raw_enroll_2017
+      - name: raw_enroll_2018
+      - name: raw_enroll_2019a
+      - name: raw_enroll_2019b
+      - name: raw_enroll_2020
+      - name: raw_enroll_2021
+      - name: raw_enroll_2022
+      - name: raw_enroll_2023
+      - name: raw_enroll_2024
+      - name: raw_results_2016
+      - name: raw_results_2017
+      - name: raw_results_2018
+      - name: raw_results_2019
+      - name: raw_results_2020
+      - name: raw_results_2021
+      - name: raw_results_2022
+      - name: raw_results_2022_all
+      - name: raw_results_2023
+      - name: raw_results_2024

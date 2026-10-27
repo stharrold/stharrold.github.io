@@ -115,8 +115,19 @@ def test_analytics_on_every_page_of_publish_build(site):
         html = page.read_text()
         assert f"gtag/js?id={GA_ID}" in html, page
         assert re.search(rf"gtag\('config', \"{GA_ID}\"", html), page
+        assert "'notebook_open'" in html and "percent_scrolled" in html, page
         assert "gtm.js" not in html, page
         assert "UA-43020842" not in html, page
+
+
+def test_post_preview_images(site):
+    """A published post with Image metadata gets og:image pointing at a file that exists in the build."""
+    for post in posts("published"):
+        if "image" not in post:
+            continue
+        html = (site / f"{post['slug']}.html").read_text()
+        assert f'<meta property="og:image" content="https://stharrold.github.io/{post["image"]}">' in html, post["slug"]
+        assert (site / post["image"]).is_file(), post["image"]
 
 
 def test_no_analytics_in_dev_build(dev_site):

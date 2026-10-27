@@ -1,0 +1,6 @@
+# Generated: databases and synthetic-data runs never belong in the repo.
+*.duckdb
+*.duckdb.wal
+synthetic-data/
+results/synthetic/
+__pycache__/

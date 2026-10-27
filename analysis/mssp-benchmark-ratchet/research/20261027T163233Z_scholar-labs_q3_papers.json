@@ -1,0 +1,185 @@
+{
+ "query_url": "https://scholar.google.com/scholar_labs/search/session/5397908556820899447?hl=en",
+ "papers": [
+  {
+   "title": "Factors affecting Accountable Care Organizations' decisions to remain in or exit the Medicare Shared Savings Program following Pathways to Success",
+   "url": "https://academic.oup.com/healthaffairsscholar/article-abstract/2/1/qxad093/7512038",
+   "byline": "M Ying, JH Forman, S Murali, LE Gauntlett… - Health Affairs …, 2024 - academic.oup.com",
+   "summary": "Examines the factors influencing Accountable Care Organizations (ACOs) that were up for contract renewal in July 2019, coincident with the launch of the Pathways to Success program, to decide whether to continue participation in or exit the Medicare Shared Savings Program (MSSP).",
+   "bullets": [
+    {
+     "label": "Pathways to Success Impact",
+     "text": "Focuses on the influence of the Pathways to Success program, which accelerated the transition to two-sided risk, on ACO participation decisions."
+    },
+    {
+     "label": "Influencing Factors",
+     "text": "Identifies four main factors that affected ACO decision-making around MSSP participation after the launch of Pathways to Success: nonrevenue benefits, the program's importance as a revenue source, benchmarking changes, and the relative advantage over other programs."
+    }
+   ],
+   "cited_by": 6,
+   "parsed": true
+  },
+  {
+   "title": "ACO Investment Model Produced Savings, But The Majority Of Participants Exited When Faced With Downside Risk: Study examines Medicare's Accountable Care …",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2020.01819",
+   "byline": "MJ Trombley, JM McWilliams, B Fout, B Morefield - Health Affairs, 2022 - healthaffairs.org",
+   "summary": "Examines the high rate of exit (nearly two-thirds) from the Medicare Shared Savings Program (MSSP) among Accountable Care Organizations (ACOs) in the ACO Investment Model (AIM) after the completion of their initial three-year contract when faced with the requirement to assume downside financial risk.",
+   "bullets": [
+    {
+     "label": "Exit Unrelated to Savings",
+     "text": "Notes that the decision of AIM ACOs to exit the MSSP at the end of their first contract period was unrelated to the estimated Medicare savings they had achieved under the model."
+    },
+    {
+     "label": "Downside Risk Deterrent",
+     "text": "Suggests that the insistence on downside risk after the initial three years of MSSP participation for these rural ACOs may have led to foregone potential savings for Medicare, as the exiting ACOs had achieved savings similar to those that remained."
+    }
+   ],
+   "cited_by": 10,
+   "parsed": true
+  },
+  {
+   "title": "www. banko",
+   "url": "https://rupri.public-health.uiowa.edu/publications/policybriefs/2026/ACO_Renewals.pdf",
+   "byline": "DPT Edmer Lazaro, DM Shane, F Ullrich, K Mueller - rupri.public-health.uiowa.edu",
+   "summary": "Discusses factors that influence decisions about renewing participation in the Medicare Shared Savings Program (MSSP), including organizational size, capital access, workforce shortages, and financial volatility, particularly for rural ACOs.",
+   "bullets": [
+    {
+     "label": "Investment Model Influence",
+     "text": "Notes that the CMS Innovation Center ACO Investment Model (AIM) was designed to encourage new rural ACOs and existing ones to transition to risk arrangements when renewing participation in MSSP."
+    },
+    {
+     "label": "Renewal Rates for Two-Sided Risk",
+     "text": "Reports that agreement renewals among ACOs with two-sided risk have been consistently high, with up to 94.1 percent of urban ACOs and up to 100 percent of rural ACOs renewing their agreements in certain years."
+    }
+   ],
+   "cited_by": null,
+   "parsed": true
+  },
+  {
+   "title": "Part V",
+   "url": "https://www.aapc.com/codes/webroot/upload/general_pages_docs/document/2016-13651.pdf",
+   "byline": "F Rule - aapc.com",
+   "summary": "Establishes an alternative participation option for Accountable Care Organizations (ACOs) that encourages them to enter performance-based risk arrangements earlier in their participation under the Medicare Shared Savings Program (MSSP).",
+   "bullets": [
+    {
+     "label": "Incentivizes Early Risk Arrangements",
+     "text": "Includes a renewal option specifically designed to incentivize ACOs to adopt performance-based risk arrangements sooner within the MSSP framework."
+    },
+    {
+     "label": "Subsequent Agreement Benchmarking",
+     "text": "Outlines modifications to the program's benchmarking methodology when resetting the ACO’s benchmark for a second or subsequent agreement period to encourage continued investment in care coordination and quality improvement."
+    }
+   ],
+   "cited_by": 2,
+   "parsed": true
+  },
+  {
+   "title": "Predicting losses from Medicare shared savings program departures",
+   "url": "https://search.proquest.com/openview/d19dba3bda6d6526a5ffa2427807141a/1?pq-origsite=gscholar&cbl=30490",
+   "byline": "NM Moloci, S Yajuan, EC Norton… - Journal of General …, 2021 - search.proquest.com",
+   "summary": "Discusses the potential negative financial consequences for the Medicare Shared Savings Program if Track 1 Accountable Care Organizations (ACOs) exit instead of transitioning to downside risk under the new \"Pathways to Success\" initiative.",
+   "bullets": [
+    {
+     "label": "Contract Renewal Exit Rates",
+     "text": "Analyzes the high exit rate of Track 1 ACOs (40%) who faced contract renewal in 2019, calculating the substantial lost savings Medicare stands to incur."
+    },
+    {
+     "label": "Risk Policy Implications",
+     "text": "Suggests that requiring Track 1 ACOs to accept financial risk too early in their participation could prompt many to leave the Medicare Shared Savings Program, impacting program performance."
+    }
+   ],
+   "cited_by": 2,
+   "parsed": true
+  },
+  {
+   "title": "Assessing Financial Performances in the Medicare Shared Savings Program: Past, Present, and Future",
+   "url": "https://cdr.lib.unc.edu/concern/masters_papers/4b29b760w",
+   "byline": "J Petralia - 2016 - cdr.lib.unc.edu",
+   "summary": "Discusses the Centers for Medicare and Medicaid Services (CMS) projection that approximately 90% of current Medicare Shared Savings Program (MSSP) participants will renew their contracts after the first three years.",
+   "bullets": [
+    {
+     "label": "Renewal Track Status",
+     "text": "Explains that most renewing ACOs are projected to remain in Track 1 of the MSSP, which was originally intended to be a transitional phase before moving to risk-bearing tracks."
+    },
+    {
+     "label": "Track 1 Extension Policy",
+     "text": "Notes that CMS extended the time organizations can remain in Track 1 to two contract periods to encourage ACOs to stay in MSSP contracts and safeguard those unprepared to take on risk."
+    }
+   ],
+   "cited_by": null,
+   "parsed": true
+  },
+  {
+   "title": "Avoiding unintended incentives in ACO payment models",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2014.0444",
+   "byline": "R Douven, TG McGuire, JM McWilliams - Health Affairs, 2015 - healthaffairs.org",
+   "summary": "Examines the current rules for setting spending targets (benchmarks) for Accountable Care Organizations when they renew their contracts in the Medicare Shared Savings Program.",
+   "bullets": [
+    {
+     "label": "Perverse Incentives",
+     "text": "Finds that the way benchmark calculations weight the year just before a new contract begins or is renewed creates incentives for ACOs to increase spending to inflate their future benchmark for shared savings."
+    },
+    {
+     "label": "Improved Incentive Strategies",
+     "text": "Suggests strategies to improve ACO incentives, including changing the weights used to determine benchmarks and adopting new payment models that use performance data from other ACOs or providers."
+    }
+   ],
+   "cited_by": 61,
+   "parsed": true
+  },
+  {
+   "title": "A midcourse correction for Medicare ACOs: on Dec. 1, the Centers for Medicare & Medicaid Services (CMS) released a long-awaited proposed rule to modify the …",
+   "url": "https://go.gale.com/ps/i.do?id=GALE%7CA403917599&sid=googleScholar&v=2.1&it=r&linkaccess=abs&issn=07350732&p=HRCA&sw=w",
+   "byline": "K Perez - Healthcare Financial Management, 2015 - go.gale.com",
+   "summary": "Discusses a proposed rule that allows Medicare Shared Savings Program Accountable Care Organizations operating under Track 1 to enter into another one-sided, three-year agreement if they met certain performance criteria in their first two performance years.",
+   "bullets": [
+    {
+     "label": "MSSP Midcourse Correction",
+     "text": "Explains that the proposed rule for the Medicare Shared Savings Program constitutes a midcourse correction intended primarily to retain current Accountable Care Organizations and encourage participation in risk-based models."
+    },
+    {
+     "label": "Provider Accommodations",
+     "text": "Notes that the proposed changes are being considered to make the program more appealing and accommodating to providers, partly by acknowledging that a three-year agreement period might not be sufficient preparation for taking on performance-based risk."
+    }
+   ],
+   "cited_by": null,
+   "parsed": true
+  },
+  {
+   "title": "Changes in Shared Savings Program Participation After Launch of Pathways to Success: Ying et al",
+   "url": "https://link.springer.com/article/10.1007/s11606-022-07947-x",
+   "byline": "M Ying, RA Hirth, P Yan, A Shay, S Murali… - Journal of General …, 2023 - Springer",
+   "summary": "Analyzes changes in the Medicare Shared Savings Program (SSP) participation following the 2018 “Pathways to Success” overhaul, which shortened the duration before Accountable Care Organizations (ACOs faced downside financial risk to potentially as little as one year.",
+   "bullets": [
+    {
+     "label": "Participation Trends Post-Pathways",
+     "text": "Documents that the \"Pathways to Success\" initiative led to an increase in yearly SSP exits and a decrease in new entrants, confirming concerns that a faster transition to downside risk would slow program participation."
+    },
+    {
+     "label": "Predictors of ACO Retention",
+     "text": "Identifies that ACOs with more primary care physicians, higher quality scores, and those achieving savings were significantly more likely to remain in the SSP after the Pathways reform was launched."
+    }
+   ],
+   "cited_by": 5,
+   "parsed": true
+  },
+  {
+   "title": "Predictive Business Intelligence Framework for Evaluating the Financial Viability of Accountable Care Organizations ble Care Organizations (ACOs) within US Public …",
+   "url": "https://www.thesciencepostjournal.com/index.php/tsp/article/view/101",
+   "byline": "MR Hossain, A Rahman - The Science Post, 2026 - thesciencepostjournal.com",
+   "summary": "Develops a Predictive Business Intelligence (BI) framework to assess Accountable Care Organization (ACO) financial viability, enabling public health administrators to make proactive decisions regarding contract renewals.",
+   "bullets": [
+    {
+     "label": "Financial Viability Forecasting",
+     "text": "Simulates five years of Medicare Shared Savings Program (MSSP) data to validate a framework that predicts ACO financial viability 18 months in advance, providing essential information for long-term planning and sustainability."
+    },
+    {
+     "label": "Predictive Tool Necessity",
+     "text": "Notes that without predictive tools, administrators cannot make proactive decisions concerning contract renewals or downside risk acceptance within the MSSP."
+    }
+   ],
+   "cited_by": null,
+   "parsed": true
+  }
+ ]
+}

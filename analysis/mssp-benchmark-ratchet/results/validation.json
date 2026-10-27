@@ -1,0 +1,82 @@
+{
+  "generated": "2026-10-26T13:29:14+00:00",
+  "git_commit": "fd1920fa6d787b82ea89ecaf5de68516947e6287",
+  "synthetic": false,
+  "seed": 20261022,
+  "settings": {
+    "n_resamples": 10000,
+    "full": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 2000,
+      "target_accept": 0.95
+    },
+    "retry": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 4000,
+      "target_accept": 0.99
+    },
+    "reduced": {
+      "chains": 2,
+      "tune": 1000,
+      "draws": 1000,
+      "target_accept": 0.95
+    },
+    "power_datasets": 500,
+    "power_perm": 999,
+    "workers": 5,
+    "quick": false,
+    "data_dir": "/Users/stharrold/.cache/stharrold-github-io/mssp-snapshot-2026-10-22"
+  },
+  "versions": {
+    "duckdb": "2.0.0",
+    "pymc": "6.3.2",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scipy": "1.18.1",
+    "firthmodels": "0.8.2"
+  },
+  "excluded": 10,
+  "overall": {
+    "n": 101,
+    "spearman": 0.9398571341249347,
+    "median_abs_pct_error": 1.579578987991014,
+    "slope": 0.944053584231279,
+    "intercept": 664.0433582126847
+  },
+  "by_step": {
+    "1": {
+      "n": 62,
+      "spearman": 0.9260523036203273,
+      "median_abs_pct_error": 2.0176858415724164,
+      "slope": 0.9173188590107817,
+      "intercept": 885.6069689938305
+    },
+    "2": {
+      "n": 39,
+      "spearman": 0.9552631578947368,
+      "median_abs_pct_error": 0.930914687426343,
+      "slope": 1.0174832678172012,
+      "intercept": -46.99182512193916
+    }
+  },
+  "passed": true,
+  "calibrated": false,
+  "calibration": {
+    "intercept": 0.0,
+    "slope": 1.0
+  },
+  "sigma_v": 4.3716940777703766,
+  "step1": {
+    "n": 101,
+    "spearman": 0.9463016889924285,
+    "median_abs_pct_error": 1.395813912972834,
+    "slope": 0.9397410973436572,
+    "intercept": 676.1329293068266,
+    "sigma_own": 4.375149800000882
+  },
+  "step1_excluded": 10,
+  "sigma_v_model": 4.375149800000882,
+  "sigma_v_model_source": "step-1 check"
+}

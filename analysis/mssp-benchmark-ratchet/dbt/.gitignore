@@ -1,0 +1,4 @@
+# dbt artifacts are rebuilt on every run.
+target/
+logs/
+.user.yml

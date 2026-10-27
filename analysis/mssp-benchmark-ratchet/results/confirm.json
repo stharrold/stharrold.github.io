@@ -1,0 +1,436 @@
+{
+  "generated": "2026-10-26T14:08:09+00:00",
+  "git_commit": "3e5cb9b6f7c4c2f10675228793c77ea5fbd521d8",
+  "synthetic": false,
+  "seed": 20261022,
+  "settings": {
+    "n_resamples": 10000,
+    "full": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 2000,
+      "target_accept": 0.95
+    },
+    "retry": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 4000,
+      "target_accept": 0.99
+    },
+    "reduced": {
+      "chains": 2,
+      "tune": 1000,
+      "draws": 1000,
+      "target_accept": 0.95
+    },
+    "power_datasets": 500,
+    "power_perm": 999,
+    "workers": 5,
+    "quick": false,
+    "data_dir": "/Users/stharrold/.cache/stharrold-github-io/mssp-snapshot-2026-10-22"
+  },
+  "versions": {
+    "duckdb": "2.0.0",
+    "pymc": "6.3.2",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scipy": "1.18.1",
+    "firthmodels": "0.8.2"
+  },
+  "validation_passed": true,
+  "imputed_by_group": {
+    "early": 1,
+    "stayer": 3
+  },
+  "groups": {
+    "H2b_pull": {
+      "n_early": 26,
+      "n_stayer": 241,
+      "excluded": {
+        "early": 3,
+        "stayer": 36
+      },
+      "observed": 3.364427184348671,
+      "posterior_mean": 3.3505059272810542,
+      "eti95": [
+        1.6518437116339282,
+        5.446941943688151
+      ],
+      "p_positive": 1.0,
+      "p_value": 0.0008999100089991,
+      "n_resamples": 10000,
+      "seed": 20261022
+    },
+    "H2a_own": {
+      "n_early": 26,
+      "n_stayer": 241,
+      "excluded": {
+        "early": 3,
+        "stayer": 36
+      },
+      "observed": -2.068604495013642,
+      "posterior_mean": -2.0734267034703686,
+      "eti95": [
+        -3.840791764357064,
+        -0.489653430733694
+      ],
+      "p_positive": 0.0057,
+      "p_value": 0.0030996900309969004,
+      "n_resamples": 10000,
+      "seed": 20261022,
+      "exploratory": false
+    },
+    "H1_sav_rate_2020": {
+      "n_early": 29,
+      "n_stayer": 277,
+      "excluded": {
+        "early": 0,
+        "stayer": 0
+      },
+      "observed": 0.018821354976493215,
+      "posterior_mean": 0.018875232932918637,
+      "eti95": [
+        0.006998837189830054,
+        0.03336870896638335
+      ],
+      "p_positive": 0.9996,
+      "p_value": 0.010298970102989701,
+      "n_resamples": 10000,
+      "seed": 20261022
+    },
+    "H1_sav_rate_2021": {
+      "n_early": 29,
+      "n_stayer": 277,
+      "excluded": {
+        "early": 0,
+        "stayer": 0
+      },
+      "observed": 1.5662565934813224,
+      "posterior_mean": 1.570453861041318,
+      "eti95": [
+        0.21242875187198768,
+        3.1220537814614793
+      ],
+      "p_positive": 0.9883,
+      "p_value": 0.032896710328967106,
+      "n_resamples": 10000,
+      "seed": 20261022
+    },
+    "gain": {
+      "n_early": 26,
+      "n_stayer": 241,
+      "excluded": {
+        "early": 3,
+        "stayer": 36
+      },
+      "observed": -0.510931539368916,
+      "posterior_mean": -0.5166723802353699,
+      "eti95": [
+        -2.0028803871690215,
+        0.7940665188430183
+      ],
+      "p_positive": 0.2325,
+      "p_value": 0.32526747325267474,
+      "n_resamples": 10000,
+      "seed": 20261022
+    },
+    "regional_comp": {
+      "n_early": 26,
+      "n_stayer": 241,
+      "excluded": {
+        "early": 3,
+        "stayer": 36
+      },
+      "observed": 1.5576729556447249,
+      "posterior_mean": 1.5567543232349985,
+      "eti95": [
+        0.9286146759744801,
+        2.1668133810097263
+      ],
+      "p_positive": 1.0,
+      "p_value": 0.00029997000299970003,
+      "n_resamples": 10000,
+      "seed": 20261022
+    }
+  },
+  "h3": {
+    "sample": {
+      "n": 206,
+      "early": 24,
+      "excluded": {
+        "stayer": 27,
+        "early": 3
+      }
+    },
+    "convergence": {
+      "converged": true,
+      "max_rhat": 1.0008386740874329,
+      "min_ess_bulk": 6660.654857763198,
+      "min_ess_tail": 5178.575392300555,
+      "divergent": 0,
+      "attempts": 1
+    },
+    "posterior": {
+      "b_pull": {
+        "mean": 1.336426216569372,
+        "eti95": [
+          0.4405122977385652,
+          2.303849873902554
+        ],
+        "p_positive": 0.9985
+      },
+      "b_own": {
+        "mean": -0.05092185281868929,
+        "eti95": [
+          -2.013745083241335,
+          1.916022335627642
+        ],
+        "p_positive": 0.47975
+      },
+      "b_basic_high": {
+        "mean": 1.336530549593861,
+        "eti95": [
+          0.38307460450646424,
+          2.3104353652625114
+        ],
+        "p_positive": 0.99775
+      },
+      "b_cohort_2020": {
+        "mean": 0.6250440254824393,
+        "eti95": [
+          -0.24292165655800274,
+          1.5089199454655786
+        ],
+        "p_positive": 0.92025
+      },
+      "b_log_n_ab_2020": {
+        "mean": 0.4455322700830668,
+        "eti95": [
+          -0.49222139687126065,
+          1.3574955417256558
+        ],
+        "p_positive": 0.827375
+      },
+      "b_high_revenue": {
+        "mean": -0.5263308332204688,
+        "eti95": [
+          -1.694316080672366,
+          0.5884036137862201
+        ],
+        "p_positive": 0.18175
+      },
+      "b_prospective": {
+        "mean": -0.7742689606238128,
+        "eti95": [
+          -1.7938866988231819,
+          0.19153609242609745
+        ],
+        "p_positive": 0.058
+      },
+      "b_later_agreement": {
+        "mean": -0.6694628938888894,
+        "eti95": [
+          -1.6236771540351485,
+          0.3098000523255532
+        ],
+        "p_positive": 0.089375
+      }
+    },
+    "t_prior": {
+      "posterior": {
+        "b_pull": {
+          "mean": 1.6523730639829954,
+          "eti95": [
+            0.5302082131452905,
+            2.8695398194644857
+          ],
+          "p_positive": 0.9986875
+        },
+        "b_own": {
+          "mean": -0.5625841892377218,
+          "eti95": [
+            -9.976427255187621,
+            7.362124804158334
+          ],
+          "p_positive": 0.4525
+        },
+        "b_basic_high": {
+          "mean": 1.6305079524091708,
+          "eti95": [
+            0.525119766950072,
+            2.850427128149959
+          ],
+          "p_positive": 0.998125
+        },
+        "b_cohort_2020": {
+          "mean": 0.7317080140599439,
+          "eti95": [
+            -0.2648855916761217,
+            1.7556185602143612
+          ],
+          "p_positive": 0.9225625
+        },
+        "b_log_n_ab_2020": {
+          "mean": 0.6622765873603154,
+          "eti95": [
+            -0.4264248679637236,
+            1.7712461410956302
+          ],
+          "p_positive": 0.88525
+        },
+        "b_high_revenue": {
+          "mean": -0.5548756177736771,
+          "eti95": [
+            -2.1007456930420148,
+            0.8450386971690382
+          ],
+          "p_positive": 0.2279375
+        },
+        "b_prospective": {
+          "mean": -1.0093213151027345,
+          "eti95": [
+            -2.268519322185342,
+            0.14864733589760273
+          ],
+          "p_positive": 0.0429375
+        },
+        "b_later_agreement": {
+          "mean": -0.9092808819018908,
+          "eti95": [
+            -2.0380018177032184,
+            0.22147467223850362
+          ],
+          "p_positive": 0.0554375
+        }
+      },
+      "convergence": {
+        "converged": true,
+        "max_rhat": 1.0009535582431044,
+        "min_ess_bulk": 6178.925175749073,
+        "min_ess_tail": 5489.500082473036,
+        "divergent": 0,
+        "attempts": 2
+      }
+    },
+    "predictive_checks": {
+      "prior_share_quantiles": {
+        "0.025": 0.009708737864077669,
+        "0.5": 0.16990291262135923,
+        "0.975": 0.6992718446601951
+      },
+      "observed_count": 24,
+      "replicated_count_eti95": [
+        14.0,
+        37.0
+      ],
+      "deciles": [
+        {
+          "decile": 0,
+          "predicted": 0.015917758429037858,
+          "observed": 0.0
+        },
+        {
+          "decile": 1,
+          "predicted": 0.025034638393307572,
+          "observed": 0.0
+        },
+        {
+          "decile": 2,
+          "predicted": 0.035014124090697527,
+          "observed": 0.05
+        },
+        {
+          "decile": 3,
+          "predicted": 0.046518409020785134,
+          "observed": 0.0
+        },
+        {
+          "decile": 4,
+          "predicted": 0.060002976600425376,
+          "observed": 0.1
+        },
+        {
+          "decile": 5,
+          "predicted": 0.07823376887748774,
+          "observed": 0.0
+        },
+        {
+          "decile": 6,
+          "predicted": 0.106851657186247,
+          "observed": 0.15
+        },
+        {
+          "decile": 7,
+          "predicted": 0.14482001977419168,
+          "observed": 0.047619047619047616
+        },
+        {
+          "decile": 8,
+          "predicted": 0.22158798728705692,
+          "observed": 0.25
+        },
+        {
+          "decile": 9,
+          "predicted": 0.4536813326291089,
+          "observed": 0.5714285714285714
+        }
+      ]
+    },
+    "tests": {
+      "pull": {
+        "predictor": "pull",
+        "observed_reduced_settings": 1.3496656491611776,
+        "p_value": 0.001999800019998,
+        "decision": "supported",
+        "n_sims": 10000,
+        "share_refits_not_converged": 0.0034,
+        "reduced_model_convergence": {
+          "converged": true,
+          "max_rhat": 1.0012137264090206,
+          "min_ess_bulk": 7142.286037075256,
+          "min_ess_tail": 5365.313897704781,
+          "divergent": 0
+        },
+        "seed": 20261022
+      },
+      "own": {
+        "predictor": "own",
+        "observed_reduced_settings": -0.04489403913119594,
+        "p_value": 0.19138086191380863,
+        "decision": "undetermined",
+        "n_sims": 10000,
+        "share_refits_not_converged": 0.0038,
+        "reduced_model_convergence": {
+          "converged": true,
+          "max_rhat": 1.0009892054027396,
+          "min_ess_bulk": 7054.310864980006,
+          "min_ess_tail": 5322.173473142722,
+          "divergent": 0
+        },
+        "seed": 20261022
+      },
+      "basic_high": {
+        "predictor": "basic_high",
+        "observed_reduced_settings": 1.3377861215287878,
+        "p_value": 0.0026997300269973002,
+        "decision": "supported",
+        "n_sims": 10000,
+        "share_refits_not_converged": 0.0043,
+        "reduced_model_convergence": {
+          "converged": true,
+          "max_rhat": 1.0014845210914922,
+          "min_ess_bulk": 6969.475560981546,
+          "min_ess_tail": 5342.641890091689,
+          "divergent": 0
+        },
+        "seed": 20261022
+      }
+    },
+    "overall_test": {
+      "statistic": "max |posterior mean| of core coefficients",
+      "observed": 1.3496656491611776,
+      "p_value": 0.0037996200379962005,
+      "n_shuffles": 10000
+    }
+  }
+}
