@@ -6,6 +6,8 @@ Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-di
 Category: Causal Inference
 Slug: 20261026-preregistered-mssp-early-renewal
 Authors: Samuel Harrold
+Image: static/20261026-preregistered-mssp-early-renewal/visual-abstract.png
+Image_alt: Visual abstract: early renewers' regions spent 3.4 points of benchmark more than stayers' regions; a reset's regional gain and own-spending loss roughly cancel; spending growth afterward showed no detectable difference.
 Summary: A study of Medicare Shared Savings Program ACOs that ended their agreements early to reset their benchmarks, registered on OSF before any outcome data were read: the plan, the methods, the pipeline and the results.
 
 <!-- DRAFT. Results filled from analysis/mssp-benchmark-ratchet/results/ (every stage run, 2026-10-27). Before
@@ -33,6 +35,11 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
 | Tools | Python, dbt on DuckDB, PyMC, statsmodels, uv; an interactive dashboard in plain JavaScript; a marimo notebook |
 | Finding | Early renewers' regions spent more relative to their benchmarks, but they were also beating their benchmarks, so on average a reset would not have raised them; no detectable change in spending afterward |
 | Reproduce | About 10 minutes to download the data and run the tests; about 18 hours to rerun every stage ([Reproduce](#reproduce)) |
+
+[![Visual abstract. Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study of Shared Savings Program ACOs: 29 renewed early in 2022, 277 stayed. The question: did ACOs renew early to get a higher benchmark, and did renewing change their spending? The design: public CMS data, 2019-2024; plan registered on OSF before any outcome was read; decision rules fixed in advance. Who renewed early, early renewers minus stayers in percent of benchmark with 95% intervals: region spends more than benchmark +3.4 (+1.7 to +5.4); regional part of a reset +1.6 (+0.9 to +2.2); own-spending part of a reset -2.1 (-3.8 to -0.5); total expected gain from a reset -0.5 (-2.0 to +0.8). Spending after renewal: change in spending growth -0.4% (-4.0 to +2.5), no detectable difference, and not read as an effect because a pre-existing trend could hide a small one. Takeaway: early renewers were positioned to gain from the regional adjustment and a higher sharing rate, but a reset would not have raised their benchmarks on average; associations, not effects; 2022 rules.](/static/20261026-preregistered-mssp-early-renewal/visual-abstract.png)](/static/20261026-preregistered-mssp-early-renewal/visual-abstract.png)
+
+The visual abstract (select it for the full-size image) is drawn from the same results files as the dashboard
+([`report/visual_abstract.py`][visual-abstract-src]; [SVG](/static/20261026-preregistered-mssp-early-renewal/visual-abstract.svg)).
 
 In the [Medicare Shared Savings Program][mssp][^cms-mssp] (MSSP), an [accountable care organization][aco-cms][^cms-aco] (ACO) earns a
 share of the savings when its patients' spending comes in below a benchmark. The benchmark is
@@ -1097,6 +1104,7 @@ General terms link to Wikipedia in the text instead.
 [res-exploratory]: https://github.com/stharrold/stharrold.github.io/blob/3da8cd28c6601c45bc7a4da9abf91af62af20722/analysis/mssp-benchmark-ratchet/results/exploratory.json
 [notebook-src]: https://github.com/stharrold/stharrold.github.io/blob/eceda2ab9ab48330fee70d227e1ca7b4ad44369b/analysis/mssp-benchmark-ratchet/report/results_notebook.py
 [readme]: https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/README.md#reproduce-and-adapt
+[visual-abstract-src]: https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/report/visual_abstract.py
 [deviations]: https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/DEVIATIONS.md
 [dashboard-fix]: https://github.com/stharrold/stharrold.github.io/commit/dd8c27904e3dfa87840d9debffb663bb1cf64906
 [git-dates]: https://git-scm.com/docs/git-commit#_date_formats

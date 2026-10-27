@@ -354,3 +354,10 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   shown only while a stage is pending, and its footer pointing to the pinned results instead of a build time; and a
   README recipe for one ACO's reset components. In the worked example, two dollar amounts in one paragraph were
   rendered as inline math by arithmatex; dollar signs there are written `&#36;`.
+- Visual abstract (2026-10-27): `report/visual_abstract.py` draws a 1200 x 630 PNG and an SVG from the dashboard's
+  `data.json` with matplotlib (pinned on the command line, like the notebook), in the reference palette's blue
+  with one series per panel. First draft had labels colliding with values; values now sit in their own column on
+  the interval's line, and labels carry a surface-colored background over the grid. Shown below "At a glance" with
+  full alt text, linked to the full-size PNG for phones. The theme gained optional per-post preview images
+  (`Image:` and `Image_alt:` metadata become og:image, og:image:alt and a large Twitter card); posts without them
+  are unchanged, and a test checks that a published post's image exists and is the og:image.

@@ -120,6 +120,16 @@ def test_analytics_on_every_page_of_publish_build(site):
         assert "UA-43020842" not in html, page
 
 
+def test_post_preview_images(site):
+    """A published post with Image metadata gets og:image pointing at a file that exists in the build."""
+    for post in posts("published"):
+        if "image" not in post:
+            continue
+        html = (site / f"{post['slug']}.html").read_text()
+        assert f'<meta property="og:image" content="https://stharrold.github.io/{post["image"]}">' in html, post["slug"]
+        assert (site / post["image"]).is_file(), post["image"]
+
+
 def test_no_analytics_in_dev_build(dev_site):
     for page in site_pages(dev_site):
         assert "googletagmanager.com" not in page.read_text(), page

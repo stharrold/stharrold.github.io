@@ -13,6 +13,11 @@
     <meta property="og:title" content="{{ article.title | striptags | escape }}">
     <meta property="og:url" content="{{ SITEURL }}/{{ article.url }}">
     <meta property="og:description" content="{{ article.summary | striptags | escape }}">
+    {# Optional per-post preview image: "Image: static/<slug>/<file>" in the post's metadata. #}
+    {% if article.image %}<meta property="og:image" content="{{ SITEURL }}/{{ article.image }}">
+    {% if article.image_alt %}<meta property="og:image:alt" content="{{ article.image_alt | striptags | escape }}">{% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ SITEURL }}/{{ article.image }}">{% endif %}
     <meta property="article:published_time" content="{{ article.date.isoformat() }}">
     {% if article.modified %}<meta property="article:modified_time" content="{{ article.modified.isoformat() }}">{% endif %}
     <meta property="article:section" content="{{ article.category }}">
