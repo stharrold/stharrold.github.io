@@ -7,6 +7,24 @@
         gtag('js', new Date());
 
         gtag('config', {{ GOOGLE_ANALYTICS | tojson }}{% if GOOGLE_ANALYTICS_CONFIG %}, {{ GOOGLE_ANALYTICS_CONFIG | tojson }}{% endif %});
+
+        // Notebook exports under /static/ are standalone pages without this tag, so count the clicks that open them.
+        document.addEventListener('click', function (e) {
+            var a = e.target.closest && e.target.closest('a[href]');
+            if (a && a.host === location.host && /^\/static\/.+\.html$/.test(a.pathname)) {
+                gtag('event', 'notebook_open', {link_url: a.href});
+            }
+        });
+        // Scroll depth at 25, 50 and 75%; enhanced measurement already sends 'scroll' at 90%.
+        (function () {
+            var marks = [25, 50, 75];
+            addEventListener('scroll', function () {
+                var h = document.documentElement, depth = 100 * (h.scrollTop + innerHeight) / h.scrollHeight;
+                while (marks.length && depth >= marks[0]) {
+                    gtag('event', 'scroll', {percent_scrolled: marks.shift()});
+                }
+            }, {passive: true});
+        })();
     </script>
     <!-- End Google Analytics Code -->
 {% endif %}

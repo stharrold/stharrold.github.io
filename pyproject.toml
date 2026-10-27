@@ -20,6 +20,17 @@ dev = [
     "pytest>=9.1",
     "ruff>=0.16",
 ]
+# Pre-registered MSSP study (analysis/mssp-benchmark-ratchet/); not installed by the site build.
+analysis = [
+    "dbt-duckdb>=1.11",
+    "duckdb>=2.0",
+    "firthmodels>=0.8.2",
+    "numpy>=2.5",
+    "pandas>=3.1",
+    "pymc>=6.3",
+    "scipy>=1.18",
+    "statsmodels>=0.15",
+]
 
 [tool.uv]
 package = false
@@ -32,6 +43,10 @@ extend-exclude = ["content", "output", "themes"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "B", "UP"]
+
+[tool.ruff.lint.isort]
+# The MSSP study package lives in a hyphenated directory (analysis/mssp-benchmark-ratchet/ratchet).
+known-first-party = ["ratchet"]
 
 [tool.ruff.lint.per-file-ignores]
 # Pelican's documented pattern: publishconf.py extends pelicanconf.py with a star import.

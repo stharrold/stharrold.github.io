@@ -1,5 +1,6 @@
-# Published notebooks (content/), generated output/, and vendored themes/ are not linted.
-exclude: ^(content|output|themes)/
+# Published notebooks (content/), generated output/, and vendored themes/ are not linted. The MSSP study's
+# notebook exports are kept byte-for-byte as uploaded to OSF (their sha256 is in the post).
+exclude: ^(content|output|themes|analysis/mssp-benchmark-ratchet/report/exports)/
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.16.10

@@ -125,3 +125,6 @@ output/
 
 # macOS Finder metadata
 .DS_Store
+
+# marimo session cache, written next to a notebook on every run or export
+__marimo__/

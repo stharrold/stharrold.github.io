@@ -1,0 +1,428 @@
+{
+  "generated": "2026-10-27T07:12:15+00:00",
+  "git_commit": "992d13f189c3d83c53da0c53ac111627a9596039",
+  "synthetic": false,
+  "seed": 20261022,
+  "settings": {
+    "n_resamples": 10000,
+    "full": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 2000,
+      "target_accept": 0.95
+    },
+    "retry": {
+      "chains": 4,
+      "tune": 2000,
+      "draws": 4000,
+      "target_accept": 0.99
+    },
+    "reduced": {
+      "chains": 2,
+      "tune": 1000,
+      "draws": 1000,
+      "target_accept": 0.95
+    },
+    "power_datasets": 500,
+    "power_perm": 999,
+    "workers": 5,
+    "quick": false,
+    "data_dir": "/Users/stharrold/.cache/stharrold-github-io/mssp-snapshot-2026-10-22"
+  },
+  "versions": {
+    "duckdb": "2.0.0",
+    "pymc": "6.3.2",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scipy": "1.18.1",
+    "firthmodels": "0.8.2"
+  },
+  "sample": {
+    "early": 29,
+    "comparison": 276
+  },
+  "attrition": [
+    {
+      "grp": "early",
+      "py": 2020,
+      "status": "included",
+      "n": 29
+    },
+    {
+      "grp": "early",
+      "py": 2021,
+      "status": "included",
+      "n": 29
+    },
+    {
+      "grp": "early",
+      "py": 2022,
+      "status": "included",
+      "n": 29
+    },
+    {
+      "grp": "early",
+      "py": 2023,
+      "status": "absent",
+      "n": 1
+    },
+    {
+      "grp": "early",
+      "py": 2023,
+      "status": "included",
+      "n": 28
+    },
+    {
+      "grp": "early",
+      "py": 2024,
+      "status": "absent",
+      "n": 1
+    },
+    {
+      "grp": "early",
+      "py": 2024,
+      "status": "included",
+      "n": 25
+    },
+    {
+      "grp": "early",
+      "py": 2024,
+      "status": "later renewal",
+      "n": 3
+    },
+    {
+      "grp": "stayer",
+      "py": 2020,
+      "status": "included",
+      "n": 277
+    },
+    {
+      "grp": "stayer",
+      "py": 2021,
+      "status": "included",
+      "n": 277
+    },
+    {
+      "grp": "stayer",
+      "py": 2022,
+      "status": "included",
+      "n": 276
+    },
+    {
+      "grp": "stayer",
+      "py": 2022,
+      "status": "no spending value",
+      "n": 1
+    },
+    {
+      "grp": "stayer",
+      "py": 2023,
+      "status": "absent",
+      "n": 46
+    },
+    {
+      "grp": "stayer",
+      "py": 2023,
+      "status": "included",
+      "n": 222
+    },
+    {
+      "grp": "stayer",
+      "py": 2023,
+      "status": "later renewal",
+      "n": 8
+    },
+    {
+      "grp": "stayer",
+      "py": 2023,
+      "status": "no spending value",
+      "n": 1
+    },
+    {
+      "grp": "stayer",
+      "py": 2024,
+      "status": "absent",
+      "n": 72
+    },
+    {
+      "grp": "stayer",
+      "py": 2024,
+      "status": "included",
+      "n": 162
+    },
+    {
+      "grp": "stayer",
+      "py": 2024,
+      "status": "later renewal",
+      "n": 42
+    },
+    {
+      "grp": "stayer",
+      "py": 2024,
+      "status": "no spending value",
+      "n": 1
+    }
+  ],
+  "H4": {
+    "n_early": 29,
+    "n_stayer": 276,
+    "excluded": {
+      "early": 0,
+      "stayer": 0
+    },
+    "observed": -0.0038077085253806296,
+    "posterior_mean": -0.0037876841761966488,
+    "eti95": [
+      -0.041052423800761066,
+      0.024606772940542348
+    ],
+    "p_positive": 0.4423,
+    "p_value": 0.7782221777822218,
+    "n_resamples": 10000,
+    "seed": 20261022,
+    "percent": {
+      "posterior_mean": -0.37805199486188207,
+      "eti95": [
+        -4.022118662436964,
+        2.4912018135145377
+      ]
+    },
+    "interpretable_as_effect": false
+  },
+  "pre_trend_check": {
+    "n_early": 29,
+    "n_stayer": 276,
+    "excluded": {
+      "early": 0,
+      "stayer": 0
+    },
+    "observed": 0.0074186286497301334,
+    "posterior_mean": 0.007344328485321692,
+    "eti95": [
+      -0.023464292036828725,
+      0.04763380793823429
+    ],
+    "p_positive": 0.6319,
+    "p_value": 0.5845415458454155,
+    "n_resamples": 10000,
+    "seed": 20261022,
+    "percent": {
+      "posterior_mean": 0.7371364211662487,
+      "eti95": [
+        -2.319114609931259,
+        4.878652769558988
+      ]
+    },
+    "equivalence": {
+      "c_bar": 2.413793103448276,
+      "scaled_bound": 0.11497815709228966,
+      "abs_h4": 0.0038077085253806296,
+      "holds": false
+    }
+  },
+  "robustness": {
+    "1_risk_adjusted": {
+      "n_early": 29,
+      "n_stayer": 276,
+      "excluded": {
+        "early": 0,
+        "stayer": 0
+      },
+      "observed": 0.0025811269880085357,
+      "posterior_mean": 0.0025779210746912206,
+      "eti95": [
+        -0.019998613278045464,
+        0.02454934877547214
+      ],
+      "p_positive": 0.5969,
+      "p_value": 0.8486151384861513,
+      "n_resamples": 10000,
+      "seed": 20261022,
+      "percent": {
+        "posterior_mean": 0.2581246770404542,
+        "eti95": [
+          -1.9799967429282157,
+          2.4853165108042687
+        ]
+      }
+    },
+    "2_balanced": {
+      "n_early": 25,
+      "n_stayer": 162,
+      "excluded": {
+        "early": 0,
+        "stayer": 0
+      },
+      "observed": -0.015567767966678442,
+      "posterior_mean": -0.015770759208202725,
+      "eti95": [
+        -0.057998755706416535,
+        0.015978239046455255
+      ],
+      "p_positive": 0.1922,
+      "p_value": 0.2977702229777022,
+      "n_resamples": 10000,
+      "seed": 20261022,
+      "percent": {
+        "posterior_mean": -1.5647051958055012,
+        "eti95": [
+          -5.634887838489634,
+          1.6106573717562804
+        ]
+      }
+    },
+    "3_propensity_weighted": {
+      "estimate": -0.005148873320550071,
+      "percent": -0.5135640593268104,
+      "p_value": 0.6684331566843316,
+      "max_weight": 0.8273753838014662,
+      "n": 305,
+      "n_resamples": 10000,
+      "failed_refits": 0
+    },
+    "4_cohort_2020": {
+      "n_early": 18,
+      "n_stayer": 118,
+      "excluded": {
+        "early": 0,
+        "stayer": 0
+      },
+      "observed": -0.028871242653471768,
+      "posterior_mean": -0.02893575768429507,
+      "eti95": [
+        -0.08673253111263865,
+        0.01326933116580432
+      ],
+      "p_positive": 0.0946,
+      "p_value": 0.13018698130186981,
+      "n_resamples": 10000,
+      "seed": 20261022,
+      "percent": {
+        "posterior_mean": -2.8521127485606654,
+        "eti95": [
+          -8.30776889717265,
+          1.3357759435714747
+        ]
+      }
+    },
+    "5_trend_adjusted": {
+      "n_early": 29,
+      "n_stayer": 276,
+      "excluded": {
+        "early": 0,
+        "stayer": 0
+      },
+      "observed": -0.04075050677078979,
+      "posterior_mean": -0.04054778043649966,
+      "eti95": [
+        -0.1277939843740486,
+        0.027101559314970807
+      ],
+      "p_positive": 0.1413,
+      "p_value": 0.14228577142285773,
+      "n_resamples": 10000,
+      "seed": 20261022,
+      "percent": {
+        "posterior_mean": -3.9736718383480882,
+        "eti95": [
+          -11.996533863786265,
+          2.74721468322275
+        ]
+      }
+    }
+  },
+  "conventional": {
+    "twfe": {
+      "n_obs": 1354,
+      "n_acos": 306,
+      "pooled": {
+        "estimate": -0.01560698143612782,
+        "ci95": [
+          -0.0550453533945161,
+          0.023831390522260458
+        ],
+        "p_value": 0.43797441429900397
+      },
+      "event_study": {
+        "2020": {
+          "estimate": -0.007336785241668586,
+          "ci95": [
+            -0.04835451569095703,
+            0.033680945207619856
+          ],
+          "p_value": 0.7259064101074018
+        },
+        "2022": {
+          "estimate": -0.00401564857898018,
+          "ci95": [
+            -0.02845850735828047,
+            0.02042721020032011
+          ],
+          "p_value": 0.7474549861140982
+        },
+        "2023": {
+          "estimate": -0.025876171715541907,
+          "ci95": [
+            -0.07363544280369856,
+            0.021883099372614748
+          ],
+          "p_value": 0.2882735308116442
+        },
+        "2024": {
+          "estimate": -0.03110593993152122,
+          "ci95": [
+            -0.07916467302239247,
+            0.016952793159350034
+          ],
+          "p_value": 0.2045896066777525
+        }
+      }
+    },
+    "twfe_risk_adjusted": {
+      "n_obs": 1354,
+      "n_acos": 306,
+      "pooled": {
+        "estimate": -0.013412298911835652,
+        "ci95": [
+          -0.03922414798333114,
+          0.01239955015965984
+        ],
+        "p_value": 0.3084725219254725
+      },
+      "event_study": {
+        "2020": {
+          "estimate": 0.002934637196072898,
+          "ci95": [
+            -0.03294530697646466,
+            0.038814581368610455
+          ],
+          "p_value": 0.8726397498881927
+        },
+        "2022": {
+          "estimate": 0.0040716720064160605,
+          "ci95": [
+            -0.01903573674377461,
+            0.02717908075660673
+          ],
+          "p_value": 0.7298251823897832
+        },
+        "2023": {
+          "estimate": -0.01256418161751427,
+          "ci95": [
+            -0.04434729588756848,
+            0.01921893265253994
+          ],
+          "p_value": 0.43846181870866174
+        },
+        "2024": {
+          "estimate": -0.031821666952753014,
+          "ci95": [
+            -0.06464630373955979,
+            0.001002969834053756
+          ],
+          "p_value": 0.057423080439269095
+        }
+      }
+    }
+  }
+}

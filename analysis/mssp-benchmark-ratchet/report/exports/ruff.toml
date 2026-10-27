@@ -1,0 +1,4 @@
+# Exports of report/results_notebook.py, kept byte-for-byte as uploaded to OSF (their sha256 is in the post),
+# so ruff must not reformat them. A nested config keeps pyproject.toml, a registered file, unchanged.
+extend = "../../../../pyproject.toml"
+extend-exclude = ["*.ipynb"]

@@ -1,0 +1,365 @@
+{
+ "query_url": "https://scholar.google.com/scholar_labs/search/session/2956747051632380751?hl=en",
+ "papers": [
+  {
+   "title": "Benchmarking changes and selective participation in the Medicare Shared Savings Program: Study examines changes in Medicare Share Savings Program …",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2022.01061",
+   "byline": "PF Lyu, ME Chernew, JM McWilliams - Health Affairs, 2023 - healthaffairs.org",
+   "summary": "Explains that in 2017, the Medicare Shared Savings Program (MSSP) started using regional spending in accountable care organization (ACO) benchmarks, which encouraged ACOs and practices with lower baseline spending to participate.",
+   "bullets": [
+    {
+     "label": "New Selective Incentives",
+     "text": "Identifies that the inclusion of regional spending into MSSP benchmarks introduced new incentives for providers to select on spending levels, resulting in providers with lower baseline risk-adjusted spending receiving higher benchmarks."
+    },
+    {
+     "label": "Benchmark Rebasing Reforms",
+     "text": "Suggests policy recommendations, including setting benchmark growth rates that diverge from observed spending growth and establishing benchmarks above average realized fee-for-service spending to mitigate selective participation and ratchet effects related to rebasing."
+    }
+   ],
+   "cited_by": 16,
+   "parsed": true
+  },
+  {
+   "title": "Variation in accountable care organization spending and sensitivity to risk adjustment: implications for benchmarking",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2015.1026",
+   "byline": "S Rose, AM Zaslavsky, JM McWilliams - Health affairs, 2016 - healthaffairs.org",
+   "summary": "Explains that the current method of rebasing an ACO's benchmark to its most recent three-year spending level diminishes incentives for ACOs to reduce spending in the long run.",
+   "bullets": [
+    {
+     "label": "Proposed Regional Blending",
+     "text": "Discusses a proposed regulatory change that would blend an ACO’s rebased historical average spending with the average risk-adjusted spending in its region to set new benchmarks, transitioning toward regional averages over successive contract periods."
+    },
+    {
+     "label": "Alternative Rebasing Strategy",
+     "text": "Suggests that eliminating the rebasing of the historical spending component could allow ACOs more time to recoup investment costs and strengthen incentives to generate savings, thereby promoting faster spending convergence."
+    }
+   ],
+   "cited_by": 61,
+   "parsed": true
+  },
+  {
+   "title": "From vision to design in advancing Medicare payment reform: a blueprint for population-based payments",
+   "url": "https://www.brookings.edu/wp-content/uploads/2021/10/Medicare-ACO.pdf",
+   "byline": "JM McWilliams, A Chen, ME Chernew - USC-Brookings Schaeffer …, 2021 - brookings.edu",
+   "summary": "Explains that performance-based rebasing of benchmarks, which involves resetting benchmarks based on an organization's own performance, significantly weakens incentives to save and discourages participation in the Medicare Shared Savings Program (SSP) because success effectively leads to failure in future benchmarks.",
+   "bullets": [
+    {
+     "label": "Current Rebasing Mechanisms",
+     "text": "Notes that the current approach to setting benchmarks in the SSP involves a \"ratchet effect\" where an ACO's historical benchmarks are rebased to its most recent spending level at the end of a contract period, and the ACO's impact feeds back into the regional spending used to blend its historical benchmark."
+    },
+    {
+     "label": "Proposed Benchmark Reforms",
+     "text": "Recommends that benchmarks should never be rebased according to an Accountable Care Organization's (ACO) own performance to strengthen incentives for generating savings and that they should be updated at rates below projected fee-for-service (FFS) spending growth but decoupled from observed FFS spending growth."
+    }
+   ],
+   "cited_by": 8,
+   "parsed": true
+  },
+  {
+   "title": "Accountable Care Organization Efficiency on Entry and Shared Savings Bonuses",
+   "url": "https://jamanetwork.com/journals/jamanetworkopen/article-abstract/2845568",
+   "byline": "A Srivastava, A Shay, SR Kaufman, X Liu… - JAMA Network …, 2026 - jamanetwork.com",
+   "summary": "Explains that spending benchmarks in the Medicare Shared Savings Program were initially based on an ACO’s historical spending, which potentially disadvantaged efficient organizations.",
+   "bullets": [
+    {
+     "label": "Regional Benchmark Adjustment",
+     "text": "Discusses the evolution of benchmark calculation, specifically the 2017 incorporation of average regional spending to sustainably reward efficient ACOs."
+    },
+    {
+     "label": "Incentives for Less Efficient ACOs",
+     "text": "Finds that less efficient ACOs had significantly greater odds of earning bonuses compared with more efficient ACOs, even after the regional benchmark adjustment, indicating that the program preferentially rewards less efficient organizations."
+    }
+   ],
+   "cited_by": null,
+   "parsed": true
+  },
+  {
+   "title": "The ephemeral accountable care organization—an unintended consequence of the Medicare Shared Savings Program",
+   "url": "https://www.sciencedirect.com/science/article/pii/S1546144013004353",
+   "byline": "B Harvey, V Gowda, PDGS Gazelle - Journal of the American College of …, 2014 - Elsevier",
+   "summary": "Explains the pitfall in the Medicare Shared Savings Program's structure, specifically the benchmarking and rebasing method, which could hinder sustained success for even top-performing ACOs and threaten the program's long-term viability.",
+   "bullets": [
+    {
+     "label": "Rebasing Tightens Benchmarks",
+     "text": "Describes how the current rebasing method in the MSSP calculates a new benchmark based on the ACO's prior savings, potentially tightening the benchmark for the next term and making shared savings increasingly difficult to generate."
+    },
+    {
+     "label": "Incentives for Short-Term Savings",
+     "text": "Suggests that the existing method focuses too heavily on continuous incremental savings, placing ACOs in a difficult position, and highlights potential strategies ACOs might adopt to avoid the rebasing pitfall that are not aligned with better care delivery, such as limiting participation to one term."
+    }
+   ],
+   "cited_by": 10,
+   "parsed": true
+  },
+  {
+   "title": "Part V",
+   "url": "https://www.aapc.com/codes/webroot/upload/general_pages_docs/document/2016-13651.pdf",
+   "byline": "F Rule - aapc.com",
+   "summary": "Modifies the program's benchmarking methodology when resetting (rebasing) the ACO’s benchmark for a second or subsequent agreement period to encourage ACOs’ continued investment in care coordination and quality improvement.",
+   "bullets": [
+    {
+     "label": "Improving Care Management",
+     "text": "Explains that improvements in the accuracy of benchmark calculations, including introducing a regional adjustment to the rebased historical benchmark, are expected to improve the incentive for ACOs to invest in effective care management efforts."
+    },
+    {
+     "label": "Sustaining Program Participation",
+     "text": "Details the policy direction to make an ACO’s benchmark incrementally less dependent on the ACO’s historical spending and more reflective of spending in the ACO’s region as the ACO continues in the program for multiple agreement periods, which is critical to ensuring the sustainability of the program."
+    }
+   ],
+   "cited_by": 2,
+   "parsed": true
+  },
+  {
+   "title": "How Benchmark Changes Affect Participation in Accountable Care Organizations: Prospects for Voluntary Payment Models",
+   "url": "https://www.journals.uchicago.edu/doi/abs/10.1086/726748",
+   "byline": "AJ Chen, JM McWilliams - American journal of health …, 2025 - journals.uchicago.edu",
+   "summary": "Highlights the causal role that benchmarks play in determining participation for Accountable Care Organizations (ACOs) in the Medicare Shared Savings Program (MSSP).",
+   "bullets": [
+    {
+     "label": "Rebasing Negates Savings",
+     "text": "Notes that the benchmark rebasing mechanism in MSSP acts to negate savings from preceding years, requiring ACOs to continually lower spending to receive shared bonuses, which creates weak incentives to reduce short-run spending."
+    },
+    {
+     "label": "Weak Spending Reduction Incentives",
+     "text": "Suggests that ACOs face weak incentives to exert effort to lower short-run spending due to the rebasing mechanism, which offsets present savings with potential future penalties."
+    }
+   ],
+   "cited_by": 2,
+   "parsed": true
+  },
+  {
+   "title": "The case for administrative benchmarks (and some challenges)",
+   "url": "https://catalyst.nejm.org/doi/abs/10.1056/CAT.23.0194",
+   "byline": "ME Chernew, JM McWilliams… - … Catalyst Innovations in …, 2023 - catalyst.nejm.org",
+   "summary": "Explains that benchmarks in the Medicare Shared Savings Program (MSSP) are periodically rebased (reset) according to spending in the previous contract period, which leads to a \"ratchet effect.\"",
+   "bullets": [
+    {
+     "label": "Impact on Subsequent Benchmarks",
+     "text": "Notes that rebasing to a new baseline period that overlaps with the prior performance period results in a lower subsequent benchmark if Accountable Care Organizations (ACOs) successfully reduced spending under the prior contract."
+    },
+    {
+     "label": "Incentives for Utilization Management",
+     "text": "Discusses that if ACOs invest in utilization management to reduce wasteful care, the savings are eliminated by rebasing over multiple contract periods, potentially generating losses because utilization management costs persist."
+    }
+   ],
+   "cited_by": 5,
+   "parsed": true
+  },
+  {
+   "title": "Medicare Program; Medicare Shared Savings Program; Accountable Care Organizations--Revised benchmark rebasing methodology, facilitating transition to …",
+   "url": "https://pubmed.ncbi.nlm.nih.gov/27295736/",
+   "byline": "Centers for Medicare & Medicaid Services … - Federal …, 2016 - pubmed.ncbi.nlm.nih.gov",
+   "summary": "Details modifications to the Medicare Shared Savings Program's benchmarking methodology when resetting the ACO's benchmark for a second or subsequent agreement period.",
+   "bullets": [
+    {
+     "label": "Incentivizing Care Improvements",
+     "text": "Explains that the modifications are intended to encourage Accountable Care Organizations' continued investment in care coordination and quality improvement."
+    },
+    {
+     "label": "CMS Final Rule",
+     "text": "Presents a final rule that addresses changes to the Shared Savings Program, including the revised benchmark rebasing methodology."
+    }
+   ],
+   "cited_by": 16,
+   "parsed": true
+  },
+  {
+   "title": "Expanding accountable care's reach among Medicare beneficiaries",
+   "url": "https://www.ruralcenter.org/sites/default/files/nejmp2202991%20(1)%20(002).pdf",
+   "byline": "D Jacobs, P Rawal, L Fowler… - New England Journal of …, 2022 - ruralcenter.org",
+   "summary": "Explains that participation and savings in the Medicare Shared Savings Program have been limited, partly due to benchmark methodologies, such as \"rebasing,\" which creates a \"ratchet\" effect that undermines an Accountable Care Organization's chances of achieving future savings after successfully reducing spending.",
+   "bullets": [
+    {
+     "label": "Regional Benchmark Adjustments",
+     "text": "Notes that benchmark adjustments considering regional expenditures can also complicate success for providers serving high-cost populations."
+    },
+    {
+     "label": "Addressing Rebasing Effects",
+     "text": "Indicates that the Centers for Medicare & Medicaid Services is examining benchmarking approaches, including addressing the effects of rebasing and regional adjustments, to support increased participation in the Shared Savings Program, especially for organizations caring for patients with high costs."
+    }
+   ],
+   "cited_by": 8,
+   "parsed": true
+  },
+  {
+   "title": "Avoiding unintended incentives in ACO payment models",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2014.0444",
+   "byline": "R Douven, TG McGuire, JM McWilliams - Health Affairs, 2015 - healthaffairs.org",
+   "summary": "Identifies that current rules for setting ACO spending targets (benchmarks) within the Medicare Shared Savings Program diminish incentives for savings and may encourage higher Medicare spending.",
+   "bullets": [
+    {
+     "label": "Inflating Future Benchmarks",
+     "text": "Explains that unequal weighting in the benchmark calculation, with high weight given to the year just before a new contract, incentivizes ACOs to increase spending in that year to inflate their future benchmark."
+    },
+    {
+     "label": "Improving ACO Incentives",
+     "text": "Suggests strategies to improve incentives, including changing the weights used to determine benchmarks and adopting new payment models that consider not only an ACO's past performance but also the performance of other Medicare providers."
+    }
+   ],
+   "cited_by": 61,
+   "parsed": true
+  },
+  {
+   "title": "Factors affecting Accountable Care Organizations' decisions to remain in or exit the Medicare Shared Savings Program following Pathways to Success",
+   "url": "https://academic.oup.com/healthaffairsscholar/article-abstract/2/1/qxad093/7512038",
+   "byline": "M Ying, JH Forman, S Murali, LE Gauntlett… - Health Affairs …, 2024 - academic.oup.com",
+   "summary": "Explains that the Pathways to Success program and changes in benchmarking methodology caused Accountable Care Organizations (ACOs) to reassess their potential for shared savings versus losses.",
+   "bullets": [
+    {
+     "label": "Effect on Shared Savings",
+     "text": "Indicates that the effect of benchmarking changes on the potential for shared savings was one of the main factors influencing organizational decision-making regarding Medicare Shared Savings Program (MSSP) participation after the launch of Pathways to Success."
+    },
+    {
+     "label": "Regionalized Benchmarking",
+     "text": "Details how the transition to regionalized benchmarking under Pathways was advantageous for some organizations because it 'normalized' their benchmark, helping them achieve shared savings."
+    }
+   ],
+   "cited_by": 6,
+   "parsed": true
+  },
+  {
+   "title": "Accountable care organizations",
+   "url": "https://epub.uni-bayreuth.de/id/eprint/3448/",
+   "byline": "F Distler - 2017 - epub.uni-bayreuth.de",
+   "summary": "Discusses how the evaluation of early Accountable Care Organizations (ACOs) revealed unintended incentives for providers stemming from the benchmarking methodology used in the Medicare Shared Savings Program (MSSP).",
+   "bullets": [
+    {
+     "label": "Tightened Benchmarks",
+     "text": "Explains that well-performing ACOs that generated significant savings in one term receive tightened benchmarks in the subsequent term, requiring them to achieve additional cost reductions to continue receiving shared savings."
+    },
+    {
+     "label": "Incentives to Increase Spending",
+     "text": "Details how the structure of benchmark calculations may incentivize ACOs to increase spending shortly before new benchmark calculations to receive a more favorable benchmark for the future contract period."
+    }
+   ],
+   "cited_by": 2,
+   "parsed": true
+  },
+  {
+   "title": "Transforming Medicare's Payment Systems: Progress Shaped By The ACA: A narrative review of Affordable Care Act payment reforms.",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2019.01410",
+   "byline": "ME Chernew, PH Conway, AB Frakt - Health Affairs, 2020 - healthaffairs.org",
+   "summary": "Notes that the new Pathways to Success model in the Medicare Shared Savings Program (MSSP) will incorporate regional Medicare spending as part of an ACO's benchmark, and suggests monitoring its effects on participation and savings.",
+   "bullets": [
+    {
+     "label": "Addressing the 'Ratchet' Feature",
+     "text": "Mentions that the Next Generation ACO program, a more recent version of the MSSP, includes a \"ratchet\" feature that lowers future spending targets, suggesting that blending historical and regional spending benchmarks could mitigate this issue."
+    },
+    {
+     "label": "Revised Benchmark Rebasing",
+     "text": "Cites a document regarding the Medicare Shared Savings Program that outlines a revised benchmark rebasing methodology for Accountable Care Organizations, which directly addresses the core issue of the research question."
+    }
+   ],
+   "cited_by": 40,
+   "parsed": true
+  },
+  {
+   "title": "Risk adjustment in Medicare ACO program deters coding increases but may lead ACOs to drop high-risk beneficiaries",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2018.05407",
+   "byline": "AA Markovitz, JM Hollingsworth, JZ Ayanian… - Health …, 2019 - healthaffairs.org",
+   "summary": "Explains that the Medicare Shared Savings Program (MSSP) adjusts savings benchmarks by beneficiaries' baseline risk scores, but not upward if risk scores rise while in the MSSP, which creates an incentive for Accountable Care Organizations (ACOs) to avoid increasingly sick beneficiaries.",
+   "bullets": [
+    {
+     "label": "Deterrence vs. Care Incentive",
+     "text": "Suggests that the current risk-adjustment system in the MSSP successfully discourages increases in coding intensity but may not adequately encourage ACOs to care for high-risk beneficiaries."
+    },
+    {
+     "label": "High-Risk Beneficiary Exit Rate",
+     "text": "Finds that beneficiaries at the ninety-fifth percentile of risk score had a 21.6 percent chance of exiting the MSSP, compared to a 16.0 percent chance for those at the fiftieth percentile, indicating a tendency to avoid high-risk patients."
+    }
+   ],
+   "cited_by": 50,
+   "parsed": true
+  },
+  {
+   "title": "Spending variation among ACOs in the medicare shared savings program",
+   "url": "http://ajmc.s3.amazonaws.com/_media/_pdf/AJMC_04_2020_Kyle%20final.pdf",
+   "byline": "MA Kyle, JM McWilliams, MB Landrum… - Am J Manag …, 2020 - ajmc.s3.amazonaws.com",
+   "summary": "Analyzes ACOs participating in the Medicare Shared Savings Program (MSSP), the largest of Medicare's ACO initiatives, focusing on spending variation to identify potential savings opportunities.",
+   "bullets": [
+    {
+     "label": "Incentives for Savings",
+     "text": "Illustrates that designing benchmarks and shared savings incentives is crucial to motivating participation and achieving savings within the MSSP."
+    },
+    {
+     "label": "Benchmark Formula Details",
+     "text": "Discusses that current MSSP benchmarks are based on a blend of historical performance and regional spending, aiming to mitigate disincentives, and notes that historical benchmarks can 'ratchet down' future savings targets if an ACO saves money."
+    }
+   ],
+   "cited_by": 8,
+   "parsed": true
+  },
+  {
+   "title": "Participation and performance in accountable care organizations",
+   "url": "https://fraser.stlouisfed.org/files/docs/historical/frbatl/events/frbatl_2018she_reddig.pdf",
+   "byline": "K Reddig - 2018 - fraser.stlouisfed.org",
+   "summary": "Details how the Centers for Medicare & Medicaid Services (CMS) establishes an Accountable Care Organization's (ACO) benchmark expenditure by forecasting per-beneficiary Medicare expenditure for beneficiaries that would have been assigned to the ACO in the three years prior to the agreement period.",
+   "bullets": [
+    {
+     "label": "Benchmark Update Process",
+     "text": "Explains that for performance years after the first, the ACO's benchmark is updated based on projected growth of per-beneficiary Medicare expenditure, which is a key element of the rebasing process."
+    },
+    {
+     "label": "Participant Incentives Analysis",
+     "text": "Analyzes the incentives faced by participants in the Medicare Shared Savings Program (MSSP) and ACOs, which directly addresses the focus on benchmark rebasing incentives."
+    }
+   ],
+   "cited_by": 2,
+   "parsed": true
+  },
+  {
+   "title": "An examination of internal and external factors upon financial performance of participating ACOs in the Medicare Shared Savings Program (MSSP) for the year 2013",
+   "url": "https://search.proquest.com/openview/c5854093ac7d37547863d699f7af5b1b/1?pq-origsite=gscholar&cbl=18750",
+   "byline": "NM Pugh - 2016 - search.proquest.com",
+   "summary": "Discusses how the Medicare Shared Savings Program (MSSP) and the Pioneer Program aim to align provider incentives to improve quality and health outcomes while mitigating unwarranted costs.",
+   "bullets": [
+    {
+     "label": "Purpose of MSSP",
+     "text": "Explains that CMS established the MSSP to encourage cooperation and care coordination to improve care quality for Medicare Fee-For-Service beneficiaries and decrease unnecessary utilization and avoidable costs."
+    },
+    {
+     "label": "Benchmark Rebasing Methodology",
+     "text": "Details CMS's proposed alternative methodologies for establishing ACO benchmarks that determine shared savings and losses, suggesting they will gradually become more independent of an ACO’s past performance and more dependent on its cost efficiency relative to its local market, which includes transitioning the methodology for establishing, updating, and …"
+    }
+   ],
+   "cited_by": 3,
+   "parsed": true
+  },
+  {
+   "title": "ACO Investment Model Produced Savings, But The Majority Of Participants Exited When Faced With Downside Risk: Study examines Medicare's Accountable Care …",
+   "url": "https://www.healthaffairs.org/doi/abs/10.1377/hlthaff.2020.01819",
+   "byline": "MJ Trombley, JM McWilliams, B Fout, B Morefield - Health Affairs, 2022 - healthaffairs.org",
+   "summary": "Explains that Medicare Shared Savings Program benchmarks, which determine an ACO's financial performance, are set by the Centers for Medicare and Medicaid Services (CMS) based on the ACO's own historical spending, trended forward.",
+   "bullets": [
+    {
+     "label": "Benchmark Rebasing Impact",
+     "text": "Notes that the prospect of having their benchmarks \"rebased\" to their new, lower spending was a factor cited by Accountable Care Organization Investment Model (AIM) ACOs as a reason for exiting the Medicare Shared Savings Program."
+    },
+    {
+     "label": "Benchmark Savings Disparity",
+     "text": "Compares Medicare savings based on CMS benchmarks ($52.7 million) to net savings estimated using an evaluation's difference-in-differences methodology ($381.5 million), showing a large disparity between the two methods."
+    }
+   ],
+   "cited_by": 10,
+   "parsed": true
+  },
+  {
+   "title": "How to fix the Medicare Shared Savings Program",
+   "url": "https://chqpr.org/downloads/How_to_Fix_the_Medicare_Shared_Savings_Program.pdf",
+   "byline": "HD Miller - Center for Healthcare Quality and Payment Reform …, 2018 - chqpr.org",
+   "summary": "Discusses concerns about the flawed risk adjustment and benchmarking methodologies in the Medicare Shared Savings Program (MSSP), which make many Accountable Care Organizations (ACOs) unwilling to enter downside risk tracks.",
+   "bullets": [
+    {
+     "label": "Risk Adjustment Penalties",
+     "text": "Explains that the formulas used for risk adjustment and benchmarking can financially penalize ACOs that serve higher-need patients or those in rural areas."
+    },
+    {
+     "label": "Savings Attribution Factors",
+     "text": "Suggests that the greater savings attributed to downside-risk ACOs may stem from differences in the types of patients they treat rather than actual differences in care delivery."
+    }
+   ],
+   "cited_by": 5,
+   "parsed": true
+  }
+ ]
+}
