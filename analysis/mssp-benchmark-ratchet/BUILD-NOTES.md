@@ -363,7 +363,7 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   are unchanged, and a test checks that a published post's image exists and is the og:image.
 - Visual abstract uploaded to OSF z4an5/results-notebook (2026-10-27): visual-abstract.png (sha256 82beb2d7...) and visual-abstract.svg (sha256 1a4c54e0...), matching the committed files. If the image is redrawn, replace both on OSF.
 - medRxiv preprint (2026-10-27): drafted in a separate public repository,
-  [stharrold/mssp-preprint-2026](https://github.com/stharrold/mssp-preprint-2026), with the yuimedi-paper build
+  [stharrold/mssp-paper-2026](https://github.com/stharrold/mssp-paper-2026) (created as mssp-preprint-2026 and renamed the same day), with the yuimedi-paper build
   (pandoc, Eisvogel 3.3.0, tectonic). Tables and figures are generated from copies of `results/*.json` (hashes
   recorded), and `scripts/check_numbers.py` checks the prose: single numbers match some results value by chance about
   90% of the time at 1 decimal, so the real check is that each interval's bounds (and its estimate, where adjacent)
