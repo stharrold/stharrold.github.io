@@ -249,6 +249,35 @@ regulation and the enrollment files:
 Those 29 became the question. A first version asked only whether they had lower savings rates. That was too narrow
 to explain anything, so the plan became explanatory, with two motives that predict different things.
 
+## Related work
+
+Four strands of earlier research bear on this study. None of them, as far as a focused literature search found,
+studies early renewal itself.
+
+* **Rebasing creates a ratchet.** The rules for setting an ACO's benchmark at renewal weaken its incentive to save,
+  and the old weights on the benchmark years even rewarded higher spending just before a new agreement
+  ([Douven, McGuire and McWilliams 2015][douven2015][^douven2015]). That is one reason the H4 design guards against
+  anticipation and mean reversion.
+* **ACOs differ widely from their regions.** Even after case-mix adjustment, ACOs' spending varies widely relative to
+  local fee-for-service spending, so moving benchmarks toward regional averages shifts them unevenly
+  ([Rose, Zaslavsky and McWilliams 2016][rose2016][^rose2016]). That variation is what the regional pull measures, and
+  why its case-mix adjustment matters (see [Limitations](#limitations)).
+* **Benchmarks drive who participates.** After regional spending entered benchmarks in 2017, participation shifted
+  toward providers whose spending was low relative to their region ([Lyu, Chernew and McWilliams 2023][lyu2023][^lyu2023]),
+  and ACOs whose effective benchmark fell were 7 percentage points more likely to leave
+  ([Chen and McWilliams 2025][chen2025][^chen2025]). The primary result here is the same kind of selection, in when to
+  reset rather than whether to join or leave.
+* **The 2019 rules changed participation decisions.** Under Pathways to Success, for the first time more ACOs left the
+  program than joined it, and ACO leaders described reassessing potential savings against losses in light of the
+  benchmark changes ([Ying et al. 2024][ying2024][^ying2024]). Related work describes the change in participation
+  ([Ying et al. 2023][ying2023][^ying2023]) and the cost to the program of departures
+  ([Moloci et al. 2021][moloci2021][^moloci2021]).
+
+This study adds the early-renewal choice: which ACOs used the option to reset their benchmark early, measured with
+public data under a pre-registered plan. The search used Google Scholar Labs (three queries on 2026-10-27, one
+rejected as too broad), and its questions, raw results and per-paper summaries are saved in the study's
+[`research/`][research] folder.
+
 ## Design
 
 ### Groups
@@ -1098,6 +1127,14 @@ General terms link to Wikipedia in the text instead.
 [anthropic]: https://www.anthropic.com/
 [vdp-video]: https://www.youtube.com/watch?v=Iq9DzN6mvYA
 [vdp-slides]: https://speakerdeck.com/jakevdp/statistics-for-hackers
+[rose2016]: https://doi.org/10.1377/hlthaff.2015.1026
+[douven2015]: https://doi.org/10.1377/hlthaff.2014.0444
+[lyu2023]: https://doi.org/10.1377/hlthaff.2022.01061
+[chen2025]: https://doi.org/10.1086/726748
+[ying2024]: https://doi.org/10.1093/haschl/qxad093
+[ying2023]: https://doi.org/10.1007/s11606-022-07947-x
+[moloci2021]: https://doi.org/10.1007/s11606-020-06424-7
+[research]: https://github.com/stharrold/stharrold.github.io/tree/src_master/analysis/mssp-benchmark-ratchet/research
 [callaway2021]: https://doi.org/10.1016/j.jeconom.2020.12.001
 [firth1993]: https://doi.org/10.1093/biomet/80.1.27
 [gelman2008]: https://doi.org/10.1002/sim.3107
@@ -1135,6 +1172,13 @@ General terms link to Wikipedia in the text instead.
 [^cfr-425-226]: 42 CFR 425.226, Annual participation elections. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(2)(i)][cfr-226].
 [^cfr-425-200]: 42 CFR 425.200, Participation agreement with CMS. eCFR, as in force on 2022-01-01. Paragraphs cited: [(b)(3)(ii)(B)][cfr-200-ext], [(b)(4)(ii)][cfr-200-b4], [(b)(5)][cfr-200-b5].
 [^fr-2020]: CMS (2020). Medicare and Medicaid Programs, Basic Health Program, and Exchanges; Additional Policy and Regulatory Revisions in Response to the COVID-19 Public Health Emergency. Interim final rule. [*Federal Register* 85, 27550][fr-covid], May 8, 2020.
+[^douven2015]: Douven, R., McGuire, T. G. and McWilliams, J. M. (2015). Avoiding unintended incentives in ACO payment models. *Health Affairs* 34(1), 143-149. [doi:10.1377/hlthaff.2014.0444][douven2015]
+[^rose2016]: Rose, S., Zaslavsky, A. M. and McWilliams, J. M. (2016). Variation in accountable care organization spending and sensitivity to risk adjustment: implications for benchmarking. *Health Affairs* 35(3), 440-448. [doi:10.1377/hlthaff.2015.1026][rose2016]
+[^lyu2023]: Lyu, P. F., Chernew, M. E. and McWilliams, J. M. (2023). Benchmarking changes and selective participation in the Medicare Shared Savings Program. *Health Affairs* 42(5), 622-631. [doi:10.1377/hlthaff.2022.01061][lyu2023]
+[^chen2025]: Chen, A. J. and McWilliams, J. M. (2025). How benchmark changes affect participation in accountable care organizations: prospects for voluntary payment models. *American Journal of Health Economics* 11(1), 38-62. [doi:10.1086/726748][chen2025]
+[^ying2024]: Ying, M., Forman, J. H., Murali, S., Gauntlett, L. E., Krein, S. L., Hollenbeck, B. K. and Hollingsworth, J. M. (2024). Factors affecting Accountable Care Organizations' decisions to remain in or exit the Medicare Shared Savings Program following Pathways to Success. *Health Affairs Scholar* 2(1). [doi:10.1093/haschl/qxad093][ying2024]
+[^ying2023]: Ying, M., Hirth, R. A., Yan, P., Shay, A., Murali, S., Ryan, A. M. and Hollingsworth, J. M. (2023). Changes in Shared Savings Program participation after launch of Pathways to Success. *Journal of General Internal Medicine* 38(7), 1780-1782. [doi:10.1007/s11606-022-07947-x][ying2023]
+[^moloci2021]: Moloci, N. M., Si, Y., Norton, E. C., Ryan, A. M. and Hollingsworth, J. M. (2021). Predicting losses from Medicare Shared Savings Program departures. *Journal of General Internal Medicine* 36(8), 2490-2491. [doi:10.1007/s11606-020-06424-7][moloci2021]
 [^cfr-425-220]: 42 CFR 425.220, Termination of the participation agreement by the ACO. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)][cfr-220].
 [^cfr-425-605]: 42 CFR 425.605, Calculation of shared savings and losses under the BASIC track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(1)][cfr-605-levels].
 [^fr-2018]: CMS (2018). Medicare Program; Medicare Shared Savings Program; Accountable Care Organizations—Pathways to Success and Extreme and Uncontrollable Circumstances Policies for Performance Year 2017. Final rule. [*Federal Register* 83, 67816-68082][fr-pathways], December 31, 2018. Cited: [83 FR 67859][fr-pathways-track] (no move from BASIC to ENHANCED within an agreement period).
