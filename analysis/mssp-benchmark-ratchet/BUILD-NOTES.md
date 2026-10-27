@@ -188,6 +188,7 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   get a missing midpoint distance and are then dropped by the `n_post > 0` filter, so no estimate uses them (`did.json`
   has no NaN). `np.errstate` does not silence this warning because numpy raises it through `warnings`, not as a
   floating-point error.
+- conventional (8 s, commit acc8b0e): no warnings.
 
 ## Write-up started while confirm runs (2026-10-26)
 
