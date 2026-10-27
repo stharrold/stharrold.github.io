@@ -184,6 +184,10 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - confirm finished 2026-10-27 03:11 EDT (exit 0) after 17 h 3 min, at commit 3e5cb9b (registered code unchanged). The
   H3 model and its t-prior fit both converged, so the direct simulation tests ran and the Firth fallback did not.
   `results/confirm.json` was committed before anything in it was read beyond these checks.
+- did (27 s, commit 992d13f): numpy warned "Mean of empty slice" for ACOs with no post-period year; those rows
+  get a missing midpoint distance and are then dropped by the `n_post > 0` filter, so no estimate uses them (`did.json`
+  has no NaN). `np.errstate` does not silence this warning because numpy raises it through `warnings`, not as a
+  floating-point error.
 
 ## Write-up started while confirm runs (2026-10-26)
 
