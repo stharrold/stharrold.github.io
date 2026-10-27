@@ -306,3 +306,11 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Documentation updated: the study README lists `results/`, the notebook and its exports, and the status;
   `CLAUDE.md` gained the footnote convention, stable-link rules, marimo and Playwright gotchas, the eCFR API command,
   and the zsh `path` gotcha.
+- Analytics before publishing (2026-10-27). Checked: the GA4 tag G-K4PX9089RZ is on every published page (only in
+  `publishconf.py`); stream 5708903862 receives traffic; the BigQuery daily export to
+  `stharrold-github-io.analytics_393124094` runs. Changed, at the author's request: enhanced measurement now sends
+  scrolls (90%) and outbound clicks (it had page views only); event data retention 2 to 14 months; a custom
+  dimension `percent_scrolled` (event scope). The theme's GA include (`includes/ga.html`, publish builds only) now
+  sends `scroll` at 25, 50 and 75% and a `notebook_open` event for clicks on `/static/*.html` exports, which are
+  standalone pages without the tag (adding it would change the OSF-hashed notebook). Tested on a local publish build
+  with GA requests blocked, by reading `dataLayer`; the privacy page lists what is measured.

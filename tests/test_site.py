@@ -115,6 +115,7 @@ def test_analytics_on_every_page_of_publish_build(site):
         html = page.read_text()
         assert f"gtag/js?id={GA_ID}" in html, page
         assert re.search(rf"gtag\('config', \"{GA_ID}\"", html), page
+        assert "'notebook_open'" in html and "percent_scrolled" in html, page
         assert "gtm.js" not in html, page
         assert "UA-43020842" not in html, page
 
