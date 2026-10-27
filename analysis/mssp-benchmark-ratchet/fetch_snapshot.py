@@ -34,8 +34,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from ratchet import config  # noqa: E402
 
-# The archived snapshot on OSF (project osf.io/z4an5); its sha256 is in the study README.
-ARCHIVE_URL = None
+# The archived snapshot on OSF (osf.io/53aqd in project osf.io/z4an5); its sha256 is in the study README.
+ARCHIVE_URL = "https://osf.io/53aqd/download"
 USER_AGENT = "mssp-benchmark-ratchet fetch_snapshot (+https://github.com/stharrold/stharrold.github.io)"
 # Fixed zip metadata, so rebuilding the archive from the same files (with the same zlib) gives the same sha256.
 ZIP_DATE = (2026, 10, 22, 0, 0, 0)

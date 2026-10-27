@@ -10,6 +10,9 @@
     var AXIS_H = 40;
     var CARD_INSET = 34; // .mssp-card: 1rem padding and a 1px border on each side
 
+    // The results files the dashboard data were built from, pinned to a commit.
+    var RESULTS_URL = "https://github.com/stharrold/stharrold.github.io/tree/3da8cd28c6601c45bc7a4da9abf91af62af20722/analysis/mssp-benchmark-ratchet/results";
+
     function el(tag, attrs, children) {
         var node = document.createElement(tag);
         setAttrs(node, attrs);
@@ -526,11 +529,14 @@
                 "These numbers come from a made-up dataset used to build and test the pipeline; they are not CMS results."
             ]));
         }
-        var chips = el("ul", { class: "mssp-stages", "aria-label": "Pipeline stages" });
-        data.stages.forEach(function (s) {
-            chips.appendChild(el("li", { class: s.done ? "is-done" : "" }, [el("span", { "aria-hidden": "true" }, s.done ? "✓ " : "… "), s.name + (s.done ? "" : " (pending)")]));
-        });
-        nodes.push(chips);
+        // The stage list only matters while some stage is still running; once all are done it is noise.
+        if (data.stages.some(function (s) { return !s.done; })) {
+            var chips = el("ul", { class: "mssp-stages", "aria-label": "Pipeline stages" });
+            data.stages.forEach(function (s) {
+                chips.appendChild(el("li", { class: s.done ? "is-done" : "" }, [el("span", { "aria-hidden": "true" }, s.done ? "✓ " : "… "), s.name + (s.done ? "" : " (pending)")]));
+            });
+            nodes.push(chips);
+        }
         return nodes;
     }
 
@@ -562,7 +568,11 @@
             root.appendChild(controls);
             tip = makeTooltip(root);
             append(root, [comparisons(data, width, tip), decision(data, width, tip, state.prior), effect(data, width, tip), agreement(data), robustnessSection(data, width, tip), exploratorySection(data, width, tip)]);
-            root.appendChild(el("p", { class: "mssp-note" }, "Built " + data.built + " from results at commit " + data.commit + "."));
+            root.appendChild(el("p", { class: "mssp-note" }, [
+                "Source: ",
+                el("a", { href: RESULTS_URL }, "the committed results files"),
+                ", each of which records the commit it ran at; every stage ran with the registered code (commit a4064f5)."
+            ]));
         }
 
         draw();

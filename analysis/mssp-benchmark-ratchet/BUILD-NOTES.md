@@ -334,3 +334,23 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   post; the three files go to OSF z4an5/results-notebook as new versions of the earlier uploads, which stay in each
   file's OSF history.
 - Re-exported notebook uploaded to OSF 2026-10-27 15:12 UTC as new versions (same GUIDs m5qkx, aczts, 247qu); OSF's sha256 for all three matches the post and the committed files (public API).
+- Reproducibility (2026-10-27): `fetch_snapshot.py` (download and sha256-check the snapshot, falling back to the OSF
+  archive osf.io/53aqd, sha256 16f54615...), `compare_results.py` (rerun vs committed results), `CITATION.cff`, and a
+  "Reproduce and adapt" README section. Fresh-clone test with an empty home directory (uv cache reused): sparse
+  clone, fetch (40/40 from data.cms.gov in 9 s), tests (81 passed, 8 min), validate (8 s, identical to the
+  committed file), power (40 min). Power reproduced every deterministic value but not the simulated ones (H1
+  simulated power 0.776 vs 0.804; H3 detection shares 0.148/0.150 vs 0.168/0.138). Cause, confirmed by building the
+  database three times: `select * from analysis` in `ratchet/run.py` has no ORDER BY, and DuckDB returns the 334
+  rows in a different order each build, so the seeded draws fall on different ACOs. Every resampling and simulation
+  result therefore varies within simulation error between runs; no verdict is near a threshold. Not a deviation (no
+  code changed); disclosed in the post's Reproduce and Pipeline sections and the README, which suggests
+  `order by aco_id` for bit-for-bit reruns of a variant.
+- Post additions after the review (2026-10-27): "What was simulated, and when"; "In plain English" (with the median
+  PY2021 benchmark of $11,312 across the 334 ACOs, so 1 point of benchmark is about $113 per patient per year);
+  "Background for newcomers" (four collapsible primers: MSSP worked example, association and causation, Bayesian
+  and frequentist, pre-registering a study); an "At a glance" table; "Do these results apply today?" (42 CFR
+  425.652, 425.656 and 425.658 as in force on 2024-01-01: prior savings adjustment, offset to negative regional
+  adjustments, ACPT); "Implications and open questions"; a numbered Reproduce section; the dashboard's stage list
+  shown only while a stage is pending, and its footer pointing to the pinned results instead of a build time; and a
+  README recipe for one ACO's reset components. In the worked example, two dollar amounts in one paragraph were
+  rendered as inline math by arithmatex; dollar signs there are written `&#36;`.
