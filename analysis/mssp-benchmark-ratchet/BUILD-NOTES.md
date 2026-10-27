@@ -374,3 +374,11 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   reporting left out (Pr(>0), P/CrI disagreements, two exploratory tables) and caveats lost in condensing the post.
   All applied except the title (kept as registered) and the affiliation's location (the author's call); see the
   repository's `reviews/`.
+- Second assessment and post hoc checks (2026-10-27): a second review (supplied by the author) found the study
+  sound but the H2b reading too strong. Its sources check out: Milliman's April 2024 report already tabulates the
+  29 ACOs that rebased early in 2022 (higher prior gross savings; the 11 earlier incumbents moved to ENHANCED), and
+  42 CFR 425.600(d) limits ACOs experienced with risk to Level E or ENHANCED. The preprint now cites both, reads the
+  pull as relative efficiency, and says the BASIC-level prediction was not blind to the enrollment data. At the
+  author's choice, `posthoc/validation_change.py` (not registered, bf91e5c) checks the gain on the change scale
+  (Spearman 0.61, median error 1.7 points, regular renewers) and against early renewers' published 2022 benchmarks
+  (mean -1.3%, 66% below PY2021; rebuilt -1.6 vs realized -1.4). The post has not yet been updated to match.
