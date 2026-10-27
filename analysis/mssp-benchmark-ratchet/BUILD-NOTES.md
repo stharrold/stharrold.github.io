@@ -181,6 +181,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   once confirm had finished its dbt build (the two share the dbt target directory), in 8 minutes; 4 of about 30,000
   Firth refits in its simulated null distributions stopped at the iteration limit (kept as fitted, as the registered
   code does). Robustness results are read only together with the confirmatory ones, primary first.
+- confirm finished 2026-10-27 03:11 EDT (exit 0) after 17 h 3 min, at commit 3e5cb9b (registered code unchanged). The
+  H3 model and its t-prior fit both converged, so the direct simulation tests ran and the Firth fallback did not.
+  `results/confirm.json` was committed before anything in it was read beyond these checks.
 
 ## Write-up started while confirm runs (2026-10-26)
 
