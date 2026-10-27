@@ -15,9 +15,9 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
      them; once published, {static} makes the build check that the files exist). Results notebook: built and
      exported (HTML in content/static/<slug>/, .ipynb and PDF in analysis/mssp-benchmark-ratchet/report/exports/,
      hashes in the post); change its root-relative link to {static} too. Uploaded to OSF z4an5/results-notebook
-     2026-10-27 and hashes checked; never re-export, since that changes every hash. When src_master is merged into
-     the study branch, log its uv.lock change in DEVIATIONS.md as made after the analysis. Finally delete this
-     comment: HTML comments are published in the page source. -->
+     2026-10-27 and hashes checked; never re-export, since that changes every hash. src_master was merged into the
+     study branch 2026-10-27 (uv.lock change logged in DEVIATIONS.md). Finally delete this comment: HTML
+     comments are published in the page source. -->
 
 [TOC]
 
@@ -488,10 +488,11 @@ file records the commit it ran at, and
 [`DEVIATIONS.md`](https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/DEVIATIONS.md)
 gives the command that checks it against the registered code.
 
-Two things changed outside the registered analysis, after the results: the dashboard's reporting script, which had
-shown PY2021 savings rates 100 times too large (they were already percents), and the lockfile `uv.lock`, which
-takes two dependency security updates (virtualenv, filelock) from the site's main branch only after the last stage
-ran. Neither touched the environment or the code that produced the results.
+Two things changed after the last stage ran, and no result was produced with either: the dashboard's reporting
+script, which had shown PY2021 savings rates 100 times too large (they were already percents), and the lockfile
+`uv.lock`, which took security updates to filelock and virtualenv from the site's main branch. The lockfile is a
+registered file, so that change is the one entry in `DEVIATIONS.md`; rerunning the analysis exactly as registered
+uses the lockfile at `a4064f5`.
 
 ## Limitations
 
