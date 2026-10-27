@@ -1,6 +1,6 @@
 Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study
 Date: 2026-10-27T17:30:00Z
-Modified: 2026-10-27T17:30:00Z
+Modified: 2026-10-27T20:00:00Z
 Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-differences, healthcare, medicare, dbt, duckdb, python
 Category: Causal Inference
 Slug: 20261027-preregistered-mssp-early-renewal
@@ -64,7 +64,9 @@ benchmarks (95% [credible interval][credible] 1.7 to 5.4, p < 0.001). That is no
 renewers were beating their benchmarks by more than stayers, with savings rates about 2 points higher, and by the
 approximation a reset would on average have *lowered* both groups' benchmarks (by about 1.6% for early renewers and
 1% for stayers): early renewers stood to gain more from the regional adjustment and to lose more on their own
-spending. In the decision model, renewing early was more likely with a higher regional pull and a higher BASIC level.
+spending. A check added after the study, against CMS's own published 2022 benchmarks, agrees: early renewers' new
+benchmarks came in 1.3% below their old ones on average. So the primary result says more about early renewers being
+low-cost relative to their regions than about a higher benchmark. In the decision model, renewing early was more likely with a higher regional pull and a higher BASIC level.
 Early renewers' spending growth in PY2022-PY2024 did not differ detectably from that of ACOs not yet renewed (-0.4%,
 -4.0% to +2.5%); a continuing pre-period difference in trends cannot be ruled out, so this is not read as an effect
 of renewing.
@@ -79,7 +81,8 @@ of renewing.
 * **But they were already beating their benchmarks.** They spent further below their targets than other ACOs did. A
   reset also resets the target to the ACO's own recent spending, so for most of them that part would have cut the
   benchmark. By the study's estimate the two parts roughly cancel, and a reset would not have raised the average
-  early renewer's benchmark.
+  early renewer's benchmark. CMS's own numbers, checked afterwards, agree: early renewers' new 2022 benchmarks were
+  about 1.3% below their 2021 ones on average.
 * **ACOs at higher BASIC levels renewed early more often.** ACOs already at BASIC's higher, two-sided levels (C to
   E) were more likely to renew early; 16 of the 27 BASIC-track early renewers were at the top level, E. Renewing was
   their way into ENHANCED, which keeps 75% of savings, so the pattern fits an interest in the higher sharing rate,
@@ -88,8 +91,8 @@ of renewing.
   ACOs that had not renewed. The data rule out a drop of more than about 4% or a rise of more than about 2.5%, but a difference in
   trends that began before renewal could still hide a smaller effect, so this is not read as "renewing had no
   effect".
-* **What this means.** ACOs that reset early were positioned to gain from the regional adjustment and from a higher
-  sharing rate. A reset was not a simple way to get a higher benchmark.
+* **What this means.** ACOs that reset early were, on average, low-cost relative to their regions, and almost all of
+  them gained a higher sharing rate. A reset was not a simple way to get a higher benchmark.
 * **These are the 2022 rules.** Benchmarks for agreements starting in 2024 or later give ACOs credit for past savings
   and soften the cut for an ACO that spends more than its region, so the same trade-off may not hold for an ACO renewing today (see
   [Limitations](#limitations)).
@@ -218,7 +221,9 @@ Two details make that claim checkable here:
 * **An outcome lock in the code.** Every data file is [hashed before it is read][snapshot-py][^code]. A file whose hash matches a
   performance-year results file or a county spending file could not be opened until `REGISTRATION.md` existed. There
   was no bypass flag. Before registration only the [enrollment files][data-acos][^data-acos], the CMS data dictionaries (for example the
-  [PY2021 results dictionary][dict-results-2021][^data-results]) and the [regulation text][cfr-425][^cfr-425] were used, plus the column names (not the values) of the outcome files, to write the code.
+  [PY2021 results dictionary][dict-results-2021][^data-results]) and the [regulation text][cfr-425][^cfr-425] were used, plus the column names (not the values) of the outcome files, to write the code. The enrollment
+  files include each ACO's track and BASIC level, so H3's prediction for the BASIC level was written with those data
+  available: pre-registered, but not blind to them.
 
 ## How the question was chosen
 
@@ -245,8 +250,15 @@ to explain anything, so the plan became explanatory, with two motives that predi
 
 ## Related work
 
-Four strands of earlier research bear on this study. None of them, as far as a focused literature search found,
-studies early renewal itself.
+Five strands of earlier work bear on this study. Only one, an industry report rather than peer-reviewed research,
+looks at early renewal itself.
+
+* **The same early renewers, in an industry report.** Milliman's report on 2022 results tabulates gross savings rates
+  for the ACOs that rebased early in 2022, the same 29 as here (11 that were in the program before Pathways to
+  Success and 18 that joined in 2019 or 2020). Both groups had higher savings rates in 2020 and 2021 than comparable
+  ACOs that did not rebase, and each of the 11 moved from BASIC levels C to E into ENHANCED
+  ([Smith et al. 2024][milliman2024][^milliman2024]). A Milliman case study models the same choice for one ACO
+  ([Milliman 2025][milliman2025][^milliman2025]).
 
 * **Rebasing creates a ratchet.** The rules for setting an ACO's benchmark at renewal weaken its incentive to save,
   and the old weights on the benchmark years even rewarded higher spending just before a new agreement
@@ -273,6 +285,9 @@ studies early renewal itself.
 
 **How these results fit, in plain English.**
 
+* **Agrees with (industry data):** Milliman found that the ACOs that renewed early in 2022 had been saving more and
+  moved to ENHANCED. This study finds the same, and adds why the savings matter: beating the benchmark makes a reset
+  cost more.
 * **Agrees with:** earlier work found that ACOs pick their moment using the benchmark. They joined when the regional
   formula favored them (Lyu and colleagues), and they left when their benchmark fell (Chen and McWilliams). This
   study finds the same behavior in a new choice, when to reset: early renewers were the ACOs whose regions spent more
@@ -290,8 +305,9 @@ studies early renewal itself.
 * **Does not address:** what departures or early renewals cost Medicare (Moloci and colleagues estimated the cost of
   departures); this study does not estimate costs.
 
-This study adds the early-renewal choice: which ACOs used the option to reset their benchmark early, measured with
-public data under a pre-registered plan. The search used Google Scholar Labs (three queries on 2026-10-27, one
+This study adds a pre-registered analysis of which ACOs used the option to reset their benchmark early, and of what a
+reset stood to give them, measured with public data. The Milliman reports were found later, by a critical review of
+the preprint. The search used Google Scholar Labs (three queries on 2026-10-27, one
 rejected as too broad), and its questions, raw results and per-paper summaries are saved in the study's
 [`research/`][research] folder.
 
@@ -317,7 +333,8 @@ early renewal: an ACO that [terminated its agreement][cfr-220][^cfr-425-220] and
 * **The sharing-rate motive.** An ACO in the [BASIC track][cfr-605-levels][^cfr-425-605] cannot move to the ENHANCED track during
   an agreement period ([2018 rule][fr-pathways-track][^fr-2018]), so renewing early was the only way in before its agreement
   ended. ENHANCED shares [75% of savings][cfr-610-rate][^cfr-425-610] and [up to 75% of losses][cfr-610-loss]. In the
-  [enrollment files][data-acos][^data-acos], 26 of the 27 early renewers that were in BASIC moved to ENHANCED, and no stayer did.
+  [enrollment files][data-acos][^data-acos], 26 of the 27 early renewers that were in BASIC moved to ENHANCED; no stayer could, since the move is barred
+  within an agreement period.
 
 The expected benchmark gain from a reset has two parts: an **own-spending** part (how the ACO's recent spending
 compares with its current benchmark) and a **regional** part ([the adjustment toward the region][cfr-601-adj][^cfr-425-601]). The own-spending
@@ -615,8 +632,10 @@ renewers, the own-spending component smaller, and the total expected gain does n
 have *lowered* both groups' benchmarks, by the approximation: in unweighted means the own-spending and regional parts
 sum to -5.3 + 3.7 = -1.6 points for early renewers and -3.2 + 2.2 = -1.0 for stayers ([`exploratory.json`][res-exploratory][^results]).
 That follows from the savings: rebasing to an ACO's own spending lowers the benchmark of any ACO that has been
-beating it. So the evidence is about where early renewers stood relative to their regions, not about a larger
-expected gain from resetting. That is the
+beating it. Weighted by the phase-in weight, the pull difference is 1.6 points ([Exploratory](#exploratory)), the
+same as the regional component's. So the evidence is about where early renewers stood relative to their regions, not
+about a larger expected gain from resetting; a check against CMS's published 2022 benchmarks bears this out
+([Post hoc checks](#post-hoc-checks-not-registered)). That is the
 configuration the plan described before any outcome was read ([section 1.3][plan-1.3][^plan]): an ACO "can be beating its own
 benchmark and still stand to gain from a reset because its region spends more". As the plan also says (rule 8), no
 test here can rule the sharing-rate motive in or out.
@@ -645,7 +664,9 @@ difference of 1.34 multiplies the odds of renewing early by about 3.8.
 * **What the BASIC level means.** The plan's rationale for it is a smaller step to two-sided risk under ENHANCED
   ([section 1.3][plan-1.3][^plan]): 16 of the 27 BASIC-track early renewers were already at Level E in 2021, BASIC's
   highest level, for whom ENHANCED was a short further step ([`exploratory.json`][res-exploratory][^results]). That bears on
-  the sharing-rate motive at least as much as on the reset motive, and the two cannot be separated here.
+  the sharing-rate motive at least as much as on the reset motive, and the two cannot be separated here. The level is
+  also partly chosen: ACOs experienced with performance-based risk could enter BASIC only at Level E, if not ENHANCED
+  ([42 CFR 425.600(d)][cfr-600-d][^cfr-425-600]), so it partly records past risk experience.
 * **Checks.** The model met its convergence checks on the first fit (largest [R-hat][arviz-rhat][^sw-arviz] 1.001, smallest
   bulk [effective sample size][arviz-ess] 6,661, no divergences). The Student-t fit needed its one registered rerun, then converged, and agrees:
   regional pull 1.65 (0.53 to 2.87), BASIC level 1.63 (0.53 to 2.85), own-spending component -0.56 (-9.98 to 7.36).
@@ -786,17 +807,35 @@ what is reported above.
 * **Spending by agreement year** rises for every group; early renewers from 2020 agreements started lower and stayed
   lower. As the design noted, benchmark-year status cannot be separated from tenure here, so this is description only.
 
+## Post hoc checks (not registered)
+
+Added on 2026-10-27, after every registered result had been read, in response to critical reviews of the preprint.
+[`posthoc/validation_change.py`][posthoc][^posthoc] reuses the registered pipeline's tables and estimator and changes
+no registered file; nothing here decides a hypothesis.
+
+* **Validation on the change scale.** The registered validation checks benchmark levels, which vary widely across
+  ACOs; the hypotheses concern differences of a few points. For the same 101 regular renewers, the rebuilt change from
+  the PY2021 benchmark agrees only moderately with the actual one: Spearman 0.61, median absolute error 1.7 points,
+  mean error -0.3, same sign for 80%. Group means hold up better than any one ACO's value.
+* **Early renewers' realized reset.** CMS's published 2022 historical benchmarks for the 29 early renewers averaged
+  1.3% below their PY2021 benchmarks (median 1.5% below; 66% lower). For the 26 with both values, the rebuilt gain
+  predicted -1.6 points on average, against -1.4 realized.
+* **The benchmark a year later.** From PY2021 to PY2022 the updated benchmark, which includes the annual update, rose
+  3.1% for early renewers and 2.9% for stayers on average; within cohort the difference is 0.0 points (-2.0 to 2.2),
+  p = 0.97.
+
 ## Implications and open questions
 
 For program design, the results suggest that the early-renewal option let ACOs choose when to reset. The ones that
-used it were those whose regions spent more relative to their benchmarks and those at higher BASIC levels, for whom
-ENHANCED was a short step. That is selection into an option the program created; it is not evidence that renewing
+used it more often had regions that spent more relative to their benchmarks and were more often at higher BASIC
+levels, for whom ENHANCED was a short step. That is selection into an option the program created; it is not evidence that renewing
 changed spending. Three questions remain open:
 
 * **What did early renewal cost Medicare,** through higher benchmarks or larger shared-savings payments? This study
   does not estimate it.
 * **Did the 2024 rules change who renews early?** The prior savings adjustment and the offset to negative regional
-  adjustments weaken the own-spending penalty that early renewers faced in 2022.
+  adjustments weaken the own-spending penalty that early renewers faced in 2022. 34 stayers renewed early into 2024
+  agreements under those rules, so the data to look are public.
 * **How much of the choice was the sharing rate rather than the benchmark?** In these data the two came with the same
   decision; a period in which ACOs could move to ENHANCED without resetting would separate them.
 
@@ -834,9 +873,14 @@ the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's te
 * **An approximate benchmark.** The expected gain is rebuilt from public files; the validation bounds the error but
   does not remove it, and the regional part has no published counterpart to check against. The own-spending
   component's estimated error is larger than its spread among stayers (see [Validation](#validation-of-the-benchmark-approximation)),
-  so H2a and the total expected gain are weak evidence at the level of one ACO.
+  so H2a and the total expected gain are weak evidence at the level of one ACO. The validation is on levels; on the
+  change scale, checked afterwards, agreement is moderate (Spearman 0.61; see [Post hoc checks](#post-hoc-checks-not-registered)).
 * **Few early renewers.** 29 ACOs, 24 in the decision model: the power analysis shows what can and cannot be detected,
   and the supported H3 coefficients are probably overestimates (see H3).
+* **ACOs are not fully independent.** ACOs under one owner may decide together, and ACOs in one market share regional
+  spending, so the effective sample is smaller than the ACO count and the permutation tests may overstate precision.
+* **Who counts as a stayer.** 42 stayers renewed early later, into 2023 or 2024 agreements, so the comparison is
+  about the 2022 decision, not early renewal at any time.
 * **Exclusions above the plan's 10% line.** The expected-gain variables (H2a, H2b, H3 and the gain itself) could not
   be built for 3 of 29 early renewers (10.3%) and 36 of 277 stayers (13.0%); the plan requires reporting this as a
   limitation when either group passes 10% ([section 3][plan-3][^plan]). In every one of the 39, CMS hides the ACO's count of
@@ -864,9 +908,10 @@ the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's te
   against 14% of early renewers (see [H4](#h4-spending-after-renewal)), so its later years are increasingly selected.
 * **Other design threats.**
     * *Survivorship:* the base population needs a PY2021 enrollment record, so ACOs in these cohorts that left
-      before PY2021 are not in it.
+      before PY2021 are not in it (22 of the 356 in the PY2020 file; none had renewed into a 2021 agreement).
     * *Anticipation:* the decision to renew was made during 2021, which is both the last pre-period year for H4 and
-      the third benchmark year of the new benchmark.
+      the third benchmark year of the new benchmark, while trade groups were asking CMS to allow pre-pandemic benchmark
+      years ([AHA, NAACOS and others 2021][aha2021][^aha2021]).
     * *Composition:* a renewing ACO can change its participant list, so H4's spending can move through who is
       assigned rather than through behavior; the risk-adjusted version addresses this only in part.
     * *Leavers:* leaving the program is a third choice, and comparing early renewers only with stayers sets it
@@ -1033,7 +1078,8 @@ General terms link to Wikipedia in the text instead.
 [cfr-220]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-C/section-425.220#p-425.220%28a%29
 [cfr-226]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-C/section-425.226#p-425.226%28a%29%282%29%28i%29
 [cfr-600-stay-2023]: https://www.ecfr.gov/on/2023-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29%28vi%29
-[cfr-600-glide]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29
+[cfr-600-d]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28d%29
+[cfr-600-glide]:  https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29
 [cfr-600-entry]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%281%29%28i%29
 [cfr-600-pause-2021]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29%28iii%29
 [cfr-600-pause-2022]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29%28iv%29
@@ -1153,6 +1199,11 @@ General terms link to Wikipedia in the text instead.
 [ying2023]: https://doi.org/10.1007/s11606-022-07947-x
 [moloci2021]: https://doi.org/10.1007/s11606-020-06424-7
 [research]: https://github.com/stharrold/stharrold.github.io/tree/src_master/analysis/mssp-benchmark-ratchet/research
+[posthoc]: https://github.com/stharrold/stharrold.github.io/blob/bf91e5c/analysis/mssp-benchmark-ratchet/posthoc/validation_change.py
+[posthoc-json]: https://github.com/stharrold/stharrold.github.io/blob/bf91e5c/analysis/mssp-benchmark-ratchet/posthoc/validation_change.json
+[milliman2024]: https://www.milliman.com/-/media/milliman/pdfs/2024-articles/4-2-24_medicare_shared_savings_program_aco_financial_results_for_2022.ashx
+[milliman2025]: https://edge.sitecorecloud.io/millimaninc5660-milliman6442-prod27d5-0001/media/Milliman/PDFs/2025-Articles/4-7-25_MSSP-annual-renewal-considerations.pdf
+[aha2021]: https://www.aha.org/lettercomment/2021-10-14-aha-others-cms-re-request-provide-mssp-acos-option-use-pre-pandemic-years
 [callaway2021]: https://doi.org/10.1016/j.jeconom.2020.12.001
 [firth1993]: https://doi.org/10.1093/biomet/80.1.27
 [gelman2008]: https://doi.org/10.1002/sim.3107
@@ -1186,10 +1237,12 @@ General terms link to Wikipedia in the text instead.
 [^nosek2018]: Nosek, B. A., Ebersole, C. R., DeHaven, A. C. and Mellor, D. T. (2018). The preregistration revolution. *Proceedings of the National Academy of Sciences* 115(11), 2600-2606. [doi:10.1073/pnas.1708274114][nosek2018]
 [^results]: Harrold, S. (2026). [Results files][results-dir] at commit `3da8cd2`, each recording the commit it ran at: [`validation.json`][res-validation], [`power.json`][res-power], [`confirm.json`][res-confirm], [`robustness.json`][res-robustness], [`did.json`][res-did], [`conventional.json`][res-conventional], [`exploratory.json`][res-exploratory]; with [`REGISTRATION.md`][registration-md] and the notebook source [`report/results_notebook.py`][notebook-src] at commit `eceda2a`, the version exported.
 [^cfr-425]: [42 CFR Part 425][cfr-425], Medicare Shared Savings Program. eCFR, as in force on 2022-01-01.
-[^cfr-425-600]: 42 CFR 425.600, Selection of risk model. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(4)(i)(B)(1)(i)][cfr-600-entry], [(a)(4)(i)(B)(2)][cfr-600-glide], [(a)(4)(i)(B)(2)(iii)][cfr-600-pause-2021], [(a)(4)(i)(B)(2)(iv)][cfr-600-pause-2022]; and, as in force on 2023-01-01, [(a)(4)(i)(B)(2)(vi)][cfr-600-stay-2023].
+[^cfr-425-600]: 42 CFR 425.600, Selection of risk model. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(4)(i)(B)(1)(i)][cfr-600-entry], [(a)(4)(i)(B)(2)][cfr-600-glide], [(a)(4)(i)(B)(2)(iii)][cfr-600-pause-2021], [(a)(4)(i)(B)(2)(iv)][cfr-600-pause-2022], [(d)][cfr-600-d]; and, as in force on 2023-01-01, [(a)(4)(i)(B)(2)(vi)][cfr-600-stay-2023].
 [^cfr-425-226]: 42 CFR 425.226, Annual participation elections. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(2)(i)][cfr-226].
 [^cfr-425-200]: 42 CFR 425.200, Participation agreement with CMS. eCFR, as in force on 2022-01-01. Paragraphs cited: [(b)(3)(ii)(B)][cfr-200-ext], [(b)(4)(ii)][cfr-200-b4], [(b)(5)][cfr-200-b5].
 [^fr-2020]: CMS (2020). Medicare and Medicaid Programs, Basic Health Program, and Exchanges; Additional Policy and Regulatory Revisions in Response to the COVID-19 Public Health Emergency. Interim final rule. [*Federal Register* 85, 27550][fr-covid], May 8, 2020.
+[^milliman2024]: Smith, M., Jensen, B., Anderson, J. and Lockett, K. (2024). [Medicare Shared Savings Program: ACO financial results for 2022][milliman2024]. Milliman research report, April 2024. Figure 12, "Gross savings rates of ACOs by 2022 early rebasing status".
+[^milliman2025]: Milliman (2025). [Annual renewal considerations in the Medicare Shared Savings Program (MSSP)][milliman2025]. Case study, April 2025.
 [^douven2015]: Douven, R., McGuire, T. G. and McWilliams, J. M. (2015). Avoiding unintended incentives in ACO payment models. *Health Affairs* 34(1), 143-149. [doi:10.1377/hlthaff.2014.0444][douven2015]
 [^rose2016]: Rose, S., Zaslavsky, A. M. and McWilliams, J. M. (2016). Variation in accountable care organization spending and sensitivity to risk adjustment: implications for benchmarking. *Health Affairs* 35(3), 440-448. [doi:10.1377/hlthaff.2015.1026][rose2016]
 [^lyu2023]: Lyu, P. F., Chernew, M. E. and McWilliams, J. M. (2023). Benchmarking changes and selective participation in the Medicare Shared Savings Program. *Health Affairs* 42(5), 622-631. [doi:10.1377/hlthaff.2022.01061][lyu2023]
@@ -1229,5 +1282,7 @@ General terms link to Wikipedia in the text instead.
 [^gelman-carlin2014]: Gelman, A. and Carlin, J. (2014). Beyond power calculations: assessing Type S (sign) and Type M (magnitude) errors. *Perspectives on Psychological Science* 9(6), 641-651. [doi:10.1177/1745691614551642][gelman-carlin2014]
 [^sw-marimo]: marimo 0.25.2, reactive Python notebooks ([marimo.io][marimo]); run outside the lockfile, pinned on the command line (see [Reproduce](#reproduce)).
 [^census]: U.S. Census Bureau. [Census Regions and Divisions of the United States][census] (map).
+[^posthoc]: Harrold, S. (2026). Post hoc analyses, not registered: [`posthoc/validation_change.py`][posthoc] and its output [`validation_change.json`][posthoc-json], at commit `bf91e5c`.
 [^suppression]: CMS (2020). [CMS Cell Suppression Policy][suppression-archive]: cells with values of 1 to 10 are not reported. Archived copy; the [HHS Guidance Portal page][suppression] refuses some visitors.
 [^cfr-2024]: 42 CFR 425.652, Establishing, adjusting, and updating the benchmark for agreement periods beginning on January 1, 2024, and in subsequent years; 425.656, Calculating the regional adjustment to the historical benchmark; and 425.658, Calculating the prior savings adjustment to the historical benchmark. eCFR, as in force on 2024-01-01. Paragraphs cited: [425.652][cfr24-652], [425.652(a)(8)][cfr24-652-a8], [425.652(b)][cfr24-652-b], [425.656(c)(4)][cfr24-656], [425.658(c)(1)][cfr24-658].
+[^aha2021]: American Hospital Association, National Association of ACOs and others (2021). [Letter to CMS requesting an option for MSSP ACOs to use pre-pandemic years to set benchmarks][aha2021], October 14, 2021.
