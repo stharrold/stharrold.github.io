@@ -27,28 +27,42 @@ In the [Medicare Shared Savings Program][mssp][^cms-mssp] (MSSP), an [accountabl
 share of the savings when its patients' spending comes in below a benchmark. The benchmark is
 [reset at the start of each agreement period][cfr-601-reset][^cfr-425-601] from the ACO's own recent spending,
 [pulled toward its region's][cfr-601-adj]. An ACO can [end its agreement early and start a new one][cfr-20-renewing][^cfr-425-20],
-which resets the benchmark early. For the 2022 agreement cycle, 29 of the 306 ACOs in agreements that began in 2019
-or 2020 ended them early and started new ones (from the [enrollment files][data-acos][^data-acos]).
+which resets the benchmark early. Of the 334 ACOs whose agreements began July 1, 2019 or January 1, 2020, 29 ended
+them early and started new ones on January 1, 2022; 277 stayed in their agreements and 28 left the program (from the
+[enrollment files][data-acos][^data-acos]).
 
 This post asks why they did, and what renewing changed:
 
 * **Who chose to reset, and why (H1-H3).** Did early renewers stand to gain from a reset because their regions spent
   more than their benchmarks (the primary test), because their own spending had run high, or because renewing was
   the only way into the [track that shares 75% of savings][cfr-610-rate][^cfr-425-610]?
-* **What renewing did (H4).** Did early renewers' spending change afterwards, relative to ACOs that had not yet
-  renewed? A [difference-in-differences][did-wiki] estimate.
+* **Spending after renewal (H4).** Did early renewers' spending change afterwards, relative to ACOs that had not
+  yet renewed? A [difference-in-differences][did-wiki] estimate.
+
+Terms used throughout:
+
+* **PY:** performance year, the calendar year over which CMS measures an ACO's spending against its benchmark.
+* **Benchmark years (BY1-BY3):** the three years before an agreement starts, whose spending sets the new benchmark.
+* **BASIC and ENHANCED tracks:** BASIC has five levels, A to E. Levels A and B are **one-sided** (the ACO shares
+  savings only), and C to E are **two-sided** (it also repays part of any losses). ENHANCED is two-sided with the
+  highest sharing rate.
+* **Glide path:** BASIC's schedule for moving an ACO up a level each year, toward two-sided risk.
 
 The analysis plan was registered on [OSF Registries](https://osf.io/c53w9/) (DOI
 [10.17605/OSF.IO/C53W9](https://doi.org/10.17605/OSF.IO/C53W9))[^registration] before any outcome value was read, together with the
 analysis code, which was written and tested on [synthetic data][synthetic][^code] first. Every result below is reported, whatever it
 shows; changes made after registration are listed separately under [Deviations](#deviations).
 
-**In short.** The primary test supported the reset motive: early renewers' regions spent 3.4 percentage points of
-benchmark more than stayers' regions, relative to their current benchmarks (95% [credible interval][credible] 1.7 to
-5.4, p < 0.001). Early renewers were not ACOs whose own spending had run high: they were beating their benchmarks by
-more than stayers, with savings rates about 2 points higher, so their approximate gain from a reset did not differ
-from stayers' on net. Renewing early had no detectable effect on spending growth in PY2022-PY2024 (-0.4%, -4.0% to
-+2.5%), and a continuing pre-period trend difference cannot be ruled out, so that estimate is not read as an effect.
+**In short.** The primary test found what the plan calls "evidence for the reset motive beyond past savings": early
+renewers' regions spent 3.4 percentage points of benchmark more than stayers' regions, relative to their current
+benchmarks (95% [credible interval][credible] 1.7 to 5.4, p < 0.001). That is not a larger expected gain. Early
+renewers were beating their benchmarks by more than stayers, with savings rates about 2 points higher, and by the
+approximation a reset would on average have *lowered* both groups' benchmarks (by about 1.6% for early renewers and
+1% for stayers): early renewers stood to gain more from the regional adjustment and to lose more on their own
+spending. In the decision model, renewing early was more likely with a higher regional pull and a higher BASIC level.
+Early renewers' spending growth in PY2022-PY2024 did not differ detectably from that of ACOs not yet renewed (-0.4%,
+-4.0% to +2.5%); a continuing pre-period difference in trends cannot be ruled out, so this is not read as an effect
+of renewing.
 
 ## Why pre-register
 
@@ -130,7 +144,9 @@ $$\text{regional pull} = 100 \times \frac{\sum_e s_e\, R_e - B}{B}$$
 
 where $R_e$ is the risk-adjusted regional spending for [enrollment type][cfr-601-types][^cfr-425-601] $e$ ([ESRD][esrd], disabled,
 [aged/dual][dual], aged/non-dual), $s_e$ the ACO's share of person-years of that type, and $B$ its current per-capita benchmark. It has
-no own-spending term. An ACO can be beating its own benchmark and still stand to gain from a reset because its
+no term for the ACO's own benchmark-year spending, though it is not free of the ACO's own data: $B$ was set from the
+ACO's earlier spending, and $R_e$ is adjusted with the ACO's own risk scores (see [Limitations](#limitations)). An
+ACO can be beating its own benchmark and still stand to gain from a reset because its
 region spends more; that is the part of the reset motive a savings rate cannot show.
 
 ### Hypotheses
@@ -162,11 +178,11 @@ CMS does not publish what an ACO's benchmark would have been had it reset. The p
   [weighted by where the ACO's beneficiaries live][cfr-601-regional-weight][^cfr-425-601] (from the
   [assigned-beneficiaries-by-county files][data-assigned][^data-assigned]) and [adjusted to the ACO's case mix][cfr-601-regional-risk];
 * the regional adjustment with the [phase-in weights][cfr-601-phase][^cfr-425-601] and [caps][cfr-601-cap];
-* and the shares that [combine the four enrollment types][cfr-601-types][^cfr-425-601].
+* and the shares that [combine the four enrollment types][cfr-601-shares][^cfr-425-601].
 
 Because several steps can only be approximated from public files, the approximation was **validated before it was
-used**: rebuilt for the 101 regular renewers whose 2022 benchmarks CMS does publish (in the
-[results files][data-results][^data-results]), with a pass rule fixed in the plan ([section 4.4][plan-4.4][^plan]:
+used**: rebuilt for the regular renewers whose 2022 benchmarks CMS does publish (in the
+[results files][data-results][^data-results]; 101 of the 111 eligible; 10 lack either the rebuilt or the published benchmark), with a pass rule fixed in the plan ([section 4.4][plan-4.4][^plan]:
 [Spearman correlation][spearman] at least 0.80, [median absolute percentage error][mape] at most 5%). Early renewers were kept
 out of the validation sample, and the 2022 results file was filtered as it was loaded, so validation could not
 reveal their actual reset.
@@ -175,9 +191,9 @@ reveal their actual reset.
 
 ### Estimates and significance
 
-Every confirmatory estimate is Bayesian, and significance is measured by resampling, following Jake VanderPlas's
-"Statistics for Hackers" (PyCon 2016; [video][vdp-video][^vanderplas2016], [slides][vdp-slides]): simulate the null instead of
-looking up a distribution.
+Every confirmatory estimate is Bayesian, and significance is measured by resampling: the null distribution is simulated
+rather than looked up (an accessible introduction is VanderPlas's "Statistics for Hackers";
+[video][vdp-video][^vanderplas2016], [slides][vdp-slides]).
 
 * **Group comparisons (H1, H2a, H2b, H4).** The estimate is the difference in means, early renewers minus stayers,
   within each cohort and averaged with weights proportional to the early renewers in each cohort. Its posterior is a
@@ -215,7 +231,7 @@ Shuffling labels in a model with several predictors would test "nothing matters"
 others". Each core predictor is instead tested by **direct simulation under the reduced model** ([a parametric
 bootstrap][param-boot]): fit the model without that predictor, simulate 10,000 sets of outcomes from its posterior, refit the
 full model to each, and compare the observed coefficient with that null distribution. That is about 40,000 [MCMC][mcmc]
-refits, roughly 19 hours on 5 cores.
+refits, which took 17 hours on 5 cores.
 
 ### H4: difference-in-differences with an equivalence rule for pre-trends
 
@@ -241,7 +257,9 @@ beside it, along with [propensity-weighted][ipw] ([Rosenbaum and Rubin 1983][ros
 For comparison, and not used for any decision (plan [section 5.7][plan-5.7][^plan]): [Welch t-tests][welch-wiki]
 ([Welch 1947][welch1947][^welch1947]) and [OLS][ols] with [HC2 robust errors][hc] ([MacKinnon and White 1985][mackinnon1985][^mackinnon1985]) for
 H1, H2a and H2b; maximum-likelihood logistic regression for H3 ([statsmodels][statsmodels-logit][^sw-statsmodels]); and
-[two-way fixed effects][fe] with an event study, [errors clustered][cluster] by ACO, for H4. An agreement table puts each registered verdict next to the conventional one.
+[two-way fixed effects][fe] with an event study, [errors clustered][cluster] by ACO, for H4. An agreement table puts
+each registered verdict next to the conventional one; for H2a and H2b the registered counterpart is OLS with HC2
+errors, and the Welch t-test is shown beside it.
 
 ### Decision rules
 
@@ -267,9 +285,11 @@ The pipeline is in [`analysis/mssp-benchmark-ratchet/`][code][^code], linked her
 * **Two implementations.** A [synthetic-data generator][synthetic][^code] writes made-up files with the real file and column names and
   computes the constructed variables independently in [NumPy](https://numpy.org/). The [tests][tests] require the SQL to match it, and every stage
   runs end to end on synthetic data, including the recovery of a planted -4% effect in H4.
-* **[Staged runner][run][^code].** Stages run in the plan's order (validate, power, confirm, robustness, did, conventional,
-  exploratory), and each refuses to start until the output it depends on exists, so the power analysis is
-  committed before any confirmatory estimate.
+* **[Staged runner][run][^code].** Each stage refuses to start until the outputs it depends on exist: validate, then
+  power, then confirm and robustness (both need only validation and power, and ran at the same time), then did,
+  conventional and exploratory. So the power analysis was committed before any confirmatory estimate. The
+  robustness results were committed first, about 17 hours before the confirmatory ones, and were read only together
+  with them, primary test first.
 * **Reproducible environment.** [uv][uv][^sw-uv] with a [lockfile][uv-lock]; PyMC, `firthmodels` and
   [`statsmodels`][statsmodels][^sw-statsmodels] are pinned in `uv.lock`, and every refit has its own seed from a fixed
   [seed sequence][numpy-seed][^sw-numpy] ([parallel streams][numpy-parallel]), so results do not depend on the number of
@@ -278,25 +298,6 @@ The pipeline is in [`analysis/mssp-benchmark-ratchet/`][code][^code], linked her
 Writing the code before registering found gaps in the plan while it could still change: column names that drift
 between years (`ACO_Num` and `ACO_ID`, `Sav_Rate` and `Sav_rate`), how calibration splits between the gain's two
 parts, how "below its region" is compared, and the per-refit seeds.
-
-## What review caught before registration
-
-Independent reviews of the plan and code, each given only the files, found problems that would have been permanent
-once registered:
-
-* **The first primary test was mechanically tied to past savings.** The "regional component" contains the
-  own-spending part with a negative sign; the primary test became the regional pull.
-* **Raw regional spending is not what CMS compares.** The regulation
-  [risk-adjusts regional spending to the ACO's case mix][cfr-601-regional-risk][^cfr-425-601], and CMS restates benchmark years to
-  the latest year's risk ([specifications, version 10][spec-v10][^spec-v10], section 4.1.2); both were implemented, with the unadjusted version
-  kept as a robustness check.
-* **Suppressed values.** The results files [hide small cells][suppression-archive][^suppression], and the first rule dropped any ACO with one hidden
-  value. A fallback chain (exact recovery from totals, then shown years, then a regional ratio) replaced it, with a
-  complete-case check.
-* **A permutation test that tests the wrong null** in a multi-predictor model, replaced by direct simulation (above).
-* **Pre-trend testing with one pre-period**, replaced by the equivalence condition (above).
-* **A status line** in the plan that still said "DRAFT ... Not yet registered", and would have been frozen into the
-  public record.
 
 ## Registration
 
@@ -313,10 +314,8 @@ The zip can be rebuilt from the repository and checked against the registered co
 git archive --format=zip a4064f5 analysis/mssp-benchmark-ratchet pyproject.toml uv.lock | shasum -a 256
 ```
 
-Registering had its own lessons. OSF's summary field does not render Markdown and deletes anything that looks like an
-HTML tag, so the summary is a plain-text copy of the plan with placeholders such as `<e>` written `{e}`; the
-attached Markdown file is the authoritative version. Checking the saved draft through the [OSF API][osf-api], not the page,
-caught two silent losses before submission.
+The attached Markdown file is the authoritative copy of the plan; OSF's summary field holds a plain-text version
+(checked through the [OSF API][osf-api] before submission).
 
 ## Power
 
@@ -329,11 +328,11 @@ Computed after registration and committed before any confirmatory estimate, as t
 | H1 savings rate | 2.7 percentage points (simulated power 80.4%) |
 | H2b regional pull | 2.5 percentage points |
 | H2a own-spending component | 1.8 percentage points (0.55 SD) |
-| H4 spending change | 3.8% (log 0.038) |
+| H4 spending change | 3.8 log points (a change of +3.9% or -3.7%) |
 
 **H3 is underpowered.** At a true log-odds difference of 0.5 per 2 SD, the 95% interval excludes zero in only 17%
-(regional pull), 0% (own-spending component) and 14% (BASIC level) of simulated datasets. An "undetermined" H3
-verdict is therefore the expected outcome, whatever the motives were.
+(regional pull), 0% (own-spending component) and 14% (BASIC level) of simulated datasets. If the true effects were
+about that size, an "undetermined" H3 verdict was the expected outcome. Power was simulated only at 0.5.
 
 ## Results
 
@@ -344,10 +343,20 @@ records the commit it ran at.
 
 ### Validation of the benchmark approximation
 
-Passed. For the 101 regular renewers whose 2022 benchmarks CMS publishes, the rebuilt benchmark had a Spearman
-correlation of 0.94 with the actual one and a median absolute percentage error of 1.6% (the rule: at least 0.80 and
-at most 5%). The own-spending component is therefore used as registered, not as exploratory, and enters H3 with a
-measurement error of $\sigma_v$ = 4.38 percentage points ([`validation.json`][res-validation][^results]).
+Passed. For the 101 regular renewers whose 2022 benchmarks CMS publishes (of 111 eligible; 10 lack either the rebuilt
+or the published benchmark), the rebuilt benchmark had a Spearman correlation of 0.94 with the actual one and a
+median absolute percentage error of 1.6% (the rule: at least 0.80 and at most 5%). The regression of actual on
+rebuilt had slope 0.944 and intercept 664, inside the plan's 0.9-1.1 range for the slope, so no calibration was
+applied. By phase-in step of the regional adjustment: 62 ACOs at the first step (Spearman 0.93, error 2.0%) and 39
+at the second (0.96, 0.9%). The step-1 check of the own-spending part against CMS's own benchmark-year spending gave
+Spearman 0.95 and error 1.4% (101 ACOs), and its error SD sets $\sigma_v$ = 4.38 percentage points
+([`validation.json`][res-validation][^results]). The own-spending component is therefore used as registered, not as
+exploratory.
+
+These checks are on benchmark *levels*, which vary widely across ACOs. The own-spending component is a *difference*,
+and its estimated error ($\sigma_v$ = 4.38 points) is larger than its spread among stayers (SD 3.3), so at the level
+of one ACO it is mostly noise. H2a, the total expected gain and the offset argument below rest on it; the H1 savings
+rates, which CMS reports directly, are the firmer evidence that early renewers were beating their benchmarks.
 
 ### Who renewed early (H2b, H2a, H1)
 
@@ -367,23 +376,30 @@ rates in percentage points.
 26 early renewers and 241 stayers for the expected-gain variables, 29 and 277 for H1 (see
 [Limitations](#limitations) for the exclusions).
 
-* **H2b, supported (rule 1).** p < 0.05 and positive: "early renewers' regions spent more relative to their current
+* **H2b (rule 1).** p < 0.05 and positive: "early renewers' regions spent more relative to their current
   benchmarks, evidence for the reset motive beyond past savings". The difference is larger than the minimum
   detectable effect, which was computed for 29 vs 277 ACOs and so is slightly understated for the 26 vs 241
   compared. In unweighted means, the early renewers' regions spent 5.0 points above their benchmarks, the stayers'
   1.8 points.
-* **H2a, contradicted (rule 2, the wording of rule 1 for the own-spending component).** p < 0.05 and negative:
-  "their own spending was lower relative to their benchmarks, contrary to the reset motive". Early renewers were
+* **H2a (rule 2, which applies rule 1's wording to the own-spending component).** p < 0.05 and negative; in rule 1's
+  terms adapted to this component, their own spending was lower relative to their benchmarks, contrary to the reset
+  motive. Early renewers were
   beating their benchmarks by more than stayers. H2a is close to H1 restated, so it is not counted as separate
   evidence.
 * **H1, descriptive (rule 3).** Early renewers had higher savings rates in both years. No motive is attributed to the
   sign. (The [PY2020 results file][file-py2020][^data-results] stores savings rates as fractions and the [PY2021 file][file-py2021] as
-  percents; both are shown
-  here in percentage points.)
+  percents; both are shown here in percentage points.)
+
+The tables and the dashboard label these outcomes "supported" (H2b) and "contradicted" (H2a), shorthand for rule 1's
+two directions.
 
 The two parts of the gain point in opposite directions and offset: the regional component is larger for early
-renewers, the own-spending component smaller, and the total expected gain does not differ. So the evidence is about
-where early renewers stood relative to their regions, not about a larger expected gain from resetting. That is the
+renewers, the own-spending component smaller, and the total expected gain does not differ. On average a reset would
+have *lowered* both groups' benchmarks, by the approximation: in unweighted means the own-spending and regional parts
+sum to -5.3 + 3.7 = -1.6 points for early renewers and -3.2 + 2.2 = -1.0 for stayers ([`exploratory.json`][res-exploratory][^results]).
+That follows from the savings: rebasing to an ACO's own spending lowers the benchmark of any ACO that has been
+beating it. So the evidence is about where early renewers stood relative to their regions, not about a larger
+expected gain from resetting. That is the
 configuration the plan described before any outcome was read ([section 1.3][plan-1.3][^plan]): an ACO "can be beating its own
 benchmark and still stand to gain from a reset because its region spends more". As the plan also says (rule 8), no
 test here can rule the sharing-rate motive in or out.
@@ -408,11 +424,17 @@ Coefficients are log-odds differences per 2 SD, or for the BASIC level between l
 * **Verdicts (rule 4).** The regional pull and a higher BASIC level are supported; the own-spending component is
   undetermined. The overall test (the largest absolute core coefficient against its simulated null) gives
   p = 0.004. Adjustment factors are estimates only.
+* **What the BASIC level means.** The plan's rationale for it is a smaller step to two-sided risk under ENHANCED
+  ([section 1.3][plan-1.3][^plan]): 16 of the 27 BASIC-track early renewers were already at Level E in 2021, BASIC's
+  highest level, for whom ENHANCED was a short further step ([`exploratory.json`][res-exploratory][^results]). That bears on
+  the sharing-rate motive at least as much as on the reset motive, and the two cannot be separated here.
 * **Checks.** The model met its convergence checks on the first fit (largest [R-hat][arviz-rhat][^sw-arviz] 1.001, smallest
   bulk [effective sample size][arviz-ess] 6,661, no divergences). The Student-t fit needed its one registered rerun, then converged, and agrees:
-  regional pull 1.65 (0.53 to 2.87), BASIC level 1.63 (0.53 to 2.85). In [posterior predictive][ppc] checks the observed 24
-  early renewers fall inside the replicated 95% range (14 to 37), and in the top predicted decile 57% renewed
-  against 45% predicted.
+  regional pull 1.65 (0.53 to 2.87), BASIC level 1.63 (0.53 to 2.85), own-spending component -0.56 (-9.98 to 7.36).
+  In the direct-simulation tests, 0.34-0.43% of the refits did not converge. Before seeing the outcomes, the priors
+  implied a median 17% of ACOs renewing early (95% range 1% to 70%). In [posterior predictive][ppc] checks the
+  observed 24 early renewers fall inside the replicated 95% range (14 to 37), and in the top predicted decile 57%
+  renewed against 45% predicted.
 * **The own-spending coefficient is the prior.** Its interval is the prior's 95% range, because the measurement
   error ($\sigma_v$ = 4.38) is larger than the variable's spread among stayers (SD 3.3): the model can learn almost
   nothing about it. Without the measurement-error model (a robustness check) it is -0.64 (-1.51 to 0.23).
@@ -421,7 +443,7 @@ Coefficients are log-odds differences per 2 SD, or for the BASIC level between l
   effect (a "type M" error, [Gelman and Carlin 2014][gelman-carlin2014][^gelman-carlin2014]), so the directions are the result, and
   coefficients near 1.3 ([odds ratios][odds-ratio] near 4) are probably too large.
 
-### H4: what renewing did to spending
+### H4: spending after renewal
 
 29 early renewers and 276 comparison ACOs not yet renewed (one stayer has no spending value in any post-period
 year; [`did.json`][res-did][^results]). The outcome is the change in log per-capita spending from
@@ -433,14 +455,33 @@ PY2020-PY2021 to PY2022-PY2024, shown as a percent difference in spending growth
 | Pre-trend (PY2020 to PY2021) | +0.7% | -2.3% to +4.9% | 0.58 |
 | Trend-adjusted | -4.0% | -12.0% to +2.7% | 0.14 |
 
-* **Verdict (rule 5).** "No detectable difference"; the minimum detectable effect is 3.8%.
+* **Verdict (rule 5).** "No detectable difference"; the minimum detectable effect is 3.8 log points (about 3.9%).
 * **Not read as an effect.** The pre-trend test is not evidence against parallel trends (p = 0.58), but the
   equivalence condition does not hold: the scaled pre-trend bound, 2.41 years times 0.048, is 0.115 log points,
-  far above the H4 estimate of 0.004. With an estimate this close to zero the condition cannot hold, and that is the
-  rule working as written: a trend difference of the size the pre-period allows could hide an effect in either
-  direction. So H4 is reported as a difference in spending changes that cannot be told apart from a continuation of
-  a pre-period difference in trends, with the trend-adjusted estimate beside it, which also shows no detectable
-  difference.
+  far above the H4 estimate of 0.004. The condition needed an estimate above 0.115 log points, about 12% and three
+  times the minimum detectable effect. With one pre-period, that threshold was a property of the design, fixed at
+  registration: for any estimate near zero, the rule could only end in "not read as an effect". A trend difference
+  of the size the pre-period allows could hide an effect in either direction. So H4 is reported as a difference in
+  spending changes that cannot be told apart from a continuation of a pre-period difference in trends.
+* **What the data do bound.** Under parallel trends, the H4 interval (-4.0% to +2.5%) rules out changes in spending
+  growth much larger than 4% in either direction. The trend-adjusted interval (-12.0% to +2.7%) is too wide to be
+  informative.
+* **Attrition.** The plan requires it by group and year ([section 4.5][plan-4.5][^plan]), and it is uneven:
+
+    | Group and status | PY2022 | PY2023 | PY2024 |
+    |---|---|---|---|
+    | Early renewers (29): included | 29 | 28 | 25 |
+    | Early renewers: left the program | 0 | 1 | 1 |
+    | Early renewers: renewed again | 0 | 0 | 3 |
+    | Stayers (277): included | 276 | 222 | 162 |
+    | Stayers: left the program | 0 | 46 | 72 |
+    | Stayers: renewed (no longer "not yet renewed") | 0 | 8 | 42 |
+    | Stayers: no spending value | 1 | 1 | 1 |
+
+    By PY2024, 115 of 277 stayers (42%) had dropped out of the comparison, against 4 of 29 early renewers (14%).
+    Exits are unlikely to be random: the ACOs that left after PY2021 had the lowest savings rates (see
+    [Exploratory](#exploratory)). The balanced panel, ACOs with all five years, is the check on this: -1.6% (-5.6%
+    to +1.6%), p = 0.30.
 
 ### Registered and conventional methods
 
@@ -449,14 +490,15 @@ Every verdict agrees with its conventional counterpart (reported only; it would 
 
 | Claim | Registered | Conventional |
 |---|---|---|
-| H2b | supported (p < 0.001) | supported: Welch t-test +3.2 (1.1 to 5.3), p = 0.004 |
-| H2a | contradicted (p = 0.003) | contradicted: Welch t-test -2.1 (-3.9 to -0.2), p = 0.028 |
+| H2b | supported (p < 0.001) | supported: OLS with HC2 errors +3.3 (1.3 to 5.4), p = 0.001 |
+| H2a | contradicted (p = 0.003) | contradicted: OLS with HC2 errors -2.1 (-3.8 to -0.4), p = 0.018 |
 | H3 regional pull | supported (p = 0.002) | supported: logistic odds ratio 4.0 (1.2 to 13.4), p = 0.024 |
 | H3 own-spending component | undetermined (p = 0.19) | undetermined: odds ratio 0.53 (0.19 to 1.44), p = 0.21 |
 | H3 higher BASIC level | supported (p = 0.003) | supported: odds ratio 4.8 (1.5 to 15.6), p = 0.009 |
 | H4 | no detectable difference (p = 0.78) | two-way fixed effects -1.5% (-5.4% to +2.4%), p = 0.44 |
 
-The conventional p-values are mostly larger than the resampling ones, but no verdict changes.
+The conventional p-values are mostly larger than the resampling ones, but no verdict changes. The Welch t-tests
+agree too: H2b +3.2 (1.1 to 5.3), p = 0.004; H2a -2.1 (-3.9 to -0.2), p = 0.028.
 
 ### Interactive results
 
@@ -480,12 +522,14 @@ Jupyter notebook with its outputs saved, which need no CDN. The files as exporte
 ## Robustness
 
 The robustness checks of plan sections [5.5][plan-5.5][^plan] and [5.8][plan-5.8] ([`robustness.json`][res-robustness][^results]
-and [`did.json`][res-did]), read only after the confirmatory results. They do not change the
-verdicts; the dashboard above shows each one next to its confirmatory estimate.
+and [`did.json`][res-did]). The robustness stage ran alongside the confirmatory one, and its results were read only
+together with the confirmatory results. They do not change the verdicts; the dashboard above shows each one next to its confirmatory estimate.
 
-* **H2b holds in every check.** Difference in [medians][median] +2.8 (p < 0.001); 2020-01-01 cohort only +3.7 (p = 0.001);
-  unadjusted county spending +6.9 (p = 0.002); Bayesian regression with cohort only +2.1 (0.5 to 3.8) and with track,
-  level and size added +2.2 (0.7 to 3.8).
+* **H2b keeps its direction in every check.** Difference in [medians][median] +2.8 (p < 0.001); 2020-01-01 cohort
+  only +3.7 (p = 0.001); unadjusted county spending +6.9 (p = 0.002); Bayesian regression with cohort only +2.1 (0.5
+  to 3.8) and with track, level and size added +2.2 (0.7 to 3.8). The size depends on the estimator: the regression
+  estimates are below the minimum detectable effect and well below the +3.4 difference in means, which suggests a
+  few large values among early renewers carry part of it, and the unadjusted version is twice as large.
 * **H2a is weaker by medians.** -1.4, p = 0.085; the other checks keep it below zero with p < 0.05 (cohort only
   p = 0.043, benchmark years 2-3 only p = 0.012, complete cases p = 0.005), though the adjusted regression's interval
   reaches zero (-2.6 to 0.02).
@@ -509,8 +553,8 @@ what is reported above.
 * **[Census region][census][^census]** adds nothing to the decision model: Midwest, South and West, each against the Northeast, all
   have intervals that include zero, and the pull and BASIC-level coefficients barely move (1.43 and 1.32).
 * **Leavers.** The 28 ACOs that left after PY2021 had the lowest savings rates (mean 2.7 points in PY2020, against
-  6.4 for early renewers and 4.6 for stayers), and a regional pull similar to early renewers' on average (4.8 against
-  5.0) but much lower in the median (2.0 against 3.5).
+  6.4 for early renewers and 4.6 for stayers), and a regional pull (for 20 of the 28) similar to early renewers' on
+  average (4.8 against 5.0) but much lower in the median (2.0 against 3.5).
 * **The two early renewers already in ENHANCED,** for whom renewing could not raise the sharing rate, fall between the
   26th and 68th percentile of stayers on every variable (savings rate at the 38th and 65th, regional pull at the 26th
   and 61st).
@@ -540,10 +584,18 @@ the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's te
 ## Limitations
 
 * **Bundled motives.** In these data, renewing early and moving to ENHANCED are one choice, so no test here can
-  separate the sharing-rate motive from the reset motive. The regional pull is the part of the reset motive that is
-  not a function of past savings, not a test that rules the other motive out.
+  separate the sharing-rate motive from the reset motive. The regional pull has no term for benchmark-year spending,
+  but it is not free of the ACO's own data, and it is not a test that rules the other motive out.
+* **What the regional pull also measures.** Its benchmark $B$ was set from the ACO's earlier spending, and its
+  regional spending is adjusted with the ACO's own PY2021 risk scores, so it carries a coding-intensity term. A high
+  pull therefore partly measures how low-cost the ACO has been relative to its region, which is also a plausible
+  reason to want ENHANCED's 75% sharing rate. The case-mix adjustment matters and has no published counterpart to
+  validate it: unadjusted, the H2b difference is +6.9 rather than +3.4, and H3's pull interval reaches zero (0.75,
+  -0.02 to 1.56).
 * **An approximate benchmark.** The expected gain is rebuilt from public files; the validation bounds the error but
-  does not remove it, and the regional part has no published counterpart to check against.
+  does not remove it, and the regional part has no published counterpart to check against. The own-spending
+  component's estimated error is larger than its spread among stayers (see [Validation](#validation-of-the-benchmark-approximation)),
+  so H2a and the total expected gain are weak evidence at the level of one ACO.
 * **Few early renewers.** 29 ACOs, 24 in the decision model: the power analysis shows what can and cannot be detected,
   and the supported H3 coefficients are probably overestimates (see H3).
 * **Exclusions above the plan's 10% line.** The expected-gain variables (H2a, H2b, H3 and the gain itself) could not
@@ -551,13 +603,26 @@ the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's te
   limitation when either group passes 10% ([section 3][plan-3][^plan]). In every one of the 39, CMS hides the ACO's count of
   assigned [ESRD][esrd] (kidney failure) beneficiaries in every county of the
   [2021 county assignment file][data-assigned][^data-assigned] ([it suppresses counts of 1 to 10][suppression-archive][^suppression]),
-  so the ESRD part of regional spending has no county weights; for 15 the aged/dual counts are hidden too. The
+  so the ESRD part of regional spending has no county weights; for 15 the aged/dual counts are hidden too.
+  These details and the size medians below come from a diagnostic query run after the results, outside the
+  registered pipeline; they are not in the results files. The
   plan's fill rules cover hidden cells in the results files, not fully hidden county weights, so these ACOs are
   excluded and counted, as registered. They are smaller ACOs (median 6,702 and 8,578 assigned beneficiaries for
   excluded early renewers and stayers, against 10,757 and 15,649 for those included), so H2a, H2b and H3 describe
   the larger ACOs. Separately, 1 early renewer and 3 stayers had hidden values filled by the registered rules.
 * **One COVID-era pre-period** for H4, which is why the equivalence condition, not a pre-trend test, decides whether
   H4 is read as an effect.
+* **Uneven attrition in H4.** By PY2024 the comparison group had lost 42% of its ACOs, to exits and later renewals,
+  against 14% of early renewers (see [H4](#h4-spending-after-renewal)), so its later years are increasingly selected.
+* **Other design threats.**
+    * *Survivorship:* the base population needs a PY2021 enrollment record, so ACOs in these cohorts that left
+      before PY2021 are not in it.
+    * *Anticipation:* the decision to renew was made during 2021, which is both the last pre-period year for H4 and
+      the third benchmark year of the new benchmark.
+    * *Composition:* a renewing ACO can change its participant list, so H4's spending can move through who is
+      assigned rather than through behavior; the risk-adjusted version addresses this only in part.
+    * *Leavers:* leaving the program is a third choice, and comparing early renewers only with stayers sets it
+      aside.
 
 ## Reproduce
 
@@ -570,15 +635,33 @@ uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py va
 The CMS files are listed in [`data-snapshot.tsv`][snapshot][^code] with their URLs and hashes; the runner checks every hash
 before reading. [`ratchet/synthetic.py`][synthetic] writes a synthetic snapshot for a dry run without CMS data.
 
-The results notebook runs outside the locked environment, with its tools pinned on the command line (Playwright
-1.61.0 is the version whose Chromium the PDF export uses). For the other two exports, replace `html` with
-`ipynb --include-outputs` (outputs are off by default) or `pdf`:
+The results notebook runs outside the locked environment, with its tools pinned on the command line. For the other
+two exports, replace `html` with `ipynb --include-outputs` or `pdf`:
 
 ```bash
 uv run --with marimo==0.25.2 --with matplotlib==3.11.2 --with nbformat==5.11.1 \
     --with 'nbconvert[webpdf]==7.17.2' --with playwright==1.61.0 \
     marimo export html analysis/mssp-benchmark-ratchet/report/results_notebook.py -o results.html
 ```
+
+## What review caught before registration
+
+Independent reviews of the plan and code, each given only the files, found problems that would have been permanent
+once registered:
+
+* **The first primary test was mechanically tied to past savings.** The "regional component" contains the
+  own-spending part with a negative sign; the primary test became the regional pull.
+* **Raw regional spending is not what CMS compares.** The regulation
+  [risk-adjusts regional spending to the ACO's case mix][cfr-601-regional-risk][^cfr-425-601], and CMS restates benchmark years to
+  the latest year's risk ([specifications, version 10][spec-v10][^spec-v10], section 4.1.2); both were implemented, with the unadjusted version
+  kept as a robustness check.
+* **Suppressed values.** The results files [hide small cells][suppression-archive][^suppression], and the first rule dropped any ACO with one hidden
+  value. A fallback chain (exact recovery from totals, then shown years, then a regional ratio) replaced it, with a
+  complete-case check.
+* **A permutation test that tests the wrong null** in a multi-predictor model, replaced by direct simulation (above).
+* **Pre-trend testing with one pre-period**, replaced by the equivalence condition (above).
+* **A status line** in the plan that still said "DRAFT ... Not yet registered", and would have been frozen into the
+  public record.
 
 ## Use of AI tools
 
@@ -631,7 +714,8 @@ General terms link to Wikipedia in the text instead.
 [cfr-601-adj]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.601#p-425.601%28a%29%288%29
 [cfr-601-phase]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.601#p-425.601%28f%29
 [cfr-601-cap]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.601#p-425.601%28a%29%288%29%28ii%29%28C%29
-[cfr-601-types]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.601#p-425.601%28a%29%286%29
+[cfr-601-types]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.601#p-425.601%28a%29%282%29
+[cfr-601-shares]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.601#p-425.601%28d%29%283%29
 [data-acos]: https://data.cms.gov/medicare-shared-savings-program/accountable-care-organizations
 [data-results]: https://data.cms.gov/medicare-shared-savings-program/performance-year-financial-and-quality-results
 [data-county]: https://data.cms.gov/medicare-shared-savings-program/county-level-aggregate-expenditure-and-risk-score-data-on-assignable-beneficiaries
@@ -651,6 +735,7 @@ General terms link to Wikipedia in the text instead.
 [plan-3]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#3-sample-and-groups
 [plan-4.3]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#43-expected-benchmark-gain-from-resetting-constructed
 [plan-4.4]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#44-validation-of-the-approximation-run-before-h2a-h2b-and-h3-are-estimated
+[plan-4.5]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#45-spending-panel-for-h4
 [plan-5.4]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#54-h3-bayesian-decision-model-basic-track-acos
 [plan-5.5]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#55-robustness-all-reported
 [plan-5.6]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#56-exploratory-and-descriptive-labeled-as-such-in-the-write-up
@@ -741,7 +826,7 @@ General terms link to Wikipedia in the text instead.
 
 [^cms-mssp]: CMS. [Shared Savings Program][mssp]. cms.gov.
 [^cms-aco]: CMS. [Accountable Care Organizations (ACOs)][aco-cms]. cms.gov.
-[^cfr-425-601]: 42 CFR 425.601, Establishing, adjusting, and updating the benchmark for agreement periods beginning on July 1, 2019, and in subsequent years. eCFR, as in force on 2022-01-01. [Section][cfr-601]; paragraphs cited: [(a)(3)][cfr-601-risk], [(a)(5)][cfr-601-trend], [(a)(6)][cfr-601-types], [(a)(8)][cfr-601-adj], [(a)(8)(i)(C)][cfr-601-regional-risk], [(a)(8)(ii)(C)][cfr-601-cap], [(d)(1)][cfr-601-regional-weight], [(e)(1)][cfr-601-reset], [(e)(2)(i)][cfr-601-equal], [(f)][cfr-601-phase].
+[^cfr-425-601]: 42 CFR 425.601, Establishing, adjusting, and updating the benchmark for agreement periods beginning on July 1, 2019, and in subsequent years. eCFR, as in force on 2022-01-01. [Section][cfr-601]; paragraphs cited: [(a)(3)][cfr-601-risk], [(a)(5)][cfr-601-trend], [(a)(2)][cfr-601-types], [(a)(8)][cfr-601-adj], [(a)(8)(i)(C)][cfr-601-regional-risk], [(a)(8)(ii)(C)][cfr-601-cap], [(d)(1)][cfr-601-regional-weight], [(d)(3)][cfr-601-shares], [(e)(1)][cfr-601-reset], [(e)(2)(i)][cfr-601-equal], [(f)][cfr-601-phase].
 [^cfr-425-20]: 42 CFR 425.20, Definitions. eCFR, as in force on 2022-01-01. Paragraphs cited: ["Renewing ACO" (2)][cfr-20-renewing].
 [^data-acos]: CMS. [Accountable Care Organizations][data-acos]: Shared Savings Program enrollment, one file per year, 2014-2026. data.cms.gov.
 [^cfr-425-610]: 42 CFR 425.610, Calculation of shared savings and losses under the ENHANCED track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(2)][cfr-610-rate], [(f)(2)][cfr-610-loss].
@@ -757,7 +842,7 @@ General terms link to Wikipedia in the text instead.
 [^cfr-425-226]: 42 CFR 425.226, Annual participation elections. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(2)(i)][cfr-226].
 [^cfr-425-200]: 42 CFR 425.200, Participation agreement with CMS. eCFR, as in force on 2022-01-01. Paragraphs cited: [(b)(3)(ii)(B)][cfr-200-ext], [(b)(4)(ii)][cfr-200-b4], [(b)(5)][cfr-200-b5].
 [^fr-2020]: CMS (2020). Medicare and Medicaid Programs, Basic Health Program, and Exchanges; Additional Policy and Regulatory Revisions in Response to the COVID-19 Public Health Emergency. Interim final rule. [*Federal Register* 85, 27550][fr-covid], May 8, 2020.
-[^plan]: Harrold, S. (2026). [`PREREGISTRATION.md`][plan-1.3], version 0.6, the registered plan, at commit `a4064f5` (sha256 `d0e374c8…`; identical to the OSF copy). Sections cited: [1.1][plan-1.1], [1.3][plan-1.3], [3][plan-3], [4.3][plan-4.3], [4.4][plan-4.4], [5.4][plan-5.4], [5.5][plan-5.5], [5.6][plan-5.6], [5.7][plan-5.7], [5.8][plan-5.8], [6][plan-6], [7][plan-7].
+[^plan]: Harrold, S. (2026). [`PREREGISTRATION.md`][plan-1.3], version 0.6, the registered plan, at commit `a4064f5` (sha256 `d0e374c8…`; identical to the OSF copy). Sections cited: [1.1][plan-1.1], [1.3][plan-1.3], [3][plan-3], [4.3][plan-4.3], [4.4][plan-4.4], [4.5][plan-4.5], [5.4][plan-5.4], [5.5][plan-5.5], [5.6][plan-5.6], [5.7][plan-5.7], [5.8][plan-5.8], [6][plan-6], [7][plan-7].
 [^cfr-425-220]: 42 CFR 425.220, Termination of the participation agreement by the ACO. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)][cfr-220].
 [^cfr-425-605]: 42 CFR 425.605, Calculation of shared savings and losses under the BASIC track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(1)][cfr-605-levels].
 [^fr-2018]: CMS (2018). Medicare Program; Medicare Shared Savings Program; Accountable Care Organizations—Pathways to Success and Extreme and Uncontrollable Circumstances Policies for Performance Year 2017. Final rule. [*Federal Register* 83, 67816-68082][fr-pathways], December 31, 2018. Cited: [83 FR 67859][fr-pathways-track] (no move from BASIC to ENHANCED within an agreement period).
@@ -786,8 +871,8 @@ General terms link to Wikipedia in the text instead.
 [^sw-duckdb]: DuckDB 2.0.0 ([duckdb.org][duckdb]); pinned in `uv.lock`.
 [^sw-uv]: uv, the Python package and project manager ([docs][uv]; [lockfile][uv-lock]).
 [^sw-numpy]: NumPy 2.5.4: [`SeedSequence`][numpy-seed] and [parallel random number generation][numpy-parallel]; pinned in `uv.lock`.
-[^suppression]: CMS (2020). [CMS Cell Suppression Policy][suppression-archive]: cells with values of 1 to 10 are not reported. Archived copy; the [HHS Guidance Portal page][suppression] refuses some visitors.
 [^sw-arviz]: ArviZ 1.3.0: [R-hat][arviz-rhat] and [effective sample size][arviz-ess]; pinned in `uv.lock`.
 [^gelman-carlin2014]: Gelman, A. and Carlin, J. (2014). Beyond power calculations: assessing Type S (sign) and Type M (magnitude) errors. *Perspectives on Psychological Science* 9(6), 641-651. [doi:10.1177/1745691614551642][gelman-carlin2014]
 [^sw-marimo]: marimo 0.25.2, reactive Python notebooks ([marimo.io][marimo]); run outside the lockfile, pinned on the command line (see [Reproduce](#reproduce)).
 [^census]: U.S. Census Bureau. [Census Regions and Divisions of the United States][census] (map).
+[^suppression]: CMS (2020). [CMS Cell Suppression Policy][suppression-archive]: cells with values of 1 to 10 are not reported. Archived copy; the [HHS Guidance Portal page][suppression] refuses some visitors.

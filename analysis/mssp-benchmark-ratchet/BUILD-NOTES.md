@@ -314,3 +314,17 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   sends `scroll` at 25, 50 and 75% and a `notebook_open` event for clicks on `/static/*.html` exports, which are
   standalone pages without the tag (adding it would change the OSF-hashed notebook). Tested on a local publish build
   with GA requests blocked, by reading `dataLayer`; the privacy page lists what is measured.
+- Independent critical assessment before publishing (2026-10-27), by a fresh agent given only the files:
+  `ARCHIVED/20261027T145203Z_critical-assessment_20261026-preregistered-mssp-early-renewal.md`. Verdict: publishable
+  after minor fixes; every reported number matched the results files. All findings were applied to the post:
+  the summary no longer uses effect language for H4 and uses rule 1's wording; it states that by the approximation a
+  reset would on average have lowered both groups' benchmarks (unweighted -1.6 and -1.0 points); the registered H4
+  attrition table (plan 4.5) and a limitation on uneven attrition; the agreement table shows the registered OLS-HC2
+  counterpart for H2a and H2b (Welch in a note); the own-spending component's low reliability; what the regional
+  pull still contains (the ACO's benchmark and risk scores); that the equivalence condition could not hold near zero;
+  the remaining registered outputs (validation slope and intercept, by phase-in step, the step-1 check, the 10
+  excluded, refit convergence failures, the prior predictive share); MDE in log points; the H3 power caveat; the
+  BASIC-level interpretation; the concurrent robustness run and the 17-hour runtime; the exclusion diagnostics'
+  source; the overview counts; a short glossary; further design threats; and two citation fixes (425.601(a)(2) for
+  the enrollment types, (d)(3) for their shares). "What review caught before registration" moved after Reproduce,
+  and the OSF summary-field and Playwright details were trimmed (both remain in these notes).
