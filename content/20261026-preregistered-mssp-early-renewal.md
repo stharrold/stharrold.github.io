@@ -289,7 +289,7 @@ once registered:
   [risk-adjusts regional spending to the ACO's case mix][cfr-601-regional-risk], and CMS restates benchmark years to
   the latest year's risk ([specifications, version 10][spec-v10], section 4.1.2); both were implemented, with the unadjusted version
   kept as a robustness check.
-* **Suppressed values.** The results files [hide small cells][suppression], and the first rule dropped any ACO with one hidden
+* **Suppressed values.** The results files [hide small cells][suppression-archive], and the first rule dropped any ACO with one hidden
   value. A fallback chain (exact recovery from totals, then shown years, then a regional ratio) replaced it, with a
   complete-case check.
 * **A permutation test that tests the wrong null** in a multi-predictor model, replaced by direct simulation (above).
@@ -518,7 +518,7 @@ what is reported above.
 
 ## Deviations
 
-None. All seven stages (validate, power, confirm, robustness, did, conventional, exploratory) ran with code identical
+None affecting any result. All seven stages (validate, power, confirm, robustness, did, conventional, exploratory) ran with code identical
 to the registered commit [`a4064f5`][code], and each results file was committed before its estimates were read. Each results
 file records the commit it ran at, and
 [`DEVIATIONS.md`][deviations] (the current log, on the main branch)
@@ -543,7 +543,7 @@ uses the lockfile at `a4064f5`.
   be built for 3 of 29 early renewers (10.3%) and 36 of 277 stayers (13.0%); the plan requires reporting this as a
   limitation when either group passes 10% ([section 3][plan-3]). In every one of the 39, CMS hides the ACO's count of
   assigned [ESRD][esrd] (kidney failure) beneficiaries in every county of the
-  [2021 county assignment file][data-assigned] ([it suppresses counts of 1 to 10][suppression]),
+  [2021 county assignment file][data-assigned] ([it suppresses counts of 1 to 10][suppression-archive]),
   so the ESRD part of regional spending has no county weights; for 15 the aged/dual counts are hidden too. The
   plan's fill rules cover hidden cells in the results files, not fully hidden county weights, so these ACOs are
   excluded and counted, as registered. They are smaller ACOs (median 6,702 and 8,578 assigned beneficiaries for
@@ -590,7 +590,8 @@ Regulation and program documents
   final rule. [*Federal Register* 85, 27550][fr-covid].
 * CMS (2022). [Shared Savings and Losses and Assignment Methodology Specifications, version 10][spec-v10]
   (performance years starting January 1, 2022; [archived copy][spec-v10-archive]).
-* CMS. [Cell Suppression Policy][suppression] ([archived copy][suppression-archive]).
+* CMS (2020). [Cell Suppression Policy][suppression-archive] (archived copy; the [HHS Guidance Portal page][suppression]
+  refuses some visitors).
 
 Data (CMS, data.cms.gov; each file's URL and sha256 are in [`data-snapshot.tsv`][snapshot])
 
