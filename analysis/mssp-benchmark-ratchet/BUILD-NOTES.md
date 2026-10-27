@@ -273,3 +273,19 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Notebook exports uploaded by the author to OSF z4an5, folder `results-notebook`, 2026-10-27: results.html
   (osf.io/m5qkx), results.ipynb (osf.io/aczts), results.pdf (osf.io/247qu). OSF's sha256 for each, checked by the
   author in the OSF interface and again through the public API, matches the post and the committed files.
+- Sources linked in the post (2026-10-27, at the author's request: every claim about methods, data sources and
+  definitions links to a source). About 150 distinct links, written as Markdown reference links defined at the end of
+  the post. Regulation links are eCFR point-in-time (2022-01-01) with paragraph anchors, percent-encoded
+  (`#p-425.601%28a%29%288%29`); eCFR resolves the encoded anchor. Federal Register links use `/citation/83-FR-NNNNN`
+  or `#page-N`. Repository links are pinned: plan, code and data snapshot to `a4064f5`, results, registration record
+  and notebook to `3da8cd2`; only `DEVIATIONS.md` links the main branch, as a running log. Papers by DOI (checked
+  against Crossref), general concepts by Wikipedia (section anchors checked with the MediaWiki API), software by its
+  docs. Every URL was requested: publishers and hhs.gov answer scripts with 403 (the weekly link check accepts 403),
+  and GitHub's 429s were rechecked through the API.
+- Checking the sources corrected four statements in the post (the registered plan is unchanged): the glide path is
+  not something ACOs simply opt out of (they choose the starting level, may advance faster, and could pause for 2021
+  and 2022; 425.600(a)(4)(i)(B)); ENHANCED shares 75% of savings but up to 75% of losses (425.610(f)(2));
+  "renewing is the only way into ENHANCED" rests on the 2018 rule's preamble (83 FR 67859: no move from BASIC to
+  ENHANCED within an agreement period), not the CFR text; and restating benchmark years to BY3 risk is in CMS's
+  methodology specifications (version 10, section 4.1.2, step 3), while 425.601(a)(3) only says HCC risk scores
+  adjust for changes in case mix.
