@@ -333,3 +333,4 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   said "Effect of renewing early"). The dashboard's H4 title changed the same way. New sha256 values are in the
   post; the three files go to OSF z4an5/results-notebook as new versions of the earlier uploads, which stay in each
   file's OSF history.
+- Re-exported notebook uploaded to OSF 2026-10-27 15:12 UTC as new versions (same GUIDs m5qkx, aczts, 247qu); OSF's sha256 for all three matches the post and the committed files (public API).

@@ -15,8 +15,8 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
      them; once published, {static} makes the build check that the files exist). Results notebook: built and
      exported (HTML in content/static/<slug>/, .ipynb and PDF in analysis/mssp-benchmark-ratchet/report/exports/,
      hashes in the post); change its root-relative link to {static} too. Re-exported 2026-10-27 after the critical
-     assessment (H4 wording): upload the three committed files to OSF z4an5/results-notebook as new versions of the
-     existing files and check OSF's sha256 against the post. Never re-export again, since that changes every hash. src_master was merged into the
+     assessment (H4 wording), uploaded to OSF z4an5/results-notebook as new versions, and OSF's sha256 checked
+     against the post. Never re-export again, since that changes every hash. src_master was merged into the
      study branch 2026-10-27 (uv.lock change logged in DEVIATIONS.md). Finally delete this comment: HTML
      comments are published in the page source. -->
 
