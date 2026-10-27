@@ -970,7 +970,7 @@ group, each constructed variable, each statistical method, the settings and seed
 variant can be pre-registered in turn rather than reported as exploratory.
 
 **Cite it.** The repository's `CITATION.cff` gives the registration (DOI 10.17605/OSF.IO/C53W9) as the preferred
-citation.
+citation; the results exports and data snapshot have their own DOI, through the OSF project (10.17605/OSF.IO/Z4AN5).
 
 The results notebook runs outside the locked environment, with its tools pinned on the command line. For the other
 two exports, replace `html` with `ipynb --include-outputs` or `pdf`:
@@ -1182,7 +1182,7 @@ General terms link to Wikipedia in the text instead.
 [^cfr-425-20]: 42 CFR 425.20, Definitions. eCFR, as in force on 2022-01-01. Paragraphs cited: ["Renewing ACO" (2)][cfr-20-renewing].
 [^data-acos]: CMS. [Accountable Care Organizations][data-acos]: Shared Savings Program enrollment, one file per year, 2014-2026. data.cms.gov.
 [^cfr-425-610]: 42 CFR 425.610, Calculation of shared savings and losses under the ENHANCED track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(2)][cfr-610-rate], [(f)(2)][cfr-610-loss].
-[^registration]: Harrold, S. (2026). Why did Medicare ACOs reset their benchmarks early? A pre-registered analysis of early renewal in the Medicare Shared Savings Program. OSF Registries, registered 2026-10-26. [doi:10.17605/OSF.IO/C53W9](https://doi.org/10.17605/OSF.IO/C53W9). Editable project with the notebook exports: [osf.io/z4an5](https://osf.io/z4an5/).
+[^registration]: Harrold, S. (2026). Why did Medicare ACOs reset their benchmarks early? A pre-registered analysis of early renewal in the Medicare Shared Savings Program. OSF Registries, registered 2026-10-26. [doi:10.17605/OSF.IO/C53W9](https://doi.org/10.17605/OSF.IO/C53W9). The OSF project with the notebook exports and the archived data snapshot: [osf.io/z4an5](https://osf.io/z4an5/), [doi:10.17605/OSF.IO/Z4AN5](https://doi.org/10.17605/OSF.IO/Z4AN5).
 [^code]: Harrold, S. (2026). [`analysis/mssp-benchmark-ratchet/`][code], the registered analysis code at commit `a4064f5`: [`data-snapshot.tsv`][snapshot], [`ratchet/snapshot.py`][snapshot-py], [`ratchet/synthetic.py`][synthetic], [`ratchet/run.py`][run], [`dbt/`][dbt-dir], [`tests/`][tests].
 [^data-results]: CMS. [Performance Year Financial and Quality Results][data-results], 2013-2024. data.cms.gov. Files cited: [PY2020][file-py2020], [PY2021][file-py2021]; [PY2021 data dictionary][dict-results-2021].
 [^plan]: Harrold, S. (2026). [`PREREGISTRATION.md`][plan-1.3], version 0.6, the registered plan, at commit `a4064f5` (sha256 `d0e374c8…`; identical to the OSF copy). Sections cited: [1.1][plan-1.1], [1.3][plan-1.3], [3][plan-3], [4.3][plan-4.3], [4.4][plan-4.4], [4.5][plan-4.5], [5.4][plan-5.4], [5.5][plan-5.5], [5.6][plan-5.6], [5.7][plan-5.7], [5.8][plan-5.8], [6][plan-6], [7][plan-7].

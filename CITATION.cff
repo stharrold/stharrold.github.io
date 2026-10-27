@@ -8,6 +8,13 @@ authors:
 license: MIT
 repository-code: "https://github.com/stharrold/stharrold.github.io"
 url: "https://stharrold.github.io"
+identifiers:
+  - type: doi
+    value: 10.17605/OSF.IO/C53W9
+    description: "OSF registration of the MSSP study: the plan and code as registered"
+  - type: doi
+    value: 10.17605/OSF.IO/Z4AN5
+    description: "OSF project of the MSSP study: results notebook exports and the archived CMS data snapshot"
 preferred-citation:
   type: generic
   title: "Why did Medicare ACOs reset their benchmarks early? A pre-registered analysis of early renewal in the Medicare Shared Savings Program"

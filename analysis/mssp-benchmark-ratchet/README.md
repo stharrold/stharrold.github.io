@@ -2,7 +2,8 @@
 
 Pre-registered analysis of why Medicare Shared Savings Program ACOs renewed early into 2022 agreements. Write-up:
 [the blog post](https://stharrold.github.io/20261026-preregistered-mssp-early-renewal.html). Registration:
-[osf.io/c53w9](https://osf.io/c53w9/) (DOI 10.17605/OSF.IO/C53W9). Code under the repository's MIT license; the CMS
+[osf.io/c53w9](https://osf.io/c53w9/) (DOI 10.17605/OSF.IO/C53W9). Results notebook exports and the archived data
+snapshot: the OSF project [osf.io/z4an5](https://osf.io/z4an5/) (DOI 10.17605/OSF.IO/Z4AN5). Code under the repository's MIT license; the CMS
 files are public use files from data.cms.gov.
 
 | File | Purpose |
