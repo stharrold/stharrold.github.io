@@ -386,3 +386,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   almost all moved to the 75% sharing rate, but the reset did not raise their benchmarks on average", matching the
   revised post and preprint. Replaced on OSF z4an5/results-notebook as version 2 (same file ids): visual-abstract.png
   sha256 bcfb1e5f6b45a285..., visual-abstract.svg sha256 93c82894c20525ea..., verified through the OSF API.
+- medRxiv submission (2026-10-27): version 1 submitted as MEDRXIV/2026/366643 (Health Policy, CC BY 4.0), main
+  PDF and Supplement 1 byte-identical to mssp-paper-2026 at the README's recorded commit (hashes checked on medRxiv's
+  proof page). The form's scope path: "Clinical research article with new results"; human data = yes, only openly
+  available public data = yes (data.cms.gov download pages given), not a prospective interventional study;
+  preregistration DOI as the protocol link. The form silently converts non-ASCII characters to HTML entities, so its
+  text fields were entered as plain ASCII. Awaiting screening; a v2 is planned after an outside reviewer.
