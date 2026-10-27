@@ -189,6 +189,8 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   has no NaN). `np.errstate` does not silence this warning because numpy raises it through `warnings`, not as a
   floating-point error.
 - conventional (8 s, commit acc8b0e): no warnings.
+- exploratory (83 s, commit ff6e64b): no warnings. All seven stages have now run with the registered code and no
+  deviations; every results file was committed before its estimates were read.
 
 ## Write-up started while confirm runs (2026-10-26)
 
