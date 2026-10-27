@@ -123,7 +123,7 @@ def main() -> None:
     fig.text(
         0.055,
         0.115,
-        "Early renewers were positioned to gain from the regional adjustment and a higher sharing rate,",
+        "Early renewers were low-cost relative to their regions, and almost all moved to the 75% sharing rate,",
         fontsize=13,
         fontweight="bold",
         color=INK,
@@ -132,7 +132,7 @@ def main() -> None:
     fig.text(
         0.055,
         0.07,
-        "but a reset would not have raised their benchmarks on average. Associations, not effects; 2022 rules.",
+        "but the reset did not raise their benchmarks on average. Associations, not effects; 2022 rules.",
         fontsize=12,
         color=INK,
         va="center",
