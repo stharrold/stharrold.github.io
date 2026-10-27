@@ -268,10 +268,32 @@ studies early renewal itself.
   ([Chen and McWilliams 2025][chen2025][^chen2025]). The primary result here is the same kind of selection, in when to
   reset rather than whether to join or leave.
 * **The 2019 rules changed participation decisions.** Under Pathways to Success, for the first time more ACOs left the
-  program than joined it, and ACO leaders described reassessing potential savings against losses in light of the
-  benchmark changes ([Ying et al. 2024][ying2024][^ying2024]). Related work describes the change in participation
-  ([Ying et al. 2023][ying2023][^ying2023]) and the cost to the program of departures
+  program than joined it: 73 exits against 65 entrants in 2019 ([Ying et al. 2023][ying2023][^ying2023]). ACOs that
+  had achieved savings were more likely to stay, and so were ACOs with higher spending, which the authors read as a
+  sign that administrators "needed to see enough room" to make their savings target, the same consideration as the
+  reset motive here. ACO leaders described reassessing potential savings against losses in light of the benchmark
+  changes ([Ying et al. 2024][ying2024][^ying2024]). Of the Track 1 ACOs facing renewal in 2019, 40% left, at a
+  projected cost of up to $396.8 million in lost savings by 2022 if that rate continued
   ([Moloci et al. 2021][moloci2021][^moloci2021]).
+
+**How these results fit, in plain English.**
+
+* **Agrees with:** earlier work found that ACOs pick their moment using the benchmark. They joined when the regional
+  formula favored them (Lyu and colleagues), and they left when their benchmark fell (Chen and McWilliams). This
+  study finds the same behavior in a new choice, when to reset: early renewers were the ACOs whose regions spent more
+  relative to their benchmarks.
+* **Agrees with, and adds detail to:** after the 2019 rules, ACOs that were already saving money were more likely to
+  stay in the program (Ying and colleagues). Early renewers here were also savers, beating their benchmarks by more
+  than other ACOs. But that same success meant a reset would have cut the own-spending part of their benchmark, so
+  the simple story "ACOs reset to get a higher benchmark" does not fit them on average.
+* **Consistent with:** earlier work showed that comparing an ACO with its region depends heavily on how patients'
+  health is adjusted for (Rose and colleagues). Here too, the size of the regional difference doubles without that
+  adjustment.
+* **Cannot confirm or rule out:** the worry that rebasing rewards spending more just before a new agreement (Douven
+  and colleagues). Early renewers' spending growth afterward showed no detectable difference, but the design could
+  not separate an effect from a trend that started before renewal.
+* **Does not address:** what departures or early renewals cost Medicare (Moloci and colleagues estimated the cost of
+  departures); this study does not estimate costs.
 
 This study adds the early-renewal choice: which ACOs used the option to reset their benchmark early, measured with
 public data under a pre-registered plan. The search used Google Scholar Labs (three queries on 2026-10-27, one
@@ -1176,8 +1198,8 @@ General terms link to Wikipedia in the text instead.
 [^rose2016]: Rose, S., Zaslavsky, A. M. and McWilliams, J. M. (2016). Variation in accountable care organization spending and sensitivity to risk adjustment: implications for benchmarking. *Health Affairs* 35(3), 440-448. [doi:10.1377/hlthaff.2015.1026][rose2016]
 [^lyu2023]: Lyu, P. F., Chernew, M. E. and McWilliams, J. M. (2023). Benchmarking changes and selective participation in the Medicare Shared Savings Program. *Health Affairs* 42(5), 622-631. [doi:10.1377/hlthaff.2022.01061][lyu2023]
 [^chen2025]: Chen, A. J. and McWilliams, J. M. (2025). How benchmark changes affect participation in accountable care organizations: prospects for voluntary payment models. *American Journal of Health Economics* 11(1), 38-62. [doi:10.1086/726748][chen2025]
-[^ying2024]: Ying, M., Forman, J. H., Murali, S., Gauntlett, L. E., Krein, S. L., Hollenbeck, B. K. and Hollingsworth, J. M. (2024). Factors affecting Accountable Care Organizations' decisions to remain in or exit the Medicare Shared Savings Program following Pathways to Success. *Health Affairs Scholar* 2(1). [doi:10.1093/haschl/qxad093][ying2024]
 [^ying2023]: Ying, M., Hirth, R. A., Yan, P., Shay, A., Murali, S., Ryan, A. M. and Hollingsworth, J. M. (2023). Changes in Shared Savings Program participation after launch of Pathways to Success. *Journal of General Internal Medicine* 38(7), 1780-1782. [doi:10.1007/s11606-022-07947-x][ying2023]
+[^ying2024]: Ying, M., Forman, J. H., Murali, S., Gauntlett, L. E., Krein, S. L., Hollenbeck, B. K. and Hollingsworth, J. M. (2024). Factors affecting Accountable Care Organizations' decisions to remain in or exit the Medicare Shared Savings Program following Pathways to Success. *Health Affairs Scholar* 2(1). [doi:10.1093/haschl/qxad093][ying2024]
 [^moloci2021]: Moloci, N. M., Si, Y., Norton, E. C., Ryan, A. M. and Hollingsworth, J. M. (2021). Predicting losses from Medicare Shared Savings Program departures. *Journal of General Internal Medicine* 36(8), 2490-2491. [doi:10.1007/s11606-020-06424-7][moloci2021]
 [^cfr-425-220]: 42 CFR 425.220, Termination of the participation agreement by the ACO. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)][cfr-220].
 [^cfr-425-605]: 42 CFR 425.605, Calculation of shared savings and losses under the BASIC track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(1)][cfr-605-levels].

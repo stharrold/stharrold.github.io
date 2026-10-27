@@ -48,7 +48,8 @@ Crossref), not only against Scholar Labs' summary. Scholar Labs summarized Rose 
 rebasing weakens savings incentives; the abstract does not say that, so the post cites it for what the abstract
 does say (wide variation in ACO spending relative to local spending after case-mix adjustment), and the ratchet to
 Douven et al. (2015), whose abstract does. Ying et al. (2023) and Moloci et al. (2021) are research letters without
-abstracts; the post cites them only for their subjects (named in their titles).
+abstracts; their claims were checked against the full texts (PDFs supplied by the author, kept in the separate
+`library` repository, not here).
 
 | Paper | DOI | Found by | Cited for |
 |---|---|---|---|
@@ -57,8 +58,8 @@ abstracts; the post cites them only for their subjects (named in their titles).
 | Lyu, Chernew and McWilliams (2023), *Health Affairs* 42(5) | 10.1377/hlthaff.2022.01061 | q1 | Selection toward providers with low spending relative to their region after 2017 |
 | Chen and McWilliams (2025), *American Journal of Health Economics* 11(1) | 10.1086/726748 | q1 | ACOs with effective benchmark decreases 7 points more likely to drop out |
 | Ying et al. (2024), *Health Affairs Scholar* 2(1) | 10.1093/haschl/qxad093 | q1 (more), q3 | Under Pathways, more ACOs exited than entered; leaders reassessed savings vs losses given benchmark changes |
-| Ying et al. (2023), *Journal of General Internal Medicine* 38(7) | 10.1007/s11606-022-07947-x | q3 | Participation changes after Pathways (subject only) |
-| Moloci et al. (2021), *Journal of General Internal Medicine* 36(8) | 10.1007/s11606-020-06424-7 | q3 | Losses to the program from departures (subject only) |
+| Ying et al. (2023), *Journal of General Internal Medicine* 38(7) | 10.1007/s11606-022-07947-x | q3 | 2019 was the first year more ACOs exited (73) than entered (65); ACOs achieving savings, and those with higher spending, were more likely to stay (the authors link the latter to the benchmark changes) |
+| Moloci et al. (2021), *Journal of General Internal Medicine* 36(8) | 10.1007/s11606-020-06424-7 | q3 | 40% of Track 1 ACOs facing renewal in 2019 exited; projected lost savings up to $396.8 million by 2022 if that rate continued |
 
 ## Gap: early renewal itself
 
