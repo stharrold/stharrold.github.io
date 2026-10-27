@@ -382,3 +382,7 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   author's choice, `posthoc/validation_change.py` (not registered, bf91e5c) checks the gain on the change scale
   (Spearman 0.61, median error 1.7 points, regular renewers) and against early renewers' published 2022 benchmarks
   (mean -1.3%, 66% below PY2021; rebuilt -1.6 vs realized -1.4). The post has not yet been updated to match.
+- Visual abstract redrawn (2026-10-27, deployed f6805db): takeaway now "low-cost relative to their regions, and
+  almost all moved to the 75% sharing rate, but the reset did not raise their benchmarks on average", matching the
+  revised post and preprint. Replaced on OSF z4an5/results-notebook as version 2 (same file ids): visual-abstract.png
+  sha256 bcfb1e5f6b45a285..., visual-abstract.svg sha256 93c82894c20525ea..., verified through the OSF API.
