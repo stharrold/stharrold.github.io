@@ -75,6 +75,8 @@ a:hover {
 @media (max-width: 575.98px) {
   .entry-content table {
     display: block;
+    width: max-content;
+    max-width: 100%;
     overflow-x: auto;
   }
 }

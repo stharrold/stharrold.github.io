@@ -337,11 +337,13 @@ percentage points of the current benchmark, savings rates in percentage points.
 
 * **H2b, supported (rule 1).** p < 0.05 and positive: "early renewers' regions spent more relative to their current
   benchmarks, evidence for the reset motive beyond past savings". The difference is larger than the minimum
-  detectable effect. On average the early renewers' regions spent 5.0 points above their benchmarks, the stayers'
+  detectable effect, which was computed for 29 vs 277 ACOs and so is slightly understated for the 26 vs 241
+  compared. In unweighted means, the early renewers' regions spent 5.0 points above their benchmarks, the stayers'
   1.8 points.
-* **H2a, contradicted (rule 2).** p < 0.05 and negative: early renewers' own spending was further *below* their
-  benchmarks than stayers', contrary to the own-spending part of the reset motive. H2a is close to H1 restated, so
-  it is not counted as separate evidence.
+* **H2a, contradicted (rule 2, the wording of rule 1 for the own-spending component).** p < 0.05 and negative:
+  "their own spending was lower relative to their benchmarks, contrary to the reset motive". Early renewers were
+  beating their benchmarks by more than stayers. H2a is close to H1 restated, so it is not counted as separate
+  evidence.
 * **H1, descriptive (rule 3).** Early renewers had higher savings rates in both years. No motive is attributed to the
   sign. (The PY2020 results file stores savings rates as fractions and the PY2021 file as percents; both are shown
   here in percentage points.)
@@ -387,7 +389,8 @@ Coefficients are log-odds differences per 2 SD, or for the BASIC level between l
 
 ### H4: what renewing did to spending
 
-29 early renewers and 276 comparison ACOs not yet renewed. The outcome is the change in log per-capita spending from
+29 early renewers and 276 comparison ACOs not yet renewed (one stayer has no spending value in any post-period
+year). The outcome is the change in log per-capita spending from
 PY2020-PY2021 to PY2022-PY2024, shown as a percent difference in spending growth.
 
 | Estimate | Early renewers minus comparison | 95% credible interval | p |
