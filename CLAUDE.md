@@ -27,6 +27,7 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - `gh run list --workflow pages.yml --json databaseId,headSha` then `gh run watch <id>` - match runs by commit; the list lags a few seconds after a push.
 - `curl -s "https://stharrold.github.io/<path>?v=$(date +%s)"` - cache-busted live check after a deploy.
 - `uv run pelican -s pelicanconf.py -o <dir>` then `python3 -m http.server` in `<dir>` - stable preview for Playwright screenshots (not `--autoreload`).
+- `curl -s --compressed "https://www.ecfr.gov/api/versioner/v1/full/<YYYY-MM-DD>/title-42.xml?part=425&section=425.601"` - regulation text as in force on a date (eCFR's pages block curl; the API needs `--compressed`).
 
 ## Gotchas learned the hard way
 
@@ -59,6 +60,20 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   verification adds no GA page views.
 - **Pygments is capped `<2.20` by Pelican 4.12.** Dependabot can't fix capped transitive deps; alert #6 was dismissed
   as tolerable risk (see #64). Recheck when Pelican releases.
+- **Cite sources as footnotes,** as the 2015-2016 posts do: Python-Markdown `[^id]` markers, placed under References
+  by `///Footnotes Go Here///`, numbered by first citation with back-links (one footnote can be cited many times).
+  Keep the direct link inline too. Claims about methods, data and definitions each link to a source.
+- **Stable links:** eCFR point-in-time URLs with percent-encoded paragraph anchors (`#p-425.601%28a%29%288%29`; raw
+  parentheses break Markdown links), GitHub links pinned to a commit SHA, papers by DOI. Publishers and hhs.gov answer
+  scripts with 403 (hhs.gov refuses browsers too, so link an archive.org copy); data.cms.gov returns 200 for any path.
+- **marimo exports:** in `mo.md(f"""...""")` an interpolated multi-line string breaks the dedent and renders as raw
+  text; every run writes `__marimo__/` (gitignored); ruff reformats `.ipynb`, so exports kept byte-for-byte need an
+  exclude (see `analysis/mssp-benchmark-ratchet/report/exports/ruff.toml`). Use matplotlib PNGs, not widgets, so the
+  `.ipynb` and PDF exports need no CDN.
+- **Playwright (Python) wants one Chromium revision.** Pin a version whose revision is already in
+  `~/Library/Caches/ms-playwright` instead of running `playwright install` (a download). The Playwright MCP writes
+  screenshots only under the repository (`.playwright-mcp/`, gitignored).
+- **zsh ties `path` to `$PATH`;** never use `path` as a shell variable name.
 - **An interrupted tool call may already have run** (e.g. `gh workflow run`); check `gh run list` or the issue list
   before saying nothing happened.
 

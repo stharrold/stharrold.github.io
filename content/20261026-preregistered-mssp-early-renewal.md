@@ -76,7 +76,8 @@ regulation and the enrollment files:
 1. **Downside risk.** The program's "glide path" [moves ACOs into two-sided risk on a schedule][cfr-600-glide][^cfr-425-600],
    which looked like a [natural experiment][natural-exp]. The regulation showed that the timing is partly chosen:
    ACOs [choose the level they start at][cfr-600-entry], [can move up faster][cfr-226][^cfr-425-226], and could pause the advance
-   for [2021][cfr-600-pause-2021] and [2022][cfr-600-pause-2022]. The [enrollment files][data-acos][^data-acos] showed that only
+   for [2021][cfr-600-pause-2021] and [2022][cfr-600-pause-2022]; from 2023, an ACO still in one-sided Level A or B
+   could [stay there for the rest of its agreement][cfr-600-stay-2023]. The [enrollment files][data-acos][^data-acos] showed that only
    about 10-28% of ACOs were in two-sided risk in the years the schedule called for it. Not a usable treatment.
 2. **The benchmark ratchet.** Do ACOs spend less once their spending starts counting toward the next benchmark? In
    the enrollment data, benchmark-year status is [collinear][multicol] with how long the ACO has been in its agreement, so the
@@ -612,6 +613,7 @@ General terms link to Wikipedia in the text instead.
 [cfr-200-ext]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-C/section-425.200#p-425.200%28b%29%283%29%28ii%29%28B%29
 [cfr-220]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-C/section-425.220#p-425.220%28a%29
 [cfr-226]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-C/section-425.226#p-425.226%28a%29%282%29%28i%29
+[cfr-600-stay-2023]: https://www.ecfr.gov/on/2023-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29%28vi%29
 [cfr-600-glide]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29
 [cfr-600-entry]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%281%29%28i%29
 [cfr-600-pause-2021]: https://www.ecfr.gov/on/2022-01-01/title-42/chapter-IV/subchapter-B/part-425/subpart-G/section-425.600#p-425.600%28a%29%284%29%28i%29%28B%29%282%29%28iii%29
@@ -751,7 +753,7 @@ General terms link to Wikipedia in the text instead.
 [^results]: Harrold, S. (2026). [Results files][results-dir] at commit `3da8cd2`, each recording the commit it ran at: [`validation.json`][res-validation], [`power.json`][res-power], [`confirm.json`][res-confirm], [`robustness.json`][res-robustness], [`did.json`][res-did], [`conventional.json`][res-conventional], [`exploratory.json`][res-exploratory]; with [`REGISTRATION.md`][registration-md] and the notebook source [`report/results_notebook.py`][notebook-src].
 [^data-results]: CMS. [Performance Year Financial and Quality Results][data-results], 2013-2024. data.cms.gov. Files cited: [PY2020][file-py2020], [PY2021][file-py2021]; [PY2021 data dictionary][dict-results-2021].
 [^cfr-425]: [42 CFR Part 425][cfr-425], Medicare Shared Savings Program. eCFR, as in force on 2022-01-01.
-[^cfr-425-600]: 42 CFR 425.600, Selection of risk model. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(4)(i)(B)(1)(i)][cfr-600-entry], [(a)(4)(i)(B)(2)][cfr-600-glide], [(a)(4)(i)(B)(2)(iii)][cfr-600-pause-2021], [(a)(4)(i)(B)(2)(iv)][cfr-600-pause-2022].
+[^cfr-425-600]: 42 CFR 425.600, Selection of risk model. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(4)(i)(B)(1)(i)][cfr-600-entry], [(a)(4)(i)(B)(2)][cfr-600-glide], [(a)(4)(i)(B)(2)(iii)][cfr-600-pause-2021], [(a)(4)(i)(B)(2)(iv)][cfr-600-pause-2022]; and, as in force on 2023-01-01, [(a)(4)(i)(B)(2)(vi)][cfr-600-stay-2023].
 [^cfr-425-226]: 42 CFR 425.226, Annual participation elections. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(2)(i)][cfr-226].
 [^cfr-425-200]: 42 CFR 425.200, Participation agreement with CMS. eCFR, as in force on 2022-01-01. Paragraphs cited: [(b)(3)(ii)(B)][cfr-200-ext], [(b)(4)(ii)][cfr-200-b4], [(b)(5)][cfr-200-b5].
 [^fr-2020]: CMS (2020). Medicare and Medicaid Programs, Basic Health Program, and Exchanges; Additional Policy and Regulatory Revisions in Response to the COVID-19 Public Health Emergency. Interim final rule. [*Federal Register* 85, 27550][fr-covid], May 8, 2020.

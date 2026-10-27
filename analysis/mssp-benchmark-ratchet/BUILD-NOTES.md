@@ -297,3 +297,12 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   CMS program pages and datasets, the registration, plan, code and results, papers, and the pinned software. General
   terms keep their Wikipedia links inline only. The post also notes that the registered plan's section 1.1
   overstates the rule ("75% of savings and losses"; the only way into ENHANCED), with what the rule says.
+- Glide path, rechecked against later versions (2026-10-27). The design-stage note on #73 cited 425.600
+  (a)(4)(i)(B)(2)(iii)-(vii), from the current eCFR; as in force on 2022-01-01 only (iii) and (iv) exist (pauses for
+  2021 and 2022). (vi), in force from 2023-01-01, let an ACO in Level A or B stay there for the rest of its agreement
+  ((vii) does the same for 2024 for agreements starting in 2023). The post now cites both dates, so the correction
+  no longer understates the options. Lesson: when citing a regulation for a period, read it as in force in that
+  period (`/on/<date>/` URLs, or the versioner API with `--compressed`).
+- Documentation updated: the study README lists `results/`, the notebook and its exports, and the status;
+  `CLAUDE.md` gained the footnote convention, stable-link rules, marimo and Playwright gotchas, the eCFR API command,
+  and the zsh `path` gotcha.

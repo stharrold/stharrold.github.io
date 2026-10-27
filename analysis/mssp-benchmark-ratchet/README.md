@@ -10,7 +10,9 @@ Pre-registered analysis of why Medicare Shared Savings Program ACOs renewed earl
 | `ratchet/` | Python: hash-checked loading, statistics (Bayesian bootstrap, PyMC, resampling, DiD), staged runner. |
 | `dbt/` | dbt project (dbt-duckdb): one SQL model per derived table, with schema and data tests; `dbt docs` gives the lineage. |
 | `tests/` | Tests on real enrollment data and on synthetic data (no CMS outcome values). |
-| `report/` | Reporting only: `dashboard_data.py` builds the post's dashboard data from `results/`. Not part of the registered analysis. |
+| `results/` | One JSON file per stage, committed as each stage finished; each records the commit it ran at. |
+| `report/` | Reporting only, not part of the registered analysis: `dashboard_data.py` builds the post's dashboard data from `results/`; `results_notebook.py` is the marimo results notebook; `exports/` holds its `.ipynb` and PDF exports, kept byte-for-byte as uploaded to OSF (sha256 in the post; never re-export). |
+| `REGISTRATION.md`, `DEVIATIONS.md`, `BUILD-NOTES.md` | The registration record, the deviation log, and a running log of how the study was built. |
 
 ## Running
 
@@ -55,6 +57,14 @@ H3, plus 10,000 for the overall test). Measured on synthetic data of the same si
 workers, so roughly 19 hours; `--workers` sets the number of processes (default: half the cores). The robustness and
 exploratory stages fit about a dozen models each and take minutes.
 
-## Not yet implemented
+## Status
 
-The write-up figures. Every analysis in sections 4-6 of the plan is implemented and tested on synthetic data.
+Registered on OSF on 2026-10-26 ([osf.io/c53w9](https://osf.io/c53w9/), code at `a4064f5`). Every stage has run with
+the registered code; the one logged deviation is a `uv.lock` security update made after the last stage. The results
+notebook runs outside the lockfile with pinned tools:
+
+```bash
+uv run --with marimo==0.25.2 --with matplotlib==3.11.2 --with nbformat==5.11.1 \
+    --with 'nbconvert[webpdf]==7.17.2' --with playwright==1.61.0 \
+    marimo export html analysis/mssp-benchmark-ratchet/report/results_notebook.py -o results.html
+```
