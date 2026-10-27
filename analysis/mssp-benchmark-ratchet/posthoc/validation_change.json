@@ -1,0 +1,86 @@
+{
+ "registered": false,
+ "note": "Post hoc, exploratory; written after all registered results were read (see the module docstring).",
+ "generated": "2026-10-27T19:27:30+00:00",
+ "git_commit": "837666529357c594eb21d95897bae676ffd6789a",
+ "seed": 20261022,
+ "regular_renewers_change": {
+  "n": 101,
+  "spearman": 0.6144437973209085,
+  "pearson": 0.5664497503348239,
+  "slope_actual_on_rebuilt": 0.9017530573012484,
+  "intercept": 0.2524228095473746,
+  "mean_error": -0.34467709057543217,
+  "sd_error": 4.370392950885863,
+  "median_abs_error": 1.6699491320154998,
+  "same_sign_share": 0.801980198019802,
+  "rebuilt": {
+   "mean": -0.939004090040045,
+   "median": -0.9986906292501095,
+   "sd": 3.322017215181358
+  },
+  "actual": {
+   "mean": -0.5943269994646128,
+   "median": -0.4253164556962025,
+   "sd": 5.288446465774715,
+   "share_negative": 0.5841584158415841
+  }
+ },
+ "early_renewers_realized": {
+  "n_early": 29,
+  "n_with_hist_2022": 29,
+  "all_with_hist_2022": {
+   "mean": -1.2502583906673885,
+   "median": -1.5468059461631176,
+   "share_negative": 0.6551724137931034
+  },
+  "rebuilt_vs_realized": {
+   "n": 26,
+   "spearman": 0.6020512820512819,
+   "pearson": 0.5379157701945072,
+   "slope_actual_on_rebuilt": 0.6653944368804986,
+   "intercept": -0.35851707336990724,
+   "mean_error": -0.16509187700075903,
+   "sd_error": 4.051834705667215,
+   "median_abs_error": 2.118149358117519,
+   "same_sign_share": 0.9230769230769231,
+   "rebuilt": {
+    "mean": -1.5648542884018464,
+    "median": -1.4806388951912737,
+    "sd": 3.6998100995290097
+   },
+   "actual": {
+    "mean": -1.3997624114010871,
+    "median": -1.7017356875264158,
+    "sd": 4.5766143960618635,
+    "share_negative": 0.6538461538461539
+   }
+  }
+ },
+ "benchmark_update_2021_2022": {
+  "n_early": 29,
+  "n_stayer": 276,
+  "excluded": {
+   "early": 0,
+   "stayer": 1
+  },
+  "observed": 0.03351885788659065,
+  "posterior_mean": 0.04264383114381039,
+  "eti95": [
+   -1.965088306195692,
+   2.2369684005497
+  ],
+  "p_positive": 0.4998,
+  "p_value": 0.9669033096690332,
+  "n_resamples": 10000,
+  "seed": 20261022,
+  "group_means": {
+   "early": 3.1050740304975504,
+   "stayer": 2.9010420055162998
+  },
+  "group_medians": {
+   "early": 2.042331971778677,
+   "stayer": 2.715374885214916
+  }
+ }
+}
