@@ -289,3 +289,11 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   ENHANCED within an agreement period), not the CFR text; and restating benchmark years to BY3 risk is in CMS's
   methodology specifications (version 10, section 4.1.2, step 3), while 425.601(a)(3) only says HCC risk scores
   adjust for changes in case mix.
+- References as footnotes (2026-10-27), the site's convention from the 2015-2016 posts: Python-Markdown footnotes
+  (`[^id]`) placed by `///Footnotes Go Here///` under References, numbered by first citation, with one back-link per
+  citation (repeated references to one footnote work: 113 citations of 52 sources). Each paragraph, list item or
+  table row cites a source once, after its first link to it; inline links still go straight to the paragraph or
+  page. Footnoted: regulation sections, Federal Register rules, the CMS specification and cell-suppression policy,
+  CMS program pages and datasets, the registration, plan, code and results, papers, and the pinned software. General
+  terms keep their Wikipedia links inline only. The post also notes that the registered plan's section 1.1
+  overstates the rule ("75% of savings and losses"; the only way into ENHANCED), with what the rule says.

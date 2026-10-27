@@ -23,24 +23,24 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
 
 ## Overview
 
-In the [Medicare Shared Savings Program][mssp] (MSSP), an [accountable care organization][aco-cms] (ACO) earns a
+In the [Medicare Shared Savings Program][mssp][^cms-mssp] (MSSP), an [accountable care organization][aco-cms][^cms-aco] (ACO) earns a
 share of the savings when its patients' spending comes in below a benchmark. The benchmark is
-[reset at the start of each agreement period][cfr-601-reset] from the ACO's own recent spending,
-[pulled toward its region's][cfr-601-adj]. An ACO can [end its agreement early and start a new one][cfr-20-renewing],
+[reset at the start of each agreement period][cfr-601-reset][^cfr-425-601] from the ACO's own recent spending,
+[pulled toward its region's][cfr-601-adj]. An ACO can [end its agreement early and start a new one][cfr-20-renewing][^cfr-425-20],
 which resets the benchmark early. For the 2022 agreement cycle, 29 of the 306 ACOs in agreements that began in 2019
-or 2020 ended them early and started new ones (from the [enrollment files][data-acos]).
+or 2020 ended them early and started new ones (from the [enrollment files][data-acos][^data-acos]).
 
 This post asks why they did, and what renewing changed:
 
 * **Who chose to reset, and why (H1-H3).** Did early renewers stand to gain from a reset because their regions spent
   more than their benchmarks (the primary test), because their own spending had run high, or because renewing was
-  the only way into the [track that shares 75% of savings][cfr-610-rate]?
+  the only way into the [track that shares 75% of savings][cfr-610-rate][^cfr-425-610]?
 * **What renewing did (H4).** Did early renewers' spending change afterwards, relative to ACOs that had not yet
   renewed? A [difference-in-differences][did-wiki] estimate.
 
 The analysis plan was registered on [OSF Registries](https://osf.io/c53w9/) (DOI
-[10.17605/OSF.IO/C53W9](https://doi.org/10.17605/OSF.IO/C53W9)) before any outcome value was read, together with the
-analysis code, which was written and tested on [synthetic data][synthetic] first. Every result below is reported, whatever it
+[10.17605/OSF.IO/C53W9](https://doi.org/10.17605/OSF.IO/C53W9))[^registration] before any outcome value was read, together with the
+analysis code, which was written and tested on [synthetic data][synthetic][^code] first. Every result below is reported, whatever it
 shows; changes made after registration are listed separately under [Deviations](#deviations).
 
 **In short.** The primary test supported the reset motive: early renewers' regions spent 3.4 percentage points of
@@ -52,38 +52,38 @@ from stayers' on net. Renewing early had no detectable effect on spending growth
 
 ## Why pre-register
 
-The CMS [public use files][puf] used here are public. Anyone analyzing them can try many specifications and
-report the one that works, often without meaning to ([Simmons, Nelson and Simonsohn 2011][simmons2011]). A
+The CMS [public use files][puf][^cms-puf] used here are public. Anyone analyzing them can try many specifications and
+report the one that works, often without meaning to ([Simmons, Nelson and Simonsohn 2011][simmons2011][^simmons2011]). A
 pre-registration fixes the question, the variables, the tests and the decision rules before the outcomes are seen, so
-a reader can tell confirmatory results from exploration ([Nosek et al. 2018][nosek2018]).
+a reader can tell confirmatory results from exploration ([Nosek et al. 2018][nosek2018][^nosek2018]).
 
 Two details make that claim checkable here:
 
 * **An independent timestamp.** [Git commit dates can be set by hand][git-dates], so the plan was registered on
   [OSF Registries][osf-registries], which records the time itself. The plan file's [sha256][sha2] and the registered
-  code commit are recorded in [`REGISTRATION.md`][registration-md], so the repository copy can be matched to the
+  code commit are recorded in [`REGISTRATION.md`][registration-md][^results], so the repository copy can be matched to the
   registered one.
-* **An outcome lock in the code.** Every data file is [hashed before it is read][snapshot-py]. A file whose hash matches a
+* **An outcome lock in the code.** Every data file is [hashed before it is read][snapshot-py][^code]. A file whose hash matches a
   performance-year results file or a county spending file could not be opened until `REGISTRATION.md` existed. There
-  was no bypass flag. Before registration only the [enrollment files][data-acos], the CMS data dictionaries (for example the
-  [PY2021 results dictionary][dict-results-2021]) and the [regulation text][cfr-425] were used, plus the column names (not the values) of the outcome files, to write the code.
+  was no bypass flag. Before registration only the [enrollment files][data-acos][^data-acos], the CMS data dictionaries (for example the
+  [PY2021 results dictionary][dict-results-2021][^data-results]) and the [regulation text][cfr-425][^cfr-425] were used, plus the column names (not the values) of the outcome files, to write the code.
 
 ## How the question was chosen
 
 The question in this post was the fourth candidate. The first three were dropped at the design stage, using only the
 regulation and the enrollment files:
 
-1. **Downside risk.** The program's "glide path" [moves ACOs into two-sided risk on a schedule][cfr-600-glide],
+1. **Downside risk.** The program's "glide path" [moves ACOs into two-sided risk on a schedule][cfr-600-glide][^cfr-425-600],
    which looked like a [natural experiment][natural-exp]. The regulation showed that the timing is partly chosen:
-   ACOs [choose the level they start at][cfr-600-entry], [can move up faster][cfr-226], and could pause the advance
-   for [2021][cfr-600-pause-2021] and [2022][cfr-600-pause-2022]. The [enrollment files][data-acos] showed that only
+   ACOs [choose the level they start at][cfr-600-entry], [can move up faster][cfr-226][^cfr-425-226], and could pause the advance
+   for [2021][cfr-600-pause-2021] and [2022][cfr-600-pause-2022]. The [enrollment files][data-acos][^data-acos] showed that only
    about 10-28% of ACOs were in two-sided risk in the years the schedule called for it. Not a usable treatment.
 2. **The benchmark ratchet.** Do ACOs spend less once their spending starts counting toward the next benchmark? In
    the enrollment data, benchmark-year status is [collinear][multicol] with how long the ACO has been in its agreement, so the
    effect cannot be separated from tenure. Kept only as a descriptive table.
 3. **A correction.** An early tabulation found 139 ACOs leaving their benchmark-year schedule at the 2022
    transition, and an unverified inference treated them all as early renewers. Accounting for the [optional
-   one-year extension][cfr-200-ext] of agreements that began in 2018 (from the [2020 interim final rule][fr-covid])
+   one-year extension][cfr-200-ext][^cfr-425-200] of agreements that began in 2018 (from the [2020 interim final rule][fr-covid][^fr-2020])
    showed that only 29 renewed early into a January 1, 2022
    agreement.
 
@@ -94,11 +94,11 @@ to explain anything, so the plan became explanatory, with two motives that predi
 
 ### Groups
 
-The base population is the 334 ACOs in the [enrollment files][data-acos] whose agreements began July 1, 2019 or
-January 1, 2020 ([plan section 3][plan-3]). Both cohorts' agreements run to December 31, 2024
-([42 CFR 425.200(b)(4)(ii)][cfr-200-b4] and [(b)(5)][cfr-200-b5]), so a January 1, 2022 agreement start means an
-early renewal: an ACO that [terminated its agreement][cfr-220] and immediately entered a new one
-([425.20, "renewing ACO"][cfr-20-renewing]).
+The base population is the 334 ACOs in the [enrollment files][data-acos][^data-acos] whose agreements began July 1, 2019 or
+January 1, 2020 ([plan section 3][plan-3][^plan]). Both cohorts' agreements run to December 31, 2024
+([42 CFR 425.200(b)(4)(ii)][cfr-200-b4][^cfr-425-200] and [(b)(5)][cfr-200-b5]), so a January 1, 2022 agreement start means an
+early renewal: an ACO that [terminated its agreement][cfr-220][^cfr-425-220] and immediately entered a new one
+([425.20, "renewing ACO"][cfr-20-renewing][^cfr-425-20]).
 
 | Group | 2019-07-01 cohort | 2020-01-01 cohort | All |
 |---|---|---|---|
@@ -109,13 +109,13 @@ early renewal: an ACO that [terminated its agreement][cfr-220] and immediately e
 ### Two motives, and why the savings rate cannot separate them
 
 * **The reset motive.** A new benchmark would be higher than the current one.
-* **The sharing-rate motive.** An ACO in the [BASIC track][cfr-605-levels] cannot move to the ENHANCED track during
-  an agreement period ([2018 rule][fr-pathways-track]), so renewing early was the only way in before its agreement
-  ended. ENHANCED shares [75% of savings][cfr-610-rate] and [up to 75% of losses][cfr-610-loss]. In the
-  [enrollment files][data-acos], 26 of the 27 early renewers that were in BASIC moved to ENHANCED, and no stayer did.
+* **The sharing-rate motive.** An ACO in the [BASIC track][cfr-605-levels][^cfr-425-605] cannot move to the ENHANCED track during
+  an agreement period ([2018 rule][fr-pathways-track][^fr-2018]), so renewing early was the only way in before its agreement
+  ended. ENHANCED shares [75% of savings][cfr-610-rate][^cfr-425-610] and [up to 75% of losses][cfr-610-loss]. In the
+  [enrollment files][data-acos][^data-acos], 26 of the 27 early renewers that were in BASIC moved to ENHANCED, and no stayer did.
 
 The expected benchmark gain from a reset has two parts: an **own-spending** part (how the ACO's recent spending
-compares with its current benchmark) and a **regional** part ([the adjustment toward the region][cfr-601-adj]). The own-spending
+compares with its current benchmark) and a **regional** part ([the adjustment toward the region][cfr-601-adj][^cfr-425-601]). The own-spending
 part is close to a restatement of the savings rate. Writing out the regional adjustment shows that it contains the
 own-spending part too, with a negative sign. With [phase-in weight][cfr-601-phase] $w$, before [capping][cfr-601-cap],
 
@@ -123,18 +123,18 @@ $$\text{regional component} = w \times (\text{pull} - \text{own})$$
 
 where "pull" is the regional pull defined below and "own" the own-spending component, so the regional part is also
 tied to past savings. The primary test therefore uses the **regional pull**: how far the region's
-spending, adjusted to the ACO's case mix [the way CMS adjusts it][cfr-601-regional-risk], sits above the ACO's current benchmark,
+spending, adjusted to the ACO's case mix [the way CMS adjusts it][cfr-601-regional-risk][^cfr-425-601], sits above the ACO's current benchmark,
 
 $$\text{regional pull} = 100 \times \frac{\sum_e s_e\, R_e - B}{B}$$
 
-where $R_e$ is the risk-adjusted regional spending for [enrollment type][cfr-601-types] $e$ ([ESRD][esrd], disabled,
+where $R_e$ is the risk-adjusted regional spending for [enrollment type][cfr-601-types][^cfr-425-601] $e$ ([ESRD][esrd], disabled,
 [aged/dual][dual], aged/non-dual), $s_e$ the ACO's share of person-years of that type, and $B$ its current per-capita benchmark. It has
 no own-spending term. An ACO can be beating its own benchmark and still stand to gain from a reset because its
 region spends more; that is the part of the reset motive a savings rate cannot show.
 
 ### Hypotheses
 
-As registered ([plan section 1.3][plan-1.3]):
+As registered ([plan section 1.3][plan-1.3][^plan]):
 
 | | Hypothesis | Role |
 |---|---|---|
@@ -151,21 +151,21 @@ benchmark) and cannot separate its parts.
 ### Building the expected gain from public data
 
 CMS does not publish what an ACO's benchmark would have been had it reset. The plan rebuilds it from
-[42 CFR 425.601][cfr-601] in six steps ([section 4.3][plan-4.3]), which come down to four parts:
+[42 CFR 425.601][cfr-601][^cfr-425-601] in six steps ([section 4.3][plan-4.3][^plan]), which come down to four parts:
 
-* the [equally weighted mean][cfr-601-equal] of the ACO's per-capita spending in the three benchmark years
+* the [equally weighted mean][cfr-601-equal][^cfr-425-601] of the ACO's per-capita spending in the three benchmark years
   (PY2019-PY2021), [risk-adjusted][cfr-601-risk] and restated to the latest year's risk scores (CMS's
-  [methodology specifications, version 10][spec-v10], section 4.1.2, step 3), and
+  [methodology specifications, version 10][spec-v10][^spec-v10], section 4.1.2, step 3), and
   [trended to 2021 dollars with the national-regional blend][cfr-601-trend];
-* risk-standardized regional spending from the [county files][data-county],
-  [weighted by where the ACO's beneficiaries live][cfr-601-regional-weight] (from the
-  [assigned-beneficiaries-by-county files][data-assigned]) and [adjusted to the ACO's case mix][cfr-601-regional-risk];
-* the regional adjustment with the [phase-in weights][cfr-601-phase] and [caps][cfr-601-cap];
-* and the shares that [combine the four enrollment types][cfr-601-types].
+* risk-standardized regional spending from the [county files][data-county][^data-county],
+  [weighted by where the ACO's beneficiaries live][cfr-601-regional-weight][^cfr-425-601] (from the
+  [assigned-beneficiaries-by-county files][data-assigned][^data-assigned]) and [adjusted to the ACO's case mix][cfr-601-regional-risk];
+* the regional adjustment with the [phase-in weights][cfr-601-phase][^cfr-425-601] and [caps][cfr-601-cap];
+* and the shares that [combine the four enrollment types][cfr-601-types][^cfr-425-601].
 
 Because several steps can only be approximated from public files, the approximation was **validated before it was
 used**: rebuilt for the 101 regular renewers whose 2022 benchmarks CMS does publish (in the
-[results files][data-results]), with a pass rule fixed in the plan ([section 4.4][plan-4.4]:
+[results files][data-results][^data-results]), with a pass rule fixed in the plan ([section 4.4][plan-4.4][^plan]:
 [Spearman correlation][spearman] at least 0.80, [median absolute percentage error][mape] at most 5%). Early renewers were kept
 out of the validation sample, and the 2022 results file was filtered as it was loaded, so validation could not
 reveal their actual reset.
@@ -175,12 +175,12 @@ reveal their actual reset.
 ### Estimates and significance
 
 Every confirmatory estimate is Bayesian, and significance is measured by resampling, following Jake VanderPlas's
-"Statistics for Hackers" (PyCon 2016; [video][vdp-video], [slides][vdp-slides]): simulate the null instead of
+"Statistics for Hackers" (PyCon 2016; [video][vdp-video][^vanderplas2016], [slides][vdp-slides]): simulate the null instead of
 looking up a distribution.
 
 * **Group comparisons (H1, H2a, H2b, H4).** The estimate is the difference in means, early renewers minus stayers,
   within each cohort and averaged with weights proportional to the early renewers in each cohort. Its posterior is a
-  [Bayesian bootstrap][bb-wiki] ([Rubin 1981][rubin1981]): 10,000 draws of [Dirichlet][dirichlet](1, ..., 1) weights over the ACOs in each cohort-by-group
+  [Bayesian bootstrap][bb-wiki] ([Rubin 1981][rubin1981][^rubin1981]): 10,000 draws of [Dirichlet][dirichlet](1, ..., 1) weights over the ACOs in each cohort-by-group
   cell.
 * **Significance by stratified permutation.** Early-renewer labels are [shuffled][perm-wiki] within cohort 10,000
   times, and the estimate is recomputed on each shuffle. The two-sided [p-value][pvalue] is
@@ -188,27 +188,27 @@ looking up a distribution.
     $$p = \frac{1 + \#\{\,|\hat\theta_\text{shuffled}| \ge |\hat\theta_\text{observed}|\,\}}{1 + 10{,}000}$$
 
   Adding 1 to both counts treats the observed labels as one of the shuffles, so the p-value is never zero
-  ([Phipson and Smyth 2010][phipson2010]). The resampling p-value decides, by rules written before the results
+  ([Phipson and Smyth 2010][phipson2010][^phipson2010]). The resampling p-value decides, by rules written before the results
   (below). When it and the credible interval disagree, both are reported.
 
 ### H3: a Bayesian decision model with measurement error
 
 A [logistic regression][logistic] of early renewal on the three core predictors (regional pull, own-spending
 component, higher BASIC level) and five adjustment factors (cohort, size, revenue category, assignment method, first
-or later agreement), fit with [PyMC][pymc] ([NUTS][nuts], 4 chains of 2,000 draws; plan [section 5.4][plan-5.4]).
-Continuous predictors are scaled by two standard deviations ([Gelman 2008][gelman2008]), so each coefficient is a
+or later agreement), fit with [PyMC][pymc][^sw-pymc] ([NUTS][nuts][^hoffman2014], 4 chains of 2,000 draws; plan [section 5.4][plan-5.4][^plan]).
+Continuous predictors are scaled by two standard deviations ([Gelman 2008][gelman2008][^gelman2008]), so each coefficient is a
 [log-odds][logit] difference per 2 SD. With 24 events (27 eligible early renewers, 3 missing a predictor) and 9
 parameters, the Normal(0, 1) [priors][prior] keep the estimates stable, so a second fit with [Student-t][student-t]
-priors ([Gelman et al. 2008][gelman-prior2008]) is reported for sensitivity. A Firth-penalized logistic regression
-([Firth 1993][firth1993], fit with [`firthmodels`][firthmodels]) with the core predictors and cohort is always run
-beside it, and decides H3 only if the Bayesian model fails its [convergence checks][vehtari2021].
+priors ([Gelman et al. 2008][gelman-prior2008][^gelman-prior2008]) is reported for sensitivity. A Firth-penalized logistic regression
+([Firth 1993][firth1993][^firth1993], fit with [`firthmodels`][firthmodels][^sw-firthmodels]) with the core predictors and cohort is always run
+beside it, and decides H3 only if the Bayesian model fails its [convergence checks][vehtari2021][^vehtari2021].
 
 The own-spending component is an approximation, so it enters as a latent true value [observed with error][eiv],
 
 $$x_\text{observed} = x_\text{true} + \varepsilon, \qquad \varepsilon \sim \mathcal{N}(0, \sigma_v)$$
 
 with $\sigma_v$ set by the validation step before the model is fit (4.38 percentage points, from CMS's own
-benchmark-year spending for the validation sample; [`validation.json`][res-validation]).
+benchmark-year spending for the validation sample; [`validation.json`][res-validation][^results]).
 
 Shuffling labels in a model with several predictors would test "nothing matters", not "this factor matters given the
 others". Each core predictor is instead tested by **direct simulation under the reduced model** ([a parametric
@@ -224,27 +224,27 @@ $$\Delta = \overline{y}_\text{PY2022-24} - \overline{y}_\text{PY2020-21}$$
 
 and the H4 estimate is the same cohort-weighted difference in means as above, applied to $\Delta$. Comparison ACOs
 are those **not yet renewed**: a stayer's years after it renews into a 2023 or 2024 agreement are dropped, following
-the not-yet-treated idea of [Callaway and Sant'Anna (2021)][callaway2021] (plan [section 5.8][plan-5.8]).
+the not-yet-treated idea of [Callaway and Sant'Anna (2021)][callaway2021][^callaway2021] (plan [section 5.8][plan-5.8][^plan]).
 
 The main threat is selection on the outcome's own path: if early renewers renewed after unusually high spending,
 their spending could fall afterwards by [mean reversion][regmean] alone. There is only one pre-period change (PY2020 to PY2021,
 both affected by COVID-19), and with about 29 treated ACOs a non-significant pre-trend test proves little ([Roth
-2022][roth2022]). So H4 counts as an effect only if an **equivalence condition** holds (the logic of an
-[equivalence test][lakens2017]): the pre-trend interval, scaled to the
+2022][roth2022][^roth2022]). So H4 counts as an effect only if an **equivalence condition** holds (the logic of an
+[equivalence test][lakens2017][^lakens2017]): the pre-trend interval, scaled to the
 distance between period midpoints, must rule out a trend difference large enough to produce the estimate. A
-trend-adjusted estimate (the pre-period slope carried forward, in the spirit of [Rambachan and Roth 2023][rambachan2023]) is reported
-beside it, along with [propensity-weighted][ipw] ([Rosenbaum and Rubin 1983][rosenbaum1983]), risk-adjusted, balanced-panel and single-cohort versions.
+trend-adjusted estimate (the pre-period slope carried forward, in the spirit of [Rambachan and Roth 2023][rambachan2023][^rambachan2023]) is reported
+beside it, along with [propensity-weighted][ipw] ([Rosenbaum and Rubin 1983][rosenbaum1983][^rosenbaum1983]), risk-adjusted, balanced-panel and single-cohort versions.
 
 ### Conventional methods, side by side
 
-For comparison, and not used for any decision (plan [section 5.7][plan-5.7]): [Welch t-tests][welch-wiki]
-([Welch 1947][welch1947]) and [OLS][ols] with [HC2 robust errors][hc] ([MacKinnon and White 1985][mackinnon1985]) for
-H1, H2a and H2b; maximum-likelihood logistic regression for H3 ([statsmodels][statsmodels-logit]); and
+For comparison, and not used for any decision (plan [section 5.7][plan-5.7][^plan]): [Welch t-tests][welch-wiki]
+([Welch 1947][welch1947][^welch1947]) and [OLS][ols] with [HC2 robust errors][hc] ([MacKinnon and White 1985][mackinnon1985][^mackinnon1985]) for
+H1, H2a and H2b; maximum-likelihood logistic regression for H3 ([statsmodels][statsmodels-logit][^sw-statsmodels]); and
 [two-way fixed effects][fe] with an event study, [errors clustered][cluster] by ACO, for H4. An agreement table puts each registered verdict next to the conventional one.
 
 ### Decision rules
 
-Fixed before the results ([plan section 7][plan-7]). For H2b: p < 0.05 and positive means "early renewers' regions spent more
+Fixed before the results ([plan section 7][plan-7][^plan]). For H2b: p < 0.05 and positive means "early renewers' regions spent more
 relative to their current benchmarks, evidence for the reset motive beyond past savings"; p < 0.05 and negative is
 evidence against it; otherwise "no detectable difference", reported with the credible interval and the [minimum
 detectable effect][power]. No test here can rule the sharing-rate motive in or out, because in these data it is bundled with
@@ -252,26 +252,26 @@ the reset in a single choice.
 
 ## Pipeline
 
-The pipeline is in [`analysis/mssp-benchmark-ratchet/`][code], linked here as registered (commit `a4064f5`):
+The pipeline is in [`analysis/mssp-benchmark-ratchet/`][code][^code], linked here as registered (commit `a4064f5`):
 
 * **Data snapshot.** Every CMS file used is listed with its size, sha256 and URL in
-  [`data-snapshot.tsv`][snapshot], and each hash is [checked before the file is read][snapshot-py]. The files come
-  from four CMS datasets: [ACO enrollment][data-acos], [performance-year results][data-results],
-  [county expenditures and risk scores][data-county] and [assigned beneficiaries by county][data-assigned].
-* **dbt for the SQL.** The constructed variables are a [dbt][dbt] project on [DuckDB][duckdb]
-  ([dbt-duckdb](https://github.com/duckdb/dbt-duckdb), in [`dbt/`][dbt-dir]): 28 models, one per derived table, in
+  [`data-snapshot.tsv`][snapshot][^code], and each hash is [checked before the file is read][snapshot-py]. The files come
+  from four CMS datasets: [ACO enrollment][data-acos][^data-acos], [performance-year results][data-results][^data-results],
+  [county expenditures and risk scores][data-county][^data-county] and [assigned beneficiaries by county][data-assigned][^data-assigned].
+* **dbt for the SQL.** The constructed variables are a [dbt][dbt][^sw-dbt] project on [DuckDB][duckdb][^sw-duckdb]
+  ([dbt-duckdb](https://github.com/duckdb/dbt-duckdb), in [`dbt/`][dbt-dir][^code]): 28 models, one per derived table, in
   three tagged stages, with schema and [data tests][dbt-tests] (unique keys, accepted
   values, components adding to the gain, shares summing to one, no early renewer in the validation load). Python
   loads every raw table after its hash check, so dbt never reads a file directly.
-* **Two implementations.** A [synthetic-data generator][synthetic] writes made-up files with the real file and column names and
+* **Two implementations.** A [synthetic-data generator][synthetic][^code] writes made-up files with the real file and column names and
   computes the constructed variables independently in [NumPy](https://numpy.org/). The [tests][tests] require the SQL to match it, and every stage
   runs end to end on synthetic data, including the recovery of a planted -4% effect in H4.
-* **[Staged runner][run].** Stages run in the plan's order (validate, power, confirm, robustness, did, conventional,
+* **[Staged runner][run][^code].** Stages run in the plan's order (validate, power, confirm, robustness, did, conventional,
   exploratory), and each refuses to start until the output it depends on exists, so the power analysis is
   committed before any confirmatory estimate.
-* **Reproducible environment.** [uv][uv] with a [lockfile][uv-lock]; PyMC, `firthmodels` and
-  [`statsmodels`][statsmodels] are pinned in `uv.lock`, and every refit has its own seed from a fixed
-  [seed sequence][numpy-seed] ([parallel streams][numpy-parallel]), so results do not depend on the number of
+* **Reproducible environment.** [uv][uv][^sw-uv] with a [lockfile][uv-lock]; PyMC, `firthmodels` and
+  [`statsmodels`][statsmodels][^sw-statsmodels] are pinned in `uv.lock`, and every refit has its own seed from a fixed
+  [seed sequence][numpy-seed][^sw-numpy] ([parallel streams][numpy-parallel]), so results do not depend on the number of
   processes.
 
 Writing the code before registering found gaps in the plan while it could still change: column names that drift
@@ -286,10 +286,10 @@ once registered:
 * **The first primary test was mechanically tied to past savings.** The "regional component" contains the
   own-spending part with a negative sign; the primary test became the regional pull.
 * **Raw regional spending is not what CMS compares.** The regulation
-  [risk-adjusts regional spending to the ACO's case mix][cfr-601-regional-risk], and CMS restates benchmark years to
-  the latest year's risk ([specifications, version 10][spec-v10], section 4.1.2); both were implemented, with the unadjusted version
+  [risk-adjusts regional spending to the ACO's case mix][cfr-601-regional-risk][^cfr-425-601], and CMS restates benchmark years to
+  the latest year's risk ([specifications, version 10][spec-v10][^spec-v10], section 4.1.2); both were implemented, with the unadjusted version
   kept as a robustness check.
-* **Suppressed values.** The results files [hide small cells][suppression-archive], and the first rule dropped any ACO with one hidden
+* **Suppressed values.** The results files [hide small cells][suppression-archive][^suppression], and the first rule dropped any ACO with one hidden
   value. A fallback chain (exact recovery from totals, then shown years, then a regional ratio) replaced it, with a
   complete-case check.
 * **A permutation test that tests the wrong null** in a multi-predictor model, replaced by direct simulation (above).
@@ -320,7 +320,7 @@ caught two silent losses before submission.
 ## Power
 
 Computed after registration and committed before any confirmatory estimate, as the plan requires
-([section 6][plan-6]; [`power.json`][res-power]). [Minimum detectable effects][power] at 80% power, two-sided alpha
+([section 6][plan-6][^plan]; [`power.json`][res-power][^results]). [Minimum detectable effects][power] at 80% power, two-sided alpha
 0.05, for 29 vs 277 ACOs:
 
 | Test | Minimum detectable effect |
@@ -338,7 +338,7 @@ verdict is therefore the expected outcome, whatever the motives were.
 
 In the order the plan fixes: the validation that decides how the own-spending component is used, the primary test,
 then H2a, H1, H3 and H4. Each verdict quotes the decision rule written before the results
-([plan section 7][plan-7]). Every number comes from the results files in [`results/`][results-dir], each of which
+([plan section 7][plan-7][^plan]). Every number comes from the results files in [`results/`][results-dir][^results], each of which
 records the commit it ran at.
 
 ### Validation of the benchmark approximation
@@ -346,12 +346,12 @@ records the commit it ran at.
 Passed. For the 101 regular renewers whose 2022 benchmarks CMS publishes, the rebuilt benchmark had a Spearman
 correlation of 0.94 with the actual one and a median absolute percentage error of 1.6% (the rule: at least 0.80 and
 at most 5%). The own-spending component is therefore used as registered, not as exploratory, and enters H3 with a
-measurement error of $\sigma_v$ = 4.38 percentage points ([`validation.json`][res-validation]).
+measurement error of $\sigma_v$ = 4.38 percentage points ([`validation.json`][res-validation][^results]).
 
 ### Who renewed early (H2b, H2a, H1)
 
 Early renewers minus stayers, within cohort and weighted by early renewers per cohort
-([`confirm.json`][res-confirm]). Expected-gain variables are in percentage points of the current benchmark, savings
+([`confirm.json`][res-confirm][^results]). Expected-gain variables are in percentage points of the current benchmark, savings
 rates in percentage points.
 
 | Comparison | Early renewers minus stayers | 95% credible interval | p | Minimum detectable effect |
@@ -376,21 +376,21 @@ rates in percentage points.
   beating their benchmarks by more than stayers. H2a is close to H1 restated, so it is not counted as separate
   evidence.
 * **H1, descriptive (rule 3).** Early renewers had higher savings rates in both years. No motive is attributed to the
-  sign. (The [PY2020 results file][file-py2020] stores savings rates as fractions and the [PY2021 file][file-py2021] as
+  sign. (The [PY2020 results file][file-py2020][^data-results] stores savings rates as fractions and the [PY2021 file][file-py2021] as
   percents; both are shown
   here in percentage points.)
 
 The two parts of the gain point in opposite directions and offset: the regional component is larger for early
 renewers, the own-spending component smaller, and the total expected gain does not differ. So the evidence is about
 where early renewers stood relative to their regions, not about a larger expected gain from resetting. That is the
-configuration the plan described before any outcome was read ([section 1.3][plan-1.3]): an ACO "can be beating its own
+configuration the plan described before any outcome was read ([section 1.3][plan-1.3][^plan]): an ACO "can be beating its own
 benchmark and still stand to gain from a reset because its region spends more". As the plan also says (rule 8), no
 test here can rule the sharing-rate motive in or out.
 
 ### H3: the decision model
 
 206 BASIC-track ACOs, 24 of them early renewers (3 early renewers and 27 stayers excluded for a missing predictor;
-[`confirm.json`][res-confirm]).
+[`confirm.json`][res-confirm][^results]).
 Coefficients are log-odds differences per 2 SD, or for the BASIC level between levels C-E and A-B.
 
 | Predictor | Posterior mean | 95% credible interval | Direct-simulation p | Verdict |
@@ -407,7 +407,7 @@ Coefficients are log-odds differences per 2 SD, or for the BASIC level between l
 * **Verdicts (rule 4).** The regional pull and a higher BASIC level are supported; the own-spending component is
   undetermined. The overall test (the largest absolute core coefficient against its simulated null) gives
   p = 0.004. Adjustment factors are estimates only.
-* **Checks.** The model met its convergence checks on the first fit (largest [R-hat][arviz-rhat] 1.001, smallest
+* **Checks.** The model met its convergence checks on the first fit (largest [R-hat][arviz-rhat][^sw-arviz] 1.001, smallest
   bulk [effective sample size][arviz-ess] 6,661, no divergences). The Student-t fit needed its one registered rerun, then converged, and agrees:
   regional pull 1.65 (0.53 to 2.87), BASIC level 1.63 (0.53 to 2.85). In [posterior predictive][ppc] checks the observed 24
   early renewers fall inside the replicated 95% range (14 to 37), and in the top predicted decile 57% renewed
@@ -417,13 +417,13 @@ Coefficients are log-odds differences per 2 SD, or for the BASIC level between l
   nothing about it. Without the measurement-error model (a robustness check) it is -0.64 (-1.51 to 0.23).
 * **Read the sizes with care.** The power analysis gave H3 a 17% (pull) and 14% (BASIC level) chance of detecting a
   log-odds difference of 0.5. An estimate that passes a test with power that low is likely to overstate the true
-  effect (a "type M" error, [Gelman and Carlin 2014][gelman-carlin2014]), so the directions are the result, and
+  effect (a "type M" error, [Gelman and Carlin 2014][gelman-carlin2014][^gelman-carlin2014]), so the directions are the result, and
   coefficients near 1.3 ([odds ratios][odds-ratio] near 4) are probably too large.
 
 ### H4: what renewing did to spending
 
 29 early renewers and 276 comparison ACOs not yet renewed (one stayer has no spending value in any post-period
-year; [`did.json`][res-did]). The outcome is the change in log per-capita spending from
+year; [`did.json`][res-did][^results]). The outcome is the change in log per-capita spending from
 PY2020-PY2021 to PY2022-PY2024, shown as a percent difference in spending growth.
 
 | Estimate | Early renewers minus comparison | 95% credible interval | p |
@@ -444,7 +444,7 @@ PY2020-PY2021 to PY2022-PY2024, shown as a percent difference in spending growth
 ### Registered and conventional methods
 
 Every verdict agrees with its conventional counterpart (reported only; it would not have changed a decision;
-[`conventional.json`][res-conventional]):
+[`conventional.json`][res-conventional][^results]):
 
 | Claim | Registered | Conventional |
 |---|---|---|
@@ -465,8 +465,8 @@ The conventional p-values are mostly larger than the resampling ones, but no ver
 
 ### Results notebook
 
-The same results are in a [marimo][marimo] [notebook](/static/20261026-preregistered-mssp-early-renewal/results.html)
-([`report/results_notebook.py`][notebook-src]), which reads the results files through the dashboard's data builder and recomputes
+The same results are in a [marimo][marimo][^sw-marimo] [notebook](/static/20261026-preregistered-mssp-early-renewal/results.html)
+([`report/results_notebook.py`][notebook-src][^results]), which reads the results files through the dashboard's data builder and recomputes
 nothing. That page loads marimo's front end from [jsDelivr][jsdelivr], so the [OSF project](https://osf.io/z4an5/) also holds a PDF and a
 Jupyter notebook with its outputs saved, which need no CDN. The files as exported and uploaded:
 
@@ -478,7 +478,7 @@ Jupyter notebook with its outputs saved, which need no CDN. The files as exporte
 
 ## Robustness
 
-The robustness checks of plan sections [5.5][plan-5.5] and [5.8][plan-5.8] ([`robustness.json`][res-robustness]
+The robustness checks of plan sections [5.5][plan-5.5][^plan] and [5.8][plan-5.8] ([`robustness.json`][res-robustness][^results]
 and [`did.json`][res-did]), read only after the confirmatory results. They do not change the
 verdicts; the dashboard above shows each one next to its confirmatory estimate.
 
@@ -500,12 +500,12 @@ verdicts; the dashboard above shows each one next to its confirmatory estimate.
 
 ## Exploratory
 
-Labeled exploratory in the plan ([section 5.6][plan-5.6]; [`exploratory.json`][res-exploratory]): no predictions and no verdicts, and nothing here was used to choose
+Labeled exploratory in the plan ([section 5.6][plan-5.6][^plan]; [`exploratory.json`][res-exploratory][^results]): no predictions and no verdicts, and nothing here was used to choose
 what is reported above.
 
 * **Other measures of the regional pull.** Weighted by the phase-in weight $w$, early renewers minus stayers is +1.6
   (0.7 to 2.6); the capped regional component, +1.6 (0.9 to 2.2). Both are positive in H3 too.
-* **[Census region][census]** adds nothing to the decision model: Midwest, South and West, each against the Northeast, all
+* **[Census region][census][^census]** adds nothing to the decision model: Midwest, South and West, each against the Northeast, all
   have intervals that include zero, and the pull and BASIC-level coefficients barely move (1.43 and 1.32).
 * **Leavers.** The 28 ACOs that left after PY2021 had the lowest savings rates (mean 2.7 points in PY2020, against
   6.4 for early renewers and 4.6 for stayers), and a regional pull similar to early renewers' on average (4.8 against
@@ -519,7 +519,7 @@ what is reported above.
 ## Deviations
 
 None affecting any result. All seven stages (validate, power, confirm, robustness, did, conventional, exploratory) ran with code identical
-to the registered commit [`a4064f5`][code], and each results file was committed before its estimates were read. Each results
+to the registered commit [`a4064f5`][code][^code], and each results file was committed before its estimates were read. Each results
 file records the commit it ran at, and
 [`DEVIATIONS.md`][deviations] (the current log, on the main branch)
 gives the command that checks it against the registered code.
@@ -529,6 +529,12 @@ script ([fixed in `dd8c279`][dashboard-fix]), which had shown PY2021 savings rat
 `uv.lock`, which took security updates to filelock and virtualenv from the site's main branch. The lockfile is a
 registered file, so that change is the one entry in `DEVIATIONS.md`; rerunning the analysis exactly as registered
 uses the lockfile at `a4064f5`.
+
+One sentence in the registered plan's background is imprecise, though nothing in the analysis depends on it.
+[Section 1.1][plan-1.1][^plan] says renewing is "the only way for a BASIC-track ACO to enter the ENHANCED track, which
+shares 75% of savings and losses". ENHANCED shares [75% of savings][cfr-610-rate][^cfr-425-610] but
+[up to 75% of losses][cfr-610-loss], and the bar on moving from BASIC to ENHANCED within an agreement period is in
+the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's text ([Design](#two-motives-and-why-the-savings-rate-cannot-separate-them)).
 
 ## Limitations
 
@@ -541,9 +547,9 @@ uses the lockfile at `a4064f5`.
   and the supported H3 coefficients are probably overestimates (see H3).
 * **Exclusions above the plan's 10% line.** The expected-gain variables (H2a, H2b, H3 and the gain itself) could not
   be built for 3 of 29 early renewers (10.3%) and 36 of 277 stayers (13.0%); the plan requires reporting this as a
-  limitation when either group passes 10% ([section 3][plan-3]). In every one of the 39, CMS hides the ACO's count of
+  limitation when either group passes 10% ([section 3][plan-3][^plan]). In every one of the 39, CMS hides the ACO's count of
   assigned [ESRD][esrd] (kidney failure) beneficiaries in every county of the
-  [2021 county assignment file][data-assigned] ([it suppresses counts of 1 to 10][suppression-archive]),
+  [2021 county assignment file][data-assigned][^data-assigned] ([it suppresses counts of 1 to 10][suppression-archive][^suppression]),
   so the ESRD part of regional spending has no county weights; for 15 the aged/dual counts are hidden too. The
   plan's fill rules cover hidden cells in the results files, not fully hidden county weights, so these ACOs are
   excluded and counted, as registered. They are smaller ACOs (median 6,702 and 8,578 assigned beneficiaries for
@@ -560,7 +566,7 @@ uv run --group analysis pytest analysis/mssp-benchmark-ratchet/tests
 uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py validate   # then power, confirm, ...
 ```
 
-The CMS files are listed in [`data-snapshot.tsv`][snapshot] with their URLs and hashes; the runner checks every hash
+The CMS files are listed in [`data-snapshot.tsv`][snapshot][^code] with their URLs and hashes; the runner checks every hash
 before reading. [`ratchet/synthetic.py`][synthetic] writes a synthetic snapshot for a dry run without CMS data.
 
 The results notebook runs outside the locked environment, with its tools pinned on the command line (Playwright
@@ -581,68 +587,10 @@ post under the author's direction, and separate instances reviewed the plan and 
 
 ## References
 
-Regulation and program documents
+Every source cited above, numbered in order of first citation; each &#8617;&#xFE0E; returns to a place it is cited.
+General terms link to Wikipedia in the text instead.
 
-* [42 CFR Part 425][cfr-425], Medicare Shared Savings Program, as in force on 2022-01-01 (eCFR).
-* CMS (2018). Medicare Shared Savings Program; Accountable Care Organizations—Pathways to Success. Final rule.
-  [*Federal Register* 83, 67816-68082][fr-pathways].
-* CMS (2020). Additional Policy and Regulatory Revisions in Response to the COVID-19 Public Health Emergency. Interim
-  final rule. [*Federal Register* 85, 27550][fr-covid].
-* CMS (2022). [Shared Savings and Losses and Assignment Methodology Specifications, version 10][spec-v10]
-  (performance years starting January 1, 2022; [archived copy][spec-v10-archive]).
-* CMS (2020). [Cell Suppression Policy][suppression-archive] (archived copy; the [HHS Guidance Portal page][suppression]
-  refuses some visitors).
-
-Data (CMS, data.cms.gov; each file's URL and sha256 are in [`data-snapshot.tsv`][snapshot])
-
-* [Accountable Care Organizations][data-acos] (Shared Savings Program enrollment, 2014-2026).
-* [Performance Year Financial and Quality Results][data-results] (2013-2024).
-* [County-level Aggregate Expenditure and Risk Score Data on Assignable Beneficiaries][data-county].
-* [Number of Accountable Care Organization Assigned Beneficiaries by County][data-assigned].
-
-Methods
-
-* Callaway, B. and Sant'Anna, P. H. C. (2021). Difference-in-differences with multiple time periods. *Journal of
-  Econometrics* 225(2), 200-230. [doi:10.1016/j.jeconom.2020.12.001][callaway2021]
-* Firth, D. (1993). Bias reduction of maximum likelihood estimates. *Biometrika* 80(1), 27-38.
-  [doi:10.1093/biomet/80.1.27][firth1993]
-* Gelman, A. (2008). Scaling regression inputs by dividing by two standard deviations. *Statistics in Medicine*
-  27(15), 2865-2873. [doi:10.1002/sim.3107][gelman2008]
-* Gelman, A. and Carlin, J. (2014). Beyond power calculations: assessing Type S (sign) and Type M (magnitude)
-  errors. *Perspectives on Psychological Science* 9(6), 641-651. [doi:10.1177/1745691614551642][gelman-carlin2014]
-* Gelman, A., Jakulin, A., Pittau, M. G. and Su, Y.-S. (2008). A weakly informative default prior distribution for
-  logistic and other regression models. *Annals of Applied Statistics* 2(4), 1360-1383.
-  [doi:10.1214/08-AOAS191][gelman-prior2008]
-* Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting path lengths in Hamiltonian Monte
-  Carlo. *Journal of Machine Learning Research* 15, 1593-1623. [jmlr.org][nuts]
-* Lakens, D. (2017). Equivalence tests: a practical primer for t tests, correlations, and meta-analyses. *Social
-  Psychological and Personality Science* 8(4), 355-362. [doi:10.1177/1948550617697177][lakens2017]
-* MacKinnon, J. G. and White, H. (1985). Some heteroskedasticity-consistent covariance matrix estimators with
-  improved finite sample properties. *Journal of Econometrics* 29(3), 305-325.
-  [doi:10.1016/0304-4076(85)90158-7][mackinnon1985]
-* Nosek, B. A., Ebersole, C. R., DeHaven, A. C. and Mellor, D. T. (2018). The preregistration revolution.
-  *Proceedings of the National Academy of Sciences* 115(11), 2600-2606. [doi:10.1073/pnas.1708274114][nosek2018]
-* Phipson, B. and Smyth, G. K. (2010). Permutation p-values should never be zero: calculating exact p-values when
-  permutations are randomly drawn. *Statistical Applications in Genetics and Molecular Biology* 9(1), article 39.
-  [doi:10.2202/1544-6115.1585][phipson2010]
-* Rambachan, A. and Roth, J. (2023). A more credible approach to parallel trends. *Review of Economic Studies* 90(5),
-  2555-2591. [doi:10.1093/restud/rdad018][rambachan2023]
-* Rosenbaum, P. R. and Rubin, D. B. (1983). The central role of the propensity score in observational studies for
-  causal effects. *Biometrika* 70(1), 41-55. [doi:10.1093/biomet/70.1.41][rosenbaum1983]
-* Roth, J. (2022). Pretest with caution: event-study estimates after testing for parallel trends. *American Economic
-  Review: Insights* 4(3), 305-322. [doi:10.1257/aeri.20210236][roth2022]
-* Rubin, D. B. (1981). The Bayesian bootstrap. *Annals of Statistics* 9(1), 130-134.
-  [doi:10.1214/aos/1176345338][rubin1981]
-* Simmons, J. P., Nelson, L. D. and Simonsohn, U. (2011). False-positive psychology: undisclosed flexibility in data
-  collection and analysis allows presenting anything as significant. *Psychological Science* 22(11), 1359-1366.
-  [doi:10.1177/0956797611417632][simmons2011]
-* VanderPlas, J. (2016). Statistics for Hackers. PyCon 2016. [Video][vdp-video], [slides][vdp-slides].
-* Vehtari, A., Gelman, A., Simpson, D., Carpenter, B. and Bürkner, P.-C. (2021). Rank-normalization, folding, and
-  localization: an improved R-hat for assessing convergence of MCMC. *Bayesian Analysis* 16(2), 667-718.
-  [doi:10.1214/20-BA1221][vehtari2021]
-* Welch, B. L. (1947). The generalization of "Student's" problem when several different population variances are
-  involved. *Biometrika* 34(1-2), 28-35. [doi:10.1093/biomet/34.1-2.28][welch1947]
-
+///Footnotes Go Here///
 
 [mssp]: https://www.cms.gov/medicare/payment/shared-savings-program
 [aco-cms]: https://www.cms.gov/priorities-innovation-key-concepts-accountable-care-accountable-care-organizations
@@ -696,6 +644,7 @@ Methods
 [run]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/ratchet/run.py
 [tests]: https://github.com/stharrold/stharrold.github.io/tree/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/tests
 [dbt-dir]: https://github.com/stharrold/stharrold.github.io/tree/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/dbt
+[plan-1.1]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#11-background
 [plan-1.3]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#13-hypotheses
 [plan-3]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#3-sample-and-groups
 [plan-4.3]: https://github.com/stharrold/stharrold.github.io/blob/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet/PREREGISTRATION.md#43-expected-benchmark-gain-from-resetting-constructed
@@ -787,3 +736,56 @@ Methods
 [simmons2011]: https://doi.org/10.1177/0956797611417632
 [vehtari2021]: https://doi.org/10.1214/20-BA1221
 [welch1947]: https://doi.org/10.1093/biomet/34.1-2.28
+
+[^cms-mssp]: CMS. [Shared Savings Program][mssp]. cms.gov.
+[^cms-aco]: CMS. [Accountable Care Organizations (ACOs)][aco-cms]. cms.gov.
+[^cfr-425-601]: 42 CFR 425.601, Establishing, adjusting, and updating the benchmark for agreement periods beginning on July 1, 2019, and in subsequent years. eCFR, as in force on 2022-01-01. [Section][cfr-601]; paragraphs cited: [(a)(3)][cfr-601-risk], [(a)(5)][cfr-601-trend], [(a)(6)][cfr-601-types], [(a)(8)][cfr-601-adj], [(a)(8)(i)(C)][cfr-601-regional-risk], [(a)(8)(ii)(C)][cfr-601-cap], [(d)(1)][cfr-601-regional-weight], [(e)(1)][cfr-601-reset], [(e)(2)(i)][cfr-601-equal], [(f)][cfr-601-phase].
+[^cfr-425-20]: 42 CFR 425.20, Definitions. eCFR, as in force on 2022-01-01. Paragraphs cited: ["Renewing ACO" (2)][cfr-20-renewing].
+[^data-acos]: CMS. [Accountable Care Organizations][data-acos]: Shared Savings Program enrollment, one file per year, 2014-2026. data.cms.gov.
+[^cfr-425-610]: 42 CFR 425.610, Calculation of shared savings and losses under the ENHANCED track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(2)][cfr-610-rate], [(f)(2)][cfr-610-loss].
+[^registration]: Harrold, S. (2026). Why did Medicare ACOs reset their benchmarks early? A pre-registered analysis of early renewal in the Medicare Shared Savings Program. OSF Registries, registered 2026-10-26. [doi:10.17605/OSF.IO/C53W9](https://doi.org/10.17605/OSF.IO/C53W9). Editable project with the notebook exports: [osf.io/z4an5](https://osf.io/z4an5/).
+[^code]: Harrold, S. (2026). [`analysis/mssp-benchmark-ratchet/`][code], the registered analysis code at commit `a4064f5`: [`data-snapshot.tsv`][snapshot], [`ratchet/snapshot.py`][snapshot-py], [`ratchet/synthetic.py`][synthetic], [`ratchet/run.py`][run], [`dbt/`][dbt-dir], [`tests/`][tests].
+[^cms-puf]: CMS. [Non-Identifiable Data Files (public use files)][puf]. cms.gov.
+[^simmons2011]: Simmons, J. P., Nelson, L. D. and Simonsohn, U. (2011). False-positive psychology: undisclosed flexibility in data collection and analysis allows presenting anything as significant. *Psychological Science* 22(11), 1359-1366. [doi:10.1177/0956797611417632][simmons2011]
+[^nosek2018]: Nosek, B. A., Ebersole, C. R., DeHaven, A. C. and Mellor, D. T. (2018). The preregistration revolution. *Proceedings of the National Academy of Sciences* 115(11), 2600-2606. [doi:10.1073/pnas.1708274114][nosek2018]
+[^results]: Harrold, S. (2026). [Results files][results-dir] at commit `3da8cd2`, each recording the commit it ran at: [`validation.json`][res-validation], [`power.json`][res-power], [`confirm.json`][res-confirm], [`robustness.json`][res-robustness], [`did.json`][res-did], [`conventional.json`][res-conventional], [`exploratory.json`][res-exploratory]; with [`REGISTRATION.md`][registration-md] and the notebook source [`report/results_notebook.py`][notebook-src].
+[^data-results]: CMS. [Performance Year Financial and Quality Results][data-results], 2013-2024. data.cms.gov. Files cited: [PY2020][file-py2020], [PY2021][file-py2021]; [PY2021 data dictionary][dict-results-2021].
+[^cfr-425]: [42 CFR Part 425][cfr-425], Medicare Shared Savings Program. eCFR, as in force on 2022-01-01.
+[^cfr-425-600]: 42 CFR 425.600, Selection of risk model. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(4)(i)(B)(1)(i)][cfr-600-entry], [(a)(4)(i)(B)(2)][cfr-600-glide], [(a)(4)(i)(B)(2)(iii)][cfr-600-pause-2021], [(a)(4)(i)(B)(2)(iv)][cfr-600-pause-2022].
+[^cfr-425-226]: 42 CFR 425.226, Annual participation elections. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)(2)(i)][cfr-226].
+[^cfr-425-200]: 42 CFR 425.200, Participation agreement with CMS. eCFR, as in force on 2022-01-01. Paragraphs cited: [(b)(3)(ii)(B)][cfr-200-ext], [(b)(4)(ii)][cfr-200-b4], [(b)(5)][cfr-200-b5].
+[^fr-2020]: CMS (2020). Medicare and Medicaid Programs, Basic Health Program, and Exchanges; Additional Policy and Regulatory Revisions in Response to the COVID-19 Public Health Emergency. Interim final rule. [*Federal Register* 85, 27550][fr-covid], May 8, 2020.
+[^plan]: Harrold, S. (2026). [`PREREGISTRATION.md`][plan-1.3], version 0.6, the registered plan, at commit `a4064f5` (sha256 `d0e374c8…`; identical to the OSF copy). Sections cited: [1.1][plan-1.1], [1.3][plan-1.3], [3][plan-3], [4.3][plan-4.3], [4.4][plan-4.4], [5.4][plan-5.4], [5.5][plan-5.5], [5.6][plan-5.6], [5.7][plan-5.7], [5.8][plan-5.8], [6][plan-6], [7][plan-7].
+[^cfr-425-220]: 42 CFR 425.220, Termination of the participation agreement by the ACO. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)][cfr-220].
+[^cfr-425-605]: 42 CFR 425.605, Calculation of shared savings and losses under the BASIC track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(1)][cfr-605-levels].
+[^fr-2018]: CMS (2018). Medicare Program; Medicare Shared Savings Program; Accountable Care Organizations—Pathways to Success and Extreme and Uncontrollable Circumstances Policies for Performance Year 2017. Final rule. [*Federal Register* 83, 67816-68082][fr-pathways], December 31, 2018. Cited: [83 FR 67859][fr-pathways-track] (no move from BASIC to ENHANCED within an agreement period).
+[^spec-v10]: CMS (2022). [Medicare Shared Savings Program: Shared Savings and Losses and Assignment Methodology Specifications, version 10][spec-v10] (performance years starting January 1, 2022). Section 4.1.2. [Archived copy][spec-v10-archive].
+[^data-county]: CMS. [County-level Aggregate Expenditure and Risk Score Data on Assignable Beneficiaries][data-county]. data.cms.gov.
+[^data-assigned]: CMS. [Number of Accountable Care Organization Assigned Beneficiaries by County][data-assigned]. data.cms.gov.
+[^vanderplas2016]: VanderPlas, J. (2016). Statistics for Hackers. PyCon 2016. [Video][vdp-video], [slides][vdp-slides].
+[^rubin1981]: Rubin, D. B. (1981). The Bayesian bootstrap. *Annals of Statistics* 9(1), 130-134. [doi:10.1214/aos/1176345338][rubin1981]
+[^phipson2010]: Phipson, B. and Smyth, G. K. (2010). Permutation p-values should never be zero: calculating exact p-values when permutations are randomly drawn. *Statistical Applications in Genetics and Molecular Biology* 9(1), article 39. [doi:10.2202/1544-6115.1585][phipson2010]
+[^sw-pymc]: PyMC 6.3.2, with PyTensor 3.3.4 ([pymc.io][pymc]); pinned in `uv.lock`.
+[^hoffman2014]: Hoffman, M. D. and Gelman, A. (2014). The No-U-Turn Sampler: adaptively setting path lengths in Hamiltonian Monte Carlo. *Journal of Machine Learning Research* 15, 1593-1623. [jmlr.org][nuts]
+[^gelman2008]: Gelman, A. (2008). Scaling regression inputs by dividing by two standard deviations. *Statistics in Medicine* 27(15), 2865-2873. [doi:10.1002/sim.3107][gelman2008]
+[^gelman-prior2008]: Gelman, A., Jakulin, A., Pittau, M. G. and Su, Y.-S. (2008). A weakly informative default prior distribution for logistic and other regression models. *Annals of Applied Statistics* 2(4), 1360-1383. [doi:10.1214/08-AOAS191][gelman-prior2008]
+[^firth1993]: Firth, D. (1993). Bias reduction of maximum likelihood estimates. *Biometrika* 80(1), 27-38. [doi:10.1093/biomet/80.1.27][firth1993]
+[^sw-firthmodels]: firthmodels 0.8.2, Firth-penalized models in Python ([source][firthmodels]); pinned in `uv.lock`.
+[^vehtari2021]: Vehtari, A., Gelman, A., Simpson, D., Carpenter, B. and Bürkner, P.-C. (2021). Rank-normalization, folding, and localization: an improved R-hat for assessing convergence of MCMC. *Bayesian Analysis* 16(2), 667-718. [doi:10.1214/20-BA1221][vehtari2021]
+[^callaway2021]: Callaway, B. and Sant'Anna, P. H. C. (2021). Difference-in-differences with multiple time periods. *Journal of Econometrics* 225(2), 200-230. [doi:10.1016/j.jeconom.2020.12.001][callaway2021]
+[^roth2022]: Roth, J. (2022). Pretest with caution: event-study estimates after testing for parallel trends. *American Economic Review: Insights* 4(3), 305-322. [doi:10.1257/aeri.20210236][roth2022]
+[^lakens2017]: Lakens, D. (2017). Equivalence tests: a practical primer for t tests, correlations, and meta-analyses. *Social Psychological and Personality Science* 8(4), 355-362. [doi:10.1177/1948550617697177][lakens2017]
+[^rambachan2023]: Rambachan, A. and Roth, J. (2023). A more credible approach to parallel trends. *Review of Economic Studies* 90(5), 2555-2591. [doi:10.1093/restud/rdad018][rambachan2023]
+[^rosenbaum1983]: Rosenbaum, P. R. and Rubin, D. B. (1983). The central role of the propensity score in observational studies for causal effects. *Biometrika* 70(1), 41-55. [doi:10.1093/biomet/70.1.41][rosenbaum1983]
+[^welch1947]: Welch, B. L. (1947). The generalization of "Student's" problem when several different population variances are involved. *Biometrika* 34(1-2), 28-35. [doi:10.1093/biomet/34.1-2.28][welch1947]
+[^mackinnon1985]: MacKinnon, J. G. and White, H. (1985). Some heteroskedasticity-consistent covariance matrix estimators with improved finite sample properties. *Journal of Econometrics* 29(3), 305-325. [doi:10.1016/0304-4076(85)90158-7][mackinnon1985]
+[^sw-statsmodels]: statsmodels 0.15.0 ([statsmodels.org][statsmodels]; [`Logit`][statsmodels-logit]); pinned in `uv.lock`.
+[^sw-dbt]: dbt-core 1.12.6 with dbt-duckdb 1.11.0 ([getdbt.com][dbt]; [data tests][dbt-tests]); pinned in `uv.lock`.
+[^sw-duckdb]: DuckDB 2.0.0 ([duckdb.org][duckdb]); pinned in `uv.lock`.
+[^sw-uv]: uv, the Python package and project manager ([docs][uv]; [lockfile][uv-lock]).
+[^sw-numpy]: NumPy 2.5.4: [`SeedSequence`][numpy-seed] and [parallel random number generation][numpy-parallel]; pinned in `uv.lock`.
+[^suppression]: CMS (2020). [CMS Cell Suppression Policy][suppression-archive]: cells with values of 1 to 10 are not reported. Archived copy; the [HHS Guidance Portal page][suppression] refuses some visitors.
+[^sw-arviz]: ArviZ 1.3.0: [R-hat][arviz-rhat] and [effective sample size][arviz-ess]; pinned in `uv.lock`.
+[^gelman-carlin2014]: Gelman, A. and Carlin, J. (2014). Beyond power calculations: assessing Type S (sign) and Type M (magnitude) errors. *Perspectives on Psychological Science* 9(6), 641-651. [doi:10.1177/1745691614551642][gelman-carlin2014]
+[^sw-marimo]: marimo 0.25.2, reactive Python notebooks ([marimo.io][marimo]); run outside the lockfile, pinned on the command line (see [Reproduce](#reproduce)).
+[^census]: U.S. Census Bureau. [Census Regions and Divisions of the United States][census] (map).
