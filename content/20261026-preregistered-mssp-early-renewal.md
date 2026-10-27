@@ -12,12 +12,11 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
      publishing: set Date and the slug's date prefix, rename content/static/<slug>/,
      remove the slug from STATIC_EXCLUDES in publishconf.py, and change the dashboard's root-relative /static/ links
      to {static} (Pelican copies {static}-linked files even when STATIC_EXCLUDES lists them, so a draft must not use
-     them; once published, {static} makes the build check that the files exist). Results notebook (marimo,
-     reporting only: reads results/*.json, recomputes nothing): static HTML export in content/static/<slug>/ linked
-     from the post, with the privacy page's "Notebook exports" bullet updated for jsDelivr; on OSF the same HTML plus
-     a PDF and an .ipynb with outputs (marimo export ipynb --include-outputs; needs nbformat) as the copies that need no CDN; record each OSF file's sha256 in
-     the post. Run marimo with uv run --no-sync --with, so uv.lock is untouched. When src_master is merged into the
-     study branch, log its uv.lock change in DEVIATIONS.md as made after the analysis. Finally delete this comment:
+     them; once published, {static} makes the build check that the files exist). Results notebook: built and
+     exported (HTML in content/static/<slug>/, .ipynb and PDF in analysis/mssp-benchmark-ratchet/report/exports/,
+     hashes in the post); change its root-relative link to {static} too. Upload the three committed files to the OSF
+     project (osf.io/z4an5) as they are, without re-exporting, and check that OSF's hashes match the post. When
+     src_master is merged into the study branch, log its uv.lock change in DEVIATIONS.md as made after the analysis. Finally delete this comment:
      HTML comments are published in the page source. -->
 
 [TOC]
@@ -429,6 +428,19 @@ The conventional p-values are mostly larger than the resampling ones, but no ver
 <div id="mssp-dashboard" class="mssp-dash" aria-live="polite"><p>Loading the interactive results...</p></div>
 <script src="/static/20261026-preregistered-mssp-early-renewal/dashboard.js" defer></script>
 
+### Results notebook
+
+The same results are in a [marimo notebook](/static/20261026-preregistered-mssp-early-renewal/results.html)
+(`report/results_notebook.py`), which reads the results files through the dashboard's data builder and recomputes
+nothing. That page loads marimo's front end from jsDelivr, so the [OSF project](https://osf.io/z4an5/) also holds a
+PDF and a Jupyter notebook with its outputs saved, which need no CDN. The files as exported and uploaded:
+
+| File | sha256 |
+|---|---|
+| `results.html` | `1d82430cce7f132df059c463a3eb1afc2e41ff48292231817fce1577719ca734` |
+| `results.ipynb` | `a85a70d78678685f9ba77b3c298f1e2e6deca5aa428e4b02db7aa0984ce4810b` |
+| `results.pdf` | `312e643c83e25e058da9bd1bc5797171cadb66dbff67d53b6a6c346b3055dfb9` |
+
 ## Robustness
 
 The robustness checks of plan sections 5.5 and 5.8, read only after the confirmatory results. They do not change the
@@ -512,6 +524,16 @@ uv run --group analysis python analysis/mssp-benchmark-ratchet/ratchet/run.py va
 
 The CMS files are listed in `data-snapshot.tsv` with their URLs and hashes; the runner checks every hash before
 reading. `ratchet/synthetic.py` writes a synthetic snapshot for a dry run without CMS data.
+
+The results notebook runs outside the locked environment, with its tools pinned on the command line (Playwright
+1.61.0 is the version whose Chromium the PDF export uses). For the other two exports, replace `html` with
+`ipynb --include-outputs` (outputs are off by default) or `pdf`:
+
+```bash
+uv run --with marimo==0.25.2 --with matplotlib==3.11.2 --with nbformat==5.11.1 \
+    --with 'nbconvert[webpdf]==7.17.2' --with playwright==1.61.0 \
+    marimo export html analysis/mssp-benchmark-ratchet/report/results_notebook.py -o results.html
+```
 
 ## Use of AI tools
 

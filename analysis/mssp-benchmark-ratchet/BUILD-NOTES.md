@@ -247,4 +247,26 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Results notebook hosting, decided 2026-10-26: a marimo notebook that only reads `results/*.json`, exported as static
   HTML for the site (readers) and uploaded to OSF with a PDF export and an `.ipynb` with outputs. The PDF and `.ipynb`
   are the copies that survive if jsDelivr stops serving marimo's front end; the site and OSF HTML both depend on it.
-  Built after the real results, run with `uv run --no-sync --with marimo==0.25.2 --with nbformat` so `uv.lock` does not change.
+  Built after the real results, run with `uv run --with marimo==0.25.2 --with nbformat` so `uv.lock` does not change.
+- Results write-up approved by the author 2026-10-27, with the site-wide phone-table CSS change reviewed in a local
+  preview.
+- Results notebook (2026-10-27): `report/results_notebook.py`, a marimo notebook that imports `dashboard_data.build()`
+  so the notebook, the dashboard and the post share one set of unit conversions, and checks that the committed
+  `data.json` matches. Tables are Markdown and figures matplotlib PNGs, so the `.ipynb` (outputs are only
+  `text/markdown` and `image/png`) and the PDF need no JavaScript or CDN. Exported once, after the last edit, with
+  `uv run --no-sync --with marimo==0.25.2 --with matplotlib==3.11.2 --with nbformat==5.11.1 --with
+  'nbconvert[webpdf]==7.17.2' --with playwright==1.61.0 marimo export {html | ipynb --include-outputs | pdf}`; none
+  of these are in `uv.lock`. Playwright is pinned to 1.61.0 because its Chromium revision (1228) was already cached;
+  the newest Playwright wanted a browser download. HTML in `content/static/<slug>/`, `.ipynb` and PDF in
+  `report/exports/` (about 850 KB, committed so the hashes in the post can be checked against the repository).
+  Re-exporting changes every hash (the PDF embeds a creation date), so the files on OSF must be these committed ones.
+- Gotchas: in `mo.md(f"""...""")`, an interpolated multi-line table is not indented like the rest of the string, so
+  marimo's dedent fails and the cell renders as raw text; build such cells from unindented parts. Every run writes a
+  session cache to `report/__marimo__/` (now in `.gitignore`). Ruff formats `.ipynb` files, so
+  `report/exports/ruff.toml` excludes them (a nested config, because `pyproject.toml` is a registered file) and
+  `.pre-commit-config.yaml` excludes the folder; `ruff format --check .` and `--force-exclude` both skip it.
+- The HTML export's only third-party host is cdn.jsdelivr.net (about 300 requests for marimo's scripts, styles and
+  fonts; checked with Playwright). Its web-vitals module only logs to the console; no analytics. The embedded mount
+  config records the file name without a path and the editor's default settings. The privacy page's notebook bullet
+  now covers marimo exports. Where the page's "Run or Edit" button leads was not checked; it acts only when a reader
+  clicks it, so it is not a request the page makes on load.
