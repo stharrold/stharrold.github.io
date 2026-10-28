@@ -1,0 +1,80 @@
+{
+ "registered": false,
+ "note": "Post hoc, exploratory; written after all registered results were read (see the module docstring).",
+ "generated": "2026-10-28T15:10:49+00:00",
+ "git_commit": "2075a6bcd8299a2f8d45229b0e4fa4025e25fac0",
+ "units": "pull and own-spending component in percentage points of the current benchmark; savings rates in percentage points",
+ "pooled": {
+  "sample": "early renewers and stayers",
+  "correlations": {
+   "sav_rate_2020": {
+    "with": "savings rate, PY2020",
+    "n": 267,
+    "spearman": 0.44618689189401667,
+    "pearson": 0.26157266650598676
+   },
+   "sav_rate_2021": {
+    "with": "savings rate, PY2021",
+    "n": 267,
+    "spearman": 0.2294513212427223,
+    "pearson": 0.12030294236064636
+   },
+   "own": {
+    "with": "own-spending component",
+    "n": 267,
+    "spearman": -0.2546612632537238,
+    "pearson": -0.09703506626803214
+   }
+  }
+ },
+ "stayers": {
+  "sample": "stayers",
+  "correlations": {
+   "sav_rate_2020": {
+    "with": "savings rate, PY2020",
+    "n": 241,
+    "spearman": 0.42007808866099183,
+    "pearson": 0.1862646922110507
+   },
+   "sav_rate_2021": {
+    "with": "savings rate, PY2021",
+    "n": 241,
+    "spearman": 0.22806614080695473,
+    "pearson": 0.06074840067368232
+   },
+   "own": {
+    "with": "own-spending component",
+    "n": 241,
+    "spearman": -0.25266794691540073,
+    "pearson": -0.03628635479400583
+   }
+  }
+ },
+ "early": {
+  "sample": "early renewers",
+  "correlations": {
+   "sav_rate_2020": {
+    "with": "savings rate, PY2020",
+    "n": 26,
+    "spearman": 0.43084288542152055,
+    "pearson": 0.684401441922402
+   },
+   "sav_rate_2021": {
+    "with": "savings rate, PY2021",
+    "n": 26,
+    "spearman": 0.01230979672632916,
+    "pearson": 0.32367233300160136
+   },
+   "own": {
+    "with": "own-spending component",
+    "n": 26,
+    "spearman": -0.012649572649572649,
+    "pearson": -0.24715964272552543
+   }
+  }
+ },
+ "n_by_group": {
+  "early": 26,
+  "stayer": 241
+ }
+}

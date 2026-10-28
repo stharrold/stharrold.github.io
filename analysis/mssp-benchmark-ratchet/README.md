@@ -17,6 +17,7 @@ files are public use files from data.cms.gov.
 | `dbt/` | dbt project (dbt-duckdb): one SQL model per derived table, with schema and data tests. |
 | `tests/` | Tests on real enrollment data and on synthetic data (no CMS outcome values). |
 | `results/` | One JSON file per stage, committed as each stage finished; each records the commit it ran at. |
+| `posthoc/` | Post hoc checks added after every registered result had been read (not registered): scripts and their JSON output. See `posthoc/README.md`. |
 | `report/` | Reporting only, not part of the registered analysis: `dashboard_data.py` builds the post's dashboard data from `results/`; `results_notebook.py` is the marimo results notebook; `exports/` holds its `.ipynb` and PDF exports, kept byte-for-byte as uploaded to OSF (sha256 in the post; never re-export). |
 | `REGISTRATION.md`, `DEVIATIONS.md`, `BUILD-NOTES.md` | The registration record, the deviation log, and a running log of how the study was built. |
 
@@ -102,6 +103,23 @@ threshold to change. For bit-for-bit reruns in your own variant, sort the frame 
 - To rerun only a later stage without the 17-hour confirm stage, copy the committed files it needs into your output
   directory first, for example `cp analysis/mssp-benchmark-ratchet/results/{validation,power,confirm}.json $OUT/`
   before `did`. Stages check only that those files exist.
+
+### 4b. Rerun the post hoc checks (under a minute; not registered)
+
+The manuscript also reports 2 post hoc checks (eTable 13 of its Multimedia Appendix 1). They rebuild the database
+with the registered pipeline and need the data from step 2 in its default location (they take no `--data-dir`):
+
+```bash
+uv run --group analysis python analysis/mssp-benchmark-ratchet/posthoc/validation_change.py
+uv run --group analysis python analysis/mssp-benchmark-ratchet/posthoc/pull_savings.py
+git diff --stat -- analysis/mssp-benchmark-ratchet/posthoc/
+```
+
+Each overwrites its committed JSON in `posthoc/`, so `git diff` shows what changed. Tested 2026-10-28: besides the
+`generated` timestamp and `git_commit`, `pull_savings.json` matched to 6 decimals, and in `validation_change.json`
+every validation metric matched while the resampled PY2021-to-PY2022 comparison moved by simulation error (interval
+-1.97 to 2.24 committed, -2.04 to 2.23 rerun; -2.0 to 2.2 as reported either way). `git checkout -- analysis/mssp-benchmark-ratchet/posthoc/`
+restores the committed files.
 
 ### 5. Adapt it
 

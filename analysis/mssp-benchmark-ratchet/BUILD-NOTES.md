@@ -411,3 +411,45 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   - Submitting directly was chosen over medRxiv's transfer to JMIR.
   - JMIR requires suggested reviewers. The shortlist (first authors of cited MSSP studies, from PubMed records) is
     kept out of the public repository, as are the copies of JMIR's help pages.
+- i-JMR framing (2026-10-28): two cold reads by fresh agents scored the contribution 2 of 5 for a general reader and
+  3 for a specialist. The root cause was that the headline rests on secondary and post hoc results, not on the
+  registered primary measure, while the abstract framed only the reset motive. The manuscript now:
+  - states both motives up front, and says why the pull was primary and the total gain secondary;
+  - flags the registered H2b wording ("beyond past savings") as overstated once the decomposition is known;
+  - quotes CMS's 2018 reason for barring moves from BASIC to ENHANCED (83 FR 67859): CMS named early renewal, with
+    its reset, as the way to make the move;
+  - reads the data, as interpretation only, as fitting the sharing-rate motive better;
+  - adds Weitzman 1980, Einav et al. 2022, a Cappello 2026 dissertation (found in a Scholar Labs novelty check) and
+    the program's size from CMS's 2026 fact sheet.
+
+  A new post hoc check (`posthoc/pull_savings.py`, not registered) finds a rank correlation of 0.45 between the pull
+  and the PY2020 savings rate, so the pull is related to past savings without restating them. AI cold reads stopped
+  there, with the outside human reviewer planned for medRxiv version 2 as the real test.
+- Zenodo archive (2026-10-28): mssp-paper-2026 is connected to Zenodo. Zenodo's repository list was 9 months old,
+  and "Sync now" made the renamed repository appear. The i-JMR branch was merged into `main`, so the public
+  repository matches the submission, and the tag `medrxiv-v1` keeps version 1. `CITATION.cff`, `.zenodo.json` and
+  byte-identical copies of the 2 post hoc scripts were added. Releases v1.0.0 and v1.1.0 were archived; the concept
+  DOI is 10.5281/zenodo.23737045 (v1.1.0: 10.5281/zenodo.23737104), and the manuscript's Data Availability cites it,
+  so the uploaded Word file points to its own archive. A DOI exists only after the first release, which is why there
+  were two releases.
+- i-JMR submission (2026-10-28): submitted as manuscript 115640, an Original Paper in the Health Services Research
+  section, with open participation review and JMIR Preprints, from the files archived as Zenodo v1.2.0
+  (doi:10.5281/zenodo.23740845). The steps that needed judgment:
+  - 4 suggested reviewers: first authors of cited MSSP studies, with current emails from PubMed records and faculty
+    pages.
+  - The AI declaration: the session logs showed Claude proposed the topic (in the job-search planning session) and
+    drafted the plan's question, hypotheses, decision rules and methods, so every purpose except translation was
+    declared, plus a summary for the editor.
+  - A Word-table fix: pandoc sizes Word tables to a 5.5 in text width, which broke values across lines; found by
+    exporting the files through Pages.
+  - Table 4 moved to the appendix.
+  - No homepage image: JMIR's homepage images allow no text or diagrams, so the visual abstract can't be one.
+  - JMIR renames uploads itself, so pre-renamed appendix files are unnecessary.
+  - The stored abstract was checked after submission: plain ASCII and complete.
+- medRxiv declined (2026-10-28): medRxiv declined the preprint the day after submission. It requires authors to have
+  an organizational affiliation that provides oversight of research, and the author is an independent researcher, so
+  it was never posted. The i-JMR submission's JMIR Preprints posting is the preprint instead. The paper repository's
+  README and its release notes were corrected; the Zenodo copies of the notes keep the earlier "in screening". The
+  cover letter to i-JMR had described the preprint as in screening, so the author is sending the editor a
+  correction. Lesson: check a preprint server's affiliation requirements before choosing it as an independent
+  researcher (OSF Preprints is the noted fallback; its own requirements were not checked).
