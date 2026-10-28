@@ -1,6 +1,6 @@
 Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study
 Date: 2026-10-27T17:30:00Z
-Modified: 2026-10-28T13:35:00Z
+Modified: 2026-10-28T21:00:00Z
 Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-differences, healthcare, medicare, dbt, duckdb, python
 Category: Causal Inference
 Slug: 20261027-preregistered-mssp-early-renewal
@@ -22,6 +22,7 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
 | Tools | Python, dbt on DuckDB, PyMC, statsmodels, uv; an interactive dashboard in plain JavaScript; a marimo notebook |
 | Finding | Early renewers' regions spent more relative to their benchmarks, but they were also beating their benchmarks, so on average a reset would not have raised them; no detectable change in spending afterward |
 | Reproduce | About 10 minutes to download the data and run the tests; about 18 hours to rerun every stage ([Reproduce](#reproduce)) |
+| Manuscript | The journal-style write-up, its tables and figures, the results files and the post hoc scripts: [stharrold/mssp-paper-2026][manuscript], archived on Zenodo (DOI [10.5281/zenodo.23737045](https://doi.org/10.5281/zenodo.23737045))[^manuscript] |
 
 [![Visual abstract. Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study of Shared Savings Program ACOs: 29 renewed early in 2022, 277 stayed. The question: did ACOs renew early to get a higher benchmark, and did renewing change their spending? The design: public CMS data, 2019-2024; plan registered on OSF before any outcome was read; decision rules fixed in advance. Who renewed early, early renewers minus stayers in percent of benchmark with 95% intervals: region spends more than benchmark +3.4 (+1.7 to +5.4); regional part of a reset +1.6 (+0.9 to +2.2); own-spending part of a reset -2.1 (-3.8 to -0.5); total expected gain from a reset -0.5 (-2.0 to +0.8). Spending after renewal: change in spending growth -0.4% (-4.0 to +2.5), no detectable difference, and not read as an effect because a pre-existing trend could hide a small one. Takeaway: early renewers were low-cost relative to their regions, and almost all moved to the 75% sharing rate, but the reset did not raise their benchmarks on average; associations, not effects; 2022 rules.]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)
 
@@ -29,7 +30,8 @@ The visual abstract (select it for the full-size image) is drawn from the same r
 ([`report/visual_abstract.py`][visual-abstract-src]; [SVG]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.svg)).
 
 In the [Medicare Shared Savings Program][mssp][^cms-mssp] (MSSP), an [accountable care organization][aco-cms][^cms-aco] (ACO) earns a
-share of the savings when its patients' spending comes in below a benchmark. The benchmark is
+share of the savings when its patients' spending comes in below a benchmark. As of January 1, 2026, 511 ACOs served 12.6
+million assigned Medicare beneficiaries ([CMS fast facts][ssp-fastfacts][^cms-fastfacts-2026]). The benchmark is
 [reset at the start of each agreement period][cfr-601-reset][^cfr-425-601] from the ACO's own recent spending,
 [pulled toward its region's][cfr-601-adj]. An ACO can [end its agreement early and start a new one][cfr-20-renewing][^cfr-425-20],
 which resets the benchmark early. Of the 334 ACOs whose agreements began July 1, 2019 or January 1, 2020, 29 ended
@@ -92,7 +94,10 @@ of renewing.
   trends that began before renewal could still hide a smaller effect, so this is not read as "renewing had no
   effect".
 * **What this means.** ACOs that reset early were, on average, low-cost relative to their regions, and almost all of
-  them gained a higher sharing rate. A reset was not a simple way to get a higher benchmark.
+  them gained a higher sharing rate. A reset was not a simple way to get a higher benchmark. Read as an interpretation
+  rather than a test, the pattern fits the sharing rate as the draw better than the benchmark, and that is the trade
+  [CMS built into the rules][fr-pathways-track][^fr-2018], under which moving from BASIC to ENHANCED during an
+  agreement required renewing early, and so a reset.
 * **These are the 2022 rules.** Benchmarks for agreements starting in 2024 or later give ACOs credit for past savings
   and soften the cut for an ACO that spends more than its region, so the same trade-off may not hold for an ACO renewing today (see
   [Limitations](#limitations)).
@@ -262,16 +267,21 @@ looks at early renewal itself.
 
 * **Rebasing creates a ratchet.** The rules for setting an ACO's benchmark at renewal weaken its incentive to save,
   and the old weights on the benchmark years even rewarded higher spending just before a new agreement
-  ([Douven, McGuire and McWilliams 2015][douven2015][^douven2015]). That is one reason the H4 design guards against
-  anticipation and mean reversion.
+  ([Douven, McGuire and McWilliams 2015][douven2015][^douven2015]). This is the ratchet effect that arises whenever targets are set from past performance
+([Weitzman 1980][weitzman1980][^weitzman1980]), and a 2026 dissertation found MSSP savings rates 40% higher in years
+whose spending did not enter a future benchmark ([Cappello 2026][cappello2026][^cappello2026]). That is one reason the H4
+design guards against anticipation and mean reversion.
 * **ACOs differ widely from their regions.** Even after case-mix adjustment, ACOs' spending varies widely relative to
   local fee-for-service spending, so moving benchmarks toward regional averages shifts them unevenly
   ([Rose, Zaslavsky and McWilliams 2016][rose2016][^rose2016]). That variation is what the regional pull measures, and
   why its case-mix adjustment matters (see [Limitations](#limitations)).
 * **Benchmarks drive who participates.** After regional spending entered benchmarks in 2017, participation shifted
   toward providers whose spending was low relative to their region ([Lyu, Chernew and McWilliams 2023][lyu2023][^lyu2023]),
-  and ACOs whose effective benchmark fell were 7 percentage points more likely to leave
-  ([Chen and McWilliams 2025][chen2025][^chen2025]). The primary result here is the same kind of selection, in when to
+  ACOs whose effective benchmark fell were 7 percentage points more likely to leave
+([Chen and McWilliams 2025][chen2025][^chen2025]), and ACOs with a positive regional adjustment were about 70% less
+likely to exit ([Cappello 2026][cappello2026][^cappello2026]). In another voluntary Medicare program, bundled payments,
+hospitals that could gain without changing their behavior were more likely to join, which the authors call selection
+on levels ([Einav et al. 2022][einav2022][^einav2022]). The primary result here is the same kind of selection, in when to
   reset rather than whether to join or leave.
 * **The 2019 rules changed participation decisions.** Under Pathways to Success, for the first time more ACOs left the
   program than joined it: 73 exits against 65 entrants in 2019 ([Ying et al. 2023][ying2023][^ying2023]). ACOs that
@@ -306,8 +316,8 @@ looks at early renewal itself.
   departures); this study does not estimate costs.
 
 This study adds a pre-registered analysis of which ACOs used the option to reset their benchmark early, and of what a
-reset stood to give them, measured with public data. The Milliman reports were found later, by a critical review of
-the preprint. The search used Google Scholar Labs (three queries on 2026-10-27, one
+reset stood to give them, measured with public data. The Milliman reports were found later, by a critical review of the
+[manuscript][manuscript][^manuscript]. The search used Google Scholar Labs (three queries on 2026-10-27, one
 rejected as too broad), and its questions, raw results and per-paper summaries are saved in the study's
 [`research/`][research] folder.
 
@@ -809,9 +819,10 @@ what is reported above.
 
 ## Post hoc checks (not registered)
 
-Added on 2026-10-27, after every registered result had been read, in response to critical reviews of the preprint.
-[`posthoc/validation_change.py`][posthoc][^posthoc] reuses the registered pipeline's tables and estimator and changes
-no registered file; nothing here decides a hypothesis.
+Added on 2026-10-27 and 2026-10-28, after every registered result had been read, in response to critical reviews of
+the [manuscript][manuscript][^manuscript]. [`posthoc/validation_change.py`][posthoc] and
+[`posthoc/pull_savings.py`][posthoc-pull][^posthoc] reuse the registered pipeline's tables and estimator and change no
+registered file; nothing here decides a hypothesis.
 
 * **Validation on the change scale.** The registered validation checks benchmark levels, which vary widely across
   ACOs; the hypotheses concern differences of a few points. For the same 101 regular renewers, the rebuilt change from
@@ -823,6 +834,11 @@ no registered file; nothing here decides a hypothesis.
 * **The benchmark a year later.** From PY2021 to PY2022 the updated benchmark, which includes the annual update, rose
   3.1% for early renewers and 2.9% for stayers on average; within cohort the difference is 0.0 points (-2.0 to 2.2),
   p = 0.97.
+* **The regional pull and past savings.** The pull is measured against the current benchmark, which was set from the
+  ACO's own earlier spending, so it could be past savings by another name. Among the 267 early renewers and stayers
+  with the variable, its rank (Spearman) correlation with the PY2020 savings rate is 0.45, with PY2021 0.23 and with
+  the own-spending component -0.25 (stayers alone: 0.42, 0.23 and -0.25). The pull is related to past savings, but
+  most of its variation is not.
 
 ## Implications and open questions
 
@@ -921,7 +937,8 @@ the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's te
 
 Everything needed to rerun the study, check it, or adapt it is public: the code, the CMS data (with an archived copy),
 and the committed results. The steps below were run, exactly as written, from a fresh clone on macOS on 2026-10-27.
-The study's [README][readme] has the same steps with more detail on adapting the analysis.
+The study's [README][readme] has the same steps with more detail on adapting the analysis, and the
+[manuscript repository][manuscript][^manuscript] shows how its tables and figures are built from the committed results.
 
 **What you need.** [git](https://git-scm.com/), [uv][uv][^sw-uv] (on macOS or Linux:
 `curl -LsSf https://astral.sh/uv/install.sh | sh`; for Windows see its
@@ -1041,10 +1058,11 @@ once registered:
 
 ## Use of AI tools
 
-The author chose the question, hypotheses and decision rules, approved and registered the plan, ran the analysis, and
-is responsible for the results. [Claude Code][claude-code] (Claude Opus 5.5; [Anthropic][anthropic]) drafted the analysis code and most of this
-post under the author's direction; the author revised the text, and separate instances reviewed the plan and code
-before registration.
+[Claude Code][claude-code] (Claude Opus 5.5; [Anthropic][anthropic]) proposed the topic and drafted the analysis plan,
+including its question, hypotheses, decision rules and methods; the author chose among the options, revised and
+registered the plan, ran the analysis, and is responsible for the results. Claude Code also drafted the analysis code
+and most of this post under the author's direction; the author revised the text, and separate instances reviewed the
+plan and code before registration and the manuscript afterward.
 
 ## References
 
@@ -1202,6 +1220,13 @@ General terms link to Wikipedia in the text instead.
 [research]: https://github.com/stharrold/stharrold.github.io/tree/src_master/analysis/mssp-benchmark-ratchet/research
 [posthoc]: https://github.com/stharrold/stharrold.github.io/blob/bf91e5c/analysis/mssp-benchmark-ratchet/posthoc/validation_change.py
 [posthoc-json]: https://github.com/stharrold/stharrold.github.io/blob/bf91e5c/analysis/mssp-benchmark-ratchet/posthoc/validation_change.json
+[posthoc-pull]: https://github.com/stharrold/stharrold.github.io/blob/7fa20c0/analysis/mssp-benchmark-ratchet/posthoc/pull_savings.py
+[posthoc-pull-json]: https://github.com/stharrold/stharrold.github.io/blob/7fa20c0/analysis/mssp-benchmark-ratchet/posthoc/pull_savings.json
+[manuscript]: https://github.com/stharrold/mssp-paper-2026/tree/095b4d0d9f762a971a1317274eb3a107851f1325
+[ssp-fastfacts]: https://www.cms.gov/files/document/2026-shared-savings-program-fast-facts.pdf
+[weitzman1980]: https://doi.org/10.2307/3003414
+[cappello2026]: https://www.proquest.com/openview/92b6e8f86c7ba39e2ba879d91063898b/1
+[einav2022]: https://doi.org/10.1093/qje/qjab035
 [milliman2024]: https://www.milliman.com/-/media/milliman/pdfs/2024-articles/4-2-24_medicare_shared_savings_program_aco_financial_results_for_2022.ashx
 [milliman2025]: https://edge.sitecorecloud.io/millimaninc5660-milliman6442-prod27d5-0001/media/Milliman/PDFs/2025-Articles/4-7-25_MSSP-annual-renewal-considerations.pdf
 [aha2021]: https://www.aha.org/lettercomment/2021-10-14-aha-others-cms-re-request-provide-mssp-acos-option-use-pre-pandemic-years
@@ -1223,8 +1248,10 @@ General terms link to Wikipedia in the text instead.
 [vehtari2021]: https://doi.org/10.1214/20-BA1221
 [welch1947]: https://doi.org/10.1093/biomet/34.1-2.28
 
+[^manuscript]: Harrold, S. (2026). Manuscript, data and code for the MSSP early-renewal study. Zenodo, concept DOI [10.5281/zenodo.23737045](https://doi.org/10.5281/zenodo.23737045) (resolves to the latest version); source [stharrold/mssp-paper-2026][manuscript] at the version submitted to a journal on 2026-10-28.
 [^cms-mssp]: CMS. [Shared Savings Program][mssp]. cms.gov.
 [^cms-aco]: CMS. [Accountable Care Organizations (ACOs)][aco-cms]. cms.gov.
+[^cms-fastfacts-2026]: CMS. [Shared Savings Program fast facts, as of January 1, 2026][ssp-fastfacts]. cms.gov.
 [^cfr-425-601]: 42 CFR 425.601, Establishing, adjusting, and updating the benchmark for agreement periods beginning on July 1, 2019, and in subsequent years. eCFR, as in force on 2022-01-01. [Section][cfr-601]; paragraphs cited: [(a)(3)][cfr-601-risk], [(a)(5)][cfr-601-trend], [(a)(2)][cfr-601-types], [(a)(8)][cfr-601-adj], [(a)(8)(i)(C)][cfr-601-regional-risk], [(a)(8)(ii)(C)][cfr-601-cap], [(d)(1)][cfr-601-regional-weight], [(d)(3)][cfr-601-shares], [(e)(1)][cfr-601-reset], [(e)(2)(i)][cfr-601-equal], [(f)][cfr-601-phase].
 [^cfr-425-20]: 42 CFR 425.20, Definitions. eCFR, as in force on 2022-01-01. Paragraphs cited: ["Renewing ACO" (2)][cfr-20-renewing].
 [^data-acos]: CMS. [Accountable Care Organizations][data-acos]: Shared Savings Program enrollment, one file per year, 2014-2026. data.cms.gov.
@@ -1232,6 +1259,7 @@ General terms link to Wikipedia in the text instead.
 [^registration]: Harrold, S. (2026). Why did Medicare ACOs reset their benchmarks early? A pre-registered analysis of early renewal in the Medicare Shared Savings Program. OSF Registries, registered 2026-10-26. [doi:10.17605/OSF.IO/C53W9](https://doi.org/10.17605/OSF.IO/C53W9). The OSF project with the notebook exports and the archived data snapshot: [osf.io/z4an5](https://osf.io/z4an5/), [doi:10.17605/OSF.IO/Z4AN5](https://doi.org/10.17605/OSF.IO/Z4AN5).
 [^code]: Harrold, S. (2026). [`analysis/mssp-benchmark-ratchet/`][code], the registered analysis code at commit `a4064f5`: [`data-snapshot.tsv`][snapshot], [`ratchet/snapshot.py`][snapshot-py], [`ratchet/synthetic.py`][synthetic], [`ratchet/run.py`][run], [`dbt/`][dbt-dir], [`tests/`][tests].
 [^data-results]: CMS. [Performance Year Financial and Quality Results][data-results], 2013-2024. data.cms.gov. Files cited: [PY2020][file-py2020], [PY2021][file-py2021]; [PY2021 data dictionary][dict-results-2021].
+[^fr-2018]: CMS (2018). Medicare Program; Medicare Shared Savings Program; Accountable Care Organizations—Pathways to Success and Extreme and Uncontrollable Circumstances Policies for Performance Year 2017. Final rule. [*Federal Register* 83, 67816-68082][fr-pathways], December 31, 2018. Cited: [83 FR 67859][fr-pathways-track] (no move from BASIC to ENHANCED within an agreement period).
 [^plan]: Harrold, S. (2026). [`PREREGISTRATION.md`][plan-1.3], version 0.6, the registered plan, at commit `a4064f5` (sha256 `d0e374c8…`; identical to the OSF copy). Sections cited: [1.1][plan-1.1], [1.3][plan-1.3], [3][plan-3], [4.3][plan-4.3], [4.4][plan-4.4], [4.5][plan-4.5], [5.4][plan-5.4], [5.5][plan-5.5], [5.6][plan-5.6], [5.7][plan-5.7], [5.8][plan-5.8], [6][plan-6], [7][plan-7].
 [^cms-puf]: CMS. [Non-Identifiable Data Files (public use files)][puf]. cms.gov.
 [^simmons2011]: Simmons, J. P., Nelson, L. D. and Simonsohn, U. (2011). False-positive psychology: undisclosed flexibility in data collection and analysis allows presenting anything as significant. *Psychological Science* 22(11), 1359-1366. [doi:10.1177/0956797611417632][simmons2011]
@@ -1245,15 +1273,17 @@ General terms link to Wikipedia in the text instead.
 [^milliman2024]: Smith, M., Jensen, B., Anderson, J. and Lockett, K. (2024). [Medicare Shared Savings Program: ACO financial results for 2022][milliman2024]. Milliman research report, April 2024. Figure 12, "Gross savings rates of ACOs by 2022 early rebasing status".
 [^milliman2025]: Milliman (2025). [Annual renewal considerations in the Medicare Shared Savings Program (MSSP)][milliman2025]. Case study, April 2025.
 [^douven2015]: Douven, R., McGuire, T. G. and McWilliams, J. M. (2015). Avoiding unintended incentives in ACO payment models. *Health Affairs* 34(1), 143-149. [doi:10.1377/hlthaff.2014.0444][douven2015]
+[^weitzman1980]: Weitzman, M. L. (1980). The "ratchet principle" and performance incentives. *The Bell Journal of Economics* 11(1), 302. [doi:10.2307/3003414][weitzman1980]
+[^cappello2026]: Cappello, A. (2026). [Essays in industrial organization and health economics][cappello2026]. PhD dissertation, Boston College. ProQuest Dissertations & Theses 32577467. Chapter 1, benchmark design in the Medicare Shared Savings Program (read from the publisher's preview).
 [^rose2016]: Rose, S., Zaslavsky, A. M. and McWilliams, J. M. (2016). Variation in accountable care organization spending and sensitivity to risk adjustment: implications for benchmarking. *Health Affairs* 35(3), 440-448. [doi:10.1377/hlthaff.2015.1026][rose2016]
 [^lyu2023]: Lyu, P. F., Chernew, M. E. and McWilliams, J. M. (2023). Benchmarking changes and selective participation in the Medicare Shared Savings Program. *Health Affairs* 42(5), 622-631. [doi:10.1377/hlthaff.2022.01061][lyu2023]
 [^chen2025]: Chen, A. J. and McWilliams, J. M. (2025). How benchmark changes affect participation in accountable care organizations: prospects for voluntary payment models. *American Journal of Health Economics* 11(1), 38-62. [doi:10.1086/726748][chen2025]
+[^einav2022]: Einav, L., Finkelstein, A., Ji, Y. and Mahoney, N. (2022). Voluntary regulation: evidence from Medicare payment reform. *The Quarterly Journal of Economics* 137(1), 565-618. [doi:10.1093/qje/qjab035][einav2022]
 [^ying2023]: Ying, M., Hirth, R. A., Yan, P., Shay, A., Murali, S., Ryan, A. M. and Hollingsworth, J. M. (2023). Changes in Shared Savings Program participation after launch of Pathways to Success. *Journal of General Internal Medicine* 38(7), 1780-1782. [doi:10.1007/s11606-022-07947-x][ying2023]
 [^ying2024]: Ying, M., Forman, J. H., Murali, S., Gauntlett, L. E., Krein, S. L., Hollenbeck, B. K. and Hollingsworth, J. M. (2024). Factors affecting Accountable Care Organizations' decisions to remain in or exit the Medicare Shared Savings Program following Pathways to Success. *Health Affairs Scholar* 2(1). [doi:10.1093/haschl/qxad093][ying2024]
 [^moloci2021]: Moloci, N. M., Si, Y., Norton, E. C., Ryan, A. M. and Hollingsworth, J. M. (2021). Predicting losses from Medicare Shared Savings Program departures. *Journal of General Internal Medicine* 36(8), 2490-2491. [doi:10.1007/s11606-020-06424-7][moloci2021]
 [^cfr-425-220]: 42 CFR 425.220, Termination of the participation agreement by the ACO. eCFR, as in force on 2022-01-01. Paragraphs cited: [(a)][cfr-220].
 [^cfr-425-605]: 42 CFR 425.605, Calculation of shared savings and losses under the BASIC track. eCFR, as in force on 2022-01-01. Paragraphs cited: [(d)(1)][cfr-605-levels].
-[^fr-2018]: CMS (2018). Medicare Program; Medicare Shared Savings Program; Accountable Care Organizations—Pathways to Success and Extreme and Uncontrollable Circumstances Policies for Performance Year 2017. Final rule. [*Federal Register* 83, 67816-68082][fr-pathways], December 31, 2018. Cited: [83 FR 67859][fr-pathways-track] (no move from BASIC to ENHANCED within an agreement period).
 [^spec-v10]: CMS (2022). [Medicare Shared Savings Program: Shared Savings and Losses and Assignment Methodology Specifications, version 10][spec-v10] (performance years starting January 1, 2022). Section 4.1.2. [Archived copy][spec-v10-archive].
 [^data-county]: CMS. [County-level Aggregate Expenditure and Risk Score Data on Assignable Beneficiaries][data-county]. data.cms.gov.
 [^data-assigned]: CMS. [Number of Accountable Care Organization Assigned Beneficiaries by County][data-assigned]. data.cms.gov.
@@ -1283,7 +1313,7 @@ General terms link to Wikipedia in the text instead.
 [^gelman-carlin2014]: Gelman, A. and Carlin, J. (2014). Beyond power calculations: assessing Type S (sign) and Type M (magnitude) errors. *Perspectives on Psychological Science* 9(6), 641-651. [doi:10.1177/1745691614551642][gelman-carlin2014]
 [^sw-marimo]: marimo 0.25.2, reactive Python notebooks ([marimo.io][marimo]); run outside the lockfile, pinned on the command line (see [Reproduce](#reproduce)).
 [^census]: U.S. Census Bureau. [Census Regions and Divisions of the United States][census] (map).
-[^posthoc]: Harrold, S. (2026). Post hoc analyses, not registered: [`posthoc/validation_change.py`][posthoc] and its output [`validation_change.json`][posthoc-json], at commit `bf91e5c`.
+[^posthoc]: Harrold, S. (2026). Post hoc analyses, not registered: [`posthoc/validation_change.py`][posthoc] and its output [`validation_change.json`][posthoc-json], at commit `bf91e5c`; [`posthoc/pull_savings.py`][posthoc-pull] and its output [`pull_savings.json`][posthoc-pull-json], at commit `7fa20c0`.
 [^suppression]: CMS (2020). [CMS Cell Suppression Policy][suppression-archive]: cells with values of 1 to 10 are not reported. Archived copy; the [HHS Guidance Portal page][suppression] refuses some visitors.
 [^cfr-2024]: 42 CFR 425.652, Establishing, adjusting, and updating the benchmark for agreement periods beginning on January 1, 2024, and in subsequent years; 425.656, Calculating the regional adjustment to the historical benchmark; and 425.658, Calculating the prior savings adjustment to the historical benchmark. eCFR, as in force on 2024-01-01. Paragraphs cited: [425.652][cfr24-652], [425.652(a)(8)][cfr24-652-a8], [425.652(b)][cfr24-652-b], [425.656(c)(4)][cfr24-656], [425.658(c)(1)][cfr24-658].
 [^aha2021]: American Hospital Association, National Association of ACOs and others (2021). [Letter to CMS requesting an option for MSSP ACOs to use pre-pandemic years to set benchmarks][aha2021], October 14, 2021.
