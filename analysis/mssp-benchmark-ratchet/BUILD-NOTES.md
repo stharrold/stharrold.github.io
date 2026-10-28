@@ -432,3 +432,17 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   DOI is 10.5281/zenodo.23737045 (v1.1.0: 10.5281/zenodo.23737104), and the manuscript's Data Availability cites it,
   so the uploaded Word file points to its own archive. A DOI exists only after the first release, which is why there
   were two releases.
+- i-JMR submission (2026-10-28): submitted as manuscript 115640, an Original Paper in the Health Services Research
+  section, with open participation review and JMIR Preprints, from the files archived as Zenodo v1.2.0
+  (doi:10.5281/zenodo.23740845). The steps that needed judgment:
+  - 4 suggested reviewers: first authors of cited MSSP studies, with current emails from PubMed records and faculty
+    pages.
+  - The AI declaration: the session logs showed Claude proposed the topic (in the job-search planning session) and
+    drafted the plan's question, hypotheses, decision rules and methods, so every purpose except translation was
+    declared, plus a summary for the editor.
+  - A Word-table fix: pandoc sizes Word tables to a 5.5 in text width, which broke values across lines; found by
+    exporting the files through Pages.
+  - Table 4 moved to the appendix.
+  - No homepage image: JMIR's homepage images allow no text or diagrams, so the visual abstract can't be one.
+  - JMIR renames uploads itself, so pre-renamed appendix files are unnecessary.
+  - The stored abstract was checked after submission: plain ASCII and complete.
