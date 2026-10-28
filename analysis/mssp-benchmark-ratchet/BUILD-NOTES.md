@@ -425,3 +425,10 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   A new post hoc check (`posthoc/pull_savings.py`, not registered) finds a rank correlation of 0.45 between the pull
   and the PY2020 savings rate, so the pull is related to past savings without restating them. AI cold reads stopped
   there, with the outside human reviewer planned for medRxiv version 2 as the real test.
+- Zenodo archive (2026-10-28): mssp-paper-2026 is connected to Zenodo. Zenodo's repository list was 9 months old,
+  and "Sync now" made the renamed repository appear. The i-JMR branch was merged into `main`, so the public
+  repository matches the submission, and the tag `medrxiv-v1` keeps version 1. `CITATION.cff`, `.zenodo.json` and
+  byte-identical copies of the 2 post hoc scripts were added. Releases v1.0.0 and v1.1.0 were archived; the concept
+  DOI is 10.5281/zenodo.23737045 (v1.1.0: 10.5281/zenodo.23737104), and the manuscript's Data Availability cites it,
+  so the uploaded Word file points to its own archive. A DOI exists only after the first release, which is why there
+  were two releases.
