@@ -411,3 +411,17 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   - Submitting directly was chosen over medRxiv's transfer to JMIR.
   - JMIR requires suggested reviewers. The shortlist (first authors of cited MSSP studies, from PubMed records) is
     kept out of the public repository, as are the copies of JMIR's help pages.
+- i-JMR framing (2026-10-28): two cold reads by fresh agents scored the contribution 2 of 5 for a general reader and
+  3 for a specialist. The root cause was that the headline rests on secondary and post hoc results, not on the
+  registered primary measure, while the abstract framed only the reset motive. The manuscript now:
+  - states both motives up front, and says why the pull was primary and the total gain secondary;
+  - flags the registered H2b wording ("beyond past savings") as overstated once the decomposition is known;
+  - quotes CMS's 2018 reason for barring moves from BASIC to ENHANCED (83 FR 67859): CMS named early renewal, with
+    its reset, as the way to make the move;
+  - reads the data, as interpretation only, as fitting the sharing-rate motive better;
+  - adds Weitzman 1980, Einav et al. 2022, a Cappello 2026 dissertation (found in a Scholar Labs novelty check) and
+    the program's size from CMS's 2026 fact sheet.
+
+  A new post hoc check (`posthoc/pull_savings.py`, not registered) finds a rank correlation of 0.45 between the pull
+  and the PY2020 savings rate, so the pull is related to past savings without restating them. AI cold reads stopped
+  there, with the outside human reviewer planned for medRxiv version 2 as the real test.
