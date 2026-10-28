@@ -382,3 +382,32 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   author's choice, `posthoc/validation_change.py` (not registered, bf91e5c) checks the gain on the change scale
   (Spearman 0.61, median error 1.7 points, regular renewers) and against early renewers' published 2022 benchmarks
   (mean -1.3%, 66% below PY2021; rebuilt -1.6 vs realized -1.4). The post has not yet been updated to match.
+- Visual abstract redrawn (2026-10-27, deployed f6805db): takeaway now "low-cost relative to their regions, and
+  almost all moved to the 75% sharing rate, but the reset did not raise their benchmarks on average", matching the
+  revised post and preprint. Replaced on OSF z4an5/results-notebook as version 2 (same file ids): visual-abstract.png
+  sha256 bcfb1e5f6b45a285..., visual-abstract.svg sha256 93c82894c20525ea..., verified through the OSF API.
+- medRxiv submission (2026-10-27): version 1 submitted as MEDRXIV/2026/366643 (Health Policy, CC BY 4.0), main
+  PDF and Supplement 1 byte-identical to mssp-paper-2026 at the README's recorded commit (hashes checked on medRxiv's
+  proof page). The form's scope path: "Clinical research article with new results"; human data = yes, only openly
+  available public data = yes (data.cms.gov download pages given), not a prospective interventional study;
+  preregistration DOI as the protocol link. The form silently converts non-ASCII characters to HTML entities, so its
+  text fields were entered as plain ASCII. Awaiting screening; a v2 is planned after an outside reviewer.
+- i-JMR package (2026-10-28): the same manuscript reformatted as a JMIR Original Paper for the *Interactive Journal
+  of Medical Research*, using the JMIR tooling from the yuimedi-paper repository (its validator, adapted, and its
+  JMIR guidance). medRxiv v1 is frozen as the tag `medrxiv-v1`; the JMIR version is on the unpushed branch
+  `ijmr-submission` of mssp-paper-2026. What JMIR's rules changed:
+  - the title, to "Early Renewal of Accountable Care Organization Agreements to Reset Benchmarks in the Medicare
+    Shared Savings Program: Preregistered Retrospective Cohort Study" (JMIR wants a descriptive title naming the
+    design, with no abbreviations; the first review had asked for the design in the title too);
+  - the abstract headings, an Ethical Considerations section citing 45 CFR 46.102(e)(1), and JMIR's end sections;
+  - italics instead of bold, P values without spaces, and URLs moved into the references;
+  - the STROBE checklist, now Multimedia Appendix 2.
+
+  No number changed. Two JMIR rules were new: since October 2026, generative AI use is declared in a submission-form
+  question rather than in the Acknowledgments, and JMIR asks for the AI transcripts as an appendix. The author chose
+  to give a summary instead, because the sessions also cover unrelated work. Other facts gathered:
+  - i-JMR's Original Paper fee is US $1985 on acceptance; JMIRx Med's is $1000, and it is named as the transfer
+    choice.
+  - Submitting directly was chosen over medRxiv's transfer to JMIR.
+  - JMIR requires suggested reviewers. The shortlist (first authors of cited MSSP studies, from PubMed records) is
+    kept out of the public repository, as are the copies of JMIR's help pages.
