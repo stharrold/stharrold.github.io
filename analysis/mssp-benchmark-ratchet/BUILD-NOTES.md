@@ -446,3 +446,10 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   - No homepage image: JMIR's homepage images allow no text or diagrams, so the visual abstract can't be one.
   - JMIR renames uploads itself, so pre-renamed appendix files are unnecessary.
   - The stored abstract was checked after submission: plain ASCII and complete.
+- medRxiv declined (2026-10-28): medRxiv declined the preprint the day after submission. It requires authors to have
+  an organizational affiliation that provides oversight of research, and the author is an independent researcher, so
+  it was never posted. The i-JMR submission's JMIR Preprints posting is the preprint instead. The paper repository's
+  README and its release notes were corrected; the Zenodo copies of the notes keep the earlier "in screening". The
+  cover letter to i-JMR had described the preprint as in screening, so the author is sending the editor a
+  correction. Lesson: check a preprint server's affiliation requirements before choosing it as an independent
+  researcher. OSF Preprints accepts independent authors.
