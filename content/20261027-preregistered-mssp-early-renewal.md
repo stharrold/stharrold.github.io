@@ -1,6 +1,6 @@
 Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study
 Date: 2026-10-27T17:30:00Z
-Modified: 2026-10-27T20:00:00Z
+Modified: 2026-10-28T13:35:00Z
 Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-differences, healthcare, medicare, dbt, duckdb, python
 Category: Causal Inference
 Slug: 20261027-preregistered-mssp-early-renewal
@@ -1042,8 +1042,9 @@ once registered:
 ## Use of AI tools
 
 The author chose the question, hypotheses and decision rules, approved and registered the plan, ran the analysis, and
-is responsible for the results. [Claude Code][claude-code] (Claude Opus 5.5; [Anthropic][anthropic]) drafted the analysis code and parts of this
-post under the author's direction, and separate instances reviewed the plan and code before registration.
+is responsible for the results. [Claude Code][claude-code] (Claude Opus 5.5; [Anthropic][anthropic]) drafted the analysis code and most of this
+post under the author's direction; the author revised the text, and separate instances reviewed the plan and code
+before registration.
 
 ## References
 
