@@ -452,4 +452,4 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   README and its release notes were corrected; the Zenodo copies of the notes keep the earlier "in screening". The
   cover letter to i-JMR had described the preprint as in screening, so the author is sending the editor a
   correction. Lesson: check a preprint server's affiliation requirements before choosing it as an independent
-  researcher. OSF Preprints accepts independent authors.
+  researcher (OSF Preprints is the noted fallback; its own requirements were not checked).
