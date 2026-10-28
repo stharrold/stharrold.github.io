@@ -392,3 +392,22 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   available public data = yes (data.cms.gov download pages given), not a prospective interventional study;
   preregistration DOI as the protocol link. The form silently converts non-ASCII characters to HTML entities, so its
   text fields were entered as plain ASCII. Awaiting screening; a v2 is planned after an outside reviewer.
+- i-JMR package (2026-10-28): the same manuscript reformatted as a JMIR Original Paper for the *Interactive Journal
+  of Medical Research*, using the JMIR tooling from the yuimedi-paper repository (its validator, adapted, and its
+  JMIR guidance). medRxiv v1 is frozen as the tag `medrxiv-v1`; the JMIR version is on the unpushed branch
+  `ijmr-submission` of mssp-paper-2026. What JMIR's rules changed:
+  - the title, to "Early Renewal of Accountable Care Organization Agreements to Reset Benchmarks in the Medicare
+    Shared Savings Program: Preregistered Retrospective Cohort Study" (JMIR wants a descriptive title naming the
+    design, with no abbreviations; the first review had asked for the design in the title too);
+  - the abstract headings, an Ethical Considerations section citing 45 CFR 46.102(e)(1), and JMIR's end sections;
+  - italics instead of bold, P values without spaces, and URLs moved into the references;
+  - the STROBE checklist, now Multimedia Appendix 2.
+
+  No number changed. Two JMIR rules were new: since October 2026, generative AI use is declared in a submission-form
+  question rather than in the Acknowledgments, and JMIR asks for the AI transcripts as an appendix. The author chose
+  to give a summary instead, because the sessions also cover unrelated work. Other facts gathered:
+  - i-JMR's Original Paper fee is US $1985 on acceptance; JMIRx Med's is $1000, and it is named as the transfer
+    choice.
+  - Submitting directly was chosen over medRxiv's transfer to JMIR.
+  - JMIR requires suggested reviewers. The shortlist (first authors of cited MSSP studies, from PubMed records) is
+    kept out of the public repository, as are the copies of JMIR's help pages.
