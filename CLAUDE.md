@@ -25,6 +25,8 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 
 - `gh api repos/<owner>/<repo>/commits/<tag> --jq .sha` - resolve an action tag to a SHA for pinning (setup-uv has no major tags).
 - `gh run list --workflow pages.yml --json databaseId,headSha` then `gh run watch <id>` - match runs by commit; the list lags a few seconds after a push.
+- `GITHUB_TOKEN= gh ...` - for other repos (private stharrold/planb, stharrold/mssp-paper-2026 releases and hooks):
+  Claude Code's GITHUB_TOKEN may lack access; clearing it falls back to gh's own login.
 - `curl -s "https://stharrold.github.io/<path>?v=$(date +%s)"` - cache-busted live check after a deploy.
 - `uv run pelican -s pelicanconf.py -o <dir>` then `python3 -m http.server` in `<dir>` - stable preview for Playwright screenshots (not `--autoreload`).
 - `curl -s --compressed "https://www.ecfr.gov/api/versioner/v1/full/<YYYY-MM-DD>/title-42.xml?part=425&section=425.601"` - regulation text as in force on a date (eCFR's pages block curl; the API needs `--compressed`).
@@ -62,6 +64,9 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   as tolerable risk (see #64). Recheck when Pelican releases.
 - **Cite sources as footnotes,** as the 2015-2016 posts do: Python-Markdown `[^id]` markers, placed under References
   by `///Footnotes Go Here///`, numbered by first citation with back-links (one footnote can be cited many times).
+  Python-Markdown numbers them in the order the `[^id]:` definitions appear, so keep the definitions sorted by first
+  citation (check the built page's `footnote-ref` numbers rise down the page), and never put a colon right after a
+  marker (`[^id]: text` mid-line looks like a definition).
   Keep the direct link inline too. Claims about methods, data and definitions each link to a source.
 - **Stable links:** eCFR point-in-time URLs with percent-encoded paragraph anchors (`#p-425.601%28a%29%288%29`; raw
   parentheses break Markdown links), GitHub links pinned to a commit SHA, papers by DOI. Publishers and hhs.gov answer
