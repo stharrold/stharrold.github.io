@@ -8,5 +8,6 @@ exploratory and never decide a registered hypothesis.
 | Script | Output | What it checks |
 |---|---|---|
 | `validation_change.py` | `validation_change.json` | The expected gain on the change scale for the 101 regular renewers; early renewers' realized 2022 reset from CMS's published benchmarks; the PY2021-PY2022 benchmark update, early renewers vs stayers |
+| `pull_savings.py` | `pull_savings.json` | Rank correlations of the regional pull with the PY2020 and PY2021 savings rates and the own-spending component (does the pull restate past savings?), for the 267 early renewers and stayers in the group comparisons |
 
-Run from the repository root: `uv run --group analysis python analysis/mssp-benchmark-ratchet/posthoc/validation_change.py`.
+Run from the repository root: `uv run --group analysis python analysis/mssp-benchmark-ratchet/posthoc/<script>.py`.
