@@ -39,12 +39,15 @@ PAUSES = {
     # pause becomes about 1.05 s, so the sign-off gets its own beat. The rest of the take runs at about 180 wpm.
     "046": [(18.71, 0.50)],
 }
-# Stretches cut from a take: recording number -> [(start, end) in seconds into the recording]. Both ends must fall in
-# silence (checked below), so what is left of the pauses on either side joins into one; nothing is added.
+# Stretches cut from a take: recording number -> [(start, end, patch)], seconds into the recording. Both ends must
+# fall in silence (checked below). patch is None (the pauses on either side join into one) or (recording, start,
+# end): a stretch of another take, also starting and ending in silence, cleaned like a clip and leveled to the
+# speech just before the cut, put in its place. Patch takes need the same room and setup, so their background matches.
 CUTS = {
-    # clip 01: "A harder one." (34.35-35.15 s) sounded garbled; "...a lower target." is followed directly by
-    # "So why do it?", with about 1.2 s between them.
-    "041": [(33.90, 35.70)],
+    # clip 01: "A harder one." (34.35-35.15 s) sounded garbled. Cut alone, it left the cold open without the hint
+    # that a lower target is bad news, so it is re-recorded as "A more difficult one." (261029_048, 8.72-10.45 s),
+    # with about 0.7 s before it and 0.95 s after.
+    "041": [(33.90, 35.70, ("048", 8.30, 10.80))],
 }
 
 mp = json.loads((S / "vo/map.json").read_text())
@@ -89,6 +92,29 @@ def speech_span(x):
     return runs[0][0] * hop, runs[-1][1] * hop
 
 
+def quiet_at(x, t, rec):
+    """Stop unless the 0.1 s around t seconds into recording x is silent."""
+    i, edge = int(t * SR), int(0.05 * SR)
+    level = 20 * np.log10(np.sqrt((x[i - edge : i + edge] ** 2).mean()) + 1e-9)
+    assert level < -42, f"261029_{rec} is not silent at {t:.2f} s ({level:.0f} dBFS)"
+
+
+def clean(seg, tag):
+    """High-pass rumble, gentle spectral denoise at the measured -52 dB floor, light de-ess; level to the clip target."""
+    raw, out = OUT / f"_raw_{tag}.wav", OUT / f"_clean_{tag}.wav"
+    sf.write(raw, seg, SR)
+    run(["ffmpeg", "-y", "-i", str(raw), "-af", "highpass=f=80,afftdn=nf=-50:nr=8:tn=1,deesser=i=0.3", str(out)])
+    gain = TARGET_CLIP_LUFS - lufs(out)
+    y, _ = sf.read(out, dtype="float32")
+    return y * (10 ** (gain / 20)), gain
+
+
+def loudness(samples):
+    tmp = OUT / "_lufs.wav"
+    sf.write(tmp, samples, SR)
+    return lufs(tmp)
+
+
 def lufs(path):
     r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", str(path), "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
     tail = r[r.rfind("Summary") :]
@@ -105,27 +131,28 @@ for n, lab in enumerate(labels):
     a, b = speech_span(x)
     a = max(0, a - int(0.08 * SR))
     b = min(len(x), b + int(0.12 * SR))
-    speech = x[a:b]
-    raw = OUT / f"_raw_{lab}.wav"
-    sf.write(raw, speech, SR)
-    clean = OUT / f"_clean_{lab}.wav"
-    # high-pass rumble, gentle spectral denoise at the measured -52 dB floor, de-ess lightly
-    run(["ffmpeg", "-y", "-i", str(raw), "-af", "highpass=f=80,afftdn=nf=-50:nr=8:tn=1,deesser=i=0.3", str(clean)])
-    gain = TARGET_CLIP_LUFS - lufs(clean)
-    y, _ = sf.read(clean, dtype="float32")
-    y = y * (10 ** (gain / 20))
+    y, gain = clean(x[a:b], lab)
     for t, add in sorted(PAUSES.get(mp[lab], []), reverse=True):
         i, half = int(t * SR) - a, int(add * SR / 2)
         quiet = 20 * np.log10(np.sqrt((x[a + i - half : a + i + half] ** 2).mean()) + 1e-9)
         assert quiet < -42, f"261029_{mp[lab]} is not silent around {t} s ({quiet:.0f} dBFS)"
         y = np.concatenate([y[:i], y[i - half : i + half], y[i:]])
     assert not (mp[lab] in PAUSES and mp[lab] in CUTS), "a pause shifts the samples a cut points at; use one per take"
-    for t0, t1 in sorted(CUTS.get(mp[lab], []), reverse=True):
-        i0, i1, edge = int(t0 * SR) - a, int(t1 * SR) - a, int(0.05 * SR)
-        for i in (i0, i1):
-            quiet = 20 * np.log10(np.sqrt((x[a + i - edge : a + i + edge] ** 2).mean()) + 1e-9)
-            assert quiet < -42, f"261029_{mp[lab]} is not silent at {(a + i) / SR:.2f} s ({quiet:.0f} dBFS)"
-        y = np.concatenate([y[:i0], y[i1:]])
+    cuts = []
+    for t0, t1, patch in sorted(CUTS.get(mp[lab], []), reverse=True):
+        quiet_at(x, t0, mp[lab])
+        quiet_at(x, t1, mp[lab])
+        fill = np.zeros(0, np.float32)
+        if patch:
+            rec, p0, p1 = patch
+            px = load(S / f"vo/wav/261029_{rec}.wav")
+            quiet_at(px, p0, rec)
+            quiet_at(px, p1, rec)
+            fill, _ = clean(px[int(p0 * SR) : int(p1 * SR)], f"{lab}_{rec}")
+            # as loud as the 3 s of speech before the cut (a phrase leveled alone came out 1.3 LU quieter)
+            fill = fill * 10 ** ((loudness(y[max(0, int((t0 - 3) * SR) - a) : int(t0 * SR) - a]) - loudness(fill)) / 20)
+        y = np.concatenate([y[: int(t0 * SR) - a], fill, y[int(t1 * SR) - a :]])
+        cuts.append([t0, t1, len(fill) / SR])
     nxt = labels[n + 1] if n + 1 < len(labels) else None
     same_slide = nxt is not None and nxt[:2] == lab[:2]
     tail = TAIL_STEP if same_slide else TAIL_SLIDE
@@ -143,11 +170,11 @@ for n, lab in enumerate(labels):
             "gain_db": round(gain, 1),
             "frame": frames[lab].name,
             # to place a time in the recording in the clip (animate.py): lead + (t - trim_start), plus pauses
-            # added before t, minus cuts that end before t
+            # added before t, minus cuts that end before t (each [start, end, seconds of patch put in])
             "trim_start_s": a / SR,
             "lead_s": lead,
             "pauses": PAUSES.get(mp[lab], []),
-            "cuts": CUTS.get(mp[lab], []),
+            "cuts": sorted(cuts),
         }
     )
 

@@ -8,7 +8,7 @@ SCRIPT = [
                 "01",
                 """In January 2022, twenty-nine groups of doctors and hospitals did something odd. They quit their Medicare contracts early and signed new ones, which reset the targets Medicare uses to decide whether they earn a share of savings.
 
-By Medicare's own numbers, checked after the study, two thirds of them ended up with a lower target.
+By Medicare's own numbers, checked after the study, two thirds of them ended up with a lower target. A more difficult one.
 
 So why do it? I ran a study to find out, and I wrote down the rules before I looked at the data. Here's what I found.""",
             )

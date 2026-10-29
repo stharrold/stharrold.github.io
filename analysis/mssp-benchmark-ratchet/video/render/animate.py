@@ -142,7 +142,7 @@ def clip_time(clip: dict, t: float) -> float:
     """A time in the recording, in seconds into the clip (see build_video.py's timeline fields)."""
     t_clip = clip["lead_s"] + t - clip["trim_start_s"]
     t_clip += sum(add for at, add in clip["pauses"] if t >= at)
-    t_clip -= sum(t1 - t0 for t0, t1 in clip["cuts"] if t >= t1)
+    t_clip -= sum(t1 - t0 - patch for t0, t1, patch in clip["cuts"] if t >= t1)
     return t_clip
 
 

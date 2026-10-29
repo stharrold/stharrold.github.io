@@ -21,6 +21,7 @@ Recorder files not listed are deliberately unused:
                  041-046 (2026-10-29, second session: new wording in 01 and 22, slips in 03 and 06, clipped
                  peaks in 12 and 22, clip 26 too fast)
   047            room tone from the second session (001 is kept: same floor, and 047 has two small bumps)
+  048            "A more difficult one." (third session), patched into clip 01 by build_video.py (CUTS)
 """
 
 import difflib
@@ -152,6 +153,9 @@ def toks(s):
 
 lines = []
 decode(ROOM_TONE)
+for d in SESSIONS:  # every take, so build_video.py can patch from takes not mapped to a clip
+    for mp3 in sorted(d.glob(f"{PREFIX}*.MP3")):
+        decode(mp3.stem.removeprefix(PREFIX))
 for lab, num in CLIP_TO_RECORDING.items():
     wav = decode(num)
     i, tp = lufs_tp(wav)

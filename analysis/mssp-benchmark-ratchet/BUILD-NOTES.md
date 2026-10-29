@@ -511,7 +511,12 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   like a dropout; the build now repeats the take's own background instead. Where a new take used slightly different words with the same meaning, the script
   was changed to match the audio, since the captions come from the script. Watching draft v3, "A harder one." in
   the opening sounded garbled; it was cut (`CUTS`, from silence to silence, nothing added in its place) and
-  taken out of the script, leaving "...two thirds of them ended up with a lower target. So why do it?"
+  taken out of the script. A side review then pointed out that the phrase carried the cold open's puzzle: in
+  this program a lower target is the harder one, which most viewers would not guess, and nothing else in the
+  first minute says so. The phrase was re-recorded as "A more difficult one." and patched into the take
+  (`CUTS` with a patch from take 048, same room and noise floor, leveled to the sentence before it). Leveling
+  the 2.5 s patch to the clip target first looked 1.3 LU too quiet, but that was the measurement: short windows
+  that are partly silence read low; on voiced frames the patch sits within 0.4 dB of its neighbors.
 - Animating the video (2026-10-29): the aim is to direct attention to where the narration points, when it points
   there. `video/render/animate.py` renders motion in the same Chromium that draws the slides: an element builds in,
   a number counts up, a bar grows from the zero line and its range line draws out, or the other cards dim, each
