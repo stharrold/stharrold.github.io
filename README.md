@@ -82,7 +82,8 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   the GA monthly snapshot emails (2017-11 to 2019-10) is in `stharrold-github-io.ua_history.monthly_snapshots`.
 - **Analytics archive:** `scripts/analytics_archive.py` copies every BigQuery table to Parquet in the private Google
   Drive folder `My_Drive/Data/stharrold.github.io/` (`ga4/events_YYYYMMDD.parquet`, `ua_history/`), reads each file
-  back, and records rows, BigQuery's last-modified time and a sha256 in `manifest.json`. A day is archived once it is
+  back, and records rows, BigQuery's last-modified time, a sha256 and the writing commit in `manifest.json`; each run
+  also writes a `README.md` there linking back to this repository at that commit. A day is archived once it is
   3 days old (GA4 adds late events for 72 hours); a table that changes later is archived again with the old file
   kept in `superseded/`; nothing is deleted. It warns if the newest export is over 7 days old, if an archived table
   has left BigQuery, or if billing is off. A launchd job runs it at 09:00 and 21:00 from a copy outside `~/Documents`:
@@ -90,6 +91,27 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   run with `--run-now`, log in `~/Library/Logs/stharrold-analytics.log`. `uv run --script scripts/analytics_archive.py
   --dry-run` shows what is due. The read-back checks the write, not Drive's upload. The files include visitor
   pseudonymous IDs, so they never go in git.
+- **`/analytics` skill** (`.claude/skills/analytics/SKILL.md`): checks the archive is healthy, reports readership with
+  `uv run --script scripts/analytics_report.py --save` (DuckDB over the archive plus the days still only in BigQuery;
+  totals saved to `reports/YYYY-MM-DD.md` on Drive; pages ranked only once one has 30 engaged visitors), then proposes
+  the next post. Engaged visitors (GA4 `session_engaged` or engagement time) screen out most crawlers. The owner's own
+  visits are kept out three ways: a GA4 internal-traffic rule for the home IP with the Internal Traffic filter active
+  (from 2026-10-29; re-enter the IP if it changes), the Google Analytics opt-out add-on in the owner's browsers, and
+  `excluded_visitors.txt` on Drive (browser IDs from the `_ga` cookie, which the report drops from all past data).
+  How it was built: `analysis/site-analytics/BUILD-NOTES.md`.
+- **Search Console:** property `https://stharrold.github.io/` (URL prefix, verified through the GA4 tag, so removing
+  the tag unverifies it), linked to GA4 and bulk-exporting daily to BigQuery dataset `searchconsole` since 2026-10-29
+  (the export's service account has BigQuery Job User and Data Editor on the project). The archive copies its tables
+  one `data_date` partition per file (`searchconsole/<table>/YYYYMMDD.parquet`). Search Console keeps only 16 months
+  and the export does not backfill, so the earlier history is saved once with `uv run --script
+  scripts/analytics_archive.py searchconsole-backfill` into `searchconsole_backfill/<stamp>/`; it needs a
+  `webmasters.readonly` login kept in its own gcloud configuration, so the default credentials stay untouched:
+  `CLOUDSDK_CONFIG=$HOME/.config/gcloud-searchconsole gcloud auth application-default login
+  --scopes=openid,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/webmasters.readonly`.
+- **YouTube:** the blog's channel is Data Science Demos, [@DSDemos](https://www.youtube.com/@DSDemos). Channel art is
+  in `assets/youtube/` (outside `content/`, so not published), made by `uv run --no-sync python scripts/youtube_art.py`
+  in the site's colours and Lato; its README records what was uploaded. Video files stay on Google Drive, not in git.
+  How it was set up: `analysis/youtube-channel/BUILD-NOTES.md`.
 - **Privacy:** `content/pages/privacy.md` lists every third-party service the site loads; update it when adding one.
 - **Plugins:** `related_posts`, `tag_cloud`, `sitemap` (from PyPI), and `plugins/pelican_alias.py`
   (Python 3 port of [pelican-alias](https://github.com/Nitron/pelican-alias)) for `Alias:` redirects.

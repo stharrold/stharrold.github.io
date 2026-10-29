@@ -75,11 +75,12 @@ def fake_writer(content):
 def test_archive_one_writes_and_records(tmp_path):
     ref = f"{GA}.events_20261020"
     manifest = {"tables": {}}
-    aa.archive_one(None, ref, info(3), tmp_path, manifest, write=fake_writer(b"abc"), stamp="20261029T090000Z")
+    aa.archive_one(None, ref, info(3), tmp_path, manifest, write=fake_writer(b"abc"), stamp="20261029T090000Z", commit="c0ffee")
     entry = manifest["tables"][ref]
     assert entry["file"] == "ga4/events_20261020.parquet"
     assert (tmp_path / entry["file"]).read_bytes() == b"abc"
     assert entry["rows"] == 3 and entry["bytes"] == 3 and entry["superseded"] == []
+    assert entry["commit"] == "c0ffee"
     assert not list(tmp_path.rglob("*.tmp"))
 
 
@@ -127,3 +128,95 @@ def test_manifest_round_trip(tmp_path):
     aa.save_manifest(tmp_path, {"tables": {"a.b": {"rows": 1}}})
     assert json.loads((tmp_path / "manifest.json").read_text())["tables"]["a.b"]["rows"] == 1
     assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_readme_points_back_to_the_code_that_made_the_files():
+    commit = "0123456789abcdef0123456789abcdef01234567"
+    text = aa.readme(commit)
+    assert f"{aa.REPO_URL}/blob/{commit}/scripts/analytics_archive.py" in text
+    assert f"{aa.REPO_URL}/blob/{commit}/README.md" in text
+    for folder in aa.DATASETS.values():
+        assert f"`{folder}/" in text
+    assert "manifest.json" in text and "install_analytics_launchd.sh" in text
+
+
+SC = "searchconsole"
+
+
+def test_archivable_tables():
+    assert aa.archivable(GA, "events_20261027")
+    assert not aa.archivable(GA, "events_intraday_20261029")
+    assert aa.archivable(SC, "searchdata_site_impression") and aa.archivable(SC, "ExportLog")
+    # Search Console leaves a temp_ table behind when it tests its permissions.
+    assert not aa.archivable(SC, "temp_b3231cc1")
+    assert aa.archivable("ua_history", "monthly_snapshots")
+
+
+def test_ref_day_for_daily_tables_and_partitions():
+    assert aa.ref_day(f"{GA}.events_20261027") == datetime.date(2026, 10, 27)
+    assert aa.ref_day(f"{SC}.searchdata_url_impression$20261027") == datetime.date(2026, 10, 27)
+    assert aa.ref_day(f"{SC}.ExportLog") is None
+
+
+def test_due_settles_partitions_like_daily_tables():
+    tables = {f"{SC}.searchdata_site_impression${d}": info(4) for d in ("20261025", "20261026", "20261027")} | {f"{SC}.ExportLog": info(3)}
+    assert aa.due_tables(tables, {}, TODAY) == [f"{SC}.ExportLog", f"{SC}.searchdata_site_impression$20261025", f"{SC}.searchdata_site_impression$20261026"]
+
+
+def test_archive_one_puts_a_partition_in_its_table_folder(tmp_path):
+    ref = f"{SC}.searchdata_url_impression$20261025"
+    manifest = {"tables": {}}
+    aa.archive_one(None, ref, info(2), tmp_path, manifest, write=fake_writer(b"ab"), stamp="20261029T090000Z")
+    assert manifest["tables"][ref]["file"] == "searchconsole/searchdata_url_impression/20261025.parquet"
+    aa.archive_one(None, ref, info(3), tmp_path, manifest, write=fake_writer(b"abc"), stamp="20261030T090000Z")
+    [old] = manifest["tables"][ref]["superseded"]
+    assert old["file"] == "searchconsole/searchdata_url_impression/superseded/20261025.20261029T090000Z.parquet"
+    assert (tmp_path / old["file"]).read_bytes() == b"ab"
+
+
+def test_search_console_rows_to_columns():
+    rows = [
+        {"keys": ["2026-10-01", "mssp"], "clicks": 1, "impressions": 9, "ctr": 0.11, "position": 4.2},
+        {"keys": ["2026-10-02", "etl census"], "clicks": 0, "impressions": 3, "ctr": 0.0, "position": 12.0},
+    ]
+    cols = aa.sc_columns(["date", "query"], rows)
+    assert cols["date"] == ["2026-10-01", "2026-10-02"] and cols["query"] == ["mssp", "etl census"]
+    assert cols["impressions"] == [9, 3] and cols["position"] == [4.2, 12.0]
+    assert aa.sc_columns(["date"], []) == {"date": [], "clicks": [], "impressions": [], "ctr": [], "position": []}
+
+
+class FakeResponse:
+    def __init__(self, status, payload):
+        self.status_code, self.payload = status, payload
+
+    def json(self):
+        return self.payload
+
+
+def test_search_console_query_pages_through_every_row():
+    calls = []
+
+    class Session:
+        def post(self, url, json):
+            calls.append(json["startRow"])
+            rows = [{"keys": [str(i)]} for i in range(json["startRow"], min(json["startRow"] + json["rowLimit"], 5))]
+            return FakeResponse(200, {"rows": rows} if rows else {})
+
+    rows = aa.sc_query(Session(), {"dimensions": ["date"]}, page_size=2)
+    assert [r["keys"][0] for r in rows] == ["0", "1", "2", "3", "4"]
+    assert calls == [0, 2, 4]
+
+
+def test_search_console_query_raises_on_an_error():
+    class Session:
+        def post(self, url, json):
+            return FakeResponse(400, {"error": {"message": "dimension query not supported for discover"}})
+
+    with pytest.raises(aa.ArchiveError, match="not supported"):
+        aa.sc_query(Session(), {"dimensions": ["date", "query"]})
+
+
+def test_readme_covers_search_console():
+    text = aa.readme("0" * 40)
+    assert "`searchconsole/<table>/YYYYMMDD.parquet`" in text and "`searchconsole_backfill/<stamp>/`" in text
+    assert "`reports/YYYY-MM-DD.md`" in text and "analytics_report.py" in text

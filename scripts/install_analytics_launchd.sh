@@ -77,12 +77,12 @@ mkdir -p "$DEST/scripts" "$(dirname "$PLIST")" "$(dirname "$LOG")"
 for f in "${FILES[@]}"; do
   cp "$REPO/$f" "$DEST/$f"
 done
-git -C "$REPO" rev-parse --short HEAD > "$DEST/VERSION"
+git -C "$REPO" rev-parse HEAD > "$DEST/VERSION"
 
 plist > "$PLIST"
 plutil -lint "$PLIST" >/dev/null
 launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true
 launchctl bootstrap "$DOMAIN" "$PLIST"
-echo "installed $LABEL from $(cat "$DEST/VERSION"): runs at 09:00 and 21:00, archives every settled day not yet on Drive"
+echo "installed $LABEL from $(cut -c1-7 "$DEST/VERSION"): runs at 09:00 and 21:00, archives every settled day not yet on Drive"
 echo "  copy: $DEST"
 echo "  log:  $LOG"
