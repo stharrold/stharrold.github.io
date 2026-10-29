@@ -1,12 +1,15 @@
 """Assemble the narrated video from per-clip recordings and rendered slide frames.
 
-Usage: python build_video.py <root> [--audio-only]
+Usage: python build_video.py <root> [--audio-only | --only LABEL,LABEL,...]
 Inputs (under root):
   vo/map.json            clip label -> recorder number (e.g. "01": "003")
   vo/wav/261029_NNN.wav  decoded recordings
   vo/wav/261029_001.wav  room tone (used for gaps and the noise profile)
   frames/<label>-<slide>.png
-Outputs: out/draft.mp4, out/chapters.txt, out/timeline.json
+  anim/<label>.mp4       optional: an animated clip from animate.py, used instead of its still frame
+Outputs: out/draft.mp4, out/chapters.txt, out/timeline.json (also written by --audio-only, for animate.py).
+--only builds out/preview.mp4 from the listed clips (in video order) with their audio, to review animation
+without the full encode.
 """
 
 import json
@@ -139,6 +142,12 @@ for n, lab in enumerate(labels):
             "speech_s": round(len(y) / SR, 2),
             "gain_db": round(gain, 1),
             "frame": frames[lab].name,
+            # to place a time in the recording in the clip (animate.py): lead + (t - trim_start), plus pauses
+            # added before t, minus cuts that end before t
+            "trim_start_s": a / SR,
+            "lead_s": lead,
+            "pauses": PAUSES.get(mp[lab], []),
+            "cuts": CUTS.get(mp[lab], []),
         }
     )
 
@@ -180,55 +189,6 @@ for k in range(3):
         break
 cur.replace(voice)
 print(f"final loudness {lufs(voice):.1f} LUFS")
-if "--audio-only" in sys.argv:
-    sys.exit(0)
-
-# video: one still per clip, crossfaded at each clip boundary (offset = cumulative audio time)
-durs = [t["dur"] for t in timeline]
-inputs, filt = [], []
-for i, t in enumerate(timeline):
-    v = durs[i] + (XF if i < len(durs) - 1 else 0)
-    inputs += ["-loop", "1", "-framerate", "30", "-t", f"{v:.3f}", "-i", str(S / "frames" / t["frame"])]
-    filt.append(f"[{i}:v]format=yuv420p,setsar=1[v{i}]")
-prev, acc = "v0", 0.0
-for i in range(1, len(durs)):
-    acc += durs[i - 1]
-    out = f"x{i}"
-    filt.append(f"[{prev}][v{i}]xfade=transition=fade:duration={XF}:offset={acc:.3f}[{out}]")
-    prev = out
-inputs += ["-i", str(voice)]
-run(
-    [
-        "ffmpeg",
-        "-y",
-        *inputs,
-        "-filter_complex",
-        ";".join(filt),
-        "-map",
-        f"[{prev}]",
-        "-map",
-        f"{len(durs)}:a",
-        "-c:v",
-        "libx264",
-        "-preset",
-        "veryfast",
-        "-tune",
-        "stillimage",
-        "-crf",
-        "20",
-        "-r",
-        "30",
-        "-c:a",
-        "aac",
-        "-b:a",
-        "192k",
-        "-movflags",
-        "+faststart",
-        "-shortest",
-        str(OUT / "draft.mp4"),
-    ]
-)
-
 # chapters from the plan doc's breaks
 CHAPTERS = [
     ("01", "Why reset early?"),
@@ -250,3 +210,66 @@ for p in OUT.glob("_*.wav"):
     p.unlink()
 print(f"total {t0 / 60:.2f} min")
 print("\n".join(lines))
+if "--audio-only" in sys.argv:
+    sys.exit(0)
+
+
+# video: one still (or animated clip) per clip, crossfaded at each clip boundary (offset = cumulative audio time)
+only = sys.argv[sys.argv.index("--only") + 1].split(",") if "--only" in sys.argv else None
+clips = [t for t in timeline if only is None or t["label"] in only]
+assert only is None or [t["label"] for t in clips] == only, f"--only needs labels in video order, got {only}"
+durs = [t["dur"] for t in clips]
+inputs, filt = [], []
+for i, t in enumerate(clips):
+    v = durs[i] + (XF if i < len(durs) - 1 else 0)
+    anim = S / "anim" / f"{t['label']}.mp4"
+    if anim.exists():
+        inputs += ["-t", f"{v:.3f}", "-i", str(anim)]
+    else:
+        inputs += ["-loop", "1", "-framerate", "30", "-t", f"{v:.3f}", "-i", str(S / "frames" / t["frame"])]
+    filt.append(f"[{i}:v]fps=30,format=yuv420p,setsar=1[v{i}]")
+prev, acc = "v0", 0.0
+for i in range(1, len(durs)):
+    acc += durs[i - 1]
+    out = f"x{i}"
+    filt.append(f"[{prev}][v{i}]xfade=transition=fade:duration={XF}:offset={acc:.3f}[{out}]")
+    prev = out
+if only is None:
+    inputs += ["-i", str(voice)]
+    amap = f"{len(durs)}:a"
+else:  # each clip's own stretch of the narration, joined
+    for i, t in enumerate(clips):
+        inputs += ["-ss", f"{start[t['label']]:.3f}", "-t", f"{durs[i]:.3f}", "-i", str(voice)]
+    filt.append("".join(f"[{len(durs) + i}:a]" for i in range(len(durs))) + f"concat=n={len(durs)}:v=0:a=1[aout]")
+    amap = "[aout]"
+run(
+    [
+        "ffmpeg",
+        "-y",
+        *inputs,
+        "-filter_complex",
+        ";".join(filt),
+        "-map",
+        f"[{prev}]",
+        "-map",
+        amap,
+        "-c:v",
+        "libx264",
+        "-preset",
+        "veryfast",
+        "-tune",
+        "stillimage",
+        "-crf",
+        "20",
+        "-r",
+        "30",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "192k",
+        "-movflags",
+        "+faststart",
+        "-shortest",
+        str(OUT / ("draft.mp4" if only is None else "preview.mp4")),
+    ]
+)

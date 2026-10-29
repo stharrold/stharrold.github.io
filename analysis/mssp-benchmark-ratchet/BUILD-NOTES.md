@@ -512,3 +512,12 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   was changed to match the audio, since the captions come from the script. Watching draft v3, "A harder one." in
   the opening sounded garbled; it was cut (`CUTS`, from silence to silence, nothing added in its place) and
   taken out of the script, leaving "...two thirds of them ended up with a lower target. So why do it?"
+- Animating the video (2026-10-29): the aim is to direct attention to where the narration points, when it points
+  there. `video/render/animate.py` renders motion in the same Chromium that draws the slides: an element builds in,
+  a number counts up, a bar grows from the zero line and its range line draws out, or the other cards dim, each
+  started on the word that names it. The claude.ai plan timed cues from the recorder's Whisper tiny segments
+  (sentence starts only, with workarounds such as "stairs" for "stayers"); `words.py` instead gets word timestamps
+  from large-v3-turbo, and each anchor is moved from Whisper's word start, which often sits at the end of the pause
+  before the word, to the word's audible onset. Motion is a pure function of time, so frames are deterministic, and
+  only moving frames are screenshotted (about 60-110 per clip). Each animated clip must end on its still frame
+  (PSNR check), so the video always settles on the deck's picture. A proof on slides 10 and 18 came first.

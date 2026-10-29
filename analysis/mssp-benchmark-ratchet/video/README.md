@@ -16,10 +16,12 @@ The deck and the scripts were first written in claude.ai and handed over as a re
 | `render/render.py` | Slides to 1920 x 1080 PNG frames with headless Chromium, one per clip, including reveal steps (`REVEALS`). |
 | `render/thumbs.py` | Two 1280 x 720 thumbnails. |
 | `render/vo_prepare.py` | Maps clips to recordings (`CLIP_TO_RECORDING`), decodes them, writes a QA report (loudness, pace, transcript diff). |
+| `render/words.py` | Word timestamps for each recording (faster-whisper large-v3-turbo), cached in `vo/words/`. |
+| `render/animate.py` | Animated clips (`CUES`): an element builds in, counts up, grows or dims on the word that names it; writes `anim/<label>.mp4` and check sheets. |
 | `render/build_video.py` | Cleans and levels each clip, lengthens pauses (`PAUSES`), cuts stretches (`CUTS`), joins them with room tone, masters to -14 LUFS, crossfades the frames, writes chapters. |
 
 Not in git (`.gitignore`): the recordings (`vo/`), the fonts (`fonts/`) and everything generated (`frames/`,
-`thumbs/`, `out/`). The finished video goes to Google Drive and YouTube, not here.
+`thumbs/`, `out/`, `anim/`). The finished video goes to Google Drive and YouTube, not here.
 
 ## Build
 
@@ -43,9 +45,21 @@ PY render/render.py project/slides frames    # 33 PNGs
 PY render/thumbs.py thumbs
 PY render/vo_prepare.py .                    # vo/wav/, vo/map.json, vo/qa_report.txt
 
-# 4. audio and video, about 13 minutes (--audio-only stops after out/voice.wav)
+# 4. animation (optional): word times, then the animated clips; needs out/timeline.json from --audio-only
+PY render/build_video.py . --audio-only      # out/voice.wav, out/timeline.json, out/chapters.txt
+uv run -q --no-project --python 3.12 --with 'faster-whisper>=1.1' --with numpy==2.5.4 python -I render/words.py .
+PY render/animate.py .                       # anim/<label>.mp4, out/anim_check/<label>.png
+
+# 5. audio and video, about 13 minutes
 PY render/build_video.py .                   # out/draft.mp4, out/chapters.txt, out/timeline.json
+PY render/build_video.py . --only 10,18a     # or: out/preview.mp4 of some clips, to review animation quickly
 ```
+
+**Animation rules** (`animate.py`): motion goes where the narration points, when it points there, and nowhere
+else; a motion starts 0.15 s before its word, snapped from Whisper's word start to the word's audible onset;
+nothing moves while a clip fades in; and the finished state must match the still frame (PSNR above 45 dB), so the
+video ends each slide on the deck's own picture. The one exception is `dim`, which steps other elements back to
+hold the eye on one.
 
 The recorder numbers its files `261029_NNN.MP3` and keeps counting across sessions, so a number names one take
 wherever it is. The QA report's transcript diff uses the recorder's own Whisper tiny.en output and mishears often
@@ -61,7 +75,7 @@ decoded MP3s reach about 1.42), so listen before re-recording.
 3. If a take is too fast in one place, lengthen a pause the speaker already left with `PAUSES` in
    `build_video.py`; it repeats that stretch of the take's own background (the build stops if it is not silent). To drop a phrase, cut it with `CUTS`, from silence to silence; take
    it out of the script too.
-4. Rerun steps 3 and 4.
+4. Rerun steps 3 to 5. If an animated clip's take changed, delete its `vo/words/` file first.
 
 The published deck (`video-slides.pptx`) carries the same narration in its speaker notes; when the words change,
 change them there too and rerun `../report/video_slides.py`, which rebuilds the transcript in the post.
