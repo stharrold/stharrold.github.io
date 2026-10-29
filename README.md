@@ -82,7 +82,8 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   the GA monthly snapshot emails (2017-11 to 2019-10) is in `stharrold-github-io.ua_history.monthly_snapshots`.
 - **Analytics archive:** `scripts/analytics_archive.py` copies every BigQuery table to Parquet in the private Google
   Drive folder `My_Drive/Data/stharrold.github.io/` (`ga4/events_YYYYMMDD.parquet`, `ua_history/`), reads each file
-  back, and records rows, BigQuery's last-modified time and a sha256 in `manifest.json`. A day is archived once it is
+  back, and records rows, BigQuery's last-modified time, a sha256 and the writing commit in `manifest.json`; each run
+  also writes a `README.md` there linking back to this repository at that commit. A day is archived once it is
   3 days old (GA4 adds late events for 72 hours); a table that changes later is archived again with the old file
   kept in `superseded/`; nothing is deleted. It warns if the newest export is over 7 days old, if an archived table
   has left BigQuery, or if billing is off. A launchd job runs it at 09:00 and 21:00 from a copy outside `~/Documents`:

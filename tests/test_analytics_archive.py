@@ -75,11 +75,12 @@ def fake_writer(content):
 def test_archive_one_writes_and_records(tmp_path):
     ref = f"{GA}.events_20261020"
     manifest = {"tables": {}}
-    aa.archive_one(None, ref, info(3), tmp_path, manifest, write=fake_writer(b"abc"), stamp="20261029T090000Z")
+    aa.archive_one(None, ref, info(3), tmp_path, manifest, write=fake_writer(b"abc"), stamp="20261029T090000Z", commit="c0ffee")
     entry = manifest["tables"][ref]
     assert entry["file"] == "ga4/events_20261020.parquet"
     assert (tmp_path / entry["file"]).read_bytes() == b"abc"
     assert entry["rows"] == 3 and entry["bytes"] == 3 and entry["superseded"] == []
+    assert entry["commit"] == "c0ffee"
     assert not list(tmp_path.rglob("*.tmp"))
 
 
@@ -127,3 +128,13 @@ def test_manifest_round_trip(tmp_path):
     aa.save_manifest(tmp_path, {"tables": {"a.b": {"rows": 1}}})
     assert json.loads((tmp_path / "manifest.json").read_text())["tables"]["a.b"]["rows"] == 1
     assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_readme_points_back_to_the_code_that_made_the_files():
+    commit = "0123456789abcdef0123456789abcdef01234567"
+    text = aa.readme(commit)
+    assert f"{aa.REPO_URL}/blob/{commit}/scripts/analytics_archive.py" in text
+    assert f"{aa.REPO_URL}/blob/{commit}/README.md" in text
+    for folder in aa.DATASETS.values():
+        assert f"`{folder}/" in text
+    assert "manifest.json" in text and "install_analytics_launchd.sh" in text
