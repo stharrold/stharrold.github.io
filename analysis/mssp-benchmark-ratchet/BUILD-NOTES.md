@@ -494,3 +494,19 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   pre-registration; the deck said "checked afterward" only on slide 18. The video was already recorded, so the
   narration is unchanged; slide 1 gained a footnote in the deck's own caveat style ("Two-thirds: from a check made
   after the pre-registered analysis, ... (slide 18)"), and the images, PDF and alt text were rebuilt from it.
+- Reviewing the video (2026-10-29): draft v2 (16:42) was checked from Claude Code instead of by eye. faster-whisper
+  large-v3-turbo gave word timestamps for the whole video, aligned with the narration script after spelling numbers
+  as words; ffmpeg measured each recording's loudness and peaks. It found three word slips, the closing clip at about
+  200 words per minute, and about 40 briefly clipped peaks in all (most in clips 12 and 22). A first count of
+  "clipping" took every sample above 0.99 and overstated it; the decoded MP3s reach about 1.42, so only peaks sitting
+  flat at that ceiling count. The narration also needed the same label as slide 1: "two thirds" and "their targets
+  mostly went down" come from the check made after the study, so clips 01 and 22 were reworded.
+- Building the video from the repository (2026-10-29): the deck and scripts moved into `video/` from the
+  reproducible-build document made in claude.ai, so the video is now built here. Six clips were re-recorded at a
+  lower input gain (no clipping; loudness matches the first session). The closing take was still fast; rather than a
+  third take, the build lengthens the pause the speaker already left before "Thanks for watching" from 0.55 s to
+  about 1.05 s (`PAUSES`, which refuses a point that is not silent). Whisper's word timestamps had smeared "Thanks"
+  across that pause; the waveform showed it. A first version filled the added time with the room tone used between
+  clips, but after processing the take's own background sits about 10 dB above it, so mid-sentence it would sound
+  like a dropout; the build now repeats the take's own background instead. Where a new take used slightly different words with the same meaning, the script
+  was changed to match the audio, since the captions come from the script.

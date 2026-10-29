@@ -27,6 +27,15 @@ TAIL_STEP = 0.35  # silence after a reveal step (same slide continues)
 TAIL_SLIDE = 0.70  # silence after the last clip of a slide
 END_HOLD = 21.0  # minimum on-screen time for the end screen (YouTube end screens: last 5-20 s)
 TARGET_CLIP_LUFS = -18.0
+# Pauses lengthened inside a take: recording number -> [(seconds into the recording, seconds to add)]. The point
+# must sit in a pause the speaker already left, at least half the added length from either edge (checked below);
+# that stretch of the take's own background is repeated, so the pause keeps the take's noise floor (room tone
+# here would be about 10 dB quieter than the processed take and sound like a dropout).
+PAUSES = {
+    # clip 26: "...in the comments." ends at 18.43 s and "Thanks for watching." starts at 18.99 s; the 0.55 s
+    # pause becomes about 1.05 s, so the sign-off gets its own beat. The rest of the take runs at about 180 wpm.
+    "046": [(18.71, 0.50)],
+}
 
 mp = json.loads((S / "vo/map.json").read_text())
 labels = list(mp.keys())
@@ -95,6 +104,11 @@ for n, lab in enumerate(labels):
     gain = TARGET_CLIP_LUFS - lufs(clean)
     y, _ = sf.read(clean, dtype="float32")
     y = y * (10 ** (gain / 20))
+    for t, add in sorted(PAUSES.get(mp[lab], []), reverse=True):
+        i, half = int(t * SR) - a, int(add * SR / 2)
+        quiet = 20 * np.log10(np.sqrt((x[a + i - half : a + i + half] ** 2).mean()) + 1e-9)
+        assert quiet < -42, f"261029_{mp[lab]} is not silent around {t} s ({quiet:.0f} dBFS)"
+        y = np.concatenate([y[:i], y[i - half : i + half], y[i:]])
     nxt = labels[n + 1] if n + 1 < len(labels) else None
     same_slide = nxt is not None and nxt[:2] == lab[:2]
     tail = TAIL_STEP if same_slide else TAIL_SLIDE

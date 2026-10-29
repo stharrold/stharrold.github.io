@@ -2,8 +2,9 @@
 
 Usage: python render/vo_prepare.py <root>
 Expects:
-  <root>/vo/youtube_voiceover/261029_NNN.MP3   recorder files (Zoom-style numbering)
-  <root>/vo/youtube_voiceover/261029_NNN_results.json   optional Whisper results (start/end/text)
+  <root>/vo/youtube_voiceover*/261029_NNN.MP3   recorder files (Zoom-style numbering), one folder per session;
+                                                the recorder keeps counting, so a number names one take
+  <root>/vo/youtube_voiceover*/261029_NNN_results.json   optional Whisper results (start/end/text)
   render/script_video.py                        the narration script (SCRIPT)
 Writes:
   <root>/vo/wav/261029_NNN.wav   44.1 kHz float WAV of every recording
@@ -16,6 +17,10 @@ Recorder files not listed are deliberately unused:
   002  quiet background sound, no speech
   017, 019, 037  extra takes of hidden slides (why-shot, questions, honesty)
   029, 033       numbers skipped by the recorder (deleted takes)
+  003, 005, 008, 016, 035, 040  first takes of clips 01, 03, 06, 12, 22, 26, replaced by the re-records
+                 041-046 (2026-10-29, second session: new wording in 01 and 22, slips in 03 and 06, clipped
+                 peaks in 12 and 22, clip 26 too fast)
+  047            room tone from the second session (001 is kept: same floor, and 047 has two small bumps)
 """
 
 import difflib
@@ -29,18 +34,18 @@ import numpy as np
 import soundfile as sf
 
 ROOT = Path(sys.argv[1]).resolve()
-SRC = ROOT / "vo" / "youtube_voiceover"
+SESSIONS = sorted((ROOT / "vo").glob("youtube_voiceover*"))
 WAV = ROOT / "vo" / "wav"
 WAV.mkdir(parents=True, exist_ok=True)
 PREFIX = "261029_"
 
 CLIP_TO_RECORDING = {
-    "01": "003",
+    "01": "041",
     "02": "004",
-    "03": "005",
+    "03": "042",
     "04": "006",
     "05": "007",
-    "06": "008",
+    "06": "043",
     "07": "009",
     "08a": "010",
     "08b": "011",
@@ -48,7 +53,7 @@ CLIP_TO_RECORDING = {
     "09": "013",
     "10": "014",
     "11": "015",
-    "12": "016",
+    "12": "044",
     "13": "018",
     "14": "020",
     "15a": "021",
@@ -63,11 +68,11 @@ CLIP_TO_RECORDING = {
     "20a": "031",
     "20b": "032",
     "21": "034",
-    "22": "035",
+    "22": "045",
     "23": "036",
     "24": "038",
     "25": "039",
-    "26": "040",
+    "26": "046",
 }
 ROOM_TONE = "001"
 
@@ -77,8 +82,16 @@ TEXT = {lab: t for _, parts in ns["SCRIPT"] for lab, t in parts}
 assert set(TEXT) == set(CLIP_TO_RECORDING), "script labels and mapping differ"
 
 
+def take(name):
+    """The one file with this name across the session folders."""
+    found = [d / name for d in SESSIONS if (d / name).exists()]
+    assert len(found) <= 1, found
+    return found[0] if found else None
+
+
 def decode(num):
-    src = SRC / f"{PREFIX}{num}.MP3"
+    src = take(f"{PREFIX}{num}.MP3")
+    assert src, f"{PREFIX}{num}.MP3 is in none of {[d.name for d in SESSIONS]}"
     dst = WAV / f"{PREFIX}{num}.wav"
     if not dst.exists():
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(src), "-c:a", "pcm_f32le", str(dst)], check=True)
@@ -154,8 +167,8 @@ for lab, num in CLIP_TO_RECORDING.items():
         f"{lab:4s} <- {PREFIX}{num}  speech {a['start']:.1f}-{a['end']:.1f}s  {wpm:4.0f} wpm  "
         f"I={i:.1f} LUFS  TP={tp:+.1f} dBTP  floor={a['floor_db']:.0f} dB  {'; '.join(flags)}"
     )
-    res = SRC / f"{PREFIX}{num}_results.json"
-    if res.exists():
+    res = take(f"{PREFIX}{num}_results.json")
+    if res:
         heard = " ".join(seg["text"] for seg in json.loads(res.read_text())["transcript"])
         sm = difflib.SequenceMatcher(a=toks(TEXT[lab]), b=toks(heard), autojunk=False)
         for op, i1, i2, j1, j2 in sm.get_opcodes():

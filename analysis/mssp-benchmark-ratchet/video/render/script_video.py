@@ -8,7 +8,7 @@ SCRIPT = [
                 "01",
                 """In January 2022, twenty-nine groups of doctors and hospitals did something odd. They quit their Medicare contracts early and signed new ones, which reset the targets Medicare uses to decide whether they earn a share of savings.
 
-Two thirds of them ended up with a lower target. A harder one.
+By Medicare's own numbers, checked after the study, two thirds of them ended up with a lower target. A harder one.
 
 So why do it? I ran a study to find out, and I wrote down the rules before I looked at the data. Here's what I found.""",
             )
@@ -28,7 +28,7 @@ So why do it? I ran a study to find out, and I wrote down the rules before I loo
         [
             (
                 "03",
-                """First, a familiar idea. Imagine your boss sets next year's sales target from what you sold this year. You crush it, and your reward is a harder target.
+                """First, a familiar idea. Imagine your boss sets next year's sales targets from what you sold this year. You crush it, and your reward is a harder target.
 
 Do too well today, and tomorrow gets tougher. Economists call this a ratchet, because it only clicks one way.
 
@@ -73,7 +73,7 @@ Same savings, almost two million dollars more. Remember that gap.""",
 
 Our group spent ten thousand five hundred, so its new target starts there: five hundred dollars lower. Save money, and your next target gets harder. That's the ratchet.
 
-If that were the whole story, no successful group would ever want a reset. But there's a second part.""",
+If that were the whole story, no successful group would ever want to reset. But there's a second part.""",
             )
         ],
     ),
@@ -282,9 +282,9 @@ What it can't say: that renewing caused anything, since groups chose for themsel
         [
             (
                 "22",
-                """So why did they hit reset? On average, not for a better target. Their targets mostly went down. But nearly all of them got the bigger share, and many were one step away.
+                """So why did they hit reset? On average, not for a better target. By the later check, their targets mostly went down. But nearly all of them got the bigger share, and many were one step away.
 
-For a low-cost group that's already saving, keeping seventy-five percent instead of fifty can be worth more than a small drop in the target.
+For a low-cost group that's already saving, keeping seventy-five percent instead of fifty percent can be worth more than a small drop in the target.
 
 That's my reading, not a tested result. But it fits how Medicare wrote the rules: if you wanted the bigger share mid-contract, a reset came with it.""",
             )
