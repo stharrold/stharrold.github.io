@@ -1,6 +1,6 @@
 Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study
 Date: 2026-10-27T17:30:00Z
-Modified: 2026-10-28T21:00:00Z
+Modified: 2026-10-29T12:30:00Z
 Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-differences, healthcare, medicare, dbt, duckdb, python
 Category: Causal Inference
 Slug: 20261027-preregistered-mssp-early-renewal
@@ -23,6 +23,7 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
 | Finding | Early renewers' regions spent more relative to their benchmarks, but they were also beating their benchmarks, so on average a reset would not have raised them; no detectable change in spending afterward |
 | Reproduce | About 10 minutes to download the data and run the tests; about 18 hours to rerun every stage ([Reproduce](#reproduce)) |
 | Manuscript | The journal-style write-up, its tables and figures, the results files and the post hoc scripts: [stharrold/mssp-paper-2026][manuscript], archived on Zenodo (DOI [10.5281/zenodo.23737045](https://doi.org/10.5281/zenodo.23737045))[^manuscript] |
+| Slides | "Resetting the Target Early": a 26-slide explainer for a general audience, with the narration in the speaker notes ([PowerPoint]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pptx), 160 KB) |
 
 [![Visual abstract. Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study of Shared Savings Program ACOs: 29 renewed early in 2022, 277 stayed. The question: did ACOs renew early to get a higher benchmark, and did renewing change their spending? The design: public CMS data, 2019-2024; plan registered on OSF before any outcome was read; decision rules fixed in advance. Who renewed early, early renewers minus stayers in percent of benchmark with 95% intervals: region spends more than benchmark +3.4 (+1.7 to +5.4); regional part of a reset +1.6 (+0.9 to +2.2); own-spending part of a reset -2.1 (-3.8 to -0.5); total expected gain from a reset -0.5 (-2.0 to +0.8). Spending after renewal: change in spending growth -0.4% (-4.0 to +2.5), no detectable difference, and not read as an effect because a pre-existing trend could hide a small one. Takeaway: early renewers were low-cost relative to their regions, and almost all moved to the 75% sharing rate, but the reset did not raise their benchmarks on average; associations, not effects; 2022 rules.]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)
 
