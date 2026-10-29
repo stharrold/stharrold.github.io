@@ -473,3 +473,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   Medium only as an import with the site marked as the original, and Substack only once there is a regular schedule.
 - Measuring the share (2026-10-29): #78 tracks a `/analytics` check about a week after the LinkedIn share. The
   tagged link is now a CLAUDE.md rule for sharing posts elsewhere.
+- Video slides (2026-10-29): a 26-slide deck for a narrated video ("Resetting the Target Early"), with the narration
+  script in the speaker notes, is stored as
+  `content/static/20261027-preregistered-mssp-early-renewal/video-slides.pptx`. Its figures were checked against the
+  post and the results files before storing (the "two-thirds got a lower target" opening is the post hoc result:
+  19 of 29). It explains the study for a general audience, with a made-up $11,000 example of how a reset works, and
+  ends with the AI disclosure and the links.
