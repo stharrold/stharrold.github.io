@@ -1,0 +1,5 @@
+# The narration in render/script_video.py is one paragraph per line, as it is read aloud and shown in the captions.
+extend = "../../../pyproject.toml"
+
+[lint.per-file-ignores]
+"render/script_video.py" = ["E501"]
