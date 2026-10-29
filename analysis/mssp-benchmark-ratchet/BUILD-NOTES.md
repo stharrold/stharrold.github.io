@@ -471,3 +471,5 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   `utm_source=linkedin` so the visits can be measured), the OSF registration and the manuscript repository. A first
   draft gave findings without the "so what"; it was revised before posting. Medium and Substack were left for later:
   Medium only as an import with the site marked as the original, and Substack only once there is a regular schedule.
+- Measuring the share (2026-10-29): #78 tracks a `/analytics` check about a week after the LinkedIn share. The
+  tagged link is now a CLAUDE.md rule for sharing posts elsewhere.
