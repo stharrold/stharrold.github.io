@@ -106,6 +106,7 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 ## Layout
 
 - `content/` posts and pages (Markdown); `content/static/<slug>/` notebooks, exports, images; `content/extra/` robots.txt, favicons.
+- `assets/youtube/` art for the YouTube channel (@DSDemos), not published by Pelican; its README logs each upload.
 - `themes/datasciencedemos/` Bootstrap 5 theme (see `themes/README.md` for lineage and vendored assets).
 - `plugins/pelican_alias.py` local plugin for `Alias:` redirects.
 - `data/archived-comments/` static HTML of 2016-2017 Disqus comments, loaded by `pelicanconf.py`.
