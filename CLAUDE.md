@@ -18,6 +18,8 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - **Dependabot** version PRs target `src_develop`; security PRs target `src_master`, and merging one deploys.
 - **Published 2015-2016 posts are frozen.** Never edit their text or fix their dead links. If a theme or rendering
   change needs a Markdown edit to an old post, ask first.
+- **`.claude/skills/` is public too.** A skill that reads `../planb` names it only as a private planning repository
+  and quotes none of its content; reread staged text for private wording before committing.
 - **Open work lives in GitHub milestones** (one per post, plus "Site maintenance"): `gh issue list --milestone "<name>"`.
   Planned posts, in order: #73 (pre-registered causal study, pinned), #74 (RAG evaluation harness), #68 (income demo).
 
@@ -27,6 +29,8 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - `gh run list --workflow pages.yml --json databaseId,headSha` then `gh run watch <id>` - match runs by commit; the list lags a few seconds after a push.
 - `GITHUB_TOKEN= gh ...` - for other repos (private stharrold/planb, stharrold/mssp-paper-2026 releases and hooks):
   Claude Code's GITHUB_TOKEN may lack access; clearing it falls back to gh's own login.
+- `CLOUDSDK_CORE_ACCOUNT=samuel.harrold@gmail.com bq ...` - read BigQuery as the site's account without switching gcloud's active account.
+- `uv run --script scripts/analytics_report.py` - readership report (the `/analytics` skill runs it with `--save`).
 - `curl -s "https://stharrold.github.io/<path>?v=$(date +%s)"` - cache-busted live check after a deploy.
 - `uv run pelican -s pelicanconf.py -o <dir>` then `python3 -m http.server` in `<dir>` - stable preview for Playwright screenshots (not `--autoreload`).
 - `curl -s --compressed "https://www.ecfr.gov/api/versioner/v1/full/<YYYY-MM-DD>/title-42.xml?part=425&section=425.601"` - regulation text as in force on a date (eCFR's pages block curl; the API needs `--compressed`).
@@ -50,7 +54,9 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - **Vendored CSS from Bootswatch** contains a Google Fonts `@import` whose URL has semicolons; strip it with
   `@import url([^)]*);`, not `[^;]*;`, or the following `:root` rule breaks.
 - **Analytics:** GA4 is set only in `publishconf.py`; dev builds must not load it (tested). Avoid generating test
-  page views on the live site; verify against a local dev build instead.
+  page views on the live site; verify against a local dev build instead. The owner's visits are excluded (home-IP
+  internal-traffic filter, the opt-out add-on in Claude in Chrome's Chrome, `excluded_visitors.txt` on Drive); a new
+  owner device needs its `_ga` ID added there.
 - **Analytics archive** (`scripts/analytics_archive.py`, README "Analytics archive"): launchd runs a copy in
   `~/Library/Application Support/stharrold-analytics/`, so re-run `scripts/install_analytics_launchd.sh` after editing
   it. It authenticates with the gmail.com gcloud login (`--account`), never ADC. Under launchd `/bin/ls` was refused
@@ -85,7 +91,12 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - **Playwright (Python) wants one Chromium revision.** Pin a version whose revision is already in
   `~/Library/Caches/ms-playwright` instead of running `playwright install` (a download). The Playwright MCP writes
   screenshots only under the repository (`.playwright-mcp/`, gitignored).
-- **zsh ties `path` to `$PATH`;** never use `path` as a shell variable name.
+- **zsh ties `path` to `$PATH`;** never use `path` as a shell variable name. In `${var/pattern/new}`, `[ ]` is a
+  glob, so edit issue bodies with Python and `gh issue edit --body-file`.
+- **`uv sync` without `--all-groups` uninstalls the analysis group** (pymc, dbt); use `uv run --no-sync`, and
+  `uv sync --all-groups` after `uv lock`.
+- **DuckDB 2:** lambdas are `lambda p: ...` (`->` errors), `days` is a reserved alias, Python UDFs need numpy, and a
+  view definition cannot take `?` parameters.
 - **An interrupted tool call may already have run** (e.g. `gh workflow run`); check `gh run list` or the issue list
   before saying nothing happened.
 
