@@ -509,4 +509,6 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   across that pause; the waveform showed it. A first version filled the added time with the room tone used between
   clips, but after processing the take's own background sits about 10 dB above it, so mid-sentence it would sound
   like a dropout; the build now repeats the take's own background instead. Where a new take used slightly different words with the same meaning, the script
-  was changed to match the audio, since the captions come from the script.
+  was changed to match the audio, since the captions come from the script. Watching draft v3, "A harder one." in
+  the opening sounded garbled; it was cut (`CUTS`, from silence to silence, nothing added in its place) and
+  taken out of the script, leaving "...two thirds of them ended up with a lower target. So why do it?"

@@ -16,7 +16,7 @@ The deck and the scripts were first written in claude.ai and handed over as a re
 | `render/render.py` | Slides to 1920 x 1080 PNG frames with headless Chromium, one per clip, including reveal steps (`REVEALS`). |
 | `render/thumbs.py` | Two 1280 x 720 thumbnails. |
 | `render/vo_prepare.py` | Maps clips to recordings (`CLIP_TO_RECORDING`), decodes them, writes a QA report (loudness, pace, transcript diff). |
-| `render/build_video.py` | Cleans and levels each clip, lengthens pauses (`PAUSES`), joins them with room tone, masters to -14 LUFS, crossfades the frames, writes chapters. |
+| `render/build_video.py` | Cleans and levels each clip, lengthens pauses (`PAUSES`), cuts stretches (`CUTS`), joins them with room tone, masters to -14 LUFS, crossfades the frames, writes chapters. |
 
 Not in git (`.gitignore`): the recordings (`vo/`), the fonts (`fonts/`) and everything generated (`frames/`,
 `thumbs/`, `out/`). The finished video goes to Google Drive and YouTube, not here.
@@ -38,7 +38,7 @@ mkdir -p fonts && (cd fonts && npm pack -s @fontsource-variable/domine@5.3.0 @fo
 mkdir -p vo && ln -sfn /path/to/youtube_voiceover vo/youtube_voiceover && ln -sfn /path/to/youtube_voiceover2 vo/youtube_voiceover2
 
 # 3. notes, frames, thumbnails, voiceover QA
-PY render/inject_notes.py project/slides     # 26 slides, 33 clips, 2031 words
+PY render/inject_notes.py project/slides     # 26 slides, 33 clips, 2028 words
 PY render/render.py project/slides frames    # 33 PNGs
 PY render/thumbs.py thumbs
 PY render/vo_prepare.py .                    # vo/wav/, vo/map.json, vo/qa_report.txt
@@ -59,7 +59,8 @@ decoded MP3s reach about 1.42), so listen before re-recording.
 2. Record the clip, then point its label in `CLIP_TO_RECORDING` at the new number. The docstring in
    `vo_prepare.py` lists which takes are unused and why.
 3. If a take is too fast in one place, lengthen a pause the speaker already left with `PAUSES` in
-   `build_video.py`; it repeats that stretch of the take's own background (the build stops if it is not silent).
+   `build_video.py`; it repeats that stretch of the take's own background (the build stops if it is not silent). To drop a phrase, cut it with `CUTS`, from silence to silence; take
+   it out of the script too.
 4. Rerun steps 3 and 4.
 
 The published deck (`video-slides.pptx`) carries the same narration in its speaker notes; when the words change,
@@ -71,4 +72,4 @@ change them there too and rerun `../report/video_slides.py`, which rebuilds the 
   "two thirds" and "their targets mostly went down" come from the check made after the study; the script follows
   the spoken wording in 03 ("sales targets"), 06 ("want to reset") and 22 ("fifty percent"). Slide 1 has the
   post hoc footnote that the published deck gained on 2026-10-29. Clip 26 gets 0.5 s more before "Thanks for
-  watching."
+  watching." Clip 01 drops "A harder one.", which sounded garbled.

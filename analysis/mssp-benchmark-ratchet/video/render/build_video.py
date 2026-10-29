@@ -36,6 +36,13 @@ PAUSES = {
     # pause becomes about 1.05 s, so the sign-off gets its own beat. The rest of the take runs at about 180 wpm.
     "046": [(18.71, 0.50)],
 }
+# Stretches cut from a take: recording number -> [(start, end) in seconds into the recording]. Both ends must fall in
+# silence (checked below), so what is left of the pauses on either side joins into one; nothing is added.
+CUTS = {
+    # clip 01: "A harder one." (34.35-35.15 s) sounded garbled; "...a lower target." is followed directly by
+    # "So why do it?", with about 1.2 s between them.
+    "041": [(33.90, 35.70)],
+}
 
 mp = json.loads((S / "vo/map.json").read_text())
 labels = list(mp.keys())
@@ -109,6 +116,13 @@ for n, lab in enumerate(labels):
         quiet = 20 * np.log10(np.sqrt((x[a + i - half : a + i + half] ** 2).mean()) + 1e-9)
         assert quiet < -42, f"261029_{mp[lab]} is not silent around {t} s ({quiet:.0f} dBFS)"
         y = np.concatenate([y[:i], y[i - half : i + half], y[i:]])
+    assert not (mp[lab] in PAUSES and mp[lab] in CUTS), "a pause shifts the samples a cut points at; use one per take"
+    for t0, t1 in sorted(CUTS.get(mp[lab], []), reverse=True):
+        i0, i1, edge = int(t0 * SR) - a, int(t1 * SR) - a, int(0.05 * SR)
+        for i in (i0, i1):
+            quiet = 20 * np.log10(np.sqrt((x[a + i - edge : a + i + edge] ** 2).mean()) + 1e-9)
+            assert quiet < -42, f"261029_{mp[lab]} is not silent at {(a + i) / SR:.2f} s ({quiet:.0f} dBFS)"
+        y = np.concatenate([y[:i0], y[i1:]])
     nxt = labels[n + 1] if n + 1 < len(labels) else None
     same_slide = nxt is not None and nxt[:2] == lab[:2]
     tail = TAIL_STEP if same_slide else TAIL_SLIDE
