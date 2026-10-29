@@ -64,6 +64,9 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   folder there would sync nowhere), and never delete from the archive. Search Console needs a `webmasters.readonly`
   login: use the separate `CLOUDSDK_CONFIG=$HOME/.config/gcloud-searchconsole` ADC (README "Search Console"), never
   `gcloud auth application-default login` on the default config.
+- **Sharing a post elsewhere:** tag the site link `?utm_source=<site>&utm_medium=social&utm_campaign=<slug>` (LinkedIn's
+  app drops the referrer, so untagged visits read as direct; the report ignores the query when grouping pages), and
+  record share URLs without their tracking parameters.
 - **Privacy page:** when adding any third-party script or request, update `content/pages/privacy.md`.
 - **Scheduled workflows stop after 60 quiet days** (GitHub disables them in public repos without activity). If the
   weekly link log has gone stale, run `gh workflow enable links.yml`.
