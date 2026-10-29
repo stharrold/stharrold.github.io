@@ -42,6 +42,55 @@ ARCHIVE_DIR = Path(os.environ.get("ARCHIVE_DIR", "~/Library/CloudStorage/GoogleD
 SETTLE_DAYS = 3  # GA4 updates a day's table for up to 72 hours
 STALE_DAYS = 7  # quiet days have no table at all (3-6 events on a normal day), so a short threshold would cry wolf
 DAY_RE = re.compile(r"^events_(\d{8})$")
+REPO_URL = "https://github.com/stharrold/stharrold.github.io"
+
+
+def version() -> str:
+    """The commit this script came from: the installed copy's VERSION file, else the repository's HEAD."""
+    here = Path(__file__).resolve().parent
+    stamp = here.parent / "VERSION"
+    if stamp.exists():
+        return stamp.read_text().strip()
+    r = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=here)
+    return r.stdout.strip() or "src_develop"
+
+
+def readme(commit: str) -> str:
+    """README.md for the archive folder, so whoever finds the files can find the process that made them."""
+    src = f"{REPO_URL}/blob/{commit}"
+    return f"""# stharrold.github.io analytics archive
+
+Private copy of the Google Analytics 4 BigQuery export for https://stharrold.github.io, kept so the site's analytics
+are never lost. Written by `scripts/analytics_archive.py` in {REPO_URL}; this file is rewritten on every run.
+
+- Made by: [{commit[:7]}]({src}/scripts/analytics_archive.py), the code of the latest run; each table in `manifest.json`
+  records the `commit` that wrote it (entries without one are from the first run, 2026-10-29, by a draft of the
+  code first committed in 49e9f65). How it works and how to install it: [README, "Analytics archive"]({src}/README.md).
+- Source: BigQuery project `{PROJECT}`, datasets {", ".join(f"`{d}`" for d in DATASETS)}.
+- Schedule: a launchd job on the author's Mac, 09:00 and 21:00 (`bash scripts/install_analytics_launchd.sh`), running a
+  copy in `~/Library/Application Support/stharrold-analytics/`; log in `~/Library/Logs/stharrold-analytics.log`.
+
+## Files
+
+- `ga4/events_YYYYMMDD.parquet`: one GA4 export day, archived once it is {SETTLE_DAYS} days old (GA4 adds late
+  events for 72 hours). Schema: [GA4 BigQuery export](https://support.google.com/analytics/answer/7029846).
+- `ua_history/monthly_snapshots.parquet`: Universal Analytics monthly totals, 2017-11 to 2019-10, recovered from GA
+  snapshot emails.
+- `*/superseded/<table>.<stamp>.parquet`: an earlier archive of a table that later changed in BigQuery. Nothing is
+  deleted.
+- `manifest.json`: per table, the file, row count, BigQuery last-modified time, bytes, sha256, archive stamp and commit;
+  `missing_days` (no export table: no visitors, or a failed export); `last_run`.
+
+## Read
+
+```
+uv run --with duckdb python -c "import duckdb; print(duckdb.sql(\\"select event_date, count(*) from 'ga4/*.parquet' group by 1 order by 1\\"))"
+```
+
+Rerun by hand from a clone: `uv run --script scripts/analytics_archive.py` (`--dry-run` lists what is due).
+
+The rows include pseudonymous browser IDs and approximate locations: keep this folder private and out of git.
+"""
 
 
 class ArchiveError(Exception):
@@ -132,7 +181,7 @@ def write_parquet(client, ref: str, path: Path) -> int:
     return back.num_rows
 
 
-def archive_one(client, ref: str, meta: dict, root: Path, manifest: dict, write=write_parquet, stamp: str = "") -> dict:
+def archive_one(client, ref: str, meta: dict, root: Path, manifest: dict, write=write_parquet, stamp: str = "", commit: str = "") -> dict:
     """Archive one table and record it; an earlier archive of it is moved to superseded/, never deleted."""
     dataset, table_id = ref.split(".", 1)
     folder = root / DATASETS[dataset]
@@ -154,6 +203,7 @@ def archive_one(client, ref: str, meta: dict, root: Path, manifest: dict, write=
         "bytes": tmp.stat().st_size,
         "sha256": sha256(tmp),
         "stamp": stamp,
+        "commit": commit,
         "superseded": [],
     }
     old = manifest["tables"].get(ref)
@@ -167,7 +217,7 @@ def archive_one(client, ref: str, meta: dict, root: Path, manifest: dict, write=
     return entry
 
 
-def archive_due(client, due: list[str], tables: dict, root: Path, manifest: dict, stamp: str, write=write_parquet) -> list[str]:
+def archive_due(client, due: list[str], tables: dict, root: Path, manifest: dict, stamp: str, write=write_parquet, commit: str = "") -> list[str]:
     """Archive each due table, saving the manifest after each; return the ones that failed.
 
     One table that keeps failing must not block the days after it, so a failure is logged and the loop goes on.
@@ -175,7 +225,7 @@ def archive_due(client, due: list[str], tables: dict, root: Path, manifest: dict
     failed = []
     for ref in due:
         try:
-            entry = archive_one(client, ref, tables[ref], root, manifest, write=write, stamp=stamp)
+            entry = archive_one(client, ref, tables[ref], root, manifest, write=write, stamp=stamp, commit=commit)
         except Exception as e:
             print(f"[FAIL] {ref}: {type(e).__name__}: {e}")
             failed.append(ref)
@@ -242,7 +292,10 @@ def main() -> int:
             print(f"[WARN] {w}")
         return 0
 
-    failed = archive_due(client, due, tables, ARCHIVE_DIR, manifest, stamp)
+    commit = version()
+    failed = archive_due(client, due, tables, ARCHIVE_DIR, manifest, stamp, commit=commit)
+    (ARCHIVE_DIR / "README.md").write_text(readme(commit))
+    manifest["generated_by"] = {"script": f"{REPO_URL}/blob/{commit}/scripts/analytics_archive.py", "commit": commit}
     manifest["missing_days"] = missing_days(days)
     manifest["last_run"] = {"stamp": stamp, "archived": [r for r in due if r not in failed], "failed": failed, "warnings": warnings}
     save_manifest(ARCHIVE_DIR, manifest)
