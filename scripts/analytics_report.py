@@ -18,6 +18,10 @@ one has RANK_MIN engaged visitors. The report holds totals only, never visitor I
 Anyone can send events to a public GA4 tag, and search queries are typed by strangers, so page paths, sources and
 queries are untrusted text that an agent will read. Pages outside the site's own paths are grouped as "(other)", and
 every cell is reduced to a safe character set and length (cell()).
+
+The owner's own browsers are left out: EXCLUDED_FILE in the archive folder lists their GA4 browser IDs (the `_ga`
+cookie value, which is user_pseudo_id after its "GA1.1." prefix), one per line, `#` for comments. This removes past
+visits too; GA4's internal-traffic filter (home IP, active since 2026-10-29) and the opt-out add-on stop new ones.
 """
 
 import argparse
@@ -36,6 +40,8 @@ RANK_MIN = 30  # engaged visitors a page needs before a ranking means anything
 # The site's own page paths; anything else in page_location is grouped as "(other)" (see known_page()).
 SITE_PAGE_RE = re.compile(r"^/((tag|category)/[a-z0-9-]+\.html|(archives|categories|tags|search)\.html)?$")
 CELL_MAX = 80
+EXCLUDED_FILE = "excluded_visitors.txt"
+GA_COOKIE_RE = re.compile(r"^GA\d+\.\d+\.")
 FRESH_HOURS = 13  # the job runs at 09:00 and 21:00, so a healthy archive has run within 12 hours
 
 MACROS = """
@@ -59,7 +65,8 @@ select
     traffic_source.source as source,
     traffic_source.medium as medium,
     geo.country as country
-from read_parquet({files}, union_by_name = true);
+from read_parquet({files}, union_by_name = true)
+where user_pseudo_id not in (select id from excluded);
 create or replace view ev as select * from ev_raw
 """
 
@@ -127,6 +134,16 @@ def posts(content: Path) -> list[dict]:
     return sorted(out, key=lambda p: p["date"], reverse=True)
 
 
+def excluded_ids(text: str) -> set[str]:
+    """Browser IDs from excluded_visitors.txt: one per line, `#` comments, a full `_ga` cookie value accepted."""
+    ids = set()
+    for line in text.splitlines():
+        value = line.split("#", 1)[0].strip()
+        if value:
+            ids.add(GA_COOKIE_RE.sub("", value))
+    return ids
+
+
 def cell(value) -> str:
     """A value as a Markdown table cell: no pipes, backticks, angle brackets or control characters, at most CELL_MAX."""
     if value is None:
@@ -192,17 +209,21 @@ def post_windows(con, post_list: list[dict], first_day: datetime.date) -> list[d
     return rows
 
 
-def connect(files: list[str], known: set[str] | None = None):
-    """Events as the view `ev`; with `known`, pages outside the site's own paths become "(other)"."""
+def connect(files: list[str], known: set[str] | None = None, excluded: set[str] = frozenset()):
+    """Events as the view `ev`, without the `excluded` browser IDs; with `known`, other pages become "(other)"."""
     import duckdb
 
     con = duckdb.connect()
     con.execute(MACROS)
+    con.execute("create temp table excluded (id varchar)")
+    if excluded:
+        con.executemany("insert into excluded values (?)", [[i] for i in sorted(excluded)])
     con.execute(EVENTS_SQL.format(files=json.dumps(files).replace('"', "'")))
     if known is not None:
         # Same rule as known_page(), in SQL (a Python UDF would need numpy).
         con.execute("create temp table known_page (path varchar)")
-        con.executemany("insert into known_page values (?)", [[k] for k in sorted(known)])
+        if known:
+            con.executemany("insert into known_page values (?)", [[k] for k in sorted(known)])
         con.execute(
             "create or replace view ev as select * replace (case when page in (select path from known_page) "
             f"or regexp_full_match(page, '{SITE_PAGE_RE.pattern}') then page else '(other)' end as page) from ev_raw"  # a constant, no quotes
@@ -274,7 +295,9 @@ def report(archive: Path, include_bigquery: bool = True, now: datetime.datetime 
             files += recent_days(manifest, Path(tmp))
         if not files:
             raise aa.ArchiveError(f"no GA4 data in {archive} or BigQuery")
-        con = connect(files, known_pages(ROOT / "content"))
+        exclude_path = archive / EXCLUDED_FILE
+        excluded = excluded_ids(exclude_path.read_text()) if exclude_path.exists() else set()
+        con = connect(files, known_pages(ROOT / "content"), excluded)
         first = con.execute("select min(day), max(day), count(distinct visitor), count(distinct visitor) filter (engaged) from ev").fetchone()
         pages = table(con, PAGES_SQL)
         windows = post_windows(con, posts(ROOT / "content"), first[0])
@@ -293,6 +316,8 @@ def report(archive: Path, include_bigquery: bool = True, now: datetime.datetime 
         *[f"- Problem: {p}" for p in h["problems"]],
         "",
         "## Readership",
+        "",
+        f"Owner's browsers left out: {len(excluded)} IDs in {EXCLUDED_FILE}" + ("" if excluded else " (none listed yet, so your own visits are counted)") + ".",
         "",
         f"Data {first[0]} to {first[1]}{' (last days read live from BigQuery)' if include_bigquery else ''}: {first[2]} visitors, {first[3]} engaged. {note}",
         "",

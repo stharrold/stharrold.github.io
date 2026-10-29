@@ -121,3 +121,17 @@ def test_connect_groups_pages_outside_the_site(tmp_path):
     )
     con = ar.connect([str(path)], {"/a-slug.html"})
     assert sorted(r[0] for r in con.execute("select distinct page from ev").fetchall()) == ["(other)", "/a-slug.html"]
+
+
+def test_excluded_ids_accept_cookie_values_and_comments():
+    text = "# my laptop\nGA1.1.123456789.1761600000\n\n987654321.1761700000  # phone\n"
+    assert ar.excluded_ids(text) == {"123456789.1761600000", "987654321.1761700000"}
+
+
+def test_connect_leaves_out_excluded_browsers(tmp_path):
+    path = tmp_path / "e.parquet"
+    rows = [event("20261028", "page_view", "owner", "/a.html"), event("20261028", "page_view", "reader", "/a.html")]
+    duckdb.sql(
+        "copy (select * from (values " + ", ".join(rows) + ") t(event_date, event_name, user_pseudo_id, event_params, traffic_source, geo)) to '" + str(path) + "'"
+    )
+    assert ar.connect([str(path)], excluded={"owner"}).execute("select distinct visitor from ev").fetchall() == [("reader",)]
