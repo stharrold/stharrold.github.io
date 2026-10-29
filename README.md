@@ -108,6 +108,10 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   `webmasters.readonly` login kept in its own gcloud configuration, so the default credentials stay untouched:
   `CLOUDSDK_CONFIG=$HOME/.config/gcloud-searchconsole gcloud auth application-default login
   --scopes=openid,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/webmasters.readonly`.
+- **YouTube:** the blog's channel is Data Science Demos, [@DSDemos](https://www.youtube.com/@DSDemos). Channel art is
+  in `assets/youtube/` (outside `content/`, so not published), made by `uv run --no-sync python scripts/youtube_art.py`
+  in the site's colours and Lato; its README records what was uploaded. Video files stay on Google Drive, not in git.
+  How it was set up: `analysis/youtube-channel/BUILD-NOTES.md`.
 - **Privacy:** `content/pages/privacy.md` lists every third-party service the site loads; update it when adding one.
 - **Plugins:** `related_posts`, `tag_cloud`, `sitemap` (from PyPI), and `plugins/pelican_alias.py`
   (Python 3 port of [pelican-alias](https://github.com/Nitron/pelican-alias)) for `Alias:` redirects.
