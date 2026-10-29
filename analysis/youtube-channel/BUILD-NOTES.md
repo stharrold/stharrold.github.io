@@ -51,3 +51,9 @@ The idea was two lines of text, "@DSDemos" and "stharrold.github.io". Mocked up 
 desktop it becomes a Subscribe button. So the watermark is the channel picture again, for the entire video; the
 address is in each video's description and on the deck's closing slide. A contact sheet of all 26 slides of the
 first video, with the watermark's corner marked, showed nothing there to cover.
+
+## Published (2026-10-29)
+
+The author pressed Publish. Checked on the public channel page: picture, name, handle, description, the three links
+(YouTube shows the site's own favicon beside the blog link) and the banner, which appeared a minute or two after
+Studio had saved it. The upload log in `assets/youtube/README.md` records the sha256 of each image.

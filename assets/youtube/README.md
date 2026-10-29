@@ -30,6 +30,9 @@ kept on Google Drive, in `My_Drive/Data/stharrold.github.io/youtube/`.
 
 | Date | What | File (sha256) |
 |---|---|---|
-| | | |
+| 2026-10-29 | Channel picture | `avatar.png` (`a8d355a548a6e18241ddf7be450c4bfd24750d9adcb3ca991847b189c3b255d0`) |
+| 2026-10-29 | Banner | `banner.png` (`a290da832442612adf0debea10caa265f0039875f4008d50e0da971f2ca03920`) |
+| 2026-10-29 | Video watermark, entire video | `avatar.png` (`a8d355a548a6e18241ddf7be450c4bfd24750d9adcb3ca991847b189c3b255d0`) |
+| 2026-10-29 | Description, links and contact email as in "Channel profile" above | |
 
 How these were chosen: `analysis/youtube-channel/BUILD-NOTES.md`.
