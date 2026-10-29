@@ -24,6 +24,7 @@ kept on Google Drive, in `My_Drive/Data/stharrold.github.io/youtube/`.
   `https://github.com/stharrold`, LinkedIn `https://www.linkedin.com/in/samuelharrold`. Links in video descriptions
   carry `?utm_source=youtube&utm_medium=social&utm_campaign=<post slug>` (CLAUDE.md, "Sharing a post elsewhere") so `/analytics` can attribute them.
 - Contact email: a `+dsdemos` alias of the site's Google account, so mail from the listing can be filtered.
+- Video watermark: `avatar.png`, shown for the entire video (on desktop it doubles as a Subscribe button).
 
 ## Uploaded to YouTube
 

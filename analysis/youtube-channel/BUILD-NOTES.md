@@ -43,3 +43,11 @@ needs no downloads and can be remade if the colours change; the script's output 
   a common way of phishing channel logins, are easier to recognise.
 - The fields were filled by the agent in Claude in Chrome while the author watched, and read back from the page
   before publishing.
+
+## The watermark (2026-10-29)
+
+The idea was two lines of text, "@DSDemos" and "stharrold.github.io". Mocked up at the watermark's real size (about
+40 px in a 560 px player, half that on a phone), the address could not be read, and a watermark is not a link: on
+desktop it becomes a Subscribe button. So the watermark is the channel picture again, for the entire video; the
+address is in each video's description and on the deck's closing slide. A contact sheet of all 26 slides of the
+first video, with the watermark's corner marked, showed nothing there to cover.
