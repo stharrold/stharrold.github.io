@@ -94,7 +94,10 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
 - **`/analytics` skill** (`.claude/skills/analytics/SKILL.md`): checks the archive is healthy, reports readership with
   `uv run --script scripts/analytics_report.py --save` (DuckDB over the archive plus the days still only in BigQuery;
   totals saved to `reports/YYYY-MM-DD.md` on Drive; pages ranked only once one has 30 engaged visitors), then proposes
-  the next post. Engaged visitors (GA4 `session_engaged` or engagement time) screen out most crawlers.
+  the next post. Engaged visitors (GA4 `session_engaged` or engagement time) screen out most crawlers. The owner's own
+  visits are kept out three ways: a GA4 internal-traffic rule for the home IP with the Internal Traffic filter active
+  (from 2026-10-29; re-enter the IP if it changes), the Google Analytics opt-out add-on in the owner's browsers, and
+  `excluded_visitors.txt` on Drive (browser IDs from the `_ga` cookie, which the report drops from all past data).
 - **Search Console:** property `https://stharrold.github.io/` (URL prefix, verified through the GA4 tag, so removing
   the tag unverifies it), linked to GA4 and bulk-exporting daily to BigQuery dataset `searchconsole` since 2026-10-29
   (the export's service account has BigQuery Job User and Data Editor on the project). The archive copies its tables
