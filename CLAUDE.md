@@ -51,6 +51,11 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   `@import url([^)]*);`, not `[^;]*;`, or the following `:root` rule breaks.
 - **Analytics:** GA4 is set only in `publishconf.py`; dev builds must not load it (tested). Avoid generating test
   page views on the live site; verify against a local dev build instead.
+- **Analytics archive** (`scripts/analytics_archive.py`, README "Analytics archive"): launchd runs a copy in
+  `~/Library/Application Support/stharrold-analytics/`, so re-run `scripts/install_analytics_launchd.sh` after editing
+  it. It authenticates with the gmail.com gcloud login (`--account`), never ADC. Under launchd `/bin/ls` was refused
+  on the Drive folder while Python could list it; keep file work in Python. Never create the archive root (a local
+  folder there would sync nowhere), and never delete from the archive.
 - **Privacy page:** when adding any third-party script or request, update `content/pages/privacy.md`.
 - **Scheduled workflows stop after 60 quiet days** (GitHub disables them in public repos without activity). If the
   weekly link log has gone stale, run `gh workflow enable links.yml`.
