@@ -98,6 +98,7 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   visits are kept out three ways: a GA4 internal-traffic rule for the home IP with the Internal Traffic filter active
   (from 2026-10-29; re-enter the IP if it changes), the Google Analytics opt-out add-on in the owner's browsers, and
   `excluded_visitors.txt` on Drive (browser IDs from the `_ga` cookie, which the report drops from all past data).
+  How it was built: `analysis/site-analytics/BUILD-NOTES.md`.
 - **Search Console:** property `https://stharrold.github.io/` (URL prefix, verified through the GA4 tag, so removing
   the tag unverifies it), linked to GA4 and bulk-exporting daily to BigQuery dataset `searchconsole` since 2026-10-29
   (the export's service account has BigQuery Job User and Data Editor on the project). The archive copies its tables
