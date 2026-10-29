@@ -479,3 +479,13 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   post and the results files before storing (the "two-thirds got a lower target" opening is the post hoc result:
   19 of 29). It explains the study for a general audience, with a made-up $11,000 example of how a reset works, and
   ends with the AI disclosure and the links.
+- Slide viewer (2026-10-29): the deck is embedded so it can be paged through, as images rather than through a
+  Microsoft or Google viewer, which would load a third party on every visit. `report/video_slides.py` renders it with
+  Keynote, writes 26 slide images, a PDF and `slides.json` (each slide's text as alt text, its narration), and prints
+  the transcript, which sits in the post under the viewer. The viewer is plain JavaScript in the post's folder
+  (buttons, arrow keys, swipes). Fonts were the catch: the deck embeds Public Sans, which Keynote ignored, and uses
+  Domine for its headings without embedding it, so a first render had Helvetica headings. Public Sans was taken from
+  the deck's own EOT files and Domine from Google's OFL repository, both installed only for the render, and the script
+  now refuses a PDF with substituted fonts. The PDF is the portable download (fonts embedded); the PowerPoint file stays
+  as the editable original. The theme's `.btn { border-bottom: 0 }`, meant for link buttons, hid the buttons' bottom
+  edges; the viewer's stylesheet restores them.

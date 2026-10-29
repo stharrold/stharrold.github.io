@@ -1,0 +1,49 @@
+/* Slide viewer (slides.js). Colours come from the theme's Bootstrap variables, so it follows light and dark mode. */
+.mssp-slides {
+    margin: 1.5rem 0;
+    outline-offset: 4px;
+}
+
+.mssp-slides-stage {
+    cursor: pointer;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: var(--bs-secondary-bg);
+}
+
+.mssp-slides-stage img,
+.mssp-slides-fallback img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.mssp-slides-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* The theme removes .btn bottom borders (style.css, for link buttons); these are real buttons, so restore it. */
+.mssp-slides-bar .btn {
+    border-bottom: var(--bs-btn-border-width) solid var(--bs-btn-border-color);
+}
+
+.mssp-slides-bar .btn:hover {
+    border-bottom-color: var(--bs-btn-hover-border-color);
+}
+
+.mssp-slides-count {
+    font-variant-numeric: tabular-nums;
+    color: var(--bs-secondary-color);
+}
+
+.mssp-slides figcaption {
+    margin-top: 0.5rem;
+    color: var(--bs-secondary-color);
+    font-size: 0.9rem;
+}
