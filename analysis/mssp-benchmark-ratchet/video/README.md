@@ -36,7 +36,9 @@ PY() { uv run -q --no-project --python 3.12 --with playwright==1.61.0 --with num
 mkdir -p fonts && (cd fonts && npm pack -s @fontsource-variable/domine@5.3.0 @fontsource-variable/public-sans@5.3.0 &&
   for f in *.tgz; do mkdir -p "${f%.tgz}" && tar xzf "$f" -C "${f%.tgz}"; done)
 
-# 2. recordings: link each recording session's folder as vo/youtube_voiceover*
+# 2. recordings: link each recording session's folder as vo/youtube_voiceover*. The takes are kept on Google Drive,
+#    where the recorder's uploads land: My_Drive/Data/Sony_IC-Recorder_ICD-PX312/20261029T121317Z (001-040),
+#    20261029T165625Z (041-047) and 20261029T194638Z (048).
 mkdir -p vo && ln -sfn /path/to/youtube_voiceover vo/youtube_voiceover && ln -sfn /path/to/youtube_voiceover2 vo/youtube_voiceover2
 
 # 3. notes, frames, thumbnails, voiceover QA
@@ -59,7 +61,8 @@ PY render/build_video.py . --only 10,18a     # or: out/preview.mp4 of some clips
 else; a motion starts 0.15 s before its word, snapped from Whisper's word start to the word's audible onset;
 nothing moves while a clip fades in; and the finished state must match the still frame (PSNR above 45 dB), so the
 video ends each slide on the deck's own picture. The one exception is `dim`, which steps other elements back to
-hold the eye on one.
+hold the eye on one. Between a dark slide and a light one, the crossfade dips through the deck's navy
+instead of blending the two (`DIP` in `build_video.py`).
 
 The recorder numbers its files `261029_NNN.MP3` and keeps counting across sessions, so a number names one take
 wherever it is. The QA report's transcript diff uses the recorder's own Whisper tiny.en output and mishears often
@@ -89,3 +92,6 @@ change them there too and rerun `../report/video_slides.py`, which rebuilds the 
   post hoc footnote that the published deck gained on 2026-10-29. Clip 26 gets 0.5 s more before "Thanks for
   watching." In clip 01, "A harder one." sounded garbled; it is
   replaced by a re-recorded "A more difficult one." (take 048), patched in with `CUTS`.
+- Draft v4 (2026-10-29): word-timed animation on 30 clips (`render/animate.py`, `CUES`), proved first on slides 10
+  and 18; dark/light boundaries dip through navy. Slides 2 and 26 stay still (the title, and the end screen YouTube
+  overlays).

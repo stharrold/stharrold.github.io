@@ -30,6 +30,12 @@ TAIL_STEP = 0.35  # silence after a reveal step (same slide continues)
 TAIL_SLIDE = 0.70  # silence after the last clip of a slide
 END_HOLD = 21.0  # minimum on-screen time for the end screen (YouTube end screens: last 5-20 s)
 TARGET_CLIP_LUFS = -18.0
+# Between a dark (navy) slide and a light (cream) one, a plain crossfade shows both slides' text at once over a muddy
+# grey; those boundaries dip through the deck's navy (#1B2A3A, YUV 50/137/120 in the yuv420p frames) instead: the
+# first slide fades to navy over the first half of the crossfade, and the second rises from it over the second half.
+# xfade's P runs from 1 to 0.
+NAVY = "if(eq(PLANE,0),50,if(eq(PLANE,1),137,120))"
+DIP = f"if(gt(P,0.5),A*(2*P-1)+{NAVY}*(2-2*P),{NAVY}*2*P+B*(1-2*P))"
 # Pauses lengthened inside a take: recording number -> [(seconds into the recording, seconds to add)]. The point
 # must sit in a pause the speaker already left, at least half the added length from either edge (checked below);
 # that stretch of the take's own background is repeated, so the pause keeps the take's noise floor (room tone
@@ -113,6 +119,14 @@ def loudness(samples):
     tmp = OUT / "_lufs.wav"
     sf.write(tmp, samples, SR)
     return lufs(tmp)
+
+
+def dark(png):
+    """Whether a frame is a dark slide: its average grey level, from a 1 x 1 downscale."""
+    px = subprocess.run(
+        ["ffmpeg", "-loglevel", "error", "-i", str(png), "-vf", "scale=1:1:flags=area,format=gray", "-f", "rawvideo", "-"], capture_output=True, check=True
+    ).stdout
+    return px[0] < 128
 
 
 def lufs(path):
@@ -259,7 +273,9 @@ prev, acc = "v0", 0.0
 for i in range(1, len(durs)):
     acc += durs[i - 1]
     out = f"x{i}"
-    filt.append(f"[{prev}][v{i}]xfade=transition=fade:duration={XF}:offset={acc:.3f}[{out}]")
+    before, after = (S / "frames" / clips[k]["frame"] for k in (i - 1, i))
+    transition = f"custom:expr='{DIP}'" if dark(before) != dark(after) else "fade"
+    filt.append(f"[{prev}][v{i}]xfade=transition={transition}:duration={XF}:offset={acc:.3f}[{out}]")
     prev = out
 if only is None:
     inputs += ["-i", str(voice)]

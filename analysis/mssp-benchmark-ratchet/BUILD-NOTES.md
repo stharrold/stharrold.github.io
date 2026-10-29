@@ -526,3 +526,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   before the word, to the word's audible onset. Motion is a pure function of time, so frames are deterministic, and
   only moving frames are screenshotted (about 60-110 per clip). Each animated clip must end on its still frame
   (PSNR check), so the video always settles on the deck's picture. A proof on slides 10 and 18 came first.
+- Animating the rest (2026-10-29): the proof was approved as is (pace, the dim), so `CUES` now covers 30 clips. The
+  rule for each slide: its parts appear as the narration names them, and whatever it does not point at is there from
+  the start, so long text-only holds now change as they are read and no ambient zoom was needed. Whisper writes some
+  numbers as two words ("$11" ",000", "12" ".6"), so anchors join a word that starts with ",000" or ".6" to the
+  number before it. Crossfades between navy and cream slides now dip through the navy instead of double-exposing
+  both slides' text.
