@@ -29,3 +29,17 @@ that monogram at 800 x 800.
 
 `scripts/youtube_art.py` renders it with headless Chrome from an HTML page using the theme's own Lato files, so it
 needs no downloads and can be remade if the colours change; the script's output was byte-identical to the preview.
+
+## The banner and the profile (2026-10-29)
+
+- The banner is the blog's title and address on the same navy, with a short teal rule (the site's link colour, used
+  only as a rule because as text it is 4.6:1 on the navy). Phones show only the centre 1546 x 423 of the 2560 x 1440
+  image, so everything sits inside that box; YouTube's crop preview confirmed it.
+- The channel's blog link is untagged. The About panel prints each link's address, and a clean address reads better
+  there; few visits will come that way. Links in video descriptions are tagged, since that is where most clicks will
+  come from and the YouTube app drops the referrer (the same reason the LinkedIn share was tagged).
+- The contact address is a Gmail `+dsdemos` alias. The address is already public in this repository's commits, so
+  listing it adds little exposure; the alias lets mail from the listing be filtered, and fake sponsorship offers,
+  a common way of phishing channel logins, are easier to recognise.
+- The fields were filled by the agent in Claude in Chrome while the author watched, and read back from the page
+  before publishing.

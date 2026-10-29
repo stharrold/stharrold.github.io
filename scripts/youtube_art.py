@@ -21,10 +21,22 @@ OUT = ROOT / "assets" / "youtube"
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 NAVY = "#2c3e50"  # Flatly --bs-primary, the navbar and the favicon background
 
+TEAL = "#18bc9c"  # Flatly --bs-success, the site's link colour; only for the rule, as text it is 4.6:1 on the navy
+
 # name: (width, height, page body, extra CSS). YouTube recommends an 800 x 800 avatar and shows it as a circle,
-# as small as 24 px, so the monogram is two letters centred well inside the circle.
+# as small as 24 px, so the monogram is two letters centred well inside the circle. The banner is 2560 x 1440, but
+# phones show only the centre 1546 x 423, so all its text sits inside that box.
 ART = {
     "avatar": (800, 800, '<div class="t">DS</div>', ".t { font-weight: 400; font-size: 380px; letter-spacing: 4px; line-height: 1; margin-top: -20px; }"),
+    "banner": (
+        2560,
+        1440,
+        '<div class="safe"><div class="name">Data Science Demos</div><div class="rule"></div><div class="sub">stharrold.github.io</div></div>',
+        ".safe { width: 1546px; height: 423px; display: flex; flex-direction: column; align-items: center; justify-content: center; }"
+        " .name { font-weight: 700; font-size: 128px; line-height: 1; }"
+        f" .rule {{ width: 160px; height: 8px; background: {TEAL}; margin: 40px 0 36px; border-radius: 4px; }}"
+        " .sub { font-weight: 400; font-size: 56px; line-height: 1; color: #dee2e6; letter-spacing: 1px; }",
+    ),
 }
 
 
