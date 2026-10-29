@@ -55,7 +55,9 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   `~/Library/Application Support/stharrold-analytics/`, so re-run `scripts/install_analytics_launchd.sh` after editing
   it. It authenticates with the gmail.com gcloud login (`--account`), never ADC. Under launchd `/bin/ls` was refused
   on the Drive folder while Python could list it; keep file work in Python. Never create the archive root (a local
-  folder there would sync nowhere), and never delete from the archive.
+  folder there would sync nowhere), and never delete from the archive. Search Console needs a `webmasters.readonly`
+  login: use the separate `CLOUDSDK_CONFIG=$HOME/.config/gcloud-searchconsole` ADC (README "Search Console"), never
+  `gcloud auth application-default login` on the default config.
 - **Privacy page:** when adding any third-party script or request, update `content/pages/privacy.md`.
 - **Scheduled workflows stop after 60 quiet days** (GitHub disables them in public repos without activity). If the
   weekly link log has gone stale, run `gh workflow enable links.yml`.

@@ -91,6 +91,15 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   run with `--run-now`, log in `~/Library/Logs/stharrold-analytics.log`. `uv run --script scripts/analytics_archive.py
   --dry-run` shows what is due. The read-back checks the write, not Drive's upload. The files include visitor
   pseudonymous IDs, so they never go in git.
+- **Search Console:** property `https://stharrold.github.io/` (URL prefix, verified through the GA4 tag, so removing
+  the tag unverifies it), linked to GA4 and bulk-exporting daily to BigQuery dataset `searchconsole` since 2026-10-29
+  (the export's service account has BigQuery Job User and Data Editor on the project). The archive copies its tables
+  one `data_date` partition per file (`searchconsole/<table>/YYYYMMDD.parquet`). Search Console keeps only 16 months
+  and the export does not backfill, so the earlier history is saved once with `uv run --script
+  scripts/analytics_archive.py searchconsole-backfill` into `searchconsole_backfill/<stamp>/`; it needs a
+  `webmasters.readonly` login kept in its own gcloud configuration, so the default credentials stay untouched:
+  `CLOUDSDK_CONFIG=$HOME/.config/gcloud-searchconsole gcloud auth application-default login
+  --scopes=openid,https://www.googleapis.com/auth/userinfo.email,https://www.googleapis.com/auth/cloud-platform,https://www.googleapis.com/auth/webmasters.readonly`.
 - **Privacy:** `content/pages/privacy.md` lists every third-party service the site loads; update it when adding one.
 - **Plugins:** `related_posts`, `tag_cloud`, `sitemap` (from PyPI), and `plugins/pelican_alias.py`
   (Python 3 port of [pelican-alias](https://github.com/Nitron/pelican-alias)) for `Alias:` redirects.
