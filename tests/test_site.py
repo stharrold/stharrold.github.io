@@ -233,3 +233,17 @@ def test_structured_data_on_posts(site):
         assert data["url"] == f"{SITEURL}/{post['slug']}.html", post["slug"]
         assert data["headline"] and data["datePublished"] and data["author"]["name"], post["slug"]
         assert "<" not in data["description"], post["slug"]
+
+
+def test_slide_viewers_are_complete(site):
+    """Every slides/slides.json (built by a report script from a deck) has its images and alt text, and is published."""
+    for data_path in sorted(CONTENT.glob("static/*/slides/slides.json")):
+        data = json.loads(data_path.read_text())
+        assert data["slides"], data_path
+        for s in data["slides"]:
+            assert (data_path.parent / s["image"]).is_file(), f"{data_path}: missing {s['image']}"
+            assert s["alt"].strip() and s["narration"].strip(), f"{data_path}: {s['image']} lacks alt text or narration"
+        for link in (data["pdf"], data["pptx"]):
+            assert (data_path.parent / link).resolve().is_file(), f"{data_path}: missing {link}"
+        published = site / data_path.relative_to(CONTENT)
+        assert published.is_file() and (published.parent / "slides.js").is_file(), f"{data_path} is not in the publish build"

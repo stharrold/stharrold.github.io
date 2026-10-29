@@ -473,3 +473,24 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   Medium only as an import with the site marked as the original, and Substack only once there is a regular schedule.
 - Measuring the share (2026-10-29): #78 tracks a `/analytics` check about a week after the LinkedIn share. The
   tagged link is now a CLAUDE.md rule for sharing posts elsewhere.
+- Video slides (2026-10-29): a 26-slide deck for a narrated video ("Resetting the Target Early"), with the narration
+  script in the speaker notes, is stored as
+  `content/static/20261027-preregistered-mssp-early-renewal/video-slides.pptx`. Its figures were checked against the
+  post and the results files before storing (the "two-thirds got a lower target" opening is the post hoc result:
+  19 of 29). It explains the study for a general audience, with a made-up $11,000 example of how a reset works, and
+  ends with the AI disclosure and the links.
+- Slide viewer (2026-10-29): the deck is embedded so it can be paged through, as images rather than through a
+  Microsoft or Google viewer, which would load a third party on every visit. `report/video_slides.py` renders it with
+  Keynote, writes 26 slide images, a PDF and `slides.json` (each slide's text as alt text, its narration), and prints
+  the transcript, which sits in the post under the viewer. The viewer is plain JavaScript in the post's folder
+  (buttons, arrow keys, swipes). Fonts were the catch: the deck embeds Public Sans, which Keynote ignored, and uses
+  Domine for its headings without embedding it, so a first render had Helvetica headings. Public Sans was taken from
+  the deck's own EOT files and Domine from Google's OFL repository, both installed only for the render, and the script
+  now refuses a PDF with substituted fonts. The PDF is the portable download (fonts embedded); the PowerPoint file stays
+  as the editable original. The theme's `.btn { border-bottom: 0 }`, meant for link buttons, hid the buttons' bottom
+  edges; the viewer's stylesheet restores them.
+- Labeling the deck's opening (2026-10-29): a side review noted that slide 1's headline, "Two-thirds ended up with a
+  lower one" (19 of 29), is the post hoc check against CMS's published 2022 benchmarks, while the deck's case rests on
+  pre-registration; the deck said "checked afterward" only on slide 18. The video was already recorded, so the
+  narration is unchanged; slide 1 gained a footnote in the deck's own caveat style ("Two-thirds: from a check made
+  after the pre-registered analysis, ... (slide 18)"), and the images, PDF and alt text were rebuilt from it.
