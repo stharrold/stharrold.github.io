@@ -14,11 +14,16 @@ day; those are read for free with tabledata.list and never written anywhere). Ru
 Traffic is small and much of it is crawlers (direct, one page, no engagement), so every count is given for all
 visitors and for engaged visitors (GA4's session_engaged, or any engagement time), and pages are ranked only once
 one has RANK_MIN engaged visitors. The report holds totals only, never visitor IDs.
+
+Anyone can send events to a public GA4 tag, and search queries are typed by strangers, so page paths, sources and
+queries are untrusted text that an agent will read. Pages outside the site's own paths are grouped as "(other)", and
+every cell is reduced to a safe character set and length (cell()).
 """
 
 import argparse
 import datetime
 import json
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -28,6 +33,9 @@ import analytics_archive as aa  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 RANK_MIN = 30  # engaged visitors a page needs before a ranking means anything
+# The site's own page paths; anything else in page_location is grouped as "(other)" (see known_page()).
+SITE_PAGE_RE = re.compile(r"^/((tag|category)/[a-z0-9-]+\.html|(archives|categories|tags|search)\.html)?$")
+CELL_MAX = 80
 FRESH_HOURS = 13  # the job runs at 09:00 and 21:00, so a healthy archive has run within 12 hours
 
 MACROS = """
@@ -38,7 +46,7 @@ create or replace macro page_path(url) as coalesce(nullif(regexp_extract(url, '^
 
 # One row per event with the fields the report needs; `engaged` marks events in an engaged session.
 EVENTS_SQL = """
-create or replace view ev as
+create or replace view ev_raw as
 select
     strptime(event_date, '%Y%m%d')::date as day,
     event_name,
@@ -51,7 +59,8 @@ select
     traffic_source.source as source,
     traffic_source.medium as medium,
     geo.country as country
-from read_parquet({files}, union_by_name = true)
+from read_parquet({files}, union_by_name = true);
+create or replace view ev as select * from ev_raw
 """
 
 PAGES_SQL = """
@@ -118,6 +127,25 @@ def posts(content: Path) -> list[dict]:
     return sorted(out, key=lambda p: p["date"], reverse=True)
 
 
+def cell(value) -> str:
+    """A value as a Markdown table cell: no pipes, backticks, angle brackets or control characters, at most CELL_MAX."""
+    if value is None:
+        return ""
+    text = re.sub(r"[\x00-\x1f\x7f|`<>\\]", " ", str(value))
+    text = re.sub(r"\s+", " ", text).strip()
+    return text if len(text) <= CELL_MAX else text[: CELL_MAX - 1] + "…"
+
+
+def known_pages(content: Path) -> set[str]:
+    """Paths the site actually serves for posts and pages (drafts and hidden pages included; they may be linked)."""
+    paths = {f"/{metadata(p).get('slug', p.stem)}.html" for p in content.glob("*.md")}
+    return paths | {f"/pages/{metadata(p).get('slug', p.stem)}.html" for p in (content / "pages").glob("*.md")}
+
+
+def known_page(path: str, known: set[str]) -> str:
+    return path if path in known or SITE_PAGE_RE.match(path) else "(other)"
+
+
 def health(manifest: dict, now: datetime.datetime) -> dict:
     """Whether the archive job is keeping up: last run, its warnings and failures, and what is archived."""
     last = manifest.get("last_run", {})
@@ -164,12 +192,21 @@ def post_windows(con, post_list: list[dict], first_day: datetime.date) -> list[d
     return rows
 
 
-def connect(files: list[str]):
+def connect(files: list[str], known: set[str] | None = None):
+    """Events as the view `ev`; with `known`, pages outside the site's own paths become "(other)"."""
     import duckdb
 
     con = duckdb.connect()
     con.execute(MACROS)
     con.execute(EVENTS_SQL.format(files=json.dumps(files).replace('"', "'")))
+    if known is not None:
+        # Same rule as known_page(), in SQL (a Python UDF would need numpy).
+        con.execute("create temp table known_page (path varchar)")
+        con.executemany("insert into known_page values (?)", [[k] for k in sorted(known)])
+        con.execute(
+            "create or replace view ev as select * replace (case when page in (select path from known_page) "
+            f"or regexp_full_match(page, '{SITE_PAGE_RE.pattern}') then page else '(other)' end as page) from ev_raw"  # a constant, no quotes
+        )
     return con
 
 
@@ -180,7 +217,7 @@ def table(con, sql: str) -> tuple[list[str], list[tuple]]:
 
 def markdown_table(columns: list[str], rows: list) -> str:
     out = ["| " + " | ".join(columns) + " |", "|" + "---|" * len(columns)]
-    out += ["| " + " | ".join("" if v is None else str(v) for v in r) + " |" for r in rows]
+    out += ["| " + " | ".join(cell(v) for v in r) + " |" for r in rows]
     return "\n".join(out)
 
 
@@ -237,7 +274,7 @@ def report(archive: Path, include_bigquery: bool = True, now: datetime.datetime 
             files += recent_days(manifest, Path(tmp))
         if not files:
             raise aa.ArchiveError(f"no GA4 data in {archive} or BigQuery")
-        con = connect(files)
+        con = connect(files, known_pages(ROOT / "content"))
         first = con.execute("select min(day), max(day), count(distinct visitor), count(distinct visitor) filter (engaged) from ev").fetchone()
         pages = table(con, PAGES_SQL)
         windows = post_windows(con, posts(ROOT / "content"), first[0])
