@@ -80,6 +80,16 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
 - **Analytics:** Google Analytics 4 (`G-K4PX9089RZ`, publish builds only, Google signals off), exported daily to
   BigQuery project `stharrold-github-io` (dataset `analytics_393124094`). Universal Analytics history recovered from
   the GA monthly snapshot emails (2017-11 to 2019-10) is in `stharrold-github-io.ua_history.monthly_snapshots`.
+- **Analytics archive:** `scripts/analytics_archive.py` copies every BigQuery table to Parquet in the private Google
+  Drive folder `My_Drive/Data/stharrold.github.io/` (`ga4/events_YYYYMMDD.parquet`, `ua_history/`), reads each file
+  back, and records rows, BigQuery's last-modified time and a sha256 in `manifest.json`. A day is archived once it is
+  3 days old (GA4 adds late events for 72 hours); a table that changes later is archived again with the old file
+  kept in `superseded/`; nothing is deleted. It warns if the newest export is over 7 days old, if an archived table
+  has left BigQuery, or if billing is off. A launchd job runs it at 09:00 and 21:00 from a copy outside `~/Documents`:
+  install or update with `bash scripts/install_analytics_launchd.sh` (re-run after changing either script), start a
+  run with `--run-now`, log in `~/Library/Logs/stharrold-analytics.log`. `uv run --script scripts/analytics_archive.py
+  --dry-run` shows what is due. The read-back checks the write, not Drive's upload. The files include visitor
+  pseudonymous IDs, so they never go in git.
 - **Privacy:** `content/pages/privacy.md` lists every third-party service the site loads; update it when adding one.
 - **Plugins:** `related_posts`, `tag_cloud`, `sitemap` (from PyPI), and `plugins/pelican_alias.py`
   (Python 3 port of [pelican-alias](https://github.com/Nitron/pelican-alias)) for `Alias:` redirects.

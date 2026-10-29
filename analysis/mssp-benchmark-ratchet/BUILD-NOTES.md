@@ -453,3 +453,12 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   cover letter to i-JMR had described the preprint as in screening, so the author is sending the editor a
   correction. Lesson: check a preprint server's affiliation requirements before choosing it as an independent
   researcher (OSF Preprints is the noted fallback; its own requirements were not checked).
+- Post synced with the submitted manuscript (2026-10-28, deployed c514575):
+  - no mention of a preprint;
+  - an AI disclosure matching the i-JMR declaration;
+  - the third post hoc check and the sharing-rate reading;
+  - links to the manuscript repository and its Zenodo archive, without naming the journal;
+  - the new literature.
+
+  Footnotes are numbered in the order of their definitions, so the References list was re-sorted by first citation.
+  The lessons from the session went into `CLAUDE.md` here and a new `CLAUDE.md` in mssp-paper-2026.
