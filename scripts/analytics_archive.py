@@ -102,6 +102,8 @@ are never lost. Written by `scripts/analytics_archive.py` in {REPO_URL}; this fi
 - `searchconsole_backfill/<stamp>/`: the one-time pull of Search Console's earlier history (it keeps 16 months) through
   its API (`uv run --script scripts/analytics_archive.py searchconsole-backfill`), one file per search type and
   dimension set, with its own `manifest.json`. Rows with `query` omit rare queries; the `date`-only files are the totals.
+- `reports/YYYY-MM-DD.md`: readership reports (totals only) saved by the `/analytics` skill through
+  [`scripts/analytics_report.py`]({src}/scripts/analytics_report.py); never edited or deleted by the archive job.
 - `*/superseded/<name>.<stamp>.parquet`: an earlier archive of a table or day that later changed in BigQuery. Nothing
   is deleted.
 - `manifest.json`: per table, the file, row count, BigQuery last-modified time, bytes, sha256, archive stamp and commit;

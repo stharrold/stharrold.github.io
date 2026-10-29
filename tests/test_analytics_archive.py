@@ -219,3 +219,4 @@ def test_search_console_query_raises_on_an_error():
 def test_readme_covers_search_console():
     text = aa.readme("0" * 40)
     assert "`searchconsole/<table>/YYYYMMDD.parquet`" in text and "`searchconsole_backfill/<stamp>/`" in text
+    assert "`reports/YYYY-MM-DD.md`" in text and "analytics_report.py" in text

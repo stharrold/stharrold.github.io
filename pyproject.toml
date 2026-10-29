@@ -16,6 +16,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    # tests/test_analytics_report.py runs the report's SQL on synthetic data.
+    "duckdb>=2.0",
     "pre-commit>=4.6",
     "pytest>=9.1",
     "ruff>=0.16",

@@ -2248,6 +2248,7 @@ analysis = [
     { name = "statsmodels" },
 ]
 dev = [
+    { name = "duckdb" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "ruff" },
@@ -2265,7 +2266,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 analysis = [
-    { name = "dbt-duckdb", specifier = ">=1.11.0" },
+    { name = "dbt-duckdb", specifier = ">=1.11" },
     { name = "duckdb", specifier = ">=2.0" },
     { name = "firthmodels", specifier = ">=0.8.2" },
     { name = "numpy", specifier = ">=2.5" },
@@ -2275,6 +2276,7 @@ analysis = [
     { name = "statsmodels", specifier = ">=0.15" },
 ]
 dev = [
+    { name = "duckdb", specifier = ">=2.0" },
     { name = "pre-commit", specifier = ">=4.6" },
     { name = "pytest", specifier = ">=9.1" },
     { name = "ruff", specifier = ">=0.16" },
