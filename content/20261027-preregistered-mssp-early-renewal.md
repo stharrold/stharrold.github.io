@@ -113,7 +113,7 @@ and transcript are built from the deck by [`report/video_slides.py`][video-slide
 
 <link rel="stylesheet" href="{static}/static/20261027-preregistered-mssp-early-renewal/slides/slides.css">
 <figure id="mssp-slides" class="mssp-slides" aria-label="Slides: Resetting the Target Early">
-<div class="mssp-slides-fallback"><img src="{static}/static/20261027-preregistered-mssp-early-renewal/slides/slide-01.png" width="1600" height="900" alt="Slide 1 of 26: 29 doctor groups quit their contracts early and had their targets reset. Two-thirds ended up with a lower one. Why?"></div>
+<div class="mssp-slides-fallback"><img src="{static}/static/20261027-preregistered-mssp-early-renewal/slides/slide-01.png" width="1600" height="900" alt="Slide 1 of 26: 29 doctor groups quit their contracts early and had their targets reset. Two-thirds ended up with a lower one. Why? (Two-thirds: from a check made after the pre-registered analysis.)"></div>
 <figcaption>26 slides; the narration is in the transcript below. The figures match this post's results.</figcaption>
 </figure>
 <script src="{static}/static/20261027-preregistered-mssp-early-renewal/slides/slides.js" defer></script>

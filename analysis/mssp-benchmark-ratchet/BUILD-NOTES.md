@@ -489,3 +489,8 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   now refuses a PDF with substituted fonts. The PDF is the portable download (fonts embedded); the PowerPoint file stays
   as the editable original. The theme's `.btn { border-bottom: 0 }`, meant for link buttons, hid the buttons' bottom
   edges; the viewer's stylesheet restores them.
+- Labeling the deck's opening (2026-10-29): a side review noted that slide 1's headline, "Two-thirds ended up with a
+  lower one" (19 of 29), is the post hoc check against CMS's published 2022 benchmarks, while the deck's case rests on
+  pre-registration; the deck said "checked afterward" only on slide 18. The video was already recorded, so the
+  narration is unchanged; slide 1 gained a footnote in the deck's own caveat style ("Two-thirds: from a check made
+  after the pre-registered analysis, ... (slide 18)"), and the images, PDF and alt text were rebuilt from it.
