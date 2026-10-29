@@ -462,3 +462,12 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 
   Footnotes are numbered in the order of their definitions, so the References list was re-sorted by first citation.
   The lessons from the session went into `CLAUDE.md` here and a new `CLAUDE.md` in mssp-paper-2026.
+- Distribution (2026-10-29): two days after publishing, the post had no outside readers. Its only engaged visit was the
+  author's phone, once the author's browsers were excluded from the analytics (`analysis/site-analytics/BUILD-NOTES.md`).
+  Almost all traffic arrived direct, and search had not yet indexed the post, so it was shared on
+  [LinkedIn](https://www.linkedin.com/posts/samuelharrold_healtheconomics-valuebasedcare-causalinference-share-7521508274597441536-PqS7/).
+  The share leads with the answer: early renewers were already beating their benchmarks, and most moved to the 75%
+  track. It adds why the result matters as a baseline for the 2024 rules, and links the post (tagged
+  `utm_source=linkedin` so the visits can be measured), the OSF registration and the manuscript repository. A first
+  draft gave findings without the "so what"; it was revised before posting. Medium and Substack were left for later:
+  Medium only as an import with the site marked as the original, and Substack only once there is a regular schedule.
