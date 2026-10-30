@@ -1,6 +1,6 @@
 Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study
 Date: 2026-10-27T17:30:00Z
-Modified: 2026-10-30T01:45:00Z
+Modified: 2026-10-30T15:30:00Z
 Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-differences, healthcare, medicare, dbt, duckdb, python
 Category: Causal Inference
 Slug: 20261027-preregistered-mssp-early-renewal
@@ -42,8 +42,7 @@ them early and started new ones on January 1, 2022; 277 stayed in their agreemen
 This post asks why they did, and what renewing changed:
 
 * **Who chose to reset, and why (H1-H3).** Did early renewers stand to gain from a reset because their regions spent
-  more than their benchmarks (the primary test), because their own spending had run high, or because renewing was
-  the only way into the [track that shares 75% of savings][cfr-610-rate][^cfr-425-610]?
+  more than their benchmarks (the primary test), because their own spending had run high, or because renewing was the only way into the [track that shares 75% of savings][cfr-610-rate][^cfr-425-610] without waiting for the agreement to end or leaving the program?
 * **Spending after renewal (H4).** Did early renewers' spending change afterwards, relative to ACOs that had not
   yet renewed? A [difference-in-differences][did-wiki] estimate.
 
@@ -312,7 +311,7 @@ looks at early renewal itself.
   for the ACOs that rebased early in 2022, the same 29 as here (11 that were in the program before Pathways to
   Success and 18 that joined in 2019 or 2020). Both groups had higher savings rates in 2020 and 2021 than comparable
   ACOs that did not rebase, and each of the 11 moved from BASIC levels C to E into ENHANCED
-  ([Smith et al. 2024][milliman2024][^milliman2024]). A Milliman case study models the same choice for one ACO
+  ([Smith et al. 2024][milliman2024][^milliman2024]). A Milliman case study models the same choice for one hypothetical ACO
   ([Milliman 2025][milliman2025][^milliman2025]).
 
 * **Rebasing creates a ratchet.** The rules for setting an ACO's benchmark at renewal weaken its incentive to save,
@@ -327,10 +326,9 @@ design guards against anticipation and mean reversion.
   why its case-mix adjustment matters (see [Limitations](#limitations)).
 * **Benchmarks drive who participates.** After regional spending entered benchmarks in 2017, participation shifted
   toward providers whose spending was low relative to their region ([Lyu, Chernew and McWilliams 2023][lyu2023][^lyu2023]),
-  ACOs whose effective benchmark fell were 7 percentage points more likely to leave
+  ACOs whose effective benchmark fell, because of a separate 2017 change in assignment rules, were 7 percentage points more likely to leave
 ([Chen and McWilliams 2025][chen2025][^chen2025]), and ACOs with a positive regional adjustment were about 70% less
-likely to exit ([Cappello 2026][cappello2026][^cappello2026]). In another voluntary Medicare program, bundled payments,
-hospitals that could gain without changing their behavior were more likely to join, which the authors call selection
+likely to exit ([Cappello 2026][cappello2026][^cappello2026]). In a Medicare bundled-payment program made voluntary for half of its hospitals after 2 mandatory years, hospitals that could gain without changing their behavior were more likely to opt in, which the authors call selection
 on levels ([Einav et al. 2022][einav2022][^einav2022]). The primary result here is the same kind of selection, in when to
   reset rather than whether to join or leave.
 * **The 2019 rules changed participation decisions.** Under Pathways to Success, for the first time more ACOs left the
@@ -345,19 +343,17 @@ on levels ([Einav et al. 2022][einav2022][^einav2022]). The primary result here 
 
 **How these results fit, in plain English.**
 
-* **Agrees with (industry data):** Milliman found that the ACOs that renewed early in 2022 had been saving more and
-  moved to ENHANCED. This study finds the same, and adds why the savings matter: beating the benchmark makes a reset
+* **Agrees with (industry data):** Milliman found that the ACOs that renewed early in 2022 had been saving more, and that those already in the program before 2019 moved to ENHANCED. This study finds the same, and adds why the savings matter: beating the benchmark makes a reset
   cost more.
 * **Agrees with:** earlier work found that ACOs pick their moment using the benchmark. They joined when the regional
-  formula favored them (Lyu and colleagues), and they left when their benchmark fell (Chen and McWilliams). This
+  formula favored them (Lyu and colleagues), and they left when their effective benchmark fell (Chen and McWilliams). This
   study finds the same behavior in a new choice, when to reset: early renewers were the ACOs whose regions spent more
   relative to their benchmarks.
 * **Fits with, though that evidence is weak:** after the 2019 rules, ACOs that were already saving money were more
   likely to stay in the program, a borderline result whose interval includes no effect (Ying and colleagues). Early renewers here were also savers, beating their benchmarks by more
   than other ACOs. But that same success meant a reset would have cut the own-spending part of their benchmark, so
   the simple story "ACOs reset to get a higher benchmark" does not fit them on average.
-* **Consistent with:** earlier work showed that comparing an ACO with its region depends heavily on how patients'
-  health is adjusted for (Rose and colleagues). Here too, the size of the regional difference doubles without that
+* **Consistent with:** earlier work showed that comparing an ACO with its region is sensitive to how patients' health is adjusted for (Rose and colleagues). Here too, the size of the regional difference doubles without that
   adjustment.
 * **Cannot confirm or rule out:** the worry that rebasing rewards spending more just before a new agreement (Douven
   and colleagues). Early renewers' spending growth afterward showed no detectable difference, but the design could
@@ -391,8 +387,7 @@ early renewal: an ACO that [terminated its agreement][cfr-220][^cfr-425-220] and
 
 * **The reset motive.** A new benchmark would be higher than the current one.
 * **The sharing-rate motive.** An ACO in the [BASIC track][cfr-605-levels][^cfr-425-605] cannot move to the ENHANCED track during
-  an agreement period ([2018 rule][fr-pathways-track][^fr-2018]), so renewing early was the only way in before its agreement
-  ended. ENHANCED shares [75% of savings][cfr-610-rate][^cfr-425-610] and [up to 75% of losses][cfr-610-loss]. In the
+  an agreement period ([2018 rule][fr-pathways-track][^fr-2018]), so renewing early was the only way in without waiting for its agreement to end or leaving the program. ENHANCED shares [75% of savings][cfr-610-rate][^cfr-425-610] and [up to 75% of losses][cfr-610-loss]. In the
   [enrollment files][data-acos][^data-acos], 26 of the 27 early renewers that were in BASIC moved to ENHANCED; no stayer could, since the move is barred
   within an agreement period.
 
@@ -482,8 +477,7 @@ component, higher BASIC level) and five adjustment factors (cohort, size, revenu
 or later agreement), fit with [PyMC][pymc][^sw-pymc] ([NUTS][nuts][^hoffman2014], 4 chains of 2,000 draws; plan [section 5.4][plan-5.4][^plan]).
 Continuous predictors are scaled by two standard deviations ([Gelman 2008][gelman2008][^gelman2008]), so each coefficient is a
 [log-odds][logit] difference per 2 SD. With 24 events (27 eligible early renewers, 3 missing a predictor) and 9
-parameters, the Normal(0, 1) [priors][prior] keep the estimates stable, so a second fit with [Student-t][student-t]
-priors ([Gelman et al. 2008][gelman-prior2008][^gelman-prior2008]) is reported for sensitivity. A Firth-penalized logistic regression
+parameters, the Normal(0, 1) [priors][prior] keep the estimates stable, so a second fit with [Student-t][student-t] priors, the scale [Gelman et al. 2008][gelman-prior2008][^gelman-prior2008] recommend for scaled predictors but with 3 rather than 1 degree of freedom, is reported for sensitivity. A Firth-penalized logistic regression
 ([Firth 1993][firth1993][^firth1993], fit with [`firthmodels`][firthmodels][^sw-firthmodels]) with the core predictors and cohort is always run
 beside it, and decides H3 only if the Bayesian model fails its [convergence checks][vehtari2021][^vehtari2021].
 
@@ -516,8 +510,8 @@ both affected by COVID-19), and with about 29 treated ACOs a non-significant pre
 2022][roth2022][^roth2022]). So H4 counts as an effect only if an **equivalence condition** holds (the logic of an
 [equivalence test][lakens2017][^lakens2017]): the pre-trend interval, scaled to the
 distance between period midpoints, must rule out a trend difference large enough to produce the estimate. A
-trend-adjusted estimate (the pre-period slope carried forward, in the spirit of [Rambachan and Roth 2023][rambachan2023][^rambachan2023]) is reported
-beside it, along with [propensity-weighted][ipw] ([Rosenbaum and Rubin 1983][rosenbaum1983][^rosenbaum1983]), risk-adjusted, balanced-panel and single-cohort versions.
+trend-adjusted estimate (the pre-period slope carried forward, the exactly linear special case of the restrictions of [Rambachan and Roth 2023][rambachan2023][^rambachan2023]) is reported
+beside it, along with [propensity-score-weighted][ipw] ([Rosenbaum and Rubin 1983][rosenbaum1983][^rosenbaum1983]; [Callaway and Sant'Anna 2021][callaway2021][^callaway2021]), risk-adjusted, balanced-panel and single-cohort versions.
 
 ### Conventional methods, side by side
 
@@ -899,8 +893,7 @@ changed spending. Three questions remain open:
 
 * **What did early renewal cost Medicare,** through higher benchmarks or larger shared-savings payments? This study
   does not estimate it.
-* **Did the 2024 rules change who renews early?** The prior savings adjustment and the offset to negative regional
-  adjustments weaken the own-spending penalty that early renewers faced in 2022. 34 stayers renewed early into 2024
+* **Did the 2024 rules change who renews early?** The prior savings adjustment and the limits on negative regional adjustments weaken the own-spending penalty that early renewers faced in 2022. 34 stayers renewed early into 2024
   agreements under those rules, so the data to look are public.
 * **How much of the choice was the sharing rate rather than the benchmark?** In these data the two came with the same
   decision; a period in which ACOs could move to ENHANCED without resetting would separate them.
@@ -923,7 +916,7 @@ One sentence in the registered plan's background is imprecise, though nothing in
 [Section 1.1][plan-1.1][^plan] says renewing is "the only way for a BASIC-track ACO to enter the ENHANCED track, which
 shares 75% of savings and losses". ENHANCED shares [75% of savings][cfr-610-rate][^cfr-425-610] but
 [up to 75% of losses][cfr-610-loss], and the bar on moving from BASIC to ENHANCED within an agreement period is in
-the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's text ([Design](#two-motives-and-why-the-savings-rate-cannot-separate-them)).
+the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's text ([Design](#two-motives-and-why-the-savings-rate-cannot-separate-them)). Renewal is the only way in only for an ACO that neither waits for its agreement to end nor leaves the program, since CMS also allows re-entry after a break.
 
 ## Limitations
 
@@ -951,7 +944,7 @@ the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's te
   be built for 3 of 29 early renewers (10.3%) and 36 of 277 stayers (13.0%); the plan requires reporting this as a
   limitation when either group passes 10% ([section 3][plan-3][^plan]). In every one of the 39, CMS hides the ACO's count of
   assigned [ESRD][esrd] (kidney failure) beneficiaries in every county of the
-  [2021 county assignment file][data-assigned][^data-assigned] ([it suppresses counts of 1 to 10][suppression-archive][^suppression]),
+  [2021 county assignment file][data-assigned][^data-assigned] ([values based on few beneficiaries are hidden, consistent with CMS's policy of suppressing counts of 1 to 10][suppression-archive][^suppression]),
   so the ESRD part of regional spending has no county weights; for 15 the aged/dual counts are hidden too.
   These details and the size medians below come from a diagnostic query run after the results, outside the
   registered pipeline; they are not in the results files. The
@@ -966,8 +959,7 @@ the [2018 rule's preamble][fr-pathways-track][^fr-2018], not the regulation's te
   [42 CFR 425.652][cfr24-652][^cfr-2024], which changes the trade-off studied here. An ACO that saved in the years
   before its new agreement can receive a [prior savings adjustment][cfr24-658] of up to half its average per-capita
   savings (capped at 5% of national per-capita spending), and its benchmark gets the higher of that and the regional
-  adjustment ([425.652(a)(8)][cfr24-652-a8]). [Negative regional adjustments are partly offset][cfr24-656], and the
-  annual update blends in a fixed projected trend, the Accountable Care Prospective Trend
+  adjustment ([425.652(a)(8)][cfr24-652-a8]). [A regional adjustment that is negative overall is not applied, and negative amounts within a positive one are reduced for ACOs with more dually eligible or higher-risk beneficiaries][cfr24-656], and the annual update blends in a fixed projected trend, the Accountable Care Prospective Trend
   ([425.652(b)][cfr24-652-b]). Under these rules a reset costs an ACO that has been beating its benchmark less, so the
   incentive to renew early, and which ACOs do so, may well differ.
 * **Uneven attrition in H4.** By PY2024 the comparison group had lost 42% of its ACOs, to exits and later renewals,
