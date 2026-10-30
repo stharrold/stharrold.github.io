@@ -151,6 +151,9 @@ deck's speaker notes through [`report/video_slides.py`][video-slides-src].
 </ol>
 </details>
 
+The narration says renewing early was the only way onto the higher-sharing track. More exactly, it was the only way
+without waiting for the contract to end or leaving the program, as [Design](#two-motives-and-why-the-savings-rate-cannot-separate-them) explains.
+
 ## Background for newcomers
 
 Four short primers for readers new to the program or the methods; each opens on a click, and experienced readers can
