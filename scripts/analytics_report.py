@@ -62,8 +62,10 @@ select
     coalesce(pint(event_params, 'engagement_time_msec'), 0) as engagement_ms,
     coalesce(pint(event_params, 'percent_scrolled'), 0) as percent_scrolled,
     coalesce(pstr(event_params, 'outbound'), '') = 'true' as outbound,
-    traffic_source.source as source,
-    traffic_source.medium as medium,
+    -- the session's source (GA4's last non-direct click, as in its own reports), not traffic_source, which is the
+    -- visitor's first-ever source: a reader who first came from LinkedIn and later from YouTube counts under YouTube
+    coalesce(session_traffic_source_last_click.cross_channel_campaign.source, traffic_source.source) as source,
+    coalesce(session_traffic_source_last_click.cross_channel_campaign.medium, traffic_source.medium) as medium,
     geo.country as country
 from read_parquet({files}, union_by_name = true)
 where user_pseudo_id not in (select id from excluded);
@@ -330,6 +332,8 @@ def report(archive: Path, include_bigquery: bool = True, now: datetime.datetime 
         "A blank window predates the archive (it starts 2026-10-06).",
         "",
         "### Sources",
+        "",
+        "Each visit's own source (GA4's session source); a visitor who came by two routes counts under each.",
         "",
         markdown_table(*sources),
         "",
