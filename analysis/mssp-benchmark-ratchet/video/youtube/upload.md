@@ -55,3 +55,23 @@ Chapters
 13:46 What it means
 16:13 Takeaways
 ```
+
+## Short
+
+A 70-second vertical cut of the opening (`render/short.py`): the ratchet idea, then the cold open, ending on
+"Here's what I found." and an end card pointing to the full video. File on Drive in `short/` next to the video.
+
+- Title (61 characters): `Why would 29 doctor groups reset their Medicare targets early?`
+- Related video: the full video, `WZQCHKAt2so` (a link under the Short).
+- Audience, category, language, tags, remixing and comments: as for the full video. Captions are burned in.
+
+```text
+The opening of a pre-registered study of Medicare's Shared Savings Program: 29 groups of doctors and hospitals quit their contracts early to reset their targets, and most ended up with lower ones. Why?
+
+Full 17-minute video: https://www.youtube.com/watch?v=WZQCHKAt2so
+Write-up, with the methods, data and code: https://stharrold.github.io/20261027-preregistered-mssp-early-renewal.html?utm_source=youtube&utm_medium=social&utm_campaign=20261027-preregistered-mssp-early-renewal
+
+"Two-thirds ended up with a lower target" comes from a check made after the registered analysis, against Medicare's published 2022 targets; it was not in the plan.
+
+AI disclosure: the slides and script were drafted with help from Claude Code (Anthropic), which also proposed the topic and drafted the analysis plan and code; I registered the plan, ran the analysis, and I'm responsible for the results.
+```
