@@ -1,6 +1,6 @@
 Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study
 Date: 2026-10-27T17:30:00Z
-Modified: 2026-10-30T00:45:00Z
+Modified: 2026-10-30T01:45:00Z
 Tags: causal-inference, pre-registration, bayesian, resampling, difference-in-differences, healthcare, medicare, dbt, duckdb, python
 Category: Causal Inference
 Slug: 20261027-preregistered-mssp-early-renewal
@@ -23,7 +23,7 @@ Summary: A study of Medicare Shared Savings Program ACOs that ended their agreem
 | Finding | Early renewers' regions spent more relative to their benchmarks, but they were also beating their benchmarks, so on average a reset would not have raised them; no detectable change in spending afterward |
 | Reproduce | About 10 minutes to download the data and run the tests; about 18 hours to rerun every stage ([Reproduce](#reproduce)) |
 | Manuscript | The journal-style write-up, its tables and figures, the results files and the post hoc scripts: [stharrold/mssp-paper-2026][manuscript], archived on Zenodo (DOI [10.5281/zenodo.23737045](https://doi.org/10.5281/zenodo.23737045))[^manuscript] |
-| Slides | "Resetting the Target Early": a 26-slide explainer for a general audience, with the narration in the speaker notes ([page through them](#the-study-in-26-slides); [PDF]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pdf), [PowerPoint]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pptx)) |
+| Video | "Resetting the Target Early": a 17-minute narrated explainer for a general audience ([watch it here](#the-study-in-a-17-minute-video) or [on YouTube][mssp-video]); its slides as [PDF]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pdf) and [PowerPoint]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pptx) |
 
 [![Visual abstract. Title: Why did Medicare ACOs reset their benchmarks early? A pre-registered study of Shared Savings Program ACOs: 29 renewed early in 2022, 277 stayed. The question: did ACOs renew early to get a higher benchmark, and did renewing change their spending? The design: public CMS data, 2019-2024; plan registered on OSF before any outcome was read; decision rules fixed in advance. Who renewed early, early renewers minus stayers in percent of benchmark with 95% intervals: region spends more than benchmark +3.4 (+1.7 to +5.4); regional part of a reset +1.6 (+0.9 to +2.2); own-spending part of a reset -2.1 (-3.8 to -0.5); total expected gain from a reset -0.5 (-2.0 to +0.8). Spending after renewal: change in spending growth -0.4% (-4.0 to +2.5), no detectable difference, and not read as an effect because a pre-existing trend could hide a small one. Takeaway: early renewers were low-cost relative to their regions, and almost all moved to the 75% sharing rate, but the reset did not raise their benchmarks on average; associations, not effects; 2022 rules.]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)]({static}/static/20261027-preregistered-mssp-early-renewal/visual-abstract.png)
 
@@ -103,24 +103,26 @@ of renewing.
   and soften the cut for an ACO that spends more than its region, so the same trade-off may not hold for an ACO renewing today (see
   [Limitations](#limitations)).
 
-### The study in 26 slides
+### The study in a 17-minute video
 
 "Resetting the Target Early" tells the same story for a general audience, with a made-up example of how a reset works
-and no statistics background needed. Page through with the buttons, the arrow keys, or by swiping; the narration is
-below. Download: [PDF]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pdf) (fonts embedded, opens anywhere) or [PowerPoint]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pptx)
-(the editable original; its headings fall back to another font where Domine is not installed). The slide images, text
-and transcript are built from the deck by [`report/video_slides.py`][video-slides-src].
+and no statistics background needed. It is narrated, with captions, and is also on the blog's YouTube channel,
+[Data Science Demos][dsdemos]. The video loads from YouTube only when you press play (see the
+[privacy page]({filename}/pages/privacy.md)). The slides are also a download: [PDF]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pdf) (fonts embedded, opens anywhere) or [PowerPoint]({static}/static/20261027-preregistered-mssp-early-renewal/video-slides.pptx)
+(the editable original, with the narration in its speaker notes; its headings fall back to another font where Domine
+is not installed). The video is built by the code in [`video/`][video-src], and the transcript below comes from the
+deck's speaker notes through [`report/video_slides.py`][video-slides-src].
 
-<link rel="stylesheet" href="{static}/static/20261027-preregistered-mssp-early-renewal/slides/slides.css">
-<figure id="mssp-slides" class="mssp-slides" aria-label="Slides: Resetting the Target Early">
-<div class="mssp-slides-fallback"><img src="{static}/static/20261027-preregistered-mssp-early-renewal/slides/slide-01.png" width="1600" height="900" alt="Slide 1 of 26: 29 doctor groups quit their contracts early and had their targets reset. Two-thirds ended up with a lower one. Why? (Two-thirds: from a check made after the pre-registered analysis.)"></div>
-<figcaption>26 slides; the narration is in the transcript below. The figures match this post's results.</figcaption>
+<link rel="stylesheet" href="{static}/static/20261027-preregistered-mssp-early-renewal/video/video.css">
+<figure class="mssp-video">
+<a class="mssp-video-frame" href="https://www.youtube.com/watch?v=WZQCHKAt2so" data-video-id="WZQCHKAt2so" data-title="Resetting the Target Early (YouTube)" aria-label="Play the video Resetting the Target Early (17 minutes, from YouTube)"><img src="{static}/static/20261027-preregistered-mssp-early-renewal/video/poster.png" width="1280" height="720" alt="Video poster: Why reset? Medicare puzzle. Target down 1.3%."><span class="mssp-video-play" aria-hidden="true"></span></a>
+<figcaption>17 minutes, narrated, with captions. Pressing play loads YouTube's player (youtube-nocookie.com).</figcaption>
 </figure>
-<script src="{static}/static/20261027-preregistered-mssp-early-renewal/slides/slides.js" defer></script>
+<script src="{static}/static/20261027-preregistered-mssp-early-renewal/video/video.js" defer></script>
 
 <details>
-<summary>Narration (transcript, one paragraph per slide)</summary>
-<ol class="mssp-slides-transcript">
+<summary>Transcript (one paragraph per slide)</summary>
+<ol class="mssp-video-transcript">
 <li>In January 2022, twenty-nine groups of doctors and hospitals did something odd. They quit their Medicare contracts early and signed new ones, which reset the targets Medicare uses to decide whether they earn a share of savings. By Medicare&#x27;s own numbers, checked after the study, two thirds of them ended up with a lower target. A more difficult one. So why do it? I ran a study to find out, and I wrote down the rules before I looked at the data. Here&#x27;s what I found.</li>
 <li>I&#x27;m Samuel Harrold, and this is a pre-registered study of public Medicare data. You don&#x27;t need any background in healthcare or statistics to follow along.</li>
 <li>First, a familiar idea. Imagine your boss sets next year&#x27;s sales targets from what you sold this year. You crush it, and your reward is a harder target. Do too well today, and tomorrow gets tougher. Economists call this a ratchet, because it only clicks one way. Medicare has its own version of this, and it&#x27;s the key to the whole puzzle.</li>
@@ -1205,6 +1207,9 @@ General terms link to Wikipedia in the text instead.
 [notebook-src]: https://github.com/stharrold/stharrold.github.io/blob/eceda2ab9ab48330fee70d227e1ca7b4ad44369b/analysis/mssp-benchmark-ratchet/report/results_notebook.py
 [readme]: https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/README.md#reproduce-and-adapt
 [visual-abstract-src]: https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/report/visual_abstract.py
+[mssp-video]: https://www.youtube.com/watch?v=WZQCHKAt2so
+[dsdemos]: https://www.youtube.com/@DSDemos
+[video-src]: https://github.com/stharrold/stharrold.github.io/tree/17798668f1355738cc3ecb8c9d48215471a016fd/analysis/mssp-benchmark-ratchet/video
 [video-slides-src]: https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/report/video_slides.py
 [deviations]: https://github.com/stharrold/stharrold.github.io/blob/src_master/analysis/mssp-benchmark-ratchet/DEVIATIONS.md
 [dashboard-fix]: https://github.com/stharrold/stharrold.github.io/commit/dd8c27904e3dfa87840d9debffb663bb1cf64906
