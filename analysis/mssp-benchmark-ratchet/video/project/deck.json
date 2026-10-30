@@ -1,0 +1,30 @@
+{
+  "v": 4,
+  "createdOnFiles": {"v": 1, "at": "2026-10-29T09:45:00Z"},
+  "lists": "css",
+  "title": "Resetting the Target Early",
+  "cover": "open-hook",
+  "order": [
+    "open-hook", "cover", "hook",
+    "aco", "deal", "catch", "region", "cancel-example",
+    "exit", "counts", "motives",
+    "shot", "why-shot", "how-shot", "questions",
+    "rebuild", "ranges", "f1-region", "f2-savers", "f3-cancel", "f4-share", "f5-after",
+    "cansay", "bestread", "fineprint", "honesty", "ai-use",
+    "takeaways", "more"
+  ],
+  "sections": {
+    "s1": {"description": "Cold open: the puzzle, then a familiar idea about targets that get harder when you beat them.", "start": "open-hook"},
+    "s2": {"description": "How Medicare's savings deal with doctor groups works, with one made-up example.", "start": "aco"},
+    "s3": {"description": "The puzzle: why 29 groups quit their contracts early to reset their targets.", "start": "exit"},
+    "s4": {"description": "Calling the shot: writing down every question and rule before looking at results.", "start": "shot"},
+    "s5": {"description": "What the data showed, finding by finding.", "start": "rebuild"},
+    "s6": {"description": "What it means, what it cannot say, and how it was done honestly.", "start": "cansay"},
+    "s7": {"description": "Three takeaways and where to read more.", "start": "takeaways"}
+  },
+  "faces": {
+    "domine": {"family": "Domine", "href": "https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap"},
+    "public-sans": {"family": "Public Sans", "href": "https://fonts.googleapis.com/css2?family=Public+Sans:wght@400..700&display=swap"}
+  },
+  "designSystems": []
+}

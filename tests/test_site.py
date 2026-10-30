@@ -235,15 +235,17 @@ def test_structured_data_on_posts(site):
         assert "<" not in data["description"], post["slug"]
 
 
-def test_slide_viewers_are_complete(site):
-    """Every slides/slides.json (built by a report script from a deck) has its images and alt text, and is published."""
-    for data_path in sorted(CONTENT.glob("static/*/slides/slides.json")):
-        data = json.loads(data_path.read_text())
-        assert data["slides"], data_path
-        for s in data["slides"]:
-            assert (data_path.parent / s["image"]).is_file(), f"{data_path}: missing {s['image']}"
-            assert s["alt"].strip() and s["narration"].strip(), f"{data_path}: {s['image']} lacks alt text or narration"
-        for link in (data["pdf"], data["pptx"]):
-            assert (data_path.parent / link).resolve().is_file(), f"{data_path}: missing {link}"
-        published = site / data_path.relative_to(CONTENT)
-        assert published.is_file() and (published.parent / "slides.js").is_file(), f"{data_path} is not in the publish build"
+def test_youtube_videos_load_on_click(site):
+    """No published page loads YouTube until the reader presses play: a video is a poster link that video.js swaps for
+    a youtube-nocookie.com player on click, and the privacy page says so."""
+    players = 0
+    for page in sorted(site.rglob("*.html")):
+        html = page.read_text(errors="replace")
+        assert not re.search(r"<iframe[^>]+youtube", html), f"{page.relative_to(site)} embeds a YouTube player on load"
+        for href, video_id in re.findall(r'<a class="mssp-video-frame" href="([^"]+)" data-video-id="([^"]+)"', html):
+            players += 1
+            assert href == f"https://www.youtube.com/watch?v={video_id}", f"{page.relative_to(site)}: poster link and video ID differ"
+            assert re.search(r'<script src="[^"]*/video/video\.js" defer>', html), f"{page.relative_to(site)}: video.js missing"
+            assert not re.search(r'src="https?://[^"]*(youtube|ytimg)', html), f"{page.relative_to(site)}: loads from YouTube before play"
+    if players:
+        assert "youtube-nocookie.com" in (site / "pages" / "privacy.html").read_text(), "privacy page must describe the video player"

@@ -19,6 +19,7 @@ files are public use files from data.cms.gov.
 | `results/` | One JSON file per stage, committed as each stage finished; each records the commit it ran at. |
 | `posthoc/` | Post hoc checks added after every registered result had been read (not registered): scripts and their JSON output. See `posthoc/README.md`. |
 | `report/` | Reporting only, not part of the registered analysis: `dashboard_data.py` builds the post's dashboard data from `results/`; `results_notebook.py` is the marimo results notebook; `exports/` holds its `.ipynb` and PDF exports, kept byte-for-byte as uploaded to OSF (sha256 in the post; never re-export). |
+| `video/` | Reporting only: the narrated video for YouTube (slides, narration script, render and audio scripts). See `video/README.md`. |
 | `REGISTRATION.md`, `DEVIATIONS.md`, `BUILD-NOTES.md` | The registration record, the deviation log, and a running log of how the study was built. |
 
 ## Reproduce and adapt

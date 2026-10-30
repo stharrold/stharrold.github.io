@@ -4,9 +4,11 @@ The blog's videos go on its own YouTube channel, named after the site: **Data Sc
 [@DSDemos](https://www.youtube.com/@DSDemos) (created 2026-10-29, a Brand Account managed by the site's Google
 account). One post, one video, and each video links back to its post.
 
-Nothing here is published by Pelican (it is outside `content/`). Each video's own files (title, description,
-chapters, captions) sit with that post's static files; the video files themselves are too large for git and are
-kept on Google Drive, in `My_Drive/Data/stharrold.github.io/youtube/`.
+Nothing here is published by Pelican (it is outside `content/`). Each video's title, description and settings sit
+with the code that built it (for #73: `analysis/mssp-benchmark-ratchet/video/youtube/upload.md`); the video files,
+thumbnails and captions are too large or too generated for git and are kept on Google Drive, in
+`My_Drive/Data/stharrold.github.io/youtube/<post slug>/`, with a README giving each file's sha256. That folder sits
+inside the analytics archive, whose generated README does not list it; the archive job never touches it.
 
 ## Files
 
@@ -34,5 +36,6 @@ kept on Google Drive, in `My_Drive/Data/stharrold.github.io/youtube/`.
 | 2026-10-29 | Banner | `banner.png` (`a290da832442612adf0debea10caa265f0039875f4008d50e0da971f2ca03920`) |
 | 2026-10-29 | Video watermark, entire video | `avatar.png` (`a8d355a548a6e18241ddf7be450c4bfd24750d9adcb3ca991847b189c3b255d0`) |
 | 2026-10-29 | Description, links and contact email as in "Channel profile" above | |
+| 2026-10-29 | Video [`WZQCHKAt2so`](https://www.youtube.com/watch?v=WZQCHKAt2so), "Why did 29 Medicare doctor groups reset their targets early? A pre-registered study" (#73), public; text and settings in `analysis/mssp-benchmark-ratchet/video/youtube/upload.md`, subtitles from `captions.txt`, end screen 16:44-17:04 | `resetting-the-target-early.mp4` (`c408f725a0bdf6744920ab3cee9afd2801ece42a6f0288ae21281b6e8378f5d3`), thumbnail `thumbnail-a.png` (`d05ce3512bb435f976440223794faa7c8e8ed49a9aa048218fbd65e88e202406`) |
 
 How these were chosen: `analysis/youtube-channel/BUILD-NOTES.md`.
