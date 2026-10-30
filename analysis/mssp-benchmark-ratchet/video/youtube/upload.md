@@ -22,7 +22,9 @@ giving their sha256); this sheet is the text. Built from draft v4 (2026-10-29), 
 ## Description
 
 Links carry `utm_source=youtube` so the site's analytics can attribute visits (CLAUDE.md, "Sharing a post
-elsewhere"). YouTube refuses angle brackets in descriptions; there are none.
+elsewhere"). YouTube refuses angle brackets in descriptions; there are none. The end slide (26) lists the
+write-up, the registered plan and `github.com/stharrold/mssp-paper-2026` under "Links in the description", so all
+three must stay here.
 
 ```text
 In January 2022, 29 groups of doctors and hospitals in Medicare's Shared Savings Program quit their contracts early and signed new ones, which reset the targets Medicare uses to decide whether they earn a share of savings. Why would a group do that? This video walks through a study of that question, with the analysis plan registered publicly before any result was looked at.
@@ -31,8 +33,8 @@ Full write-up, with the methods, data and code:
 https://stharrold.github.io/20261027-preregistered-mssp-early-renewal.html?utm_source=youtube&utm_medium=social&utm_campaign=20261027-preregistered-mssp-early-renewal
 
 Registered analysis plan (OSF): https://osf.io/c53w9/
-Paper, archived on Zenodo: https://doi.org/10.5281/zenodo.23737045
-Code: https://github.com/stharrold/stharrold.github.io/tree/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet
+Code and paper: https://github.com/stharrold/mssp-paper-2026 (archived on Zenodo: https://doi.org/10.5281/zenodo.23737045)
+Analysis pipeline, as registered: https://github.com/stharrold/stharrold.github.io/tree/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet
 
 A note on the numbers: "two thirds ended up with a lower target" and the 1.3% average drop come from a check made after the registered analysis, against Medicare's published 2022 targets. That check was not in the plan, and the video labels it as an add-on.
 
