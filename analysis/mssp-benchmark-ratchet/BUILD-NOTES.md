@@ -549,3 +549,32 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   transcription of the Short's own audio (Whisper heard "So why do it?" as "So I do it.", fixed against the script).
   The first stills showed the slide text running into the captions; one line was dropped and the type tightened.
   The same captions went up as an .srt track, so YouTube's CC does not fall back to its automatic captions.
+
+## The reference audit and the BMC submission (2026-10-30)
+
+- The next venue: after i-JMR, the author chose *BMC Health Services Research*, for its collection on implementing
+  value-based care payment models. The paper was reformatted to BMC's research-article rules, with a validator for
+  them, and the journal's pages were saved as local copies to check against.
+- The audit: the author asked, just before submitting, whether every reference had a working URL that really was the
+  reference and supported its sentence. The honest answer was no. DOIs came from Crossref, and sentences on the MSSP
+  literature had been checked against abstracts only. `scripts/audit_references.py` collected the evidence for all 70
+  references. A 200 proved little, because data.cms.gov answers 200 for any path, so eCFR, the Federal Register and
+  data.cms.gov were checked through their own APIs and catalog. Reviewers given the sentence and source, and no expected
+  answer, made 94 checks: 69 supported, 25 needing changes, none unsupported.
+- What it found: no wrong result, but claims a little stronger or looser than the sources. Renewal was "the only way"
+  into ENHANCED, when CMS also allows re-entry after a break. A paper's "effective" benchmarks had lost the word
+  "effective". Bonuses had "risen", where the source measured the chance of earning one. A rule said "partly offset"
+  where a negative adjustment is not applied at all. And a link cited for the download script pointed at a commit that
+  predates it. The abstract and cover letter repeated the "only way" claim and the audit, built on citations, missed
+  them; reading the rendered manuscript caught the abstract, and the post may share these (#79).
+- Full texts: the author obtained the five sources first judged from an abstract or preview, including the full
+  dissertation behind the 40% and about 70% figures. Its tables gave both, and no sentence changed.
+- Reading the Word file: rendered through Pages to PDF and read page by page. Pages showed everything but line numbers,
+  and looking for them in the file's XML found the setting out of order for Word's schema, a bug no render here could
+  show. The validator now checks that order.
+- Submission (2026-10-30): uploaded by the author, with every file checked against a local hash in the page. The form
+  put figures among supplementary files until moved, left the title empty, and doubled a colon when extracting the
+  abstract. Its declarations replace the manuscript's, so "no competing interests" would have erased the disclosure
+  of the author's job. Release v1.3.0 freezes what was submitted, archived on Zenodo.
+- A mistake worth keeping: a command the interface reported as rejected had already edited four files. Nothing
+  submitted was affected, but "nothing changed" was wrong for half an hour, until a routine `git status` showed it.

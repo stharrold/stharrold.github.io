@@ -78,6 +78,10 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   verification adds no GA page views.
 - **Pygments is capped `<2.20` by Pelican 4.12.** Dependabot can't fix capped transitive deps; alert #6 was dismissed
   as tolerable risk (see #64). Recheck when Pelican releases.
+- **Check citations against the source, not the abstract:** the paper's audit (`stharrold/mssp-paper-2026`,
+  `scripts/audit_references.py`, `references/AUDIT.md`) changed 25 of 94 citing sentences that abstract checks had
+  passed. Before publishing or submitting, check that each link resolves to the named work and each sentence against the
+  full text, and check the abstract and cover letter too, which cite nothing.
 - **Cite sources as footnotes,** as the 2015-2016 posts do: Python-Markdown `[^id]` markers, placed under References
   by `///Footnotes Go Here///`, numbered by first citation with back-links (one footnote can be cited many times).
   Python-Markdown numbers them in the order the `[^id]:` definitions appear, so keep the definitions sorted by first
@@ -97,9 +101,13 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   "with timing"); videos over 15 min need a phone-verified channel; Paid promotion and AI-use answers are the user's.
   `curl -s "https://www.youtube.com/oembed?url=<encoded URL>&format=json"` confirms a video is public without a view.
 - **Claude in Chrome's javascript_tool** refuses results containing URL query strings ("BLOCKED: Cookie/query string
-  data"); compare a sha256 computed in the page instead.
-- **Keynote via osascript:** after a failed call it answers "Connection is invalid (-609)"; `activate` and a delay
-  before `open` recovers (`report/video_slides.py` does).
+  data") and truncates output at about 1,000 characters, so read long text in slices. To verify an upload, `fetch` its
+  link in the page and compare a sha256 computed there with the local file. When `screenshot` fails on another
+  extension's page, `get_page_text` and `read_page` still work.
+- **Keynote and Pages via osascript:** after a failed call Keynote answers "Connection is invalid (-609)", and Pages
+  "Application isn't running (-600)"; `open -a <app>` or `activate`, then a delay before `open`, recovers
+  (`report/video_slides.py` does). No Word or LibreOffice here (`brew`'s `soffice` is a dangling wrapper), so Pages is how
+  to render a `.docx` to PDF; it does not show line numbers.
 - **Playwright (Python) wants one Chromium revision.** Pin a version whose revision is already in
   `~/Library/Caches/ms-playwright` instead of running `playwright install` (a download). The Playwright MCP writes
   screenshots only under the repository (`.playwright-mcp/`, gitignored).
@@ -109,8 +117,8 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   `uv sync --all-groups` after `uv lock`.
 - **DuckDB 2:** lambdas are `lambda p: ...` (`->` errors), `days` is a reserved alias, Python UDFs need numpy, and a
   view definition cannot take `?` parameters.
-- **An interrupted tool call may already have run** (e.g. `gh workflow run`); check `gh run list` or the issue list
-  before saying nothing happened.
+- **An interrupted tool call may already have run** (e.g. `gh workflow run`), even when its result says it was rejected
+  and nothing was written; check `git status`, `gh run list` or the issue list before saying nothing happened.
 
 ## Layout
 
