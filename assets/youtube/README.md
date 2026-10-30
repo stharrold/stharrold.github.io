@@ -28,6 +28,15 @@ inside the analytics archive, whose generated README does not list it; the archi
 - Contact email: a `+dsdemos` alias of the site's Google account, so mail from the listing can be filtered.
 - Video watermark: `avatar.png`, shown for the entire video (on desktop it doubles as a Subscribe button).
 
+## Uploading
+
+- The channel was phone-verified on 2026-10-29: without it YouTube abandons uploads over 15 minutes and refuses
+  custom thumbnails.
+- Fill YouTube Studio from the video's `upload.md`. The Paid promotion and AI-use questions are the author's to answer.
+- Shorts have no "don't allow" remixing (audio-only is the closest), no custom thumbnail and no end screen; point them
+  at the full video with "Related video". Upload burned-in captions as an `.srt` too, or CC shows YouTube's own.
+- On the site, a video is a click-to-load poster (no YouTube request before play), described on the privacy page.
+
 ## Uploaded to YouTube
 
 | Date | What | File (sha256) |
