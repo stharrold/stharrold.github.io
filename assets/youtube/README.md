@@ -28,6 +28,15 @@ inside the analytics archive, whose generated README does not list it; the archi
 - Contact email: a `+dsdemos` alias of the site's Google account, so mail from the listing can be filtered.
 - Video watermark: `avatar.png`, shown for the entire video (on desktop it doubles as a Subscribe button).
 
+## Uploading
+
+- The channel was phone-verified on 2026-10-29: without it YouTube abandons uploads over 15 minutes and refuses
+  custom thumbnails.
+- Fill YouTube Studio from the video's `upload.md`. The Paid promotion and AI-use questions are the author's to answer.
+- Shorts have no "don't allow" remixing (audio-only is the closest), no custom thumbnail and no end screen; point them
+  at the full video with "Related video". Upload burned-in captions as an `.srt` too, or CC shows YouTube's own.
+- On the site, a video is a click-to-load poster (no YouTube request before play), described on the privacy page.
+
 ## Uploaded to YouTube
 
 | Date | What | File (sha256) |
@@ -37,5 +46,6 @@ inside the analytics archive, whose generated README does not list it; the archi
 | 2026-10-29 | Video watermark, entire video | `avatar.png` (`a8d355a548a6e18241ddf7be450c4bfd24750d9adcb3ca991847b189c3b255d0`) |
 | 2026-10-29 | Description, links and contact email as in "Channel profile" above | |
 | 2026-10-29 | Video [`WZQCHKAt2so`](https://www.youtube.com/watch?v=WZQCHKAt2so), "Why did 29 Medicare doctor groups reset their targets early? A pre-registered study" (#73), public; text and settings in `analysis/mssp-benchmark-ratchet/video/youtube/upload.md`, subtitles from `captions.txt`, end screen 16:44-17:04 | `resetting-the-target-early.mp4` (`c408f725a0bdf6744920ab3cee9afd2801ece42a6f0288ae21281b6e8378f5d3`), thumbnail `thumbnail-a.png` (`d05ce3512bb435f976440223794faa7c8e8ed49a9aa048218fbd65e88e202406`) |
+| 2026-10-29 | Short [`LuxBRi1q0Eg`](https://www.youtube.com/shorts/LuxBRi1q0Eg), "Why would 29 doctor groups reset their Medicare targets early?" (#73), public; 70 s vertical cut of the opening (`analysis/mssp-benchmark-ratchet/video/render/short.py`), related video `WZQCHKAt2so`, captions burned in and as `captions.srt`, Shorts remixing audio only; text in `video/youtube/upload.md` ("Short") | `resetting-the-target-early-short.mp4` (`149e81ea075690b361413c01e38f0b20de1cf42bfaf16b5c6cd8f833355663e4`) |
 
 How these were chosen: `analysis/youtube-channel/BUILD-NOTES.md`.

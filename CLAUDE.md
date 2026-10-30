@@ -91,6 +91,15 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   text; every run writes `__marimo__/` (gitignored); ruff reformats `.ipynb`, so exports kept byte-for-byte need an
   exclude (see `analysis/mssp-benchmark-ratchet/report/exports/ruff.toml`). Use matplotlib PNGs, not widgets, so the
   `.ipynb` and PDF exports need no CDN.
+- **YouTube in posts:** never an `<iframe>` on load. Use the click-to-load poster (`content/static/<slug>/video/video.js`
+  swaps in youtube-nocookie on click; `test_youtube_videos_load_on_click`) and keep the transcript on the page.
+- **YouTube Studio through Claude in Chrome:** `file_upload` fills Studio's inputs (videos under 10 MB, thumbnails, `.srt`
+  "with timing"); videos over 15 min need a phone-verified channel; Paid promotion and AI-use answers are the user's.
+  `curl -s "https://www.youtube.com/oembed?url=<encoded URL>&format=json"` confirms a video is public without a view.
+- **Claude in Chrome's javascript_tool** refuses results containing URL query strings ("BLOCKED: Cookie/query string
+  data"); compare a sha256 computed in the page instead.
+- **Keynote via osascript:** after a failed call it answers "Connection is invalid (-609)"; `activate` and a delay
+  before `open` recovers (`report/video_slides.py` does).
 - **Playwright (Python) wants one Chromium revision.** Pin a version whose revision is already in
   `~/Library/Caches/ms-playwright` instead of running `playwright install` (a download). The Playwright MCP writes
   screenshots only under the repository (`.playwright-mcp/`, gitignored).
@@ -107,6 +116,7 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 
 - `content/` posts and pages (Markdown); `content/static/<slug>/` notebooks, exports, images; `content/extra/` robots.txt, favicons.
 - `assets/youtube/` art for the YouTube channel (@DSDemos), not published by Pelican; its README logs each upload.
+- `analysis/mssp-benchmark-ratchet/video/` the #73 video and Short, and their YouTube texts (`youtube/upload.md`); recordings on Drive, not git.
 - `themes/datasciencedemos/` Bootstrap 5 theme (see `themes/README.md` for lineage and vendored assets).
 - `plugins/pelican_alias.py` local plugin for `Alias:` redirects.
 - `data/archived-comments/` static HTML of 2016-2017 Disqus comments, loaded by `pelicanconf.py`.
