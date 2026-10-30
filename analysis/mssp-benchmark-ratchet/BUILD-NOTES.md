@@ -541,3 +541,11 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   play, so a reader who never plays it never contacts YouTube (a test checks every page, and the privacy page says
   so). The transcript and the PDF and PowerPoint downloads stay; `report/video_slides.py` now writes only the PDF and
   the transcript. The play button is sized with the poster, so on a phone it stays between "Why reset?" and -1.3%.
+- The Short (2026-10-29): a 70-second vertical cut of the opening for YouTube Shorts and LinkedIn
+  (`video/render/short.py`). It reuses the mastered narration, so nothing was re-recorded: the ratchet idea first
+  (clip 03 from "Imagine", a stronger first line than the date), then the cold open, ending on "Here's what I found."
+  and an end card for the full video. The deck's two opening slides were laid out again for a phone, with lines
+  building in on their words and the post hoc note shown with "Two-thirds", and captions are burned in from a fresh
+  transcription of the Short's own audio (Whisper heard "So why do it?" as "So I do it.", fixed against the script).
+  The first stills showed the slide text running into the captions; one line was dropped and the type tightened.
+  The same captions went up as an .srt track, so YouTube's CC does not fall back to its automatic captions.
