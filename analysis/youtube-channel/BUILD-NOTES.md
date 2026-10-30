@@ -57,3 +57,13 @@ first video, with the watermark's corner marked, showed nothing there to cover.
 The author pressed Publish. Checked on the public channel page: picture, name, handle, description, the three links
 (YouTube shows the site's own favicon beside the blog link) and the banner, which appeared a minute or two after
 Studio had saved it. The upload log in `assets/youtube/README.md` records the sha256 of each image.
+
+## First uploads (2026-10-29)
+
+The study's video (17:05) was abandoned on its first upload: "Video is too long", since an unverified channel takes
+15 minutes at most. The author verified the channel by phone and it went through, with a custom thumbnail now
+allowed. Studio's fields were filled through Claude in Chrome from the video's `upload.md`, and the author answered
+the paid-promotion and AI-use questions. A 70-second Short of the opening followed, linked to the full video
+("Related video"). Its burned-in captions also went up as an `.srt`, because CC otherwise shows YouTube's automatic
+captions, which repeated a mishearing. On the blog, the video replaced the slide viewer as a poster that loads
+YouTube only on a click. Both are logged, with sha256, in `assets/youtube/README.md`.

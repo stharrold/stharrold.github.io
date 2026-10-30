@@ -72,7 +72,10 @@ def keynote_pdf(deck: Path, work: Path) -> Path:
     src, pdf = work / "deck.pptx", work / "deck.pdf"
     shutil.copy2(deck, src)
     pdf.unlink(missing_ok=True)
+    # activate first: after a failed call Keynote answers "Connection is invalid (-609)" until it is brought up
     script = f'''tell application "Keynote"
+  activate
+  delay 2
   set d to open POSIX file "{src}"
   delay 3
   export d to POSIX file "{pdf}" as PDF
