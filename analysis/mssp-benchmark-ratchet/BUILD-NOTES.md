@@ -535,3 +535,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Matching the post to the video (2026-10-29): draft v4 was approved. The published deck's speaker notes (slides 1,
   3, 6 and 22) were set to the re-recorded narration, and `report/video_slides.py --pdf` rebuilt `slides.json` and
   the post's transcript from them; the slide images and PDF did not change, since only the notes did.
+- The video in the post (2026-10-29): once the video was public on YouTube, it replaced the post's slide viewer,
+  since it tells the same story with the narration and the animation. It loads only on a click: the post shows a
+  poster served from the site, and `video.js` swaps it for a `youtube-nocookie.com` player when the reader presses
+  play, so a reader who never plays it never contacts YouTube (a test checks every page, and the privacy page says
+  so). The transcript and the PDF and PowerPoint downloads stay; `report/video_slides.py` now writes only the PDF and
+  the transcript. The play button is sized with the poster, so on a phone it stays between "Why reset?" and -1.3%.

@@ -1,20 +1,17 @@
-"""Slide images, alt text and transcript for the post's slide viewer, from the video deck.
+"""The PDF of the video deck and the transcript for the post, from the deck.
 
 The deck is content/static/<slug>/video-slides.pptx ("Resetting the Target Early"); the narration is in its speaker
-notes, one "[Clip NN]" per slide. Browsers cannot show a .pptx, so this writes, next to it:
-
-- video-slides.pdf: the deck as a PDF, with its fonts embedded (the portable download);
-- slides/slide-NN.png: one 1600 x 900 image per slide, for the viewer (slides/slides.js);
-- slides/slides.json: per slide, the image, its text (the viewer's alt text) and its narration;
-
-and prints the transcript as HTML for the post. Every word comes from the deck; nothing is retyped.
+notes, one "[Clip NN]" per slide, and matches the video (analysis/mssp-benchmark-ratchet/video/). Browsers cannot
+show a .pptx, so this writes video-slides.pdf next to it (the deck with its fonts embedded, the portable download)
+and prints the transcript as HTML for the post, under the video. Every word comes from the deck; nothing is retyped.
+Until 2026-10-29 it also wrote slide images and slides.json for a slide viewer, which the embedded video replaced.
 
 Rendering needs Keynote and the deck's two fonts installed for the user: Public Sans (embedded in the .pptx, under
 ppt/fonts/, as uncompressed EOT; the TrueType data is each file's last FontDataSize bytes) and Domine (used for the
 headings but not embedded; OFL, from https://github.com/google/fonts/tree/main/ofl/domine). Without them Keynote
 substitutes Helvetica. Keynote reads only files under the home folder, so the export runs in ~/.keynote-export-tmp.
 
-Run from the repository root (pdftoppm is from poppler):
+Run from the repository root (pdffonts and pdfinfo are from poppler):
 
     uv run --no-sync python analysis/mssp-benchmark-ratchet/report/video_slides.py            # export with Keynote
     uv run --no-sync python analysis/mssp-benchmark-ratchet/report/video_slides.py --pdf X.pdf  # use an exported PDF
@@ -22,11 +19,9 @@ Run from the repository root (pdftoppm is from poppler):
 
 import argparse
 import html
-import json
 import re
 import shutil
 import subprocess
-import tempfile
 import zipfile
 from pathlib import Path
 from xml.etree import ElementTree
@@ -34,8 +29,6 @@ from xml.etree import ElementTree
 ROOT = Path(__file__).resolve().parents[3]
 STATIC = ROOT / "content" / "static" / "20261027-preregistered-mssp-early-renewal"
 DECK = STATIC / "video-slides.pptx"
-OUT = STATIC / "slides"
-WIDTH = 1600
 A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
 CLIP_RE = re.compile(r"\[Clip [0-9]+[a-z]?\]\s*")
 
@@ -58,7 +51,7 @@ def slide_number(name: str) -> int:
 
 
 def read_deck(deck: Path) -> list[dict]:
-    """Per slide: its text (joined paragraphs, for alt text) and its narration (the notes without clip markers)."""
+    """Per slide: its text (joined paragraphs) and its narration (the notes without clip markers)."""
     with zipfile.ZipFile(deck) as z:
         names = z.namelist()
         slides = sorted((n for n in names if re.fullmatch(r"ppt/slides/slide\d+\.xml", n)), key=slide_number)
@@ -100,7 +93,7 @@ def check_fonts(pdf: Path) -> None:
 
 def transcript_html(slides: list[dict]) -> str:
     items = "\n".join(f"<li>{html.escape(s['narration'])}</li>" for s in slides)
-    return f'<ol class="mssp-slides-transcript">\n{items}\n</ol>'
+    return f'<ol class="mssp-video-transcript">\n{items}\n</ol>'
 
 
 def main() -> None:
@@ -114,21 +107,8 @@ def main() -> None:
     if pages != len(slides):
         raise SystemExit(f"{pdf} has {pages} pages, the deck {len(slides)} slides")
 
-    OUT.mkdir(exist_ok=True)
-    with tempfile.TemporaryDirectory() as tmp:
-        subprocess.run(["pdftoppm", "-png", "-scale-to-x", str(WIDTH), "-scale-to-y", "-1", str(pdf), f"{tmp}/slide"], check=True)
-        for i, png in enumerate(sorted(Path(tmp).glob("slide-*.png")), 1):
-            shutil.copyfile(png, OUT / f"slide-{i:02d}.png")
-    shutil.copyfile(pdf, STATIC / "video-slides.pdf")
-    data = {
-        "title": "Resetting the Target Early",
-        "width": WIDTH,
-        "height": WIDTH * 9 // 16,
-        "pdf": "../video-slides.pdf",
-        "pptx": "../video-slides.pptx",
-        "slides": [{"image": f"slide-{i:02d}.png", "alt": s["text"], "narration": s["narration"]} for i, s in enumerate(slides, 1)],
-    }
-    (OUT / "slides.json").write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n")
+    if pdf.resolve() != (STATIC / "video-slides.pdf").resolve():
+        shutil.copyfile(pdf, STATIC / "video-slides.pdf")
     print(transcript_html(slides))
 
 
