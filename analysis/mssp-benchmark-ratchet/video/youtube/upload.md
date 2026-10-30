@@ -62,6 +62,9 @@ A 70-second vertical cut of the opening (`render/short.py`): the ratchet idea, t
 "Here's what I found." and an end card pointing to the full video. File on Drive in `short/` next to the video.
 
 - Title (61 characters): `Why would 29 doctor groups reset their Medicare targets early?`
+Published 2026-10-29 as https://www.youtube.com/shorts/LuxBRi1q0Eg (Paid promotion: no; AI use: no; Shorts remixing:
+audio only, since Shorts offer no "don't allow"; subtitles: `captions.srt` with timing).
+
 - Related video: the full video, `WZQCHKAt2so` (a link under the Short).
 - Audience, category, language, tags, remixing and comments: as for the full video. Captions are burned in.
 
