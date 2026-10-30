@@ -1,0 +1,49 @@
+# YouTube upload: "Resetting the Target Early"
+
+What to enter in YouTube Studio for the study's video. The video file, the thumbnails and the caption file are on
+Google Drive (`My_Drive/Data/stharrold.github.io/youtube/20261027-preregistered-mssp-early-renewal/`, with a README
+giving their sha256); this sheet is the text. Built from draft v4 (2026-10-29), code at
+[`26c7506`](https://github.com/stharrold/stharrold.github.io/tree/26c750669580104135ad3e25a63215affe076667/analysis/mssp-benchmark-ratchet/video).
+
+## Details
+
+- Title (84 characters): `Why did 29 Medicare doctor groups reset their targets early? A pre-registered study`
+- Thumbnail: `thumbnail-a.png` (navy, "Why reset?", target -1.3%) or `thumbnail-b.png` (cream, "Lower target?!", 2 in 3).
+  Custom thumbnails need a phone-verified channel.
+- Audience: not made for kids.
+- Altered or synthetic content: no. The voice is the author's own recording; the slides are graphics.
+- Category: Education. Language and caption language: English.
+- Tags: `medicare, accountable care organizations, ACO, shared savings program, pre-registration, causal inference,
+  data science, health economics, healthcare`
+- Captions: upload `captions.txt` as a transcript with "Auto-sync" (it is the script, word for word).
+- Visibility: Private first; Public once the private copy has been watched on YouTube.
+- End screen: slide 26 (16:44 to the end, 21 s) is laid out for it; a 20 s end screen from 16:45 fits.
+
+## Description
+
+Links carry `utm_source=youtube` so the site's analytics can attribute visits (CLAUDE.md, "Sharing a post
+elsewhere"). YouTube refuses angle brackets in descriptions; there are none.
+
+```text
+In January 2022, 29 groups of doctors and hospitals in Medicare's Shared Savings Program quit their contracts early and signed new ones, which reset the targets Medicare uses to decide whether they earn a share of savings. Why would a group do that? This video walks through a study of that question, with the analysis plan registered publicly before any result was looked at.
+
+Full write-up, with the methods, data and code:
+https://stharrold.github.io/20261027-preregistered-mssp-early-renewal.html?utm_source=youtube&utm_medium=social&utm_campaign=20261027-preregistered-mssp-early-renewal
+
+Registered analysis plan (OSF): https://osf.io/c53w9/
+Paper, archived on Zenodo: https://doi.org/10.5281/zenodo.23737045
+Code: https://github.com/stharrold/stharrold.github.io/tree/a4064f592a492d971ce3c27e95afb3050e6bc01d/analysis/mssp-benchmark-ratchet
+
+A note on the numbers: "two thirds ended up with a lower target" and the 1.3% average drop come from a check made after the registered analysis, against Medicare's published 2022 targets. That check was not in the plan, and the video labels it as an add-on.
+
+AI disclosure: an AI tool, Claude Code from Anthropic, proposed this topic and drafted the analysis plan, the code and most of the written post, and separate AI instances reviewed them; the slides and script for this video were drafted with Claude's help too. I chose among its options, registered the plan, ran the analysis, and I'm responsible for the results.
+
+Chapters
+00:00 Why reset early?
+01:20 How the Medicare deal works
+04:50 The puzzle: quit early and sign again
+06:55 Calling the shot
+08:31 The findings
+13:46 What it means
+16:13 Takeaways
+```

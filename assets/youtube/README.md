@@ -4,9 +4,11 @@ The blog's videos go on its own YouTube channel, named after the site: **Data Sc
 [@DSDemos](https://www.youtube.com/@DSDemos) (created 2026-10-29, a Brand Account managed by the site's Google
 account). One post, one video, and each video links back to its post.
 
-Nothing here is published by Pelican (it is outside `content/`). Each video's own files (title, description,
-chapters, captions) sit with that post's static files; the video files themselves are too large for git and are
-kept on Google Drive, in `My_Drive/Data/stharrold.github.io/youtube/`.
+Nothing here is published by Pelican (it is outside `content/`). Each video's title, description and settings sit
+with the code that built it (for #73: `analysis/mssp-benchmark-ratchet/video/youtube/upload.md`); the video files,
+thumbnails and captions are too large or too generated for git and are kept on Google Drive, in
+`My_Drive/Data/stharrold.github.io/youtube/<post slug>/`, with a README giving each file's sha256. That folder sits
+inside the analytics archive, whose generated README does not list it; the archive job never touches it.
 
 ## Files
 
