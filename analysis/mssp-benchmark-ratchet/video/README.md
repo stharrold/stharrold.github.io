@@ -19,6 +19,7 @@ The deck and the scripts were first written in claude.ai and handed over as a re
 | `render/words.py` | Word timestamps for each recording (faster-whisper large-v3-turbo), cached in `vo/words/`. |
 | `render/animate.py` | Animated clips (`CUES`): an element builds in, counts up, grows or dims on the word that names it; writes `anim/<label>.mp4` and check sheets. |
 | `render/build_video.py` | Cleans and levels each clip, lengthens pauses (`PAUSES`), cuts stretches (`CUTS`), joins them with room tone, masters to -14 LUFS, crossfades the frames, writes chapters. |
+| `youtube/upload.md` | The YouTube title, description (links, the post hoc note, the AI disclosure, chapters) and settings. |
 
 Not in git (`.gitignore`): the recordings (`vo/`), the fonts (`fonts/`) and everything generated (`frames/`,
 `thumbs/`, `out/`, `anim/`). The finished video goes to Google Drive and YouTube, not here.
@@ -94,4 +95,4 @@ change them there too and rerun `../report/video_slides.py`, which rebuilds the 
   replaced by a re-recorded "A more difficult one." (take 048), patched in with `CUTS`.
 - Draft v4 (2026-10-29): word-timed animation on 30 clips (`render/animate.py`, `CUES`), proved first on slides 10
   and 18; dark/light boundaries dip through navy. Slides 2 and 26 stay still (the title, and the end screen YouTube
-  overlays).
+  overlays). Approved for upload; the published deck's notes and the post's transcript were brought in line with it.
