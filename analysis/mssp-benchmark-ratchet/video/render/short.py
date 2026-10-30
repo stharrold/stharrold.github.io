@@ -7,6 +7,8 @@ Usage: python render/short.py <root> audio|words|stills|render
           --with 'faster-whisper>=1.1' instead of playwright)
   stills  out/short/check/*.png: each scene's finished state and a caption, to check the layout before rendering
   render  out/short/short.mp4 (H.264 and AAC, 30 fps)
+  srt     out/short/captions.srt: the burned-in captions as a caption track, so YouTube's CC shows these words
+          rather than its own automatic captions
 
 Clip 03 comes first because "Imagine your boss sets next year's sales targets from what you sold this year" is a
 stronger first line than the cold open's date; its "First, a familiar idea." is dropped. Clip 01 ends on "Here's
@@ -357,4 +359,15 @@ def render_video():
     print(f"{out}: {n} frames, {shots} screenshots, {sched['total']:.1f} s")
 
 
-{"audio": audio, "words": words, "stills": stills, "render": render_video}[STAGE]()
+def srt():
+    def stamp(t):
+        ms = round(t * 1000)
+        return f"{ms // 3600000:02d}:{ms // 60000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
+
+    caps = timing()["caps"]
+    blocks = [f"{i}\n{stamp(max(c['t0'], 0))} --> {stamp(c['t1'])}\n{c['text']}\n" for i, c in enumerate(caps, 1)]
+    (OUT / "captions.srt").write_text("\n".join(blocks))
+    print(f"{len(caps)} captions")
+
+
+{"audio": audio, "words": words, "stills": stills, "render": render_video, "srt": srt}[STAGE]()
