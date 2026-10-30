@@ -532,3 +532,6 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   numbers as two words ("$11" ",000", "12" ".6"), so anchors join a word that starts with ",000" or ".6" to the
   number before it. Crossfades between navy and cream slides now dip through the navy instead of double-exposing
   both slides' text.
+- Matching the post to the video (2026-10-29): draft v4 was approved. The published deck's speaker notes (slides 1,
+  3, 6 and 22) were set to the re-recorded narration, and `report/video_slides.py --pdf` rebuilt `slides.json` and
+  the post's transcript from them; the slide images and PDF did not change, since only the notes did.
