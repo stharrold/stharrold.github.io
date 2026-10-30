@@ -5,6 +5,12 @@ Google Drive (`My_Drive/Data/stharrold.github.io/youtube/20261027-preregistered-
 giving their sha256); this sheet is the text. Built from draft v4 (2026-10-29), code at
 [`26c7506`](https://github.com/stharrold/stharrold.github.io/tree/26c750669580104135ad3e25a63215affe076667/analysis/mssp-benchmark-ratchet/video).
 
+Published 2026-10-29 as https://www.youtube.com/watch?v=WZQCHKAt2so (thumbnail A; Paid promotion: no; AI use: no,
+since the four synthetic-media cases do not apply and the description discloses Claude's part; Shorts remixing not
+allowed, so no clip can drop the post hoc label; educational type: real life application; subtitles auto-synced
+from `captions.txt`; end screen: a "best for viewer" video and Subscribe in slide 26's empty right half). No cards,
+quiz or background music.
+
 ## Details
 
 - Title (84 characters): `Why did 29 Medicare doctor groups reset their targets early? A pre-registered study`

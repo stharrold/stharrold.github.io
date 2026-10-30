@@ -36,5 +36,6 @@ inside the analytics archive, whose generated README does not list it; the archi
 | 2026-10-29 | Banner | `banner.png` (`a290da832442612adf0debea10caa265f0039875f4008d50e0da971f2ca03920`) |
 | 2026-10-29 | Video watermark, entire video | `avatar.png` (`a8d355a548a6e18241ddf7be450c4bfd24750d9adcb3ca991847b189c3b255d0`) |
 | 2026-10-29 | Description, links and contact email as in "Channel profile" above | |
+| 2026-10-29 | Video [`WZQCHKAt2so`](https://www.youtube.com/watch?v=WZQCHKAt2so), "Why did 29 Medicare doctor groups reset their targets early? A pre-registered study" (#73), public; text and settings in `analysis/mssp-benchmark-ratchet/video/youtube/upload.md`, subtitles from `captions.txt`, end screen 16:44-17:04 | `resetting-the-target-early.mp4` (`c408f725a0bdf6744920ab3cee9afd2801ece42a6f0288ae21281b6e8378f5d3`), thumbnail `thumbnail-a.png` (`d05ce3512bb435f976440223794faa7c8e8ed49a9aa048218fbd65e88e202406`) |
 
 How these were chosen: `analysis/youtube-channel/BUILD-NOTES.md`.
