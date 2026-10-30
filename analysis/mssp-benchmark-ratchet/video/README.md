@@ -19,6 +19,7 @@ The deck and the scripts were first written in claude.ai and handed over as a re
 | `render/words.py` | Word timestamps for each recording (faster-whisper large-v3-turbo), cached in `vo/words/`. |
 | `render/animate.py` | Animated clips (`CUES`): an element builds in, counts up, grows or dims on the word that names it; writes `anim/<label>.mp4` and check sheets. |
 | `render/build_video.py` | Cleans and levels each clip, lengthens pauses (`PAUSES`), cuts stretches (`CUTS`), joins them with room tone, masters to -14 LUFS, crossfades the frames, writes chapters. |
+| `render/short.py` | A vertical Short (1080 x 1920, 70 s) from the opening: clip 03 from "Imagine", then clip 01, the deck's first slides laid out for a phone, captions from the Short's own transcription, an end card pointing to the full video. |
 | `youtube/upload.md` | The YouTube title, description (links, the post hoc note, the AI disclosure, chapters) and settings. |
 
 Not in git (`.gitignore`): the recordings (`vo/`), the fonts (`fonts/`) and everything generated (`frames/`,
