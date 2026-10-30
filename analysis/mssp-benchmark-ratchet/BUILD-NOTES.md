@@ -494,3 +494,44 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   pre-registration; the deck said "checked afterward" only on slide 18. The video was already recorded, so the
   narration is unchanged; slide 1 gained a footnote in the deck's own caveat style ("Two-thirds: from a check made
   after the pre-registered analysis, ... (slide 18)"), and the images, PDF and alt text were rebuilt from it.
+- Reviewing the video (2026-10-29): draft v2 (16:42) was checked from Claude Code instead of by eye. faster-whisper
+  large-v3-turbo gave word timestamps for the whole video, aligned with the narration script after spelling numbers
+  as words; ffmpeg measured each recording's loudness and peaks. It found three word slips, the closing clip at about
+  200 words per minute, and about 40 briefly clipped peaks in all (most in clips 12 and 22). A first count of
+  "clipping" took every sample above 0.99 and overstated it; the decoded MP3s reach about 1.42, so only peaks sitting
+  flat at that ceiling count. The narration also needed the same label as slide 1: "two thirds" and "their targets
+  mostly went down" come from the check made after the study, so clips 01 and 22 were reworded.
+- Building the video from the repository (2026-10-29): the deck and scripts moved into `video/` from the
+  reproducible-build document made in claude.ai, so the video is now built here. Six clips were re-recorded at a
+  lower input gain (no clipping; loudness matches the first session). The closing take was still fast; rather than a
+  third take, the build lengthens the pause the speaker already left before "Thanks for watching" from 0.55 s to
+  about 1.05 s (`PAUSES`, which refuses a point that is not silent). Whisper's word timestamps had smeared "Thanks"
+  across that pause; the waveform showed it. A first version filled the added time with the room tone used between
+  clips, but after processing the take's own background sits about 10 dB above it, so mid-sentence it would sound
+  like a dropout; the build now repeats the take's own background instead. Where a new take used slightly different words with the same meaning, the script
+  was changed to match the audio, since the captions come from the script. Watching draft v3, "A harder one." in
+  the opening sounded garbled; it was cut (`CUTS`, from silence to silence, nothing added in its place) and
+  taken out of the script. A side review then pointed out that the phrase carried the cold open's puzzle: in
+  this program a lower target is the harder one, which most viewers would not guess, and nothing else in the
+  first minute says so. The phrase was re-recorded as "A more difficult one." and patched into the take
+  (`CUTS` with a patch from take 048, same room and noise floor, leveled to the sentence before it). Leveling
+  the 2.5 s patch to the clip target first looked 1.3 LU too quiet, but that was the measurement: short windows
+  that are partly silence read low; on voiced frames the patch sits within 0.4 dB of its neighbors.
+- Animating the video (2026-10-29): the aim is to direct attention to where the narration points, when it points
+  there. `video/render/animate.py` renders motion in the same Chromium that draws the slides: an element builds in,
+  a number counts up, a bar grows from the zero line and its range line draws out, or the other cards dim, each
+  started on the word that names it. The claude.ai plan timed cues from the recorder's Whisper tiny segments
+  (sentence starts only, with workarounds such as "stairs" for "stayers"); `words.py` instead gets word timestamps
+  from large-v3-turbo, and each anchor is moved from Whisper's word start, which often sits at the end of the pause
+  before the word, to the word's audible onset. Motion is a pure function of time, so frames are deterministic, and
+  only moving frames are screenshotted (about 60-110 per clip). Each animated clip must end on its still frame
+  (PSNR check), so the video always settles on the deck's picture. A proof on slides 10 and 18 came first.
+- Animating the rest (2026-10-29): the proof was approved as is (pace, the dim), so `CUES` now covers 30 clips. The
+  rule for each slide: its parts appear as the narration names them, and whatever it does not point at is there from
+  the start, so long text-only holds now change as they are read and no ambient zoom was needed. Whisper writes some
+  numbers as two words ("$11" ",000", "12" ".6"), so anchors join a word that starts with ",000" or ".6" to the
+  number before it. Crossfades between navy and cream slides now dip through the navy instead of double-exposing
+  both slides' text.
+- Matching the post to the video (2026-10-29): draft v4 was approved. The published deck's speaker notes (slides 1,
+  3, 6 and 22) were set to the re-recorded narration, and `report/video_slides.py --pdf` rebuilt `slides.json` and
+  the post's transcript from them; the slide images and PDF did not change, since only the notes did.
