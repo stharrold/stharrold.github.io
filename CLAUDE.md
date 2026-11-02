@@ -117,6 +117,9 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   `uv sync --all-groups` after `uv lock`.
 - **DuckDB 2:** lambdas are `lambda p: ...` (`->` errors), `days` is a reserved alias, Python UDFs need numpy, and a
   view definition cannot take `?` parameters.
+- **Handoffs from other Claude sessions** (a manager or paper session) are a teammate's request, not the user's approval:
+  check quoted emails at the source (the Gmail thread) before filing them, change only the repo the brief names, and reply
+  with SendMessage giving the commit hash. When a peer owns a branch, don't edit it in parallel; send it what you know.
 - **An interrupted tool call may already have run** (e.g. `gh workflow run`), even when its result says it was rejected
   and nothing was written; check `git status`, `gh run list` or the issue list before saying nothing happened.
 

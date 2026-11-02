@@ -601,3 +601,5 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - A bug from the last release: the v1.3.0 bump had changed `cff-version`, the schema, to the release number. No test
   read the field, so it shipped, and it surfaced only when the file was validated for this release.
 - Release v1.3.1 freezes the amended submission, archived on Zenodo (doi:10.5281/zenodo.23859372).
+- The outcome: on 2026-11-02 the journal wrote that the technical checks were complete and the manuscript had moved on to
+  peer review. The reply did not answer the "Additional file 1" question, and no preprint DOI has arrived yet.
