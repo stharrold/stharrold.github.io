@@ -291,3 +291,14 @@ def test_youtube_archive_keeps_going_after_a_failed_day(tmp_path):
 
 def test_readme_covers_youtube():
     assert f"{aa.YT_FOLDER}/<report>/YYYYMMDD.parquet" in aa.readme("abc1234")
+
+
+def test_manifest_read_failure_points_at_google_drive(tmp_path, monkeypatch):
+    (tmp_path / "manifest.json").write_text("{}")
+
+    def deadlock(self, *a, **k):
+        raise OSError(11, "Resource deadlock avoided")
+
+    monkeypatch.setattr(aa.Path, "read_text", deadlock)
+    with pytest.raises(aa.ArchiveError, match="is the Google Drive app running"):
+        aa.load_manifest(tmp_path)

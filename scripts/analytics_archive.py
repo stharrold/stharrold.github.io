@@ -225,8 +225,13 @@ def vanished(tables: dict, manifest: dict) -> list[str]:
 
 
 def load_manifest(root: Path) -> dict:
+    """The manifest, or an empty one. With the Google Drive app quit, the folder still exists but its files are
+    online-only placeholders, and reading one fails with "Resource deadlock avoided" or times out: say so plainly."""
     path = root / "manifest.json"
-    return json.loads(path.read_text()) if path.exists() else {"tables": {}}
+    try:
+        return json.loads(path.read_text()) if path.exists() else {"tables": {}}
+    except OSError as e:
+        raise ArchiveError(f"cannot read {path} ({e.strerror or type(e).__name__}): is the Google Drive app running?") from e
 
 
 def save_manifest(root: Path, manifest: dict) -> None:
