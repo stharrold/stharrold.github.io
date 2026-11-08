@@ -1,6 +1,6 @@
 ---
 name: analytics
-description: Use when the user wants the site's analytics (who reads which post, how people find the site, Search Console queries), wants to check the analytics archive is healthy and nothing is being lost, or wants ideas for the next post. Runs the archive health check and readership report from scripts/analytics_report.py, then proposes three next posts weighed against the development gaps tracked in the private ../planb repository. NOT for changing GA4 or the archive job itself (README "Analytics archive").
+description: Use when the user wants the site's analytics (who reads which post, how people find the site, Search Console queries, YouTube views and watch time), wants to check the analytics archive is healthy and nothing is being lost, or wants ideas for the next post. Runs the archive health check and readership report from scripts/analytics_report.py, then proposes three next posts weighed against the development gaps tracked in the private ../planb repository. NOT for changing GA4 or the archive job itself (README "Analytics archive").
 ---
 
 # Site analytics and the next post
@@ -38,6 +38,9 @@ Read "Archive health" first. If it says NEEDS ATTENTION:
 - a failure or warning: show the log lines, and stop to ask before anything else; the README "Analytics archive"
   explains each warning. Do not move on to ideas while data is at risk.
 
+A warning about the YouTube login (missing, expired or revoked) needs the owner: ask them to run
+`uv run --script scripts/analytics_archive.py youtube-login` and choose Data Science Demos; the sign-in is theirs.
+
 Check [#77](https://github.com/stharrold/stharrold.github.io/issues/77) while it is open: Search Console's one-time
 history pull (`uv run --script scripts/analytics_archive.py searchconsole-backfill --dry-run`, then without
 `--dry-run` once the day count is non-zero and steady) and the first bulk-export days.
@@ -45,8 +48,9 @@ history pull (`uv run --script scripts/analytics_archive.py searchconsole-backfi
 ## 2. Readership
 
 Summarize the saved report in a few lines: the period, visitors and engaged visitors, which posts people engage
-with (the newest post's first 7 and 30 days), sources, and Search Console's top queries if any. Say plainly when
-something is too small to mean anything. Give the report's path on Drive.
+with (the newest post's first 7 and 30 days), sources, Search Console's top queries if any, and the YouTube
+section (views, watch time and how viewers found each video; whether posts and videos send people to each other).
+Say plainly when something is too small to mean anything. Give the report's path on Drive.
 
 ## 3. Next-post ideas
 
