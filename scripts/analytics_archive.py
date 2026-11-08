@@ -1,6 +1,6 @@
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["google-cloud-bigquery>=3.25", "pyarrow>=17"]
+# dependencies = ["google-cloud-bigquery>=3.25", "pyarrow>=17", "google-auth-oauthlib>=1.2"]
 # ///
 """Archive every day of the site's GA4 and Search Console BigQuery exports to Google Drive, so they are never lost.
 
@@ -13,6 +13,9 @@ is archived again and the old file kept under ga4/superseded/; nothing is ever d
 datasets are archived the same way: ua_history (the Universal Analytics history recovered from emails) whole, and
 searchconsole (Search Console's bulk export, a few tables partitioned by data_date) one settled partition per file,
 searchconsole/<table>/YYYYMMDD.parquet, so a daily append does not rewrite the whole table.
+
+YouTube Analytics for the @DSDemos channel is archived in the same run, one settled day at a time, through the
+YouTube Analytics API (see YT_DIR for the login, made once with `youtube-login`; `youtube-check` tests it).
 
 Search Console keeps only 16 months and its bulk export starts on the day it is switched on (2026-10-29), so the
 history before that is saved once through the Search Console API:
@@ -57,6 +60,28 @@ SC_TYPES = ["web", "image", "video", "news", "discover", "googleNews"]
 # The API drops rare queries from rows that include `query`, but not from totals, so the date-only set is the total.
 SC_DIMENSIONS = [["date"], ["date", "page"], ["date", "query"], ["date", "query", "page", "country", "device"], ["date", "searchAppearance"]]
 SC_METRICS = ["clicks", "impressions", "ctr", "position"]
+# YouTube Analytics for the @DSDemos channel, a Brand Account. A gcloud login cannot be used: Brand Accounts cannot
+# hold the cloud-platform scope gcloud requires. So the project's own Desktop OAuth client (Google Auth Platform,
+# "analytics-archive") asks for this one read-only scope, and the token is kept beside it, outside the repository.
+YT_DIR = Path("~/.config/gcloud-youtube").expanduser()
+YT_CLIENT = YT_DIR / "client_secret.json"
+YT_TOKEN = YT_DIR / "token.json"
+YT_SCOPES = ["https://www.googleapis.com/auth/yt-analytics.readonly"]
+YT_START = datetime.date(2026, 10, 29)  # the channel's first upload
+YT_FOLDER = "youtube_analytics"  # not "youtube/", which holds the uploaded video files
+YT_VIDEO_METRICS = "views,estimatedMinutesWatched,averageViewDuration,averageViewPercentage,likes,subscribersGained,shares"
+# Breakdowns asked per video and day (the API refuses day and video together as dimensions).
+YT_BREAKDOWNS = {
+    "traffic_sources": {"dimensions": "insightTrafficSourceType", "metrics": "views,estimatedMinutesWatched"},
+    "playback_locations": {"dimensions": "insightPlaybackLocationType", "metrics": "views,estimatedMinutesWatched"},
+    "external_urls": {
+        "dimensions": "insightTrafficSourceDetail",
+        "metrics": "views,estimatedMinutesWatched",
+        "filters": "insightTrafficSourceType==EXT_URL",
+        "sort": "-views",
+        "maxResults": 25,
+    },
+}
 ARCHIVE_DIR = Path(os.environ.get("ARCHIVE_DIR", "~/Library/CloudStorage/GoogleDrive-samuel.harrold@gmail.com/My Drive/My_Drive/Data/stharrold.github.io")).expanduser()
 SETTLE_DAYS = 3  # GA4 updates a day's table for up to 72 hours
 STALE_DAYS = 7  # quiet days have no table at all (3-6 events on a normal day), so a short threshold would cry wolf
@@ -102,6 +127,12 @@ are never lost. Written by `scripts/analytics_archive.py` in {REPO_URL}; this fi
 - `searchconsole_backfill/<stamp>/`: the one-time pull of Search Console's earlier history (it keeps 16 months) through
   its API (`uv run --script scripts/analytics_archive.py searchconsole-backfill`), one file per search type and
   dimension set, with its own `manifest.json`. Rows with `query` omit rare queries; the `date`-only files are the totals.
+- `{YT_FOLDER}/<report>/YYYYMMDD.parquet`: one day of YouTube Analytics for the channel @DSDemos, from {YT_START} on,
+  archived once it is {SETTLE_DAYS} days old: `videos` (views, watch time, average view duration and percentage, likes,
+  subscribers gained, shares per video), and per video `traffic_sources`, `playback_locations` and `external_urls`
+  (sites whose links or embeds brought views). Read through the YouTube Analytics API with a read-only login; a day
+  with no views has no files. Its own `manifest.json`. Metrics: [YouTube Analytics API](https://developers.google.com/youtube/analytics/metrics).
+  The channel's video files are in `youtube/`, not here.
 - `excluded_visitors.txt`: the owner's own GA4 browser IDs (the `_ga` cookie value), one per line, which the reports
   leave out; kept by hand, never by the archive job.
 - `reports/YYYY-MM-DD.md`: readership reports (totals only) saved by the `/analytics` skill through
@@ -420,18 +451,138 @@ def searchconsole_backfill(stamp: str, commit: str, today: datetime.date, dry_ru
     return 0
 
 
+def youtube_login() -> int:
+    """Sign in once in the browser, choosing the Data Science Demos channel, and keep the token (owner-only) in YT_DIR."""
+    from google_auth_oauthlib.flow import InstalledAppFlow
+
+    if not YT_CLIENT.exists():
+        raise ArchiveError(f"no OAuth client at {YT_CLIENT}: download the Desktop client's JSON from Google Auth Platform, Clients")
+    flow = InstalledAppFlow.from_client_secrets_file(str(YT_CLIENT), YT_SCOPES)
+    print("[INFO] In the browser, choose the Data Science Demos channel, not the personal account.")
+    creds = flow.run_local_server(port=0, prompt="select_account consent", access_type="offline")
+    fd = os.open(YT_TOKEN, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        f.write(creds.to_json())
+    print(f"[OK] token saved to {YT_TOKEN}")
+    return youtube_check()
+
+
+def youtube_session():
+    from google.auth.transport.requests import AuthorizedSession
+    from google.oauth2.credentials import Credentials
+
+    if not YT_TOKEN.exists():
+        raise ArchiveError(f"no YouTube login at {YT_TOKEN}; run: uv run --script scripts/analytics_archive.py youtube-login")
+    return AuthorizedSession(Credentials.from_authorized_user_file(str(YT_TOKEN), YT_SCOPES))
+
+
+def yt_report(session, params: dict) -> dict:
+    """One YouTube Analytics reports.query for the signed-in channel; returns {"columnHeaders": [...], "rows": [...]}."""
+    r = session.get("https://youtubeanalytics.googleapis.com/v2/reports", params={"ids": "channel==MINE"} | params)
+    if r.status_code != 200:
+        raise ArchiveError(f"YouTube Analytics API {r.status_code}: {r.json().get('error', {}).get('message', '')}")
+    return r.json()
+
+
+def yt_rows(data: dict) -> list[dict]:
+    """A reports.query answer as one dict per row, keyed by column name."""
+    names = [h["name"] for h in data.get("columnHeaders", [])]
+    return [dict(zip(names, r, strict=True)) for r in data.get("rows") or []]
+
+
+def youtube_day(fetch, day: datetime.date) -> dict[str, list[dict]]:
+    """One day of YouTube Analytics: totals per video, and each video's traffic sources, playback locations and
+    external sites. `fetch(params)` runs one reports.query; every row gets `day` (and `video`) columns."""
+    span = {"startDate": day.isoformat(), "endDate": day.isoformat()}
+    videos = yt_rows(fetch(span | {"dimensions": "video", "metrics": YT_VIDEO_METRICS, "sort": "-views", "maxResults": 200}))
+    out = {"videos": [{"day": day.isoformat()} | r for r in videos]}
+    for name, params in YT_BREAKDOWNS.items():
+        out[name] = []
+        for v in videos:
+            filters = ";".join(f for f in (f"video=={v['video']}", params.get("filters")) if f)
+            rows = yt_rows(fetch(span | params | {"filters": filters}))
+            out[name] += [{"day": day.isoformat(), "video": v["video"]} | r for r in rows]
+    return out
+
+
+def youtube_due(manifest: dict, today: datetime.date) -> list[datetime.date]:
+    """Settled days since the first upload that the archive does not hold yet (YouTube's numbers lag 2-3 days)."""
+    last = today - datetime.timedelta(days=SETTLE_DAYS)
+    days = [YT_START + datetime.timedelta(days=i) for i in range((last - YT_START).days + 1)]
+    return [d for d in days if d.isoformat() not in manifest.get("days", {})]
+
+
+def write_rows(rows: list[dict], path: Path, stamp: str) -> dict:
+    """Write rows to Parquet (an existing file goes to superseded/ first), read back, and describe the file."""
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        old = path.parent / "superseded" / f"{path.stem}.{stamp}.parquet"
+        old.parent.mkdir(exist_ok=True)
+        os.replace(path, old)
+    pq.write_table(pa.Table.from_pylist(rows), path, compression="zstd")
+    if (n := pq.read_metadata(path).num_rows) != len(rows):
+        raise ArchiveError(f"{path.name}: wrote {n} rows, expected {len(rows)}")
+    return {"rows": n, "bytes": path.stat().st_size, "sha256": sha256(path)}
+
+
+def youtube_archive(fetch, root: Path, today: datetime.date, stamp: str, commit: str = "", write=write_rows) -> dict:
+    """Archive each settled, not yet archived day to YT_FOLDER/<report>/YYYYMMDD.parquet, with its own manifest.
+
+    A day with no views is recorded with no files. Returns {"archived": [...], "failed": [...]}; one failing day does
+    not stop the rest."""
+    folder = root / YT_FOLDER
+    folder.mkdir(exist_ok=True)
+    manifest = load_manifest(folder)
+    manifest.setdefault("days", {})
+    result = {"archived": [], "failed": []}
+    for day in youtube_due(manifest, today):
+        try:
+            data = youtube_day(fetch, day)
+            files = {name: write(rows, folder / name / f"{day:%Y%m%d}.parquet", stamp) for name, rows in data.items() if rows}
+        except ArchiveError as e:
+            result["failed"].append(f"youtube {day}: {e}")
+            continue
+        manifest["days"][day.isoformat()] = {"files": files, "stamp": stamp, "commit": commit}
+        result["archived"].append(day.isoformat())
+    manifest["generated_by"] = {"script": f"{REPO_URL}/blob/{commit}/scripts/analytics_archive.py", "commit": commit}
+    manifest["last_run"] = {"stamp": stamp} | result
+    save_manifest(folder, manifest)
+    return result
+
+
+def youtube_check(today: datetime.date | None = None) -> int:
+    """Show views per video since the first upload, to confirm the login reaches the channel."""
+    today = today or datetime.date.today()
+    span = {"startDate": YT_START.isoformat(), "endDate": today.isoformat()}
+    data = yt_report(youtube_session(), span | {"metrics": "views,estimatedMinutesWatched", "dimensions": "video", "sort": "-views", "maxResults": 25})
+    rows = data.get("rows") or []
+    print(f"[INFO] YouTube Analytics {span['startDate']} to {span['endDate']}: {len(rows)} videos with views")
+    for video, views, minutes in rows:
+        print(f"  {video}: {views} views, {minutes} minutes watched")
+    if not rows:
+        print("[WARN] no videos: the login may be the personal account, not Data Science Demos (or data has not arrived yet)")
+    return 0
+
+
 def notify(title: str, message: str) -> None:
     subprocess.run(["osascript", "-e", f"display notification {json.dumps(message)} with title {json.dumps(title)}"], capture_output=True)
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("command", nargs="?", default="archive", choices=["archive", "searchconsole-backfill"])
+    parser.add_argument("command", nargs="?", default="archive", choices=["archive", "searchconsole-backfill", "youtube-login", "youtube-check"])
     parser.add_argument("--dry-run", action="store_true", help="report what is due; write nothing")
     args = parser.parse_args()
     now = datetime.datetime.now(datetime.UTC)
     stamp = now.strftime("%Y%m%dT%H%M%SZ")
     today = datetime.date.today()
+    if args.command == "youtube-login":
+        return youtube_login()
+    if args.command == "youtube-check":
+        return youtube_check(today)
     # Never create the archive root: if Drive is not running, a fresh local folder here would sync nowhere.
     if not ARCHIVE_DIR.is_dir():
         raise ArchiveError(f"archive folder not found: {ARCHIVE_DIR} (is Google Drive running?)")
@@ -453,12 +604,25 @@ def main() -> int:
 
     print(f"[INFO] {stamp} {len(tables)} tables in BigQuery, {len(manifest['tables'])} archived, {len(due)} due: {', '.join(due) or 'none'}")
     if args.dry_run:
+        yt_due = youtube_due(load_manifest(ARCHIVE_DIR / YT_FOLDER), today)
+        print(f"[INFO] YouTube Analytics: {len(yt_due)} days due" + (f", {yt_due[0]} to {yt_due[-1]}" if yt_due else ""))
         for w in warnings:
             print(f"[WARN] {w}")
         return 0
 
     commit = version()
     failed = archive_due(client, due, tables, ARCHIVE_DIR, manifest, stamp, commit=commit)
+    # YouTube after GA4, so a YouTube problem never costs a GA4 day; its failures show as warnings in the report.
+    if not YT_TOKEN.exists():
+        warnings.append(f"no YouTube login at {YT_TOKEN}: YouTube Analytics is not being archived (run youtube-login)")
+    else:
+        try:
+            session = youtube_session()
+            yt = youtube_archive(lambda params: yt_report(session, params), ARCHIVE_DIR, today, stamp, commit)
+            print(f"[INFO] YouTube Analytics: {len(yt['archived'])} days archived" + (f", {len(yt['failed'])} failed" if yt["failed"] else ""))
+            warnings += yt["failed"]
+        except Exception as e:  # a revoked login or an API outage must not fail the GA4 archive
+            warnings.append(f"YouTube Analytics not archived: {type(e).__name__}: {e}")
     (ARCHIVE_DIR / "README.md").write_text(readme(commit))
     manifest["generated_by"] = {"script": f"{REPO_URL}/blob/{commit}/scripts/analytics_archive.py", "commit": commit}
     manifest["missing_days"] = missing_days(days)

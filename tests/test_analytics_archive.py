@@ -220,3 +220,74 @@ def test_readme_covers_search_console():
     text = aa.readme("0" * 40)
     assert "`searchconsole/<table>/YYYYMMDD.parquet`" in text and "`searchconsole_backfill/<stamp>/`" in text
     assert "`reports/YYYY-MM-DD.md`" in text and "analytics_report.py" in text
+
+
+def yt_answer(names, rows):
+    return {"columnHeaders": [{"name": n} for n in names], "rows": rows}
+
+
+def fake_youtube(params):
+    """Synthetic YouTube Analytics answers: two videos on 2026-10-30, nothing on other days."""
+    if params["startDate"] != "2026-10-30":
+        return yt_answer(["video", "views"], None)
+    if params["dimensions"] == "video":
+        return yt_answer(["video", "views"], [["vidA", 5], ["vidB", 2]])
+    video = params["filters"].split(";")[0].removeprefix("video==")
+    return yt_answer([params["dimensions"], "views"], [[f"SRC_{video}", 1]])
+
+
+def test_yt_rows_names_columns():
+    assert aa.yt_rows(yt_answer(["video", "views"], [["v", 3]])) == [{"video": "v", "views": 3}]
+    assert aa.yt_rows(yt_answer(["video", "views"], None)) == []
+
+
+def test_youtube_day_breaks_down_each_video():
+    data = aa.youtube_day(fake_youtube, datetime.date(2026, 10, 30))
+    assert [r["video"] for r in data["videos"]] == ["vidA", "vidB"]
+    assert {r["video"] for r in data["traffic_sources"]} == {"vidA", "vidB"}
+    assert all(r["day"] == "2026-10-30" for rows in data.values() for r in rows)
+
+
+def test_youtube_day_combines_the_video_filter_with_a_breakdown_filter():
+    seen = []
+    aa.youtube_day(lambda p: seen.append(p) or fake_youtube(p), datetime.date(2026, 10, 30))
+    assert "video==vidA;insightTrafficSourceType==EXT_URL" in [p.get("filters") for p in seen]
+
+
+def test_youtube_due_waits_for_settled_days_and_skips_archived_ones():
+    due = aa.youtube_due({"days": {"2026-10-29": {}}}, datetime.date(2026, 11, 2))
+    assert due == [datetime.date(2026, 10, 30)]
+
+
+def test_youtube_archive_records_days_with_and_without_views(tmp_path):
+    written = {}
+
+    def write(rows, path, stamp):
+        written[path.relative_to(tmp_path).as_posix()] = rows
+        return {"rows": len(rows)}
+
+    result = aa.youtube_archive(fake_youtube, tmp_path, datetime.date(2026, 11, 2), "S", "abc", write=write)
+    assert result == {"archived": ["2026-10-29", "2026-10-30"], "failed": []}
+    assert sorted(written) == [f"{aa.YT_FOLDER}/{n}/20261030.parquet" for n in ("external_urls", "playback_locations", "traffic_sources", "videos")]
+    manifest = aa.load_manifest(tmp_path / aa.YT_FOLDER)
+    assert manifest["days"]["2026-10-29"]["files"] == {}
+    # A second run finds nothing due and writes nothing.
+    written.clear()
+    assert aa.youtube_archive(fake_youtube, tmp_path, datetime.date(2026, 11, 2), "T", "abc", write=write)["archived"] == []
+    assert written == {}
+
+
+def test_youtube_archive_keeps_going_after_a_failed_day(tmp_path):
+    def fetch(params):
+        if params["startDate"] == "2026-10-29":
+            raise aa.ArchiveError("YouTube Analytics API 500: backend error")
+        return fake_youtube(params)
+
+    result = aa.youtube_archive(fetch, tmp_path, datetime.date(2026, 11, 2), "S", write=lambda rows, path, stamp: {"rows": len(rows)})
+    assert result["archived"] == ["2026-10-30"]
+    assert result["failed"] == ["youtube 2026-10-29: YouTube Analytics API 500: backend error"]
+    assert "2026-10-29" not in aa.load_manifest(tmp_path / aa.YT_FOLDER)["days"]
+
+
+def test_readme_covers_youtube():
+    assert f"{aa.YT_FOLDER}/<report>/YYYYMMDD.parquet" in aa.readme("abc1234")
