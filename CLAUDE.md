@@ -29,7 +29,7 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 - `gh run list --workflow pages.yml --json databaseId,headSha` then `gh run watch <id>` - match runs by commit; the list lags a few seconds after a push.
 - `GITHUB_TOKEN= gh ...` - for other repos (private stharrold/planb, stharrold/mssp-paper-2026 releases and hooks):
   Claude Code's GITHUB_TOKEN may lack access; clearing it falls back to gh's own login.
-- `CLOUDSDK_CORE_ACCOUNT=samuel.harrold@gmail.com bq ...` - read BigQuery as the site's account without switching gcloud's active account.
+- `CLOUDSDK_ACTIVE_CONFIG_NAME=github-io bq ...` - read BigQuery as the site's account (samuel.harrold@gmail.com, project stharrold-github-io) without switching gcloud's active account; named configuration, never activated (see `~/.claude/CLAUDE.md` "gcloud").
 - `uv run --script scripts/analytics_report.py` - readership report (the `/analytics` skill runs it with `--save`).
 - `curl -s "https://stharrold.github.io/<path>?v=$(date +%s)"` - cache-busted live check after a deploy.
 - `uv run pelican -s pelicanconf.py -o <dir>` then `python3 -m http.server` in `<dir>` - stable preview for Playwright screenshots (not `--autoreload`).
