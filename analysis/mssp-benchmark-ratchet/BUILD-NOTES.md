@@ -618,8 +618,10 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   its own scratch scripts.
 - Its findings are unverified. A number from a scratch script cannot enter the paper until it is rerun as post hoc
   work in this folder. No result, claim or source changed, so the paper and the post stay as they are.
-- Where it is: `reviews/2026-11-10-critical-assessment.md` in the paper repository, beside the October one, untracked.
-  The October assessment was committed with its response and the changes it led to, and this one waits for a revision
-  the same way. A committed file would also enter the paper's next Zenodo release for good.
+- Where it is: `reviews/2026-11-10-critical-assessment.md` in the paper repository, beside the October one. It was
+  first left untracked to wait for a revision, since the October assessment had been committed with its response and
+  the changes it led to. The author then asked for it to be committed the same day, with the plan drawn from it
+  (`reviews/2026-11-10-revision-plan.md`), before any response existed (paper commit `4a7f1e3`). Both files will enter
+  the paper's next Zenodo release. The plan has not been started.
 - The name: it was first written under an `ARCHIVED/` folder with a timestamped name, then moved the same day to match
   the October file. An assessment that feeds the next revision is not archived material.
