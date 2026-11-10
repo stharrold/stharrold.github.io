@@ -611,8 +611,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Independence: a fresh agent wrote it, not a copy of the session that built the amendment, since a copy would start
   from that session's conclusions. Its brief barred the earlier assessments, the reference audit and its evidence,
   these notes, the private repository and git history.
-- It was not fully blind. Its session showed 5 commit subject lines, and the README and the post hoc scripts say that
-  earlier assessments and an audit exist. The report lists these itself.
+- It was not fully blind, and its report says how. Its session showed 5 commit subject lines. A line count and a
+  directory listing touched these notes by name and size only. The paper repository's README and `CLAUDE.md` and the
+  post hoc scripts say that earlier assessments and a reference audit exist, without their content.
 - What it did: read the manuscript, the plan and the code, and recompute parts of the analysis from the CMS files in
   its own scratch scripts.
 - Its findings are unverified. A number from a scratch script cannot enter the paper until it is rerun as post hoc
