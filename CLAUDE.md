@@ -26,6 +26,7 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 ## Useful commands
 
 - `gh api repos/<owner>/<repo>/commits/<tag> --jq .sha` - resolve an action tag to a SHA for pinning (setup-uv has no major tags).
+- `git merge --no-ff <branch> -m "<subject>" -m "<trailer>"` - `git merge -F -` does not read stdin ("could not read file '-'"); `git commit -F -` does.
 - `gh run list --workflow pages.yml --json databaseId,headSha` then `gh run watch <id>` - match runs by commit; the list lags a few seconds after a push.
 - `GITHUB_TOKEN= gh ...` - for other repos (private stharrold/planb, stharrold/mssp-paper-2026 releases and hooks):
   Claude Code's GITHUB_TOKEN may lack access; clearing it falls back to gh's own login.
