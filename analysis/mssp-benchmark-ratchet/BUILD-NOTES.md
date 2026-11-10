@@ -603,3 +603,22 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Release v1.3.1 freezes the amended submission, archived on Zenodo (doi:10.5281/zenodo.23859372).
 - The outcome: on 2026-11-02 the journal wrote that the technical checks were complete and the manuscript had moved on to
   peer review. The reply did not answer the "Additional file 1" question, and no preprint DOI has arrived yet.
+
+## An independent assessment during peer review (2026-11-10)
+
+- The request: with the paper in peer review, the author asked for an independent critical assessment of what was
+  submitted (release v1.3.1 of the paper), written to a file.
+- Independence: a fresh agent wrote it, not a copy of the session that built the amendment, since a copy would start
+  from that session's conclusions. Its brief barred the earlier assessments, the reference audit and its evidence,
+  these notes, the private repository and git history.
+- It was not fully blind. Its session showed 5 commit subject lines, and the README and the post hoc scripts say that
+  earlier assessments and an audit exist. The report lists these itself.
+- What it did: read the manuscript, the plan and the code, and recompute parts of the analysis from the CMS files in
+  its own scratch scripts.
+- Its findings are unverified. A number from a scratch script cannot enter the paper until it is rerun as post hoc
+  work in this folder. No result, claim or source changed, so the paper and the post stay as they are.
+- Where it is: `reviews/2026-11-10-critical-assessment.md` in the paper repository, beside the October one, untracked.
+  The October assessment was committed with its response and the changes it led to, and this one waits for a revision
+  the same way. A committed file would also enter the paper's next Zenodo release for good.
+- The name: it was first written under an `ARCHIVED/` folder with a timestamped name, then moved the same day to match
+  the October file. An assessment that feeds the next revision is not archived material.
