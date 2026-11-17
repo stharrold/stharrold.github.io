@@ -603,6 +603,9 @@ Writing the pipeline before registration exposed gaps in the plan while it could
 - Release v1.3.1 freezes the amended submission, archived on Zenodo (doi:10.5281/zenodo.23859372).
 - The outcome: on 2026-11-02 the journal wrote that the technical checks were complete and the manuscript had moved on to
   peer review. The reply did not answer the "Additional file 1" question, and no preprint DOI has arrived yet.
+- The preprint: Research Square posted the amended manuscript on 2026-11-16 as version 1, under CC BY 4.0
+  (doi:10.21203/rs.3.rs-11565926/v1). The preprint page carries the manuscript and Additional file 2; Additional file 1,
+  the STROBE checklist, is not on it. The post's table gained a Preprint row and a footnote.
 
 ## An independent assessment during peer review (2026-11-10)
 
