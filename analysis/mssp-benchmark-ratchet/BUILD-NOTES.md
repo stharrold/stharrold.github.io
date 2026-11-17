@@ -578,3 +578,53 @@ Writing the pipeline before registration exposed gaps in the plan while it could
   of the author's job. Release v1.3.0 freezes what was submitted, archived on Zenodo.
 - A mistake worth keeping: a command the interface reported as rejected had already edited four files. Nothing
   submitted was affected, but "nothing changed" was wrong for half an hour, until a routine `git status` showed it.
+
+## The BMC amendment (2026-11-01)
+
+- The request: the journal's technical check returned the submission two days after it went in, with a 2-day window. It
+  listed 3 references as uncited, asked for the STROBE checklist under Related Files, and asked for "Independent
+  Researcher" in place of "No affiliation". No result, claim or source changed, so the post needed no change.
+- The citations: all 3 were cited, but only in Availability of data and materials, and a reference cited only under
+  Ethics passed. So the check seems to skip that subsection, though the journal did not say so. The first reading,
+  "Declarations don't count", was too broad, and the entry first named as one of the 3 was cited in Methods too. Both
+  came from a summary and fell to checking the email and the Word file.
+- The fix: link the 3 sources inline there, as the form's Data Availability text already did. They were the last 3
+  entries, so the list went from 67 to 64 with no number moved. Citing them from Methods would have renumbered most of
+  the list, and the journal had said to change nothing else.
+- The checks: a text diff of the Word files showed one paragraph and the 3 entries changed. A Pages render was read at
+  the changed pages. After the author's upload, every file on the form was hashed in the page against the local copy.
+  The first hash pass looked wrong: 4 links gave one identical result, because they had empty addresses and returned
+  the page, and the real figure links sat in a hidden section. Unnoticed, the figures would have passed as checked.
+- What the first instructions missed: side notes caught that replacing the manuscript might disturb the Details page
+  (it did not) and that Related Files are not published, so the paper's "Additional file 1" points at a file readers
+  will not get. The author asked the journal about that in the reply.
+- A bug from the last release: the v1.3.0 bump had changed `cff-version`, the schema, to the release number. No test
+  read the field, so it shipped, and it surfaced only when the file was validated for this release.
+- Release v1.3.1 freezes the amended submission, archived on Zenodo (doi:10.5281/zenodo.23859372).
+- The outcome: on 2026-11-02 the journal wrote that the technical checks were complete and the manuscript had moved on to
+  peer review. The reply did not answer the "Additional file 1" question, and no preprint DOI has arrived yet.
+- The preprint: Research Square posted the amended manuscript on 2026-11-16 as version 1, under CC BY 4.0
+  (doi:10.21203/rs.3.rs-11565926/v1). The preprint page carries the manuscript and Additional file 2; Additional file 1,
+  the STROBE checklist, is not on it. The post's table gained a Preprint row and a footnote.
+
+## An independent assessment during peer review (2026-11-10)
+
+- The request: with the paper in peer review, the author asked for an independent critical assessment of what was
+  submitted (release v1.3.1 of the paper), written to a file.
+- Independence: a fresh agent wrote it, not a copy of the session that built the amendment, since a copy would start
+  from that session's conclusions. Its brief barred the earlier assessments, the reference audit and its evidence,
+  these notes, the private repository and git history.
+- It was not fully blind, and its report says how. Its session showed 5 commit subject lines. A line count and a
+  directory listing touched these notes by name and size only. The paper repository's README and `CLAUDE.md` and the
+  post hoc scripts say that earlier assessments and a reference audit exist, without their content.
+- What it did: read the manuscript, the plan and the code, and recompute parts of the analysis from the CMS files in
+  its own scratch scripts.
+- Its findings are unverified. A number from a scratch script cannot enter the paper until it is rerun as post hoc
+  work in this folder. No result, claim or source changed, so the paper and the post stay as they are.
+- Where it is: `reviews/2026-11-10-critical-assessment.md` in the paper repository, beside the October one. It was
+  first left untracked to wait for a revision, since the October assessment had been committed with its response and
+  the changes it led to. The author then asked for it to be committed the same day, with the plan drawn from it
+  (`reviews/2026-11-10-revision-plan.md`), before any response existed (paper commit `4a7f1e3`). Both files will enter
+  the paper's next Zenodo release. The plan has not been started.
+- The name: it was first written under an `ARCHIVED/` folder with a timestamped name, then moved the same day to match
+  the October file. An assessment that feeds the next revision is not archived material.

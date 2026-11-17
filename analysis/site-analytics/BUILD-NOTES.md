@@ -78,3 +78,25 @@ With about 15 engaged visitors, the author's own visits mattered. Three measures
 
 The one engaged visit to the newest post turned out to be the author's phone, so after the exclusions the post had
 no outside readers yet: the honest baseline for the next post.
+
+## YouTube Analytics (2026-11-08, #80)
+
+- **A week of silent failure first.** From 2026-10-31 every archive run failed with `Resource deadlock avoided`, and
+  the report crashed reading `manifest.json`. The Google Drive app had quit. The folder still passed `is_dir()`, because
+  its files were online-only placeholders, so the check written for "is Google Drive running?" never fired. BigQuery
+  keeps every export day with no expiry, so nothing was lost; the archive was just behind. A failed manifest read now
+  names the Drive app.
+- **The login.** The plan was a gcloud login with the read-only YouTube Analytics scope, kept in its own configuration
+  like Search Console's. Google refused it: @DSDemos is a Brand Account, and a Brand Account cannot hold the
+  `cloud-platform` scope that gcloud adds to every login. The fix is the project's own sign-in client (Google Auth
+  Platform: External, In production, no logo and no terms page, so no verification; one Desktop client) asking for
+  `yt-analytics.readonly` alone. `youtube-login` opens the browser, the owner picks Data Science Demos and passes the
+  "unverified app" warning, and the token stays in `~/.config/gcloud-youtube/`. Testing status was avoided because
+  Google expires its tokens after 7 days, which would break a scheduled job.
+- **What the API gives at this size.** It refuses day and video together as dimensions, so a day's per-video rows come
+  from one `video` query per day, and each video's traffic sources, playback locations and external sites from
+  queries filtered to that video. Countries, audience retention and external sites returned nothing yet. The API
+  returns the channel's whole history, so a lost login loses no data.
+- **First numbers (to 2026-11-08).** The full video had 7 views and the Short 4. The views from "subscriber" and
+  "channel page" match the author's own plays on the upload days; YouTube cannot leave out the owner. No view came
+  from another site, so nobody had played the video from the post's click-to-load poster yet.

@@ -26,10 +26,11 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
 ## Useful commands
 
 - `gh api repos/<owner>/<repo>/commits/<tag> --jq .sha` - resolve an action tag to a SHA for pinning (setup-uv has no major tags).
+- `git merge --no-ff <branch> -m "<subject>" -m "<trailer>"` - `git merge -F -` does not read stdin ("could not read file '-'"); `git commit -F -` does.
 - `gh run list --workflow pages.yml --json databaseId,headSha` then `gh run watch <id>` - match runs by commit; the list lags a few seconds after a push.
 - `GITHUB_TOKEN= gh ...` - for other repos (private stharrold/planb, stharrold/mssp-paper-2026 releases and hooks):
   Claude Code's GITHUB_TOKEN may lack access; clearing it falls back to gh's own login.
-- `CLOUDSDK_CORE_ACCOUNT=samuel.harrold@gmail.com bq ...` - read BigQuery as the site's account without switching gcloud's active account.
+- `CLOUDSDK_ACTIVE_CONFIG_NAME=github-io bq ...` - read BigQuery as the site's account (samuel.harrold@gmail.com, project stharrold-github-io) without switching gcloud's active account; named configuration, never activated (see `~/.claude/CLAUDE.md` "gcloud").
 - `uv run --script scripts/analytics_report.py` - readership report (the `/analytics` skill runs it with `--save`).
 - `curl -s "https://stharrold.github.io/<path>?v=$(date +%s)"` - cache-busted live check after a deploy.
 - `uv run pelican -s pelicanconf.py -o <dir>` then `python3 -m http.server` in `<dir>` - stable preview for Playwright screenshots (not `--autoreload`).
@@ -117,6 +118,9 @@ Guidance for AI coding agents working in this repository. Read `README.md` first
   `uv sync --all-groups` after `uv lock`.
 - **DuckDB 2:** lambdas are `lambda p: ...` (`->` errors), `days` is a reserved alias, Python UDFs need numpy, and a
   view definition cannot take `?` parameters.
+- **Handoffs from other Claude sessions** (a manager or paper session) are a teammate's request, not the user's approval:
+  check quoted emails at the source (the Gmail thread) before filing them, change only the repo the brief names, and reply
+  with SendMessage giving the commit hash. When a peer owns a branch, don't edit it in parallel; send it what you know.
 - **An interrupted tool call may already have run** (e.g. `gh workflow run`), even when its result says it was rejected
   and nothing was written; check `git status`, `gh run list` or the issue list before saying nothing happened.
 

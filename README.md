@@ -112,6 +112,19 @@ notebook HTML exports, and images go in `content/static/<slug>/` and are linked 
   in `assets/youtube/` (outside `content/`, so not published), made by `uv run --no-sync python scripts/youtube_art.py`
   in the site's colours and Lato; its README records what was uploaded. Video files stay on Google Drive, not in git.
   How it was set up: `analysis/youtube-channel/BUILD-NOTES.md`.
+- **YouTube Analytics:** the archive job also saves each settled day of the channel's YouTube Analytics (views, watch
+  time, average view percentage, traffic sources, playback locations, and the outside sites that sent viewers) to
+  `youtube_analytics/<report>/YYYYMMDD.parquet` on Drive, and the report adds a YouTube section (archived days plus
+  the newest read live). It reads the YouTube Analytics API with only the `yt-analytics.readonly` scope, through the
+  project's own Desktop OAuth client (Google Auth Platform: External, In production, unverified, client
+  `analytics-archive`). A gcloud login cannot do this: @DSDemos is a Brand Account, and Google refuses Brand Accounts
+  the `cloud-platform` scope that gcloud requires. The client JSON and the token are in `~/.config/gcloud-youtube/`
+  (owner-only, never in git). Sign in once with `uv run --script scripts/analytics_archive.py youtube-login`, choosing
+  **Data Science Demos** at the account chooser and passing the "unverified app" warning; `youtube-check` lists views
+  per video to confirm the login reaches the channel. The API returns the channel's whole history (checked
+  2026-11-08 from the first upload, 2026-10-29), so a lost login loses no data. The calls run from the job, not from
+  readers' browsers, so the privacy page needs no change. Views include the owner's own; YouTube offers no way to
+  exclude them.
 - **Privacy:** `content/pages/privacy.md` lists every third-party service the site loads; update it when adding one.
 - **Plugins:** `related_posts`, `tag_cloud`, `sitemap` (from PyPI), and `plugins/pelican_alias.py`
   (Python 3 port of [pelican-alias](https://github.com/Nitron/pelican-alias)) for `Alias:` redirects.

@@ -19,6 +19,10 @@ Anyone can send events to a public GA4 tag, and search queries are typed by stra
 queries are untrusted text that an agent will read. Pages outside the site's own paths are grouped as "(other)", and
 every cell is reduced to a safe character set and length (cell()).
 
+YouTube Analytics for @DSDemos comes from the archive's youtube_analytics/ files plus the days not yet archived, read
+live through the API with the read-only login (scripts/analytics_archive.py youtube-login). A YouTube problem shows as
+one line in its section and never stops the rest of the report.
+
 The owner's own browsers are left out: EXCLUDED_FILE in the archive folder lists their GA4 browser IDs (the `_ga`
 cookie value, which is user_pseudo_id after its "GA1.1." prefix), one per line, `#` for comments. This removes past
 visits too; GA4's internal-traffic filter (home IP, active since 2026-10-29) and the opt-out add-on stop new ones.
@@ -287,6 +291,92 @@ def search_console(archive: Path) -> str:
     return markdown_table(cur.columns, cur.fetchall()) + "\n\nQueries Google judged rare are omitted from per-query rows (anonymized)."
 
 
+YT_VIDEOS_SQL = """
+select video, sum(views) views, sum(estimatedMinutesWatched) minutes_watched,
+    round(sum(averageViewDuration * views) / nullif(sum(views), 0)) avg_view_seconds,
+    round(sum(averageViewPercentage * views) / nullif(sum(views), 0), 1) avg_view_pct,
+    sum(likes) likes, sum(subscribersGained) subscribers_gained
+from videos group by video order by views desc, video
+"""
+
+
+YT_SOURCES_SQL = """
+select video, insightTrafficSourceType source, sum(views) views, sum(estimatedMinutesWatched) minutes_watched
+from traffic_sources group by all order by video, views desc, source
+"""
+YT_PLAYBACK_SQL = "select video, insightPlaybackLocationType location, sum(views) views from playback_locations group by all order by video, views desc, location"
+YT_SITES_SQL = "select video, insightTrafficSourceDetail site, sum(views) views from external_urls group by all order by video, views desc, site"
+
+
+def yt_post_label(video: str, content: Path) -> str:
+    """The post that shows a video, by finding its ID in the Markdown, or "(no post)"."""
+    slugs = sorted(metadata(p).get("slug", p.stem) for p in content.glob("*.md") if video in p.read_text())
+    return ", ".join(slugs) or "(no post)"
+
+
+def youtube_data(archive: Path, fetch=None, today: datetime.date | None = None) -> tuple[dict[str, list[dict]], str]:
+    """YouTube rows from the archive, plus the days it does not hold yet read live through `fetch` (if given)."""
+    today = today or datetime.date.today()
+    folder = archive / aa.YT_FOLDER
+    manifest = aa.load_manifest(folder)
+    data = {name: [] for name in ["videos", *aa.YT_BREAKDOWNS]}
+    for name in data:
+        for f in sorted((folder / name).glob("*.parquet")):
+            import pyarrow.parquet as pq
+
+            data[name] += pq.read_table(f).to_pylist()
+    archived = sorted(manifest.get("days", {}))
+    note = f"archived {archived[0]} to {archived[-1]}" if archived else "nothing archived yet"
+    if fetch is not None:
+        live = aa.youtube_due(manifest, today + datetime.timedelta(days=aa.SETTLE_DAYS))
+        for d in live:
+            for name, rows in aa.youtube_day(fetch, d).items():
+                data[name] += rows
+        if live:
+            note += f"; {live[0]} to {live[-1]} read live from the API (YouTube may still revise them)"
+    return data, note
+
+
+def youtube_section(data: dict[str, list[dict]], note: str, content: Path) -> str:
+    """The report's YouTube tables, from youtube_data(). Video IDs, source types and sites are reduced by cell()."""
+    import duckdb
+
+    if not data["videos"]:
+        return f"No YouTube views recorded ({note})."
+    con = duckdb.connect()
+    with tempfile.TemporaryDirectory() as tmp:
+        for name, rows in data.items():
+            if rows:
+                path = Path(tmp) / f"{name}.json"
+                path.write_text(json.dumps(rows))
+                con.execute(f"create table {name} as select * from read_json_auto('{path}')")  # name is a constant
+    cols, rows = table(con, YT_VIDEOS_SQL)
+    rows = [(r[0], yt_post_label(r[0], content), *r[1:]) for r in rows]
+    lines = [
+        f"Channel @DSDemos from {aa.YT_START} ({note}). Views include the owner's own; YouTube does not let a channel leave them out. "
+        "Minutes are whole numbers per day, so totals can differ a little from YouTube Studio.",
+        "",
+        markdown_table([cols[0], "post", *cols[1:]], rows),
+        "",
+        "### How viewers found each video",
+        "",
+        markdown_table(*table(con, YT_SOURCES_SQL)) if data["traffic_sources"] else "No traffic-source rows.",
+        "",
+        "### Where it was played",
+        "",
+        markdown_table(*table(con, YT_PLAYBACK_SQL)) if data["playback_locations"] else "No playback-location rows.",
+        "",
+        "### Other sites that sent viewers",
+        "",
+        markdown_table(*table(con, YT_SITES_SQL))
+        if data["external_urls"]
+        else "None: no views came from links or embeds on other sites, this site's posts included (an embed play counts as EMBEDDED above).",
+        "",
+        "Visits the other way, from YouTube to this site, are the youtube.com rows under Sources.",
+    ]
+    return "\n".join(lines)
+
+
 def report(archive: Path, include_bigquery: bool = True, now: datetime.datetime | None = None) -> str:
     now = now or datetime.datetime.now(datetime.UTC)
     manifest = aa.load_manifest(archive)
@@ -349,8 +439,27 @@ def report(archive: Path, include_bigquery: bool = True, now: datetime.datetime 
         "",
         search_console(archive),
         "",
+        "## YouTube",
+        "",
+        youtube(archive, include_live=include_bigquery),
+        "",
     ]
     return "\n".join(lines)
+
+
+def youtube(archive: Path, include_live: bool = True) -> str:
+    """The YouTube section, or a one-line reason it is missing; a YouTube problem never stops the rest of the report."""
+    try:
+        fetch = None
+        if include_live and aa.YT_TOKEN.exists():
+            session = aa.youtube_session()
+            fetch = lambda params: aa.yt_report(session, params)  # noqa: E731
+        data, note = youtube_data(archive, fetch)
+        if fetch is None and include_live:
+            note += f"; no YouTube login at {aa.YT_TOKEN}, so recent days are missing"
+        return youtube_section(data, note, ROOT / "content")
+    except Exception as e:
+        return f"YouTube section unavailable: {cell(f'{type(e).__name__}: {e}')}"
 
 
 def save(archive: Path, text: str, today: datetime.date) -> Path:
